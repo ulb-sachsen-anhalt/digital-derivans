@@ -1,0 +1,15 @@
+# IDE stuff
+.classpath
+.settings
+.project
+.vscode
+.factorypath
+
+# build artifacts
+target
+dependency-reduced-pom.xml
+derivans.log
+
+# test artefacts
+/.apt_generated/
+/.apt_generated_tests/

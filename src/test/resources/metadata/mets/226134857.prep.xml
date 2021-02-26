@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:vls="http://semantics.de/vls" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:epicur="urn:nbn:de:1111-2004033116" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:marcxml="http://www.loc.gov/MARC21/slim" xmlns="http://www.openarchives.org/OAI/2.0/" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version18/mets.xsd">
+  <mets:metsHdr CREATEDATE="2020-10-20T15:56:02">
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>vls/2.12.1</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>VD Migration Pilot Preprocessing</mets:name>
+      <mets:note>2020-10-26 12:10:02</mets:note>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="md637720">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods xmlns:regexp="http://exslt.org/regular-expressions" version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
+          <mods:titleInfo>
+            <mods:nonSort>Le</mods:nonSort>
+            <mods:title>Legs</mods:title>
+            <mods:subTitle>Comédie En Un Acte, En Prose</mods:subTitle>
+          </mods:titleInfo>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/gnd/118577972">
+            <mods:namePart type="given">Pierre</mods:namePart>
+            <mods:namePart type="family">Marivaux</mods:namePart>
+            <mods:namePart type="termsOfAddress">de</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">oth</mods:roleTerm>
+              <mods:roleTerm type="text">1763</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Marivaux, Pierre de</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gbv" authorityURI="http://gbv.de/" valueURI="http://gso.gbv.de/DB=2.1/PPNSET?PPN=313164657">
+            <mods:namePart type="given">Pierre</mods:namePart>
+            <mods:namePart type="family">Prault</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Prault, Pierre</mods:displayForm>
+          </mods:name>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Paris</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Prault</mods:publisher>
+            <mods:place>
+              <mods:placeTerm type="code" authority="iso3166">XA-FR</mods:placeTerm>
+            </mods:place>
+            <mods:dateIssued keyDate="yes" encoding="iso8601">1740</mods:dateIssued>
+            <mods:issuance>monographic</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo eventType="digitization">
+            <mods:place>
+              <mods:placeTerm type="text">Halle (Saale)</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:edition>[Electronic ed.]</mods:edition>
+            <mods:dateCaptured encoding="iso8601">2010</mods:dateCaptured>
+          </mods:originInfo>
+          <mods:subject authority="cerl">
+            <mods:hierarchicalGeographic>
+              <mods:city>Paris</mods:city>
+            </mods:hierarchicalGeographic>
+          </mods:subject>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">fre</mods:languageTerm>
+          </mods:language>
+          <mods:physicalDescription>
+            <mods:extent>[4] Bl., 76 S. ; 8°</mods:extent>
+            <mods:extent>Vorlageform des Erscheinungsvermerks: A Paris, Chez Prault pere, Quai de Gêvres au Paradis, M. DCC. XL.</mods:extent>
+          </mods:physicalDescription>
+          <mods:note type="statement of responsibility">Par Monsieur De Marivaux</mods:note>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:3-18541</mods:identifier>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">09-04-97</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">16-04-10</mods:recordChangeDate>
+            <mods:recordIdentifier source="ulbhaldod">226134857</mods:recordIdentifier>
+          </mods:recordInfo>
+          <mods:location>
+            <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
+            <mods:shelfLocator>AB 57937 (2)</mods:shelfLocator>
+          </mods:location>
+          <mods:accessCondition type="use and reproduction" href="https://creativecommons.org/licenses/by-sa/3.0/de/">CC-BY-SA 3.0 DE</mods:accessCondition>
+          <mods:extension>
+            <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Aa</ulb:externalType>
+          </mods:extension>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd637720">
+    <mets:rightsMD ID="rights637720">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>Share_it</dv:ownerLogo>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov637720">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=226134857</dv:reference>
+            <dv:presentation>Share_it</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="MAX">
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:28" ID="IMG_MAX_637725">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637725" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:28" ID="IMG_MAX_637726">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637726" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:28" ID="IMG_MAX_637727">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637727" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:29" ID="IMG_MAX_637728">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637728" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:29" ID="IMG_MAX_637730">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637730" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:29" ID="IMG_MAX_637731">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637731" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:29" ID="IMG_MAX_637733">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637733" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:29" ID="IMG_MAX_637734">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637734" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:29" ID="IMG_MAX_637735">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637735" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:29" ID="IMG_MAX_637736">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637736" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:29" ID="IMG_MAX_637738">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637738" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:30" ID="IMG_MAX_637739">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637739" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:30" ID="IMG_MAX_637741">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637741" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:30" ID="IMG_MAX_637742">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637742" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:30" ID="IMG_MAX_637744">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637744" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:30" ID="IMG_MAX_637745">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637745" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:30" ID="IMG_MAX_637746">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637746" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:30" ID="IMG_MAX_637747">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637747" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:31" ID="IMG_MAX_637748">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637748" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:31" ID="IMG_MAX_637749">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637749" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:31" ID="IMG_MAX_637750">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637750" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:32" ID="IMG_MAX_637751">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637751" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:32" ID="IMG_MAX_637752">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637752" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:33" ID="IMG_MAX_637753">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637753" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:33" ID="IMG_MAX_637754">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637754" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:33" ID="IMG_MAX_637755">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637755" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:33" ID="IMG_MAX_637756">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637756" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:33" ID="IMG_MAX_637757">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637757" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:33" ID="IMG_MAX_637758">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637758" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:33" ID="IMG_MAX_637759">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637759" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:34" ID="IMG_MAX_637760">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637760" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:34" ID="IMG_MAX_637761">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637761" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:34" ID="IMG_MAX_637762">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637762" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:34" ID="IMG_MAX_637763">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637763" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:34" ID="IMG_MAX_637764">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637764" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:34" ID="IMG_MAX_637765">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637765" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:34" ID="IMG_MAX_637766">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637766" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:34" ID="IMG_MAX_637767">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637767" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:35" ID="IMG_MAX_637768">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637768" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:35" ID="IMG_MAX_637769">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637769" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:35" ID="IMG_MAX_637770">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637770" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:35" ID="IMG_MAX_637771">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637771" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:35" ID="IMG_MAX_637772">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637772" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:35" ID="IMG_MAX_637773">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637773" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:35" ID="IMG_MAX_637774">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637774" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:35" ID="IMG_MAX_637775">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637775" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:36" ID="IMG_MAX_637776">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637776" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:36" ID="IMG_MAX_637777">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637777" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:36" ID="IMG_MAX_637778">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637778" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:37" ID="IMG_MAX_637779">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637779" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:37" ID="IMG_MAX_637780">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637780" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:38" ID="IMG_MAX_637781">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637781" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:38" ID="IMG_MAX_637782">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637782" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:38" ID="IMG_MAX_637783">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637783" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:38" ID="IMG_MAX_637784">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637784" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:38" ID="IMG_MAX_637785">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637785" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:39" ID="IMG_MAX_637786">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637786" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:39" ID="IMG_MAX_637787">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637787" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:39" ID="IMG_MAX_637788">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637788" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:39" ID="IMG_MAX_637789">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637789" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:39" ID="IMG_MAX_637790">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637790" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:39" ID="IMG_MAX_637791">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637791" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:39" ID="IMG_MAX_637792">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637792" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:39" ID="IMG_MAX_637793">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637793" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:40" ID="IMG_MAX_637794">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637794" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:40" ID="IMG_MAX_637795">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637795" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:40" ID="IMG_MAX_637796">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637796" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:40" ID="IMG_MAX_637797">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637797" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:40" ID="IMG_MAX_637798">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637798" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:40" ID="IMG_MAX_637799">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637799" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:41" ID="IMG_MAX_637800">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637800" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:41" ID="IMG_MAX_637801">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637801" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:41" ID="IMG_MAX_637802">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637802" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:41" ID="IMG_MAX_637803">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637803" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:42" ID="IMG_MAX_637804">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637804" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:42" ID="IMG_MAX_637805">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637805" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:42" ID="IMG_MAX_637806">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637806" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:42" ID="IMG_MAX_637807">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637807" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:43" ID="IMG_MAX_637808">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637808" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:43" ID="IMG_MAX_637809">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637809" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:43" ID="IMG_MAX_637810">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637810" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:43" ID="IMG_MAX_637811">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637811" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:43" ID="IMG_MAX_637812">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637812" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:43" ID="IMG_MAX_637813">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637813" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:43" ID="IMG_MAX_637814">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637814" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:44" ID="IMG_MAX_637815">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637815" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:44" ID="IMG_MAX_637816">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637816" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:44" ID="IMG_MAX_637817">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637817" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:44" ID="IMG_MAX_637818">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637818" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:44" ID="IMG_MAX_637819">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637819" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:45" ID="IMG_MAX_637821">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637821" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:45" ID="IMG_MAX_637822">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637822" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-06-03T21:06:45" ID="IMG_MAX_637823">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/0/637723" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys637725" TYPE="page" ORDER="1" ORDERLABEL="[Seite 2]">
+        <mets:fptr FILEID="IMG_MAX_637725"/>
+      </mets:div>
+      <mets:div ID="phys637726" TYPE="page" ORDER="2" ORDERLABEL="[Seite 3]">
+        <mets:fptr FILEID="IMG_MAX_637726"/>
+      </mets:div>
+      <mets:div ID="phys637727" TYPE="page" ORDER="3" ORDERLABEL="[Seite 4]">
+        <mets:fptr FILEID="IMG_MAX_637727"/>
+      </mets:div>
+      <mets:div ID="phys637728" TYPE="page" ORDER="4" ORDERLABEL="[Seite 5]">
+        <mets:fptr FILEID="IMG_MAX_637728"/>
+      </mets:div>
+      <mets:div ID="phys637730" TYPE="page" ORDER="5" ORDERLABEL="[Seite 6]">
+        <mets:fptr FILEID="IMG_MAX_637730"/>
+      </mets:div>
+      <mets:div ID="phys637731" TYPE="page" ORDER="6" ORDERLABEL="[Seite 7]">
+        <mets:fptr FILEID="IMG_MAX_637731"/>
+      </mets:div>
+      <mets:div ID="phys637733" TYPE="page" ORDER="7" ORDERLABEL="[Seite 8]">
+        <mets:fptr FILEID="IMG_MAX_637733"/>
+      </mets:div>
+      <mets:div ID="phys637734" TYPE="page" ORDER="8" ORDERLABEL="[Seite 9]">
+        <mets:fptr FILEID="IMG_MAX_637734"/>
+      </mets:div>
+      <mets:div ID="phys637735" TYPE="page" ORDER="9" ORDERLABEL="[Seite 10]">
+        <mets:fptr FILEID="IMG_MAX_637735"/>
+      </mets:div>
+      <mets:div ID="phys637736" TYPE="page" ORDER="10" ORDERLABEL="[Seite 11]">
+        <mets:fptr FILEID="IMG_MAX_637736"/>
+      </mets:div>
+      <mets:div ID="phys637738" TYPE="page" ORDER="11" ORDERLABEL="[Seite 12]">
+        <mets:fptr FILEID="IMG_MAX_637738"/>
+      </mets:div>
+      <mets:div ID="phys637739" TYPE="page" ORDER="12" ORDERLABEL="[Seite 13]">
+        <mets:fptr FILEID="IMG_MAX_637739"/>
+      </mets:div>
+      <mets:div ID="phys637741" TYPE="page" ORDER="13" ORDERLABEL="[Seite 14]">
+        <mets:fptr FILEID="IMG_MAX_637741"/>
+      </mets:div>
+      <mets:div ID="phys637742" TYPE="page" ORDER="14" ORDERLABEL="[Seite 15]">
+        <mets:fptr FILEID="IMG_MAX_637742"/>
+      </mets:div>
+      <mets:div ID="phys637744" TYPE="page" ORDER="15" ORDERLABEL="[Seite 16]">
+        <mets:fptr FILEID="IMG_MAX_637744"/>
+      </mets:div>
+      <mets:div ID="phys637745" TYPE="page" ORDER="16" ORDERLABEL="Seite 4">
+        <mets:fptr FILEID="IMG_MAX_637745"/>
+      </mets:div>
+      <mets:div ID="phys637746" TYPE="page" ORDER="17" ORDERLABEL="Seite 5">
+        <mets:fptr FILEID="IMG_MAX_637746"/>
+      </mets:div>
+      <mets:div ID="phys637747" TYPE="page" ORDER="18" ORDERLABEL="Seite 6">
+        <mets:fptr FILEID="IMG_MAX_637747"/>
+      </mets:div>
+      <mets:div ID="phys637748" TYPE="page" ORDER="19" ORDERLABEL="Seite 7">
+        <mets:fptr FILEID="IMG_MAX_637748"/>
+      </mets:div>
+      <mets:div ID="phys637749" TYPE="page" ORDER="20" ORDERLABEL="Seite 8">
+        <mets:fptr FILEID="IMG_MAX_637749"/>
+      </mets:div>
+      <mets:div ID="phys637750" TYPE="page" ORDER="21" ORDERLABEL="Seite 9">
+        <mets:fptr FILEID="IMG_MAX_637750"/>
+      </mets:div>
+      <mets:div ID="phys637751" TYPE="page" ORDER="22" ORDERLABEL="Seite 10">
+        <mets:fptr FILEID="IMG_MAX_637751"/>
+      </mets:div>
+      <mets:div ID="phys637752" TYPE="page" ORDER="23" ORDERLABEL="Seite 11">
+        <mets:fptr FILEID="IMG_MAX_637752"/>
+      </mets:div>
+      <mets:div ID="phys637753" TYPE="page" ORDER="24" ORDERLABEL="Seite 12">
+        <mets:fptr FILEID="IMG_MAX_637753"/>
+      </mets:div>
+      <mets:div ID="phys637754" TYPE="page" ORDER="25" ORDERLABEL="Seite 13">
+        <mets:fptr FILEID="IMG_MAX_637754"/>
+      </mets:div>
+      <mets:div ID="phys637755" TYPE="page" ORDER="26" ORDERLABEL="Seite 14">
+        <mets:fptr FILEID="IMG_MAX_637755"/>
+      </mets:div>
+      <mets:div ID="phys637756" TYPE="page" ORDER="27" ORDERLABEL="Seite 15">
+        <mets:fptr FILEID="IMG_MAX_637756"/>
+      </mets:div>
+      <mets:div ID="phys637757" TYPE="page" ORDER="28" ORDERLABEL="Seite 16">
+        <mets:fptr FILEID="IMG_MAX_637757"/>
+      </mets:div>
+      <mets:div ID="phys637758" TYPE="page" ORDER="29" ORDERLABEL="Seite 17">
+        <mets:fptr FILEID="IMG_MAX_637758"/>
+      </mets:div>
+      <mets:div ID="phys637759" TYPE="page" ORDER="30" ORDERLABEL="Seite 18">
+        <mets:fptr FILEID="IMG_MAX_637759"/>
+      </mets:div>
+      <mets:div ID="phys637760" TYPE="page" ORDER="31" ORDERLABEL="Seite 19">
+        <mets:fptr FILEID="IMG_MAX_637760"/>
+      </mets:div>
+      <mets:div ID="phys637761" TYPE="page" ORDER="32" ORDERLABEL="Seite 20">
+        <mets:fptr FILEID="IMG_MAX_637761"/>
+      </mets:div>
+      <mets:div ID="phys637762" TYPE="page" ORDER="33" ORDERLABEL="Seite 21">
+        <mets:fptr FILEID="IMG_MAX_637762"/>
+      </mets:div>
+      <mets:div ID="phys637763" TYPE="page" ORDER="34" ORDERLABEL="Seite 22">
+        <mets:fptr FILEID="IMG_MAX_637763"/>
+      </mets:div>
+      <mets:div ID="phys637764" TYPE="page" ORDER="35" ORDERLABEL="Seite 23">
+        <mets:fptr FILEID="IMG_MAX_637764"/>
+      </mets:div>
+      <mets:div ID="phys637765" TYPE="page" ORDER="36" ORDERLABEL="Seite 24">
+        <mets:fptr FILEID="IMG_MAX_637765"/>
+      </mets:div>
+      <mets:div ID="phys637766" TYPE="page" ORDER="37" ORDERLABEL="Seite 25">
+        <mets:fptr FILEID="IMG_MAX_637766"/>
+      </mets:div>
+      <mets:div ID="phys637767" TYPE="page" ORDER="38" ORDERLABEL="Seite 26">
+        <mets:fptr FILEID="IMG_MAX_637767"/>
+      </mets:div>
+      <mets:div ID="phys637768" TYPE="page" ORDER="39" ORDERLABEL="Seite 27">
+        <mets:fptr FILEID="IMG_MAX_637768"/>
+      </mets:div>
+      <mets:div ID="phys637769" TYPE="page" ORDER="40" ORDERLABEL="Seite 28">
+        <mets:fptr FILEID="IMG_MAX_637769"/>
+      </mets:div>
+      <mets:div ID="phys637770" TYPE="page" ORDER="41" ORDERLABEL="Seite 29">
+        <mets:fptr FILEID="IMG_MAX_637770"/>
+      </mets:div>
+      <mets:div ID="phys637771" TYPE="page" ORDER="42" ORDERLABEL="Seite 30">
+        <mets:fptr FILEID="IMG_MAX_637771"/>
+      </mets:div>
+      <mets:div ID="phys637772" TYPE="page" ORDER="43" ORDERLABEL="Seite 31">
+        <mets:fptr FILEID="IMG_MAX_637772"/>
+      </mets:div>
+      <mets:div ID="phys637773" TYPE="page" ORDER="44" ORDERLABEL="Seite 32">
+        <mets:fptr FILEID="IMG_MAX_637773"/>
+      </mets:div>
+      <mets:div ID="phys637774" TYPE="page" ORDER="45" ORDERLABEL="Seite 33">
+        <mets:fptr FILEID="IMG_MAX_637774"/>
+      </mets:div>
+      <mets:div ID="phys637775" TYPE="page" ORDER="46" ORDERLABEL="Seite 34">
+        <mets:fptr FILEID="IMG_MAX_637775"/>
+      </mets:div>
+      <mets:div ID="phys637776" TYPE="page" ORDER="47" ORDERLABEL="Seite 35">
+        <mets:fptr FILEID="IMG_MAX_637776"/>
+      </mets:div>
+      <mets:div ID="phys637777" TYPE="page" ORDER="48" ORDERLABEL="Seite 36">
+        <mets:fptr FILEID="IMG_MAX_637777"/>
+      </mets:div>
+      <mets:div ID="phys637778" TYPE="page" ORDER="49" ORDERLABEL="Seite 37">
+        <mets:fptr FILEID="IMG_MAX_637778"/>
+      </mets:div>
+      <mets:div ID="phys637779" TYPE="page" ORDER="50" ORDERLABEL="Seite 38">
+        <mets:fptr FILEID="IMG_MAX_637779"/>
+      </mets:div>
+      <mets:div ID="phys637780" TYPE="page" ORDER="51" ORDERLABEL="Seite 39">
+        <mets:fptr FILEID="IMG_MAX_637780"/>
+      </mets:div>
+      <mets:div ID="phys637781" TYPE="page" ORDER="52" ORDERLABEL="Seite 40">
+        <mets:fptr FILEID="IMG_MAX_637781"/>
+      </mets:div>
+      <mets:div ID="phys637782" TYPE="page" ORDER="53" ORDERLABEL="Seite 41">
+        <mets:fptr FILEID="IMG_MAX_637782"/>
+      </mets:div>
+      <mets:div ID="phys637783" TYPE="page" ORDER="54" ORDERLABEL="Seite 42">
+        <mets:fptr FILEID="IMG_MAX_637783"/>
+      </mets:div>
+      <mets:div ID="phys637784" TYPE="page" ORDER="55" ORDERLABEL="Seite 43">
+        <mets:fptr FILEID="IMG_MAX_637784"/>
+      </mets:div>
+      <mets:div ID="phys637785" TYPE="page" ORDER="56" ORDERLABEL="Seite 44">
+        <mets:fptr FILEID="IMG_MAX_637785"/>
+      </mets:div>
+      <mets:div ID="phys637786" TYPE="page" ORDER="57" ORDERLABEL="Seite 45">
+        <mets:fptr FILEID="IMG_MAX_637786"/>
+      </mets:div>
+      <mets:div ID="phys637787" TYPE="page" ORDER="58" ORDERLABEL="Seite 46">
+        <mets:fptr FILEID="IMG_MAX_637787"/>
+      </mets:div>
+      <mets:div ID="phys637788" TYPE="page" ORDER="59" ORDERLABEL="Seite 47">
+        <mets:fptr FILEID="IMG_MAX_637788"/>
+      </mets:div>
+      <mets:div ID="phys637789" TYPE="page" ORDER="60" ORDERLABEL="Seite 48">
+        <mets:fptr FILEID="IMG_MAX_637789"/>
+      </mets:div>
+      <mets:div ID="phys637790" TYPE="page" ORDER="61" ORDERLABEL="Seite 49">
+        <mets:fptr FILEID="IMG_MAX_637790"/>
+      </mets:div>
+      <mets:div ID="phys637791" TYPE="page" ORDER="62" ORDERLABEL="Seite 50">
+        <mets:fptr FILEID="IMG_MAX_637791"/>
+      </mets:div>
+      <mets:div ID="phys637792" TYPE="page" ORDER="63" ORDERLABEL="Seite 51">
+        <mets:fptr FILEID="IMG_MAX_637792"/>
+      </mets:div>
+      <mets:div ID="phys637793" TYPE="page" ORDER="64" ORDERLABEL="Seite 52">
+        <mets:fptr FILEID="IMG_MAX_637793"/>
+      </mets:div>
+      <mets:div ID="phys637794" TYPE="page" ORDER="65" ORDERLABEL="Seite 53">
+        <mets:fptr FILEID="IMG_MAX_637794"/>
+      </mets:div>
+      <mets:div ID="phys637795" TYPE="page" ORDER="66" ORDERLABEL="Seite 54">
+        <mets:fptr FILEID="IMG_MAX_637795"/>
+      </mets:div>
+      <mets:div ID="phys637796" TYPE="page" ORDER="67" ORDERLABEL="Seite 55">
+        <mets:fptr FILEID="IMG_MAX_637796"/>
+      </mets:div>
+      <mets:div ID="phys637797" TYPE="page" ORDER="68" ORDERLABEL="Seite 56">
+        <mets:fptr FILEID="IMG_MAX_637797"/>
+      </mets:div>
+      <mets:div ID="phys637798" TYPE="page" ORDER="69" ORDERLABEL="Seite 57">
+        <mets:fptr FILEID="IMG_MAX_637798"/>
+      </mets:div>
+      <mets:div ID="phys637799" TYPE="page" ORDER="70" ORDERLABEL="Seite 58">
+        <mets:fptr FILEID="IMG_MAX_637799"/>
+      </mets:div>
+      <mets:div ID="phys637800" TYPE="page" ORDER="71" ORDERLABEL="Seite 59">
+        <mets:fptr FILEID="IMG_MAX_637800"/>
+      </mets:div>
+      <mets:div ID="phys637801" TYPE="page" ORDER="72" ORDERLABEL="Seite 60">
+        <mets:fptr FILEID="IMG_MAX_637801"/>
+      </mets:div>
+      <mets:div ID="phys637802" TYPE="page" ORDER="73" ORDERLABEL="Seite 61">
+        <mets:fptr FILEID="IMG_MAX_637802"/>
+      </mets:div>
+      <mets:div ID="phys637803" TYPE="page" ORDER="74" ORDERLABEL="Seite 62">
+        <mets:fptr FILEID="IMG_MAX_637803"/>
+      </mets:div>
+      <mets:div ID="phys637804" TYPE="page" ORDER="75" ORDERLABEL="Seite 63">
+        <mets:fptr FILEID="IMG_MAX_637804"/>
+      </mets:div>
+      <mets:div ID="phys637805" TYPE="page" ORDER="76" ORDERLABEL="Seite 64">
+        <mets:fptr FILEID="IMG_MAX_637805"/>
+      </mets:div>
+      <mets:div ID="phys637806" TYPE="page" ORDER="77" ORDERLABEL="Seite 65">
+        <mets:fptr FILEID="IMG_MAX_637806"/>
+      </mets:div>
+      <mets:div ID="phys637807" TYPE="page" ORDER="78" ORDERLABEL="Seite 66">
+        <mets:fptr FILEID="IMG_MAX_637807"/>
+      </mets:div>
+      <mets:div ID="phys637808" TYPE="page" ORDER="79" ORDERLABEL="Seite 67">
+        <mets:fptr FILEID="IMG_MAX_637808"/>
+      </mets:div>
+      <mets:div ID="phys637809" TYPE="page" ORDER="80" ORDERLABEL="Seite 68">
+        <mets:fptr FILEID="IMG_MAX_637809"/>
+      </mets:div>
+      <mets:div ID="phys637810" TYPE="page" ORDER="81" ORDERLABEL="Seite 69">
+        <mets:fptr FILEID="IMG_MAX_637810"/>
+      </mets:div>
+      <mets:div ID="phys637811" TYPE="page" ORDER="82" ORDERLABEL="Seite 70">
+        <mets:fptr FILEID="IMG_MAX_637811"/>
+      </mets:div>
+      <mets:div ID="phys637812" TYPE="page" ORDER="83" ORDERLABEL="Seite 71">
+        <mets:fptr FILEID="IMG_MAX_637812"/>
+      </mets:div>
+      <mets:div ID="phys637813" TYPE="page" ORDER="84" ORDERLABEL="Seite 72">
+        <mets:fptr FILEID="IMG_MAX_637813"/>
+      </mets:div>
+      <mets:div ID="phys637814" TYPE="page" ORDER="85" ORDERLABEL="Seite 73">
+        <mets:fptr FILEID="IMG_MAX_637814"/>
+      </mets:div>
+      <mets:div ID="phys637815" TYPE="page" ORDER="86" ORDERLABEL="Seite 74">
+        <mets:fptr FILEID="IMG_MAX_637815"/>
+      </mets:div>
+      <mets:div ID="phys637816" TYPE="page" ORDER="87" ORDERLABEL="Seite 75">
+        <mets:fptr FILEID="IMG_MAX_637816"/>
+      </mets:div>
+      <mets:div ID="phys637817" TYPE="page" ORDER="88" ORDERLABEL="Seite 76">
+        <mets:fptr FILEID="IMG_MAX_637817"/>
+      </mets:div>
+      <mets:div ID="phys637818" TYPE="page" ORDER="89" ORDERLABEL="[Seite 90]">
+        <mets:fptr FILEID="IMG_MAX_637818"/>
+      </mets:div>
+      <mets:div ID="phys637819" TYPE="page" ORDER="90" ORDERLABEL="[Seite 91]">
+        <mets:fptr FILEID="IMG_MAX_637819"/>
+      </mets:div>
+      <mets:div ID="phys637821" TYPE="page" ORDER="91" ORDERLABEL="[Seite 92]">
+        <mets:fptr FILEID="IMG_MAX_637821"/>
+      </mets:div>
+      <mets:div ID="phys637822" TYPE="page" ORDER="92" ORDERLABEL="[Seite 93]">
+        <mets:fptr FILEID="IMG_MAX_637822"/>
+      </mets:div>
+      <mets:div ID="PHYS_637724" TYPE="page" ORDER="637723" ORDERLABEL="[Colorchecker]">
+        <mets:fptr FILEID="IMG_MAX_637823"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="log637720" DMDID="md637720" ADMID="amd637720" TYPE="monograph" LABEL="Le Legs" ORDER="1">
+      <mets:div ID="log637724" TYPE="cover_front" LABEL="Vorderdeckel" ORDER="1"/>
+      <mets:div ID="log637729" TYPE="title_page" LABEL="Titelblatt" ORDER="2"/>
+      <mets:div ID="log637732" TYPE="section" LABEL="Approbation." ORDER="3"/>
+      <mets:div ID="log2404939" TYPE="section" LABEL="Privilege Du Roi." ORDER="4"/>
+      <mets:div ID="log637737" TYPE="section" LABEL="Catalogue Des Livres Et Pieces De Theatre 1742." ORDER="5"/>
+      <mets:div ID="log637740" TYPE="section" LABEL="Le Legs, Comédie. En Un Acte En Prose." ORDER="6">
+        <mets:div ID="log639558" TYPE="section" LABEL="Acteurs." ORDER="1"/>
+        <mets:div ID="log637743" TYPE="section" LABEL="Scene Premier." ORDER="2"/>
+        <mets:div ID="log639564" TYPE="section" LABEL="Csene II." ORDER="3"/>
+        <mets:div ID="log639565" TYPE="section" LABEL="Scene III." ORDER="4"/>
+        <mets:div ID="log639566" TYPE="section" LABEL="Scene IV." ORDER="5"/>
+        <mets:div ID="log639567" TYPE="section" LABEL="Scene V." ORDER="6"/>
+        <mets:div ID="log639568" TYPE="section" LABEL="Scene VI." ORDER="7"/>
+        <mets:div ID="log639569" TYPE="section" LABEL="Scene VII." ORDER="8"/>
+        <mets:div ID="log2404930" TYPE="section" LABEL="Scene VIII." ORDER="9"/>
+        <mets:div ID="log639570" TYPE="section" LABEL="Scene IX." ORDER="10"/>
+        <mets:div ID="log2404934" TYPE="section" LABEL="Scene X." ORDER="11"/>
+        <mets:div ID="log639571" TYPE="section" LABEL="Scene XI." ORDER="12"/>
+        <mets:div ID="log639572" TYPE="section" LABEL="Csene XII." ORDER="13"/>
+        <mets:div ID="log639573" TYPE="section" LABEL="Scene XIII." ORDER="14"/>
+        <mets:div ID="log639574" TYPE="section" LABEL="Scene XIV." ORDER="15"/>
+        <mets:div ID="log639575" TYPE="section" LABEL="Scene XV." ORDER="16"/>
+        <mets:div ID="log639576" TYPE="section" LABEL="Scene XVI." ORDER="17"/>
+        <mets:div ID="log639577" TYPE="section" LABEL="Scene XVII." ORDER="18"/>
+        <mets:div ID="log639578" TYPE="section" LABEL="Scene XVIII." ORDER="19"/>
+        <mets:div ID="log639579" TYPE="section" LABEL="Scene XIX." ORDER="20"/>
+        <mets:div ID="log639580" TYPE="section" LABEL="Scene XX." ORDER="21"/>
+        <mets:div ID="log639581" TYPE="section" LABEL="Scene XXI." ORDER="22"/>
+        <mets:div ID="log639582" TYPE="section" LABEL="Scene XXII." ORDER="23"/>
+        <mets:div ID="log639583" TYPE="section" LABEL="Scene XXIII." ORDER="24"/>
+        <mets:div ID="log639584" TYPE="section" LABEL="Scene XXIV." ORDER="25"/>
+        <mets:div ID="log639585" TYPE="section" LABEL="Scene Derniere." ORDER="26"/>
+      </mets:div>
+      <mets:div ID="log637820" TYPE="cover_back" LABEL="Rückdeckel" ORDER="7"/>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="log637720" xlink:to="physroot"/>
+    <mets:smLink xlink:from="log637724" xlink:to="phys637725"/>
+    <mets:smLink xlink:from="log637724" xlink:to="phys637726"/>
+    <mets:smLink xlink:from="log637724" xlink:to="phys637727"/>
+    <mets:smLink xlink:from="log637724" xlink:to="phys637728"/>
+    <mets:smLink xlink:from="log637729" xlink:to="phys637730"/>
+    <mets:smLink xlink:from="log637729" xlink:to="phys637731"/>
+    <mets:smLink xlink:from="log637732" xlink:to="phys637733"/>
+    <mets:smLink xlink:from="log2404939" xlink:to="phys2404942"/>
+    <mets:smLink xlink:from="log2404939" xlink:to="phys637734"/>
+    <mets:smLink xlink:from="log2404939" xlink:to="phys637735"/>
+    <mets:smLink xlink:from="log2404939" xlink:to="phys637736"/>
+    <mets:smLink xlink:from="log637737" xlink:to="phys637738"/>
+    <mets:smLink xlink:from="log637737" xlink:to="phys637739"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637741"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637742"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637744"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637745"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637746"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637747"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637748"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637749"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637750"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637751"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637752"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637753"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637754"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637755"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637756"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637757"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637758"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637759"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637760"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637761"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637762"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637763"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637764"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637765"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637766"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys2404932"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637767"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys2404936"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637768"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637769"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637770"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637771"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637772"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637773"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637774"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637775"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637776"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637777"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637778"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637779"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637780"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637781"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637782"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637783"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637784"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637785"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637786"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637787"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637788"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637789"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637790"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637791"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637792"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637793"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637794"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637795"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637796"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637797"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637798"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637799"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637800"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637801"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637802"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637803"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637804"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637805"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637806"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637807"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637808"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637809"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637810"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637811"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637812"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637813"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637814"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637815"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637816"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637817"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637818"/>
+    <mets:smLink xlink:from="log637740" xlink:to="phys637819"/>
+    <mets:smLink xlink:from="log639558" xlink:to="phys637742"/>
+    <mets:smLink xlink:from="log637743" xlink:to="phys637744"/>
+    <mets:smLink xlink:from="log637743" xlink:to="phys637745"/>
+    <mets:smLink xlink:from="log637743" xlink:to="phys637746"/>
+    <mets:smLink xlink:from="log639564" xlink:to="phys637747"/>
+    <mets:smLink xlink:from="log639564" xlink:to="phys637748"/>
+    <mets:smLink xlink:from="log639564" xlink:to="phys637749"/>
+    <mets:smLink xlink:from="log639564" xlink:to="phys637750"/>
+    <mets:smLink xlink:from="log639565" xlink:to="phys637751"/>
+    <mets:smLink xlink:from="log639565" xlink:to="phys637752"/>
+    <mets:smLink xlink:from="log639565" xlink:to="phys637753"/>
+    <mets:smLink xlink:from="log639565" xlink:to="phys637754"/>
+    <mets:smLink xlink:from="log639565" xlink:to="phys637755"/>
+    <mets:smLink xlink:from="log639566" xlink:to="phys637756"/>
+    <mets:smLink xlink:from="log639566" xlink:to="phys637757"/>
+    <mets:smLink xlink:from="log639566" xlink:to="phys637758"/>
+    <mets:smLink xlink:from="log639567" xlink:to="phys637759"/>
+    <mets:smLink xlink:from="log639568" xlink:to="phys637760"/>
+    <mets:smLink xlink:from="log639568" xlink:to="phys637761"/>
+    <mets:smLink xlink:from="log639568" xlink:to="phys637762"/>
+    <mets:smLink xlink:from="log639568" xlink:to="phys637763"/>
+    <mets:smLink xlink:from="log639568" xlink:to="phys637764"/>
+    <mets:smLink xlink:from="log639568" xlink:to="phys637765"/>
+    <mets:smLink xlink:from="log639569" xlink:to="phys637766"/>
+    <mets:smLink xlink:from="log2404930" xlink:to="phys2404932"/>
+    <mets:smLink xlink:from="log639570" xlink:to="phys637767"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys2404936"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637768"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637769"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637770"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637771"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637772"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637773"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637774"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637775"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637776"/>
+    <mets:smLink xlink:from="log2404934" xlink:to="phys637777"/>
+    <mets:smLink xlink:from="log639571" xlink:to="phys637778"/>
+    <mets:smLink xlink:from="log639571" xlink:to="phys637779"/>
+    <mets:smLink xlink:from="log639571" xlink:to="phys637780"/>
+    <mets:smLink xlink:from="log639572" xlink:to="phys637781"/>
+    <mets:smLink xlink:from="log639572" xlink:to="phys637782"/>
+    <mets:smLink xlink:from="log639572" xlink:to="phys637783"/>
+    <mets:smLink xlink:from="log639572" xlink:to="phys637784"/>
+    <mets:smLink xlink:from="log639572" xlink:to="phys637785"/>
+    <mets:smLink xlink:from="log639573" xlink:to="phys637786"/>
+    <mets:smLink xlink:from="log639574" xlink:to="phys637787"/>
+    <mets:smLink xlink:from="log639574" xlink:to="phys637788"/>
+    <mets:smLink xlink:from="log639574" xlink:to="phys637789"/>
+    <mets:smLink xlink:from="log639575" xlink:to="phys637790"/>
+    <mets:smLink xlink:from="log639576" xlink:to="phys637791"/>
+    <mets:smLink xlink:from="log639577" xlink:to="phys637792"/>
+    <mets:smLink xlink:from="log639577" xlink:to="phys637793"/>
+    <mets:smLink xlink:from="log639577" xlink:to="phys637794"/>
+    <mets:smLink xlink:from="log639577" xlink:to="phys637795"/>
+    <mets:smLink xlink:from="log639578" xlink:to="phys637796"/>
+    <mets:smLink xlink:from="log639578" xlink:to="phys637797"/>
+    <mets:smLink xlink:from="log639578" xlink:to="phys637798"/>
+    <mets:smLink xlink:from="log639578" xlink:to="phys637799"/>
+    <mets:smLink xlink:from="log639579" xlink:to="phys637800"/>
+    <mets:smLink xlink:from="log639579" xlink:to="phys637801"/>
+    <mets:smLink xlink:from="log639580" xlink:to="phys637802"/>
+    <mets:smLink xlink:from="log639581" xlink:to="phys637803"/>
+    <mets:smLink xlink:from="log639581" xlink:to="phys637804"/>
+    <mets:smLink xlink:from="log639582" xlink:to="phys637805"/>
+    <mets:smLink xlink:from="log639583" xlink:to="phys637806"/>
+    <mets:smLink xlink:from="log639583" xlink:to="phys637807"/>
+    <mets:smLink xlink:from="log639583" xlink:to="phys637808"/>
+    <mets:smLink xlink:from="log639583" xlink:to="phys637809"/>
+    <mets:smLink xlink:from="log639583" xlink:to="phys637810"/>
+    <mets:smLink xlink:from="log639583" xlink:to="phys637811"/>
+    <mets:smLink xlink:from="log639584" xlink:to="phys637812"/>
+    <mets:smLink xlink:from="log639584" xlink:to="phys637813"/>
+    <mets:smLink xlink:from="log639584" xlink:to="phys637814"/>
+    <mets:smLink xlink:from="log639584" xlink:to="phys637815"/>
+    <mets:smLink xlink:from="log639585" xlink:to="phys637816"/>
+    <mets:smLink xlink:from="log639585" xlink:to="phys637817"/>
+    <mets:smLink xlink:from="log639585" xlink:to="phys637818"/>
+    <mets:smLink xlink:from="log639585" xlink:to="phys637819"/>
+    <mets:smLink xlink:from="log637820" xlink:to="phys637821"/>
+    <mets:smLink xlink:from="log637820" xlink:to="phys637822"/>
+    <mets:smLink xlink:from="log637820" xlink:to="PHYS_637724"/>
+  </mets:structLink>
+</mets:mets>

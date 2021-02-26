@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:vls="http://semantics.de/vls" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:epicur="urn:nbn:de:1111-2004033116" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:marcxml="http://www.loc.gov/MARC21/slim" xmlns="http://www.openarchives.org/OAI/2.0/" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version18/mets.xsd" OBJID="2" LABEL="Inhouse-Digitalisierung">
+  <mets:metsHdr CREATEDATE="2020-11-05T13:39:31">
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>vls/2.12.1</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="INSTANCE">
+      <mets:name>ulbhal-hspe</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="REPOSITORY">
+      <mets:name>digital.bibliothek.uni-halle.de/hd</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="BUILDER">
+      <mets:name>vd</mets:name>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="md737429">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
+          <mods:titleInfo>
+            <mods:title>Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo Monarchae Et Domino, Christiano VI. Daniae, Norvegiae .. Regi ... D. VI. Ivnii MDCCXXXI. In Celeberrima Lipsiensivm Academia Habita Concentibvs Mvsicis Decantata</mods:title>
+          </mods:titleInfo>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/103769544">
+            <mods:namePart>Brühl, Johann Benjamin</mods:namePart>
+            <mods:namePart type="given">Johann Benjamin</mods:namePart>
+            <mods:namePart type="family">Brühl</mods:namePart>
+            <mods:namePart type="date">1691-1763</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">ctb</mods:roleTerm>
+              <mods:roleTerm type="text">BeiträgerIn k.</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/11897436X">
+            <mods:namePart>Christian &lt;VI., Dänemark, König&gt;</mods:namePart>
+            <mods:namePart type="date">1699-1746</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">oth</mods:roleTerm>
+              <mods:roleTerm type="text">ErwähnteR</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037332830">
+            <mods:namePart>Officina Langenhemia</mods:namePart>
+            <mods:namePart type="family">Officina Langenhemia</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037496515">
+            <mods:namePart>Langenheim, Johann Christian</mods:namePart>
+            <mods:namePart type="given">Johann Christian</mods:namePart>
+            <mods:namePart type="family">Langenheim</mods:namePart>
+            <mods:namePart type="date">1691-1764</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:genre authority="aad">Hochschulschrift</mods:genre>
+          <mods:genre authority="aad">Gelegenheitsschrift</mods:genre>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Lipsiae</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Literis Io. Christiani Langenhemii</mods:publisher>
+            <mods:dateIssued encoding="w3cdtf" keyDate="yes">1731</mods:dateIssued>
+            <mods:issuance>monographic</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo>
+            <mods:place>
+              <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:dateIssued>2010</mods:dateIssued>
+            <mods:edition>[Electronic ed.]</mods:edition>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">lat</mods:languageTerm>
+          </mods:language>
+          <mods:physicalDescription>
+            <mods:extent>[2] Bl. ; 2°</mods:extent>
+            <mods:note>1 Ill. (Kupferst.)</mods:note>
+          </mods:physicalDescription>
+          <mods:note>Vorlageform des Erscheinungsvermerks: Lipsiae Literis Io. Christiani Langenhemii.</mods:note>
+          <mods:subject authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/4035206-7">
+            <mods:geographic>Leipzig</mods:geographic>
+          </mods:subject>
+          <mods:identifier type="vd18">10787747</mods:identifier>
+          <mods:identifier type="gbv">191092622</mods:identifier>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:3-21437</mods:identifier>
+          <mods:location>
+            <mods:physicalLocation authority="local library code">65</mods:physicalLocation>
+            <mods:holdingSimple>
+              <mods:copyInformation>
+                <mods:shelfLocator>Pon IIn 6550, FK (2)</mods:shelfLocator>
+                <mods:note>digitized copy</mods:note>
+              </mods:copyInformation>
+            </mods:holdingSimple>
+          </mods:location>
+          <mods:location>
+            <mods:physicalLocation authority="local library code">72</mods:physicalLocation>
+            <mods:shelfLocator>Gm-A 10079</mods:shelfLocator>
+          </mods:location>
+          <mods:extension>
+            <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
+              <zvdd:titleWord>augustissimo 6. Iunii Juni 1731 Lipsiensium concentibus musicis</zvdd:titleWord>
+            </zvdd:zvddWrap>
+            <vlz:externalType recordSyntax="pica" code="Aa"/>
+            <vlz:info version="1"/>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">10-01-96</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">20-07-20</mods:recordChangeDate>
+            <mods:recordIdentifier source="ulbhaldod">191092622</mods:recordIdentifier>
+            <mods:descriptionStandard>rak</mods:descriptionStandard>
+          </mods:recordInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd737429">
+    <mets:rightsMD ID="rights737429">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>http://digital.bibliothek.uni-halle.de/hd/domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov737429">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=191092622</dv:reference>
+            <dv:presentation>http://digital.bibliothek.uni-halle.de/hd/id/737429</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="DOWNLOAD">
+      <mets:file MIMETYPE="application/pdf" CHECKSUM="99d8d65fde15a5d2a9cd14b3fa228b78c2449ec6" SIZE="1156208" CHECKSUMTYPE="SHA-1" CREATED="2013-05-22T16:11:11" ID="PDF_737429">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/pdf/737429" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="DEFAULT">
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_DEFAULT_737434">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/1000/737434" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_DEFAULT_737436">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/1000/737436" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_DEFAULT_737437">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/1000/737437" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:36" ID="IMG_DEFAULT_737438">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/1000/737438" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="THUMBS">
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_THUMBS_737434">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/128/737434" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_THUMBS_737436">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/128/737436" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_THUMBS_737437">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/128/737437" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:36" ID="IMG_THUMBS_737438">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/128/737438" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="MIN">
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_MIN_737434">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/600/737434" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_MIN_737436">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/600/737436" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_MIN_737437">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/600/737437" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:36" ID="IMG_MIN_737438">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/600/737438" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="MAX">
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_MAX_737434">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/1504/737434" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_MAX_737436">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/1504/737436" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_MAX_737437">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/1504/737437" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:36" ID="IMG_MAX_737438">
+        <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/1504/737438" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys737434" TYPE="page" LABEL="[Seite 2]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0001-0" ORDER="1">
+        <mets:fptr FILEID="IMG_DEFAULT_737434"/>
+        <mets:fptr FILEID="IMG_THUMBS_737434"/>
+        <mets:fptr FILEID="IMG_MIN_737434"/>
+        <mets:fptr FILEID="IMG_MAX_737434"/>
+      </mets:div>
+      <mets:div ID="phys737436" TYPE="page" LABEL="[Seite 3]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0002-5" ORDER="2">
+        <mets:fptr FILEID="IMG_DEFAULT_737436"/>
+        <mets:fptr FILEID="IMG_THUMBS_737436"/>
+        <mets:fptr FILEID="IMG_MIN_737436"/>
+        <mets:fptr FILEID="IMG_MAX_737436"/>
+      </mets:div>
+      <mets:div ID="phys737437" TYPE="page" LABEL="[Seite 4]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0003-1" ORDER="3">
+        <mets:fptr FILEID="IMG_DEFAULT_737437"/>
+        <mets:fptr FILEID="IMG_THUMBS_737437"/>
+        <mets:fptr FILEID="IMG_MIN_737437"/>
+        <mets:fptr FILEID="IMG_MAX_737437"/>
+      </mets:div>
+      <mets:div ID="phys737438" TYPE="page" LABEL="[Seite 5]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0004-6" ORDER="4">
+        <mets:fptr FILEID="IMG_DEFAULT_737438"/>
+        <mets:fptr FILEID="IMG_THUMBS_737438"/>
+        <mets:fptr FILEID="IMG_MIN_737438"/>
+        <mets:fptr FILEID="IMG_MAX_737438"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="log737429" DMDID="md737429" ADMID="amd737429" TYPE="monograph" LABEL="Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo Monarchae Et Domino, Christiano VI. Daniae, Norvegiae .. Regi ... D. VI. Ivnii MDCCXXXI. In Celeberrima Lipsiensivm Academia Habita Concentibvs Mv" ORDER="1" CONTENTIDS="urn:nbn:de:gbv:3:3-21437">
+      <mets:mptr LOCTYPE="URL" xlink:href="http://digital.bibliothek.uni-halle.de/hd/oai/?verb=GetRecord&amp;metadataPrefix=mets&amp;identifier=737429"/>
+      <mets:fptr FILEID="PDF_737429"/>
+      <mets:div ID="log737433" TYPE="title_page" LABEL="Titelblatt" ORDER="1"/>
+      <mets:div ID="log737435" TYPE="verse" LABEL="[Ode]" ORDER="2"/>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="log737433" xlink:to="phys737434"/>
+    <mets:smLink xlink:from="log737435" xlink:to="phys737436"/>
+    <mets:smLink xlink:from="log737435" xlink:to="phys737437"/>
+    <mets:smLink xlink:from="log737435" xlink:to="phys737438"/>
+  </mets:structLink>
+</mets:mets>

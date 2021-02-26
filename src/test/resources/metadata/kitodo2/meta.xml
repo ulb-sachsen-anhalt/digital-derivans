@@ -1,0 +1,305 @@
+<mets:mets xmlns:goobi="http://meta.goobi.org/v1.5.1/" xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <mets:metsHdr CREATEDATE="2020-06-25T07:55:15" LASTMODDATE="2020-06-25T10:26:31+0200">
+    <mets:agent OTHERTYPE="SOFTWARE" ROLE="CREATOR" TYPE="OTHER">
+      <mets:name>Kitodo - kitodo-ugh-2.1.3-kitodo-ugh-2.1.1-11-g4b06eaa - 30−July−2019</mets:name>
+      <mets:note>Kitodo</mets:note>
+    </mets:agent>
+    <mets:agent OTHERTYPE="SOFTWARE" ROLE="EDITOR" TYPE="OTHER">
+      <mets:name>zedOSGo 2.0</mets:name>
+      <mets:note>Imported document structure and page numbers.</mets:note>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="DMDLOG_0000">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:extension>
+            <goobi:goobi>
+              <goobi:metadata name="PICACreationDate">21-03-94</goobi:metadata>
+              <goobi:metadata name="ulb_Edition">[Electronic ed.]</goobi:metadata>
+              <goobi:metadata name="datedigit">2020</goobi:metadata>
+              <goobi:metadata name="ulb_PublisherName">Universitäts- und Landesbibliothek Sachsen-Anhalt</goobi:metadata>
+              <goobi:metadata name="ulb_PlaceOfPublication">Halle (Saale)</goobi:metadata>
+              <goobi:metadata name="PICAChangeDate">14-05-20</goobi:metadata>
+              <goobi:metadata name="PICAType">Aa</goobi:metadata>
+              <goobi:metadata name="Inhaltstyp_Text">Text</goobi:metadata>
+              <goobi:metadata name="Inhaltstyp_Code">txt</goobi:metadata>
+              <goobi:metadata name="VD18">VD18 10743448</goobi:metadata>
+              <goobi:metadata name="ulb_rism">VD18 10743448</goobi:metadata>
+              <goobi:metadata name="Indicator_VD18">RedVD18-DE-3</goobi:metadata>
+              <goobi:metadata name="PublicationYear">1733</goobi:metadata>
+              <goobi:metadata name="CountryOfPublication">XA-DXDE</goobi:metadata>
+              <goobi:metadata name="CountryOfPublication">XA-DE</goobi:metadata>
+              <goobi:metadata name="PlaceOfPublication">Budissin</goobi:metadata>
+              <goobi:metadata name="PublisherName">Zu finden bey Gottfried Gottlob Richtern</goobi:metadata>
+              <goobi:metadata name="FormatSourcePrint">12°</goobi:metadata>
+              <goobi:metadata name="4201">Nicht identisch mit VD18 10228292, dort: Umfang [20] Bl., Veröffentlichungsangabe: "Gedruckt in der Königl. und Chur-Fürstl. Sächsischen Haupt-Sechs-Stadt Budissin, Bey Gottfried Gottlob Richtern. 1733."</goobi:metadata>
+              <goobi:metadata name="4201">Die Rückseite des Titelblatts ist unbedruckt</goobi:metadata>
+              <goobi:metadata name="5570">Mandat</goobi:metadata>
+              <goobi:metadata name="4217">Vorlageform der Veröffentlichungsangabe: Budissin, Zu finden bey Gottfried Gottlob Richtern, 1733. - Erscheinungsdatum nach Datierung im Titel bestimmt, Erscheinungsort nach GND bestimmt</goobi:metadata>
+              <goobi:metadata name="4200">Seiner Königlichen Polen Kurfürstl. Kurfürstlichen Durchlaucht Sachsen Markgrafens Stempel-Papier Markgrafentum alleruntertänigst 1733-01-07</goobi:metadata>
+              <goobi:metadata name="shelfmarksource">Pon Vk 2172, QK</goobi:metadata>
+              <goobi:metadata name="ulb_copyright_link">https://creativecommons.org/licenses/by-sa/3.0/de/</goobi:metadata>
+              <goobi:metadata name="ulb_copyright">"CC-BY-SA 3.0 DE"</goobi:metadata>
+              <goobi:metadata name="CatalogIDSource">147151562</goobi:metadata>
+              <goobi:metadata name="TitleDocMain">Sr. Königl. Majestät in Pohlen und Churfürstl. Durchl. zu Sachßen [et]c. auch Marggrafens in Ober- und Nieder-Lausitz, erläutertes Ausschreiben, derer von Stempel-Pappier im Marggraffthum Ober-Lausitz allerunterthänigst bewilligten Abgaben</goobi:metadata>
+              <goobi:metadata name="TitleDocMainShort">Sr. Königl. Majestät in Pohlen und Churfürstl. Durchl. zu Sachßen [et]c. auch Marggrafens in Ober- und Nieder-Lausitz, erläutertes Ausschreiben, derer von Stempel-Pappier im Marggraffthum Ober-Lausitz allerunterthänigst bewilligten Abgaben</goobi:metadata>
+              <goobi:metadata name="DocLanguage">ger</goobi:metadata>
+              <goobi:metadata name="SizeSourcePrint">72 Seiten; 12°</goobi:metadata>
+              <goobi:metadata name="singleDigCollection">123456789/14133</goobi:metadata>
+              <goobi:metadata name="Author" type="group">
+                <goobi:metadata name="Author_Firstname" />
+                <goobi:metadata name="Author_Lastname" />
+                <goobi:metadata name="Author_Title" />
+                <goobi:metadata name="Author_Identifier" />
+                <goobi:metadata name="Author_Expansion" />
+                <goobi:metadata name="Author_Relationtext" />
+                <goobi:metadata name="Author_Relationcode" />
+                <goobi:metadata name="Author_GNDID" />
+                <goobi:metadata name="Author_Authority" />
+                <goobi:metadata name="Author_AuthorityURI" />
+                <goobi:metadata name="Author_Date" />
+                <goobi:metadata name="Author_Title">Polen, König, II.</goobi:metadata>
+                <goobi:metadata name="Author_Relationtext">VerfasserIn</goobi:metadata>
+                <goobi:metadata name="Author_Relationcode">aut</goobi:metadata>
+                <goobi:metadata name="Author_Identifier">079309534</goobi:metadata>
+                <goobi:metadata name="Author_Expansion">August, II. &lt;Polen, König&gt;</goobi:metadata>
+                <goobi:metadata name="Author_GNDID">http://d-nb.info/gnd/118505084</goobi:metadata>
+                <goobi:metadata name="Author_AuthorityURI">http://d-nb.info/gnd/</goobi:metadata>
+                <goobi:metadata name="Author_Firstname">August</goobi:metadata>
+                <goobi:metadata name="Author_Date">1670-1733</goobi:metadata>
+                <goobi:metadata name="Author_Authority">gnd</goobi:metadata>
+              </goobi:metadata>
+              <goobi:metadata name="Editor" type="group">
+                <goobi:metadata name="Editor_Firstname" />
+                <goobi:metadata name="Editor_Lastname" />
+                <goobi:metadata name="Editor_Title" />
+                <goobi:metadata name="Editor_Identifier" />
+                <goobi:metadata name="Editor_Expansion" />
+                <goobi:metadata name="Editor_Relationtext" />
+                <goobi:metadata name="Editor_Relationcode" />
+                <goobi:metadata name="Editor_GNDID" />
+                <goobi:metadata name="Editor_Authority" />
+                <goobi:metadata name="Editor_AuthorityURI" />
+                <goobi:metadata name="Editor_Date" />
+                <goobi:metadata name="Editor_Expansion">Richter, Gottfried Gottlob</goobi:metadata>
+                <goobi:metadata name="Editor_AuthorityURI">http://d-nb.info/gnd/</goobi:metadata>
+                <goobi:metadata name="Editor_Relationtext">Vertrieb</goobi:metadata>
+                <goobi:metadata name="Editor_Relationcode">dst</goobi:metadata>
+                <goobi:metadata name="Editor_Relationcode">pbl</goobi:metadata>
+                <goobi:metadata name="Editor_Authority">gnd</goobi:metadata>
+                <goobi:metadata name="Editor_Relationtext">Verlag</goobi:metadata>
+                <goobi:metadata name="Editor_GNDID">http://d-nb.info/gnd/137727720</goobi:metadata>
+                <goobi:metadata name="Editor_Lastname">Richter</goobi:metadata>
+                <goobi:metadata name="Editor_Firstname">Gottfried Gottlob</goobi:metadata>
+                <goobi:metadata name="Editor_Date">1682-1738</goobi:metadata>
+                <goobi:metadata name="Editor_Identifier">696013878</goobi:metadata>
+              </goobi:metadata>
+              <goobi:metadata name="PlaceOfPublication_norm" type="group">
+                <goobi:metadata name="PlaceOfPublication_norm_text" />
+                <goobi:metadata name="PlaceOfPublication_norm_link" />
+                <goobi:metadata name="PlaceOfPublication_norm_text">Bautzen</goobi:metadata>
+                <goobi:metadata name="PlaceOfPublication_norm_link">http://d-nb.info/gnd/4004968-1</goobi:metadata>
+              </goobi:metadata>
+              <goobi:metadata name="ulb_ScannerQS">[FEHLER] Scan 147151562_staging_BooksizeXS_media/00000001.tif: Breite 856 nicht zwischen 867-958</goobi:metadata>
+              <goobi:metadata name="ulb_Booksize">917px BooksizeXS</goobi:metadata>
+            <goobi:metadata name="ulb_urn">urn:nbn:de:gbv:3:1-1192015415-147151562-12</goobi:metadata></goobi:goobi>
+          </mods:extension>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDPHYS_0000">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:extension>
+            <goobi:goobi>
+              <goobi:metadata name="FormatSourcePrint">12°</goobi:metadata>
+              <goobi:metadata name="shelfmarksource">Pon Vk 2172, QK</goobi:metadata>
+              <goobi:metadata name="pathimagefiles">file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_tif</goobi:metadata>
+            </goobi:goobi>
+          </mods:extension>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="LOCAL">
+      <mets:file ID="FILE_0001" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000001.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0002" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000002.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0003" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000003.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0004" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000004.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0005" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000005.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0006" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000006.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0007" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000007.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0008" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000008.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0009" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000009.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0010" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000010.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0011" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000011.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0012" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000012.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0013" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000013.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0014" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000014.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0015" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000015.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0016" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000016.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0017" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000017.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0018" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000018.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0019" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000019.tif" />
+      </mets:file>
+      <mets:file ID="FILE_0020" MIMETYPE="image/tiff">
+        <mets:FLocat LOCTYPE="URL" xlink:href="file:///usr/local/kitodo/metadata/2387/images/147151562_staging_BooksizeXS_media/00000020.tif" />
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div DMDID="DMDLOG_0000" ID="LOG_0000" TYPE="monograph">
+      <mets:div ID="LOG_0001" TYPE="cover_front" />
+      <mets:div ID="LOG_0002" TYPE="title_page" />
+      <mets:div ID="LOG_0003" TYPE="section" />
+      <mets:div ID="LOG_0004" TYPE="section" />
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div DMDID="DMDPHYS_0000" ID="PHYS_0000" TYPE="BoundBook">
+      <mets:div ID="PHYS_0001" ORDER="1" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0001" />
+      </mets:div>
+      <mets:div ID="PHYS_0002" ORDER="2" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0002" />
+      </mets:div>
+      <mets:div ID="PHYS_0003" ORDER="3" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0003" />
+      </mets:div>
+      <mets:div ID="PHYS_0004" ORDER="4" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0004" />
+      </mets:div>
+      <mets:div ID="PHYS_0005" ORDER="5" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0005" />
+      </mets:div>
+      <mets:div ID="PHYS_0006" ORDER="6" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0006" />
+      </mets:div>
+      <mets:div ID="PHYS_0007" ORDER="7" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0007" />
+      </mets:div>
+      <mets:div ID="PHYS_0008" ORDER="8" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0008" />
+      </mets:div>
+      <mets:div ID="PHYS_0009" ORDER="9" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0009" />
+      </mets:div>
+      <mets:div ID="PHYS_0010" ORDER="10" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0010" />
+      </mets:div>
+      <mets:div ID="PHYS_0011" ORDER="11" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0011" />
+      </mets:div>
+      <mets:div ID="PHYS_0012" ORDER="12" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0012" />
+      </mets:div>
+      <mets:div ID="PHYS_0013" ORDER="13" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0013" />
+      </mets:div>
+      <mets:div ID="PHYS_0014" ORDER="14" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0014" />
+      </mets:div>
+      <mets:div ID="PHYS_0015" ORDER="15" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0015" />
+      </mets:div>
+      <mets:div ID="PHYS_0016" ORDER="16" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0016" />
+      </mets:div>
+      <mets:div ID="PHYS_0017" ORDER="17" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0017" />
+      </mets:div>
+      <mets:div ID="PHYS_0018" ORDER="18" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0018" />
+      </mets:div>
+      <mets:div ID="PHYS_0019" ORDER="19" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0019" />
+      </mets:div>
+      <mets:div ID="PHYS_0020" ORDER="20" ORDERLABEL="uncounted" TYPE="page">
+        <mets:fptr FILEID="FILE_0020" />
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0001" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0002" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0003" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0004" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0005" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0006" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0007" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0008" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0009" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0010" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0011" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0012" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0013" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0014" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0015" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0016" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0017" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0018" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0019" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0020" />
+    <mets:smLink xlink:from="LOG_0001" xlink:to="PHYS_0001" />
+    <mets:smLink xlink:from="LOG_0001" xlink:to="PHYS_0002" />
+    <mets:smLink xlink:from="LOG_0002" xlink:to="PHYS_0003" />
+    <mets:smLink xlink:from="LOG_0002" xlink:to="PHYS_0004" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0005" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0006" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0007" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0008" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0009" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0010" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0011" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0012" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0013" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0014" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0015" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0016" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0017" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0018" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0019" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0020" />
+  </mets:structLink>
+</mets:mets>

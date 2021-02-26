@@ -1,0 +1,194 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xlink="http://www.w3.org/1999/xlink#"
+    xmlns:j.0="https:/zvdd#"
+    xmlns:dv="http://dfg-viewer.de/"
+    xmlns:mets="http://www.loc.gov/METS/"
+    xmlns:j.1="https://bibliothek.uni-halle.de#"
+    xmlns:mods="http://www.loc.gov/mods/v3#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance#"
+    xmlns:slub="http://slub-dresden.de/">
+  <mets:div>
+    <rdf:li>
+      <mets:div>
+        <rdf:li>
+          <mets:div>
+            <mets:TYPE>section</mets:TYPE>
+            <mets:LABEL>Anicij Manlij Torquati Seuerini Boecij Ordinarij Patricij viri et consulis De consolacione philozophie Liber primus Incipit</mets:LABEL>
+            <mods:titleInfo rdf:parseType="Resource">
+              <mods:title>Anicij Manlij Torquati Seuerini Boecij Ordinarij Patricij viri et consulis De consolacione philozophie Liber primus Incipit</mods:title>
+            </mods:titleInfo>
+          </mets:div>
+        </rdf:li>
+        <rdf:li>
+          <mets:div>
+            <mets:TYPE>section</mets:TYPE>
+            <mets:LABEL>[Liber 1, I 14-17]</mets:LABEL>
+            <mods:titleInfo rdf:parseType="Resource">
+              <mods:title>[Liber 1, I 14-17]</mods:title>
+            </mods:titleInfo>
+          </mets:div>
+        </rdf:li>
+        <rdf:li>
+          <mets:div>
+            <mets:TYPE>section</mets:TYPE>
+            <mets:LABEL>[Liber 1, IV 32-44]</mets:LABEL>
+            <mods:titleInfo rdf:parseType="Resource">
+              <mods:title>[Liber 1, IV 32-44]</mods:title>
+            </mods:titleInfo>
+          </mets:div>
+        </rdf:li>
+        <mets:TYPE>section</mets:TYPE>
+        <mets:LABEL>[Boethius: Consolatio Philosophiae]</mets:LABEL>
+        <mods:titleInfo rdf:parseType="Resource">
+          <mods:title>[Boethius: Consolatio Philosophiae]</mods:title>
+        </mods:titleInfo>
+      </mets:div>
+    </rdf:li>
+    <mods:abstract>1r Anicij Manlij Torquati Seuerini Boecij Ordinarij Patricij viri et consulis De consolacione philozophie Liber primus Incipit; 1v Liber 1, I 14-17; 2r-2v Liber 1, IV 32-44</mods:abstract>
+    <mets:rightsMD rdf:parseType="Resource">
+      <dv:rights rdf:parseType="Resource">
+        <dv:ownerContact rdf:resource="mailto:auskunft@bibliothek.uni-halle.de"/>
+        <dv:ownerSiteURL rdf:resource="http://www.bibliothek.uni-halle.de"/>
+        <dv:ownerLogo>Share_it</dv:ownerLogo>
+        <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+      </dv:rights>
+    </mets:rightsMD>
+    <mods:physicalDescription rdf:parseType="Resource">
+      <mods:extent>2 Blätter; 5 x 17 cm; 22 x 17 cm</mods:extent>
+    </mods:physicalDescription>
+    <mets:ORDERLABEL>[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Qu. Cod. 77, Fragment 1]</mets:ORDERLABEL>
+    <mods:note rdf:parseType="Resource">
+      <mods:type>source note</mods:type>
+      <rdf:value>Aus dem hinteren Spiegel von Qu. Cod. 77: 2 abgelöste Blätter: (1.) 5 x 17 und (2.) 22 x 17 cm. Blatt 2 etwa in ursprünglicher Größe. Schriftraum: 15 x 10 cm. 23 Zeilen. Verse auf Blatt 2 nicht abgesetzt. Der gleiche Text findet sich auch in Qu. Cod. 208, Blatt 1r</rdf:value>
+    </mods:note>
+    <mods:identifier rdf:parseType="Resource">
+      <mods:type>urn</mods:type>
+      <rdf:value rdf:resource="urn:nbn:de:gbv:3:3-1192015415-169683404X-16"/>
+    </mods:identifier>
+    <mods:accessCondition rdf:parseType="Resource">
+      <mods:type>use and reproduction</mods:type>
+      <mods:href rdf:resource="https://creativecommons.org/licenses/by-sa/3.0/de/"/>
+      <rdf:value>CC-BY-SA 3.0 DE</rdf:value>
+    </mods:accessCondition>
+    <mods:note rdf:parseType="Resource">
+      <mods:type>source note</mods:type>
+      <rdf:value>Handschrift, Signatur: Qu. Cod. 77, Fragment 1</rdf:value>
+    </mods:note>
+    <mods:language rdf:parseType="Resource">
+      <mods:languageTerm rdf:parseType="Resource">
+        <mods:type>code</mods:type>
+        <mods:authority>iso639-2b</mods:authority>
+        <rdf:value>lat</rdf:value>
+      </mods:languageTerm>
+    </mods:language>
+    <mods:recordInfo rdf:parseType="Resource">
+      <mods:recordCreationDate rdf:parseType="Resource">
+        <rdf:value>29-04-20</rdf:value>
+        <mods:encoding>marc</mods:encoding>
+      </mods:recordCreationDate>
+      <mods:descriptionStandard>rda</mods:descriptionStandard>
+      <mods:recordIdentifier rdf:parseType="Resource">
+        <rdf:value>169683404X</rdf:value>
+        <mods:source>gvk-ppn</mods:source>
+      </mods:recordIdentifier>
+      <mods:recordChangeDate rdf:parseType="Resource">
+        <rdf:value>29-04-20</rdf:value>
+        <mods:encoding>marc</mods:encoding>
+      </mods:recordChangeDate>
+    </mods:recordInfo>
+    <mods:originInfo rdf:parseType="Resource">
+      <mods:dateIssued rdf:parseType="Resource">
+        <mods:keyDate>yes</mods:keyDate>
+        <rdf:value>1451</rdf:value>
+        <mods:encoding>iso8601</mods:encoding>
+      </mods:dateIssued>
+      <mods:eventType>publication</mods:eventType>
+    </mods:originInfo>
+    <mods:relatedItem rdf:parseType="Resource">
+      <mods:type>series</mods:type>
+      <mods:titleInfo rdf:parseType="Resource">
+        <mods:title>[Handschriften aus der Universitäts- und Landesbibliothek Sachsen-Anhalt Halle</mods:title>
+      </mods:titleInfo>
+    </mods:relatedItem>
+    <mods:extension rdf:parseType="Resource">
+      <j.1:contentType rdf:parseType="Resource">
+        <j.1:code>txt</j.1:code>
+        <j.1:text>Text</j.1:text>
+      </j.1:contentType>
+      <j.0:zvddWrap rdf:parseType="Resource">
+        <j.0:titleWord>qucod77fragment1</j.0:titleWord>
+      </j.0:zvddWrap>
+      <j.1:externalType rdf:parseType="Resource">
+        <j.1:recordSyntax>pica</j.1:recordSyntax>
+        <rdf:value>Ha</rdf:value>
+      </j.1:externalType>
+    </mods:extension>
+    <mets:digiprovMD rdf:parseType="Resource">
+      <dv:links rdf:parseType="Resource">
+        <dv:reference rdf:resource="http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=169683404X"/>
+        <dv:presentation>Share_it</dv:presentation>
+      </dv:links>
+    </mets:digiprovMD>
+    <mets:LABEL>[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Qu. Cod. 77, Fragment 1]</mets:LABEL>
+    <mets:TYPE>manuscript</mets:TYPE>
+    <mods:titleInfo rdf:parseType="Resource">
+      <mods:type>uniform</mods:type>
+      <mods:valueURI rdf:resource="http://d-nb.info/gnd/4099136-2"/>
+      <mods:authorityURI rdf:resource="http://d-nb.info/gnd/"/>
+      <mods:title>De consolatione philosophiae</mods:title>
+    </mods:titleInfo>
+    <mods:titleInfo rdf:parseType="Resource">
+      <mods:title>[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Qu. Cod. 77, Fragment 1]</mods:title>
+    </mods:titleInfo>
+    <mods:note rdf:parseType="Resource">
+      <mods:type>source note</mods:type>
+      <rdf:value>Beschreibstoff: Papier</rdf:value>
+    </mods:note>
+    <mods:name rdf:parseType="Resource">
+      <mods:type>personal</mods:type>
+      <mods:valueURI rdf:resource="http://d-nb.info/gnd/11851282X"/>
+      <mods:authority>gnd</mods:authority>
+      <mods:namePart rdf:parseType="Resource">
+        <mods:type>family</mods:type>
+        <rdf:value>Boethius</rdf:value>
+      </mods:namePart>
+      <mods:namePart rdf:parseType="Resource">
+        <mods:type>given</mods:type>
+        <rdf:value>Anicius Manlius Severinus</rdf:value>
+      </mods:namePart>
+      <mods:namePart rdf:parseType="Resource">
+        <mods:type>date</mods:type>
+        <rdf:value>480-524</rdf:value>
+      </mods:namePart>
+      <mods:authorityURI rdf:resource="http://d-nb.info/gnd/"/>
+      <mods:displayForm>Boethius, Anicius Manlius Severinus</mods:displayForm>
+      <mods:role rdf:parseType="Resource">
+        <mods:roleTerm rdf:parseType="Resource">
+          <mods:type>code</mods:type>
+          <mods:authority>marcrelator</mods:authority>
+          <rdf:value>aut</rdf:value>
+        </mods:roleTerm>
+      </mods:role>
+    </mods:name>
+    <mods:originInfo rdf:parseType="Resource">
+      <mods:place rdf:parseType="Resource">
+        <mods:placeTerm rdf:parseType="Resource">
+          <mods:type>text</mods:type>
+          <rdf:value>Halle (Saale)</rdf:value>
+        </mods:placeTerm>
+      </mods:place>
+      <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+      <mods:edition>[Electronic ed.]</mods:edition>
+      <mods:dateCaptured rdf:parseType="Resource">
+        <rdf:value>2020</rdf:value>
+        <mods:encoding>iso8601</mods:encoding>
+      </mods:dateCaptured>
+      <mods:eventType>digitization</mods:eventType>
+    </mods:originInfo>
+    <mods:location rdf:parseType="Resource">
+      <mods:shelfLocator>Qu. Cod. 77, Fragment 1</mods:shelfLocator>
+      <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
+    </mods:location>
+  </mets:div>
+</rdf:RDF>

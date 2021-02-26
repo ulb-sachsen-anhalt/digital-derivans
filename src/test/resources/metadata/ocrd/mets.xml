@@ -1,0 +1,1138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:vls="http://semantics.de/vls" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:epicur="urn:nbn:de:1111-2004033116" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:marcxml="http://www.loc.gov/MARC21/slim" xmlns="http://www.openarchives.org/OAI/2.0/" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version18/mets.xsd">
+  <mets:metsHdr CREATEDATE="2020-07-27T09:43:45">
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>vls/2.12.1</mets:name>
+      <mets:note>created vlid: 737429</mets:note>
+      <mets:note>created date: 2010-10-21T07:26:00Z</mets:note>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="INSTANCE">
+      <mets:name>ulbhal-hspe</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="REPOSITORY">
+      <mets:name>digital.bibliothek.uni-halle.de/hd</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="BUILDER">
+      <mets:name>vd</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>VD Migration Pilot Preprocessing</mets:name>
+      <mets:note>2020-07-27 09:43:45</mets:note>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="OTHER" OTHERROLE="preprocessing/optimization/cropping">
+      <mets:name>ocrd-anybaseocr-crop v0.0.3</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="OTHER" OTHERROLE="preprocessing/optimization/despeckling">
+      <mets:name>ocrd-cis-ocropy-denoise v0.0.8</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="OTHER" OTHERROLE="preprocessing/optimization/deskewing">
+      <mets:name>ocrd-cis-ocropy-deskew v0.0.8</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="OTHER" OTHERROLE="layout/segmentation/region">
+      <mets:name>ocrd-tesserocr-segment-region v0.8.5</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="OTHER" OTHERROLE="layout/segmentation/region">
+      <mets:name>ocrd-segment-repair v0.0.4</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="OTHER" OTHERROLE="layout/segmentation/region">
+      <mets:name>ocrd-cis-ocropy-clip v0.0.8</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="OTHER" OTHERROLE="layout/segmentation/region">
+      <mets:name>ocrd-cis-ocropy-segment v0.0.8</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="OTHER" OTHERROLE="preprocessing/optimization/dewarping">
+      <mets:name>ocrd-cis-ocropy-dewarp v0.0.8</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="OTHER" OTHERROLE="recognition/text-recognition">
+      <mets:name>ocrd-tesserocr-recognize v0.8.5</mets:name>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="md737429">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods xmlns:regexp="http://exslt.org/regular-expressions" version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
+          <mods:titleInfo>
+            <mods:title>Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo Monarchae Et Domino, Christiano VI. Daniae, Norvegiae .. Regi ... D. VI. Ivnii MDCCXXXI. In Celeberrima Lipsiensivm Academia Habita Concentibvs Mvsicis Decantata</mods:title>
+          </mods:titleInfo>
+          <mods:name type="personal">
+            <mods:namePart>Brühl, ...</mods:namePart>
+            <mods:namePart type="given">...</mods:namePart>
+            <mods:namePart type="family">Brühl</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">ctb</mods:roleTerm>
+              <mods:roleTerm type="text">Beiträger</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:name type="personal" authority="gbv" authorityURI="http://gbv.de/" valueURI="http://gso.gbv.de/DB=2.1/PPNSET?PPN=19791764X">
+            <mods:namePart>Langenheim, Johann Christian</mods:namePart>
+            <mods:namePart type="given">Johann Christian</mods:namePart>
+            <mods:namePart type="family">Langenheim</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:originInfo>
+            <mods:place>
+              <mods:placeTerm type="text">Lipsiae</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Langenhemius</mods:publisher>
+            <mods:place>
+              <mods:placeTerm type="code" authority="iso3166">XG-DR</mods:placeTerm>
+            </mods:place>
+            <mods:dateIssued keyDate="yes" encoding="w3cdtf">1731</mods:dateIssued>
+            <mods:issuance>monographic</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo>
+            <mods:place>
+              <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:dateIssued>2010</mods:dateIssued>
+            <mods:edition>[Electronic ed.]</mods:edition>
+          </mods:originInfo>
+          <mods:subject authority="cerl">
+            <mods:hierarchicalGeographic>
+              <mods:city>Leipzig</mods:city>
+            </mods:hierarchicalGeographic>
+          </mods:subject>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">lat</mods:languageTerm>
+          </mods:language>
+          <mods:physicalDescription>
+            <mods:extent>[2] Bl. ; 2°</mods:extent>
+            <mods:note>Ill. (Kupferst.)</mods:note>
+          </mods:physicalDescription>
+          <mods:note>Fingerprint nach Ex. der GWLB Hannover und der ULB Sachsen-Anhalt</mods:note>
+          <mods:note>Vorlageform des Erscheinungsvermerks: Lipsiae Literis Io. Christiani Langenhemii.</mods:note>
+          <mods:genre authority="aad">Hochschulschrift</mods:genre>
+          <mods:genre authority="aad">Gelegenheitsschrift</mods:genre>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:3-21437</mods:identifier>
+          <mods:location>
+            <!--Applied vls 2.12 backward schema-compatibility mod.-->
+            <mods:holdingSimple>
+              <mods:copyInformation>
+                <mods:shelfLocator>Pon IIn 6550, FK (2)</mods:shelfLocator>
+                <mods:note>digitized copy</mods:note>
+              </mods:copyInformation>
+            </mods:holdingSimple>
+          </mods:location>
+          <mods:extension>
+            <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
+              <zvdd:titleWord>augustissimo 6. Iunii 1731 Lipsiensium concentibus musicis</zvdd:titleWord>
+            </zvdd:zvddWrap>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">10-01-96</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">18-11-10</mods:recordChangeDate>
+            <mods:recordIdentifier source="ulbhaldod">191092622</mods:recordIdentifier>
+          </mods:recordInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd737429">
+    <mets:rightsMD ID="rights737429">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>http://digital.bibliothek.uni-halle.de/hd/domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov737429">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=191092622</dv:reference>
+            <dv:presentation>http://digital.bibliothek.uni-halle.de/hd/id/737429</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="MAX">
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_MAX_737434">
+        <mets:FLocat xlink:href="MAX/IMG_MAX_737434.jpg" LOCTYPE="OTHER" OTHERLOCTYPE="FILE"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_MAX_737436">
+        <mets:FLocat xlink:href="MAX/IMG_MAX_737436.jpg" LOCTYPE="OTHER" OTHERLOCTYPE="FILE"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35" ID="IMG_MAX_737437">
+        <mets:FLocat xlink:href="MAX/IMG_MAX_737437.jpg" LOCTYPE="OTHER" OTHERLOCTYPE="FILE"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:36" ID="IMG_MAX_737438">
+        <mets:FLocat xlink:href="MAX/IMG_MAX_737438.jpg" LOCTYPE="OTHER" OTHERLOCTYPE="FILE"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-IMG-PNG">
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-PNG_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-PNG/IMG_OCR-D-IMG-PNG_737434.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-PNG_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-PNG/IMG_OCR-D-IMG-PNG_737436.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-PNG_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-PNG/IMG_OCR-D-IMG-PNG_737437.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-PNG_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-PNG/IMG_OCR-D-IMG-PNG_737438.png"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-IMG-BIN">
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-BINPAGE-sauvola_737434-BIN_sauvola-ms-split">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-BIN/IMG_OCR-D-BINPAGE-sauvola_737434-BIN_sauvola-ms-split.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-BINPAGE-sauvola_737436-BIN_sauvola-ms-split">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-BIN/IMG_OCR-D-BINPAGE-sauvola_737436-BIN_sauvola-ms-split.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-BINPAGE-sauvola_737437-BIN_sauvola-ms-split">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-BIN/IMG_OCR-D-BINPAGE-sauvola_737437-BIN_sauvola-ms-split.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-BINPAGE-sauvola_737438-BIN_sauvola-ms-split">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-BIN/IMG_OCR-D-BINPAGE-sauvola_737438-BIN_sauvola-ms-split.png"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-BINPAGE-sauvola">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-BINPAGE-sauvola_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-BINPAGE-sauvola/IMG_OCR-D-BINPAGE-sauvola_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-BINPAGE-sauvola_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-BINPAGE-sauvola/IMG_OCR-D-BINPAGE-sauvola_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-BINPAGE-sauvola_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-BINPAGE-sauvola/IMG_OCR-D-BINPAGE-sauvola_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-BINPAGE-sauvola_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-BINPAGE-sauvola/IMG_OCR-D-BINPAGE-sauvola_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-IMG-CROP">
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CROP_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CROP/IMG_OCR-D-IMG-CROP_737434.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CROP_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CROP/IMG_OCR-D-IMG-CROP_737436.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CROP_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CROP/IMG_OCR-D-IMG-CROP_737437.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CROP_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CROP/IMG_OCR-D-IMG-CROP_737438.png"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-SEG-PAGE-anyocr">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-PAGE-anyocr_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-PAGE-anyocr/IMG_OCR-D-SEG-PAGE-anyocr_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-PAGE-anyocr_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-PAGE-anyocr/IMG_OCR-D-SEG-PAGE-anyocr_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-PAGE-anyocr_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-PAGE-anyocr/IMG_OCR-D-SEG-PAGE-anyocr_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-PAGE-anyocr_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-PAGE-anyocr/IMG_OCR-D-SEG-PAGE-anyocr_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-IMG-DESPECK">
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DESPECK_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DESPECK/IMG_OCR-D-IMG-DESPECK_737434.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DESPECK_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DESPECK/IMG_OCR-D-IMG-DESPECK_737436.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DESPECK_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DESPECK/IMG_OCR-D-IMG-DESPECK_737437.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DESPECK_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DESPECK/IMG_OCR-D-IMG-DESPECK_737438.png"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-DENOISE-ocropy">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DENOISE-ocropy_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DENOISE-ocropy/IMG_OCR-D-DENOISE-ocropy_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DENOISE-ocropy_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DENOISE-ocropy/IMG_OCR-D-DENOISE-ocropy_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DENOISE-ocropy_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DENOISE-ocropy/IMG_OCR-D-DENOISE-ocropy_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DENOISE-ocropy_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DENOISE-ocropy/IMG_OCR-D-DENOISE-ocropy_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-IMG-DESKEW">
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DESKEW_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DESKEW/IMG_OCR-D-IMG-DESKEW_737434.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DESKEW_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DESKEW/IMG_OCR-D-IMG-DESKEW_737436.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DESKEW_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DESKEW/IMG_OCR-D-IMG-DESKEW_737437.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DESKEW_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DESKEW/IMG_OCR-D-IMG-DESKEW_737438.png"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-DESKEW-ocropy">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DESKEW-ocropy_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DESKEW-ocropy/IMG_OCR-D-DESKEW-ocropy_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DESKEW-ocropy_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DESKEW-ocropy/IMG_OCR-D-DESKEW-ocropy_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DESKEW-ocropy_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DESKEW-ocropy/IMG_OCR-D-DESKEW-ocropy_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DESKEW-ocropy_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DESKEW-ocropy/IMG_OCR-D-DESKEW-ocropy_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-SEG-BLOCK-tesseract">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-BLOCK-tesseract_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-BLOCK-tesseract/IMG_OCR-D-SEG-BLOCK-tesseract_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-BLOCK-tesseract_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-BLOCK-tesseract/IMG_OCR-D-SEG-BLOCK-tesseract_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-BLOCK-tesseract_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-BLOCK-tesseract/IMG_OCR-D-SEG-BLOCK-tesseract_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-BLOCK-tesseract_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-BLOCK-tesseract/IMG_OCR-D-SEG-BLOCK-tesseract_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-plausible">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-plausible_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-plausible/IMG_OCR-D-plausible_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-plausible_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-plausible/IMG_OCR-D-plausible_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-plausible_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-plausible/IMG_OCR-D-plausible_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-plausible_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-plausible/IMG_OCR-D-plausible_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-CLIP">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-CLIP_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-CLIP/IMG_OCR-D-CLIP_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-CLIP_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-CLIP/IMG_OCR-D-CLIP_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-CLIP_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-CLIP/IMG_OCR-D-CLIP_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-CLIP_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-CLIP/IMG_OCR-D-CLIP_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-IMG-CLIP">
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737436_region0009">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737436_region0009.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737436_region0011">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737436_region0011.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737436_region0014">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737436_region0014.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0004">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0004.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0005">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0005.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0006">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0006.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0009">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0009.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0010">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0010.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0011">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0011.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0012">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0012.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0013">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0013.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0014">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0014.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0015">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0015.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0017">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0017.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0018">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0018.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0019">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0019.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0021">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0021.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0022">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0022.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737437_region0024">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737437_region0024.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0004">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0004.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0005">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0005.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0006">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0006.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0007">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0007.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0008">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0008.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0009">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0009.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-CLIP_737438_region0011">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-CLIP/IMG_OCR-D-IMG-CLIP_737438_region0011.png"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-SEG-LINE-tesseract-ocropy">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-LINE-tesseract-ocropy_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-LINE-tesseract-ocropy/IMG_OCR-D-SEG-LINE-tesseract-ocropy_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-LINE-tesseract-ocropy_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-LINE-tesseract-ocropy/IMG_OCR-D-SEG-LINE-tesseract-ocropy_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-LINE-tesseract-ocropy_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-LINE-tesseract-ocropy/IMG_OCR-D-SEG-LINE-tesseract-ocropy_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-SEG-LINE-tesseract-ocropy_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-SEG-LINE-tesseract-ocropy/IMG_OCR-D-SEG-LINE-tesseract-ocropy_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-IMG-DEWARP">
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0004">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0004.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0005">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0005.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0006">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0006.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0007">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0007.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0008">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0008.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0009">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0009.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0010">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0010.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0011">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0011.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0012">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0012.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0013">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0013.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0014">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0014.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0001_region0001_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0001_region0001_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0002_region0002_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0002_region0002_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0002_region0002_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0002_region0002_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0004_region0004_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0004_region0004_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0004_region0004_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0004_region0004_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0005_region0005_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0005_region0005_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0006_region0006_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0006_region0006_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0006_region0006_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0006_region0006_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0007_region0007_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0007_region0007_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0008_region0008_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0008_region0008_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0008_region0008_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0008_region0008_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0009_region0009_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0009_region0009_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0009_region0009_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0009_region0009_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0010_region0010_line">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0010_region0010_line.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0012_region0012_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0012_region0012_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737434_region0012_region0012_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737434_region0012_region0012_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0011_region0011_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0011_region0011_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0000_region0000_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0000_region0000_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0001_region0001_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0001_region0001_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0001_region0001_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0001_region0001_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0001_region0001_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0001_region0001_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0002_region0002_line">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0002_region0002_line.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0003_region0003_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0003_region0003_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0004_region0004_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0004_region0004_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0005_region0005_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0005_region0005_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0006_region0006_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0006_region0006_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0006_region0006_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0006_region0006_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0006_region0006_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0006_region0006_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0007_region0007_line">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0007_region0007_line.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0009_region0009_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0009_region0009_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0010_region0010_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0010_region0010_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0010_region0010_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0010_region0010_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0011_region0011_line">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0011_region0011_line.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0012_region0012_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0012_region0012_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0013_region0013_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0013_region0013_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0013_region0013_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0013_region0013_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0013_region0013_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0013_region0013_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0014_region0014_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0014_region0014_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0015_region0015_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0015_region0015_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0017_region0017_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0017_region0017_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0018_region0018_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0018_region0018_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0018_region0018_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0018_region0018_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0019_region0019_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0019_region0019_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0021_region0021_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0021_region0021_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0021_region0021_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0021_region0021_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0022_region0022_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0022_region0022_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0022_region0022_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0022_region0022_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0022_region0022_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0022_region0022_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737437_region0024_region0024_line">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737437_region0024_region0024_line.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0000_region0000_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0000_region0000_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0000_region0000_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0000_region0000_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0001_region0001_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0001_region0001_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0001_region0001_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0001_region0001_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0001_region0001_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0001_region0001_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0002_region0002_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0002_region0002_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0002_region0002_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0002_region0002_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0002_region0002_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0002_region0002_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0006_region0006_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0006_region0006_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0006_region0006_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0006_region0006_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0000">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0000.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0001">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0001.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0002">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0002.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0003">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0003.png"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/png" ID="IMG_OCR-D-IMG-DEWARP_737438_region0011_region0011_line">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-IMG-DEWARP/IMG_OCR-D-IMG-DEWARP_737438_region0011_region0011_line.png"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-D-DEWARP">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DEWARP_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DEWARP/IMG_OCR-D-DEWARP_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DEWARP_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DEWARP/IMG_OCR-D-DEWARP_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DEWARP_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DEWARP/IMG_OCR-D-DEWARP_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-D-DEWARP_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-D-DEWARP/IMG_OCR-D-DEWARP_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="OCR-Result">
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-Result_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-Result/IMG_OCR-Result_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-Result_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-Result/IMG_OCR-Result_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-Result_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-Result/IMG_OCR-Result_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/vnd.prima.page+xml" ID="IMG_OCR-Result_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="OCR-Result/IMG_OCR-Result_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="FULLTEXT">
+      <mets:file MIMETYPE="application/alto+xml" ID="IMG_FULLTEXT_737434">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="FULLTEXT/IMG_FULLTEXT_737434.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/alto+xml" ID="IMG_FULLTEXT_737436">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="FULLTEXT/IMG_FULLTEXT_737436.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/alto+xml" ID="IMG_FULLTEXT_737437">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="FULLTEXT/IMG_FULLTEXT_737437.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/alto+xml" ID="IMG_FULLTEXT_737438">
+        <mets:FLocat LOCTYPE="OTHER" OTHERLOCTYPE="FILE" xlink:href="FULLTEXT/IMG_FULLTEXT_737438.xml"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys737434" TYPE="page" LABEL="[Seite 2]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0001-0" ORDER="1">
+        <mets:fptr FILEID="IMG_MAX_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-PNG_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-BINPAGE-sauvola_737434-BIN_sauvola-ms-split"/>
+        <mets:fptr FILEID="IMG_OCR-D-BINPAGE-sauvola_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CROP_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-PAGE-anyocr_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DESPECK_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-DENOISE-ocropy_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DESKEW_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-DESKEW-ocropy_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-BLOCK-tesseract_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-plausible_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-CLIP_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-LINE-tesseract-ocropy_737434"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0004"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0005"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0006"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0007"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0008"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0009"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0010"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0011"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0012"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0013"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0000_region0000_line0014"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0001_region0001_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0002_region0002_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0002_region0002_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0003_region0003_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0004_region0004_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0004_region0004_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0005_region0005_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0006_region0006_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0006_region0006_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0007_region0007_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0008_region0008_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0008_region0008_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0009_region0009_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0009_region0009_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0010_region0010_line"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0012_region0012_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737434_region0012_region0012_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-DEWARP_737434"/>
+        <mets:fptr FILEID="IMG_OCR-Result_737434"/>
+        <mets:fptr FILEID="IMG_FULLTEXT_737434"/>
+      </mets:div>
+      <mets:div ID="phys737436" TYPE="page" LABEL="[Seite 3]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0002-5" ORDER="2">
+        <mets:fptr FILEID="IMG_MAX_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-PNG_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-BINPAGE-sauvola_737436-BIN_sauvola-ms-split"/>
+        <mets:fptr FILEID="IMG_OCR-D-BINPAGE-sauvola_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CROP_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-PAGE-anyocr_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DESPECK_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-DENOISE-ocropy_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DESKEW_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-DESKEW-ocropy_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-BLOCK-tesseract_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-plausible_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737436_region0009"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737436_region0011"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737436_region0014"/>
+        <mets:fptr FILEID="IMG_OCR-D-CLIP_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-LINE-tesseract-ocropy_737436"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0009_region0009_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0011_region0011_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0014_region0014_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0015_region0015_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0016_region0016_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737436_region0017_region0017_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-DEWARP_737436"/>
+        <mets:fptr FILEID="IMG_OCR-Result_737436"/>
+        <mets:fptr FILEID="IMG_FULLTEXT_737436"/>
+      </mets:div>
+      <mets:div ID="phys737437" TYPE="page" LABEL="[Seite 4]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0003-1" ORDER="3">
+        <mets:fptr FILEID="IMG_MAX_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-PNG_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-BINPAGE-sauvola_737437-BIN_sauvola-ms-split"/>
+        <mets:fptr FILEID="IMG_OCR-D-BINPAGE-sauvola_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CROP_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-PAGE-anyocr_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DESPECK_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-DENOISE-ocropy_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DESKEW_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-DESKEW-ocropy_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-BLOCK-tesseract_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-plausible_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0004"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0005"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0006"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0009"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0010"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0011"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0012"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0013"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0014"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0015"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0017"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0018"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0019"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0021"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0022"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737437_region0024"/>
+        <mets:fptr FILEID="IMG_OCR-D-CLIP_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-LINE-tesseract-ocropy_737437"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0000_region0000_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0001_region0001_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0001_region0001_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0001_region0001_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0002_region0002_line"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0003_region0003_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0004_region0004_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0005_region0005_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0006_region0006_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0006_region0006_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0006_region0006_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0007_region0007_line"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0009_region0009_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0010_region0010_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0010_region0010_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0011_region0011_line"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0012_region0012_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0013_region0013_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0013_region0013_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0013_region0013_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0014_region0014_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0015_region0015_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0017_region0017_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0018_region0018_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0018_region0018_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0019_region0019_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0021_region0021_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0021_region0021_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0022_region0022_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0022_region0022_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0022_region0022_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0023_region0023_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737437_region0024_region0024_line"/>
+        <mets:fptr FILEID="IMG_OCR-D-DEWARP_737437"/>
+        <mets:fptr FILEID="IMG_OCR-Result_737437"/>
+        <mets:fptr FILEID="IMG_FULLTEXT_737437"/>
+      </mets:div>
+      <mets:div ID="phys737438" TYPE="page" LABEL="[Seite 5]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0004-6" ORDER="4">
+        <mets:fptr FILEID="IMG_MAX_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-PNG_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-BINPAGE-sauvola_737438-BIN_sauvola-ms-split"/>
+        <mets:fptr FILEID="IMG_OCR-D-BINPAGE-sauvola_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CROP_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-PAGE-anyocr_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DESPECK_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-DENOISE-ocropy_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DESKEW_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-DESKEW-ocropy_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-BLOCK-tesseract_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-plausible_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0004"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0005"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0006"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0007"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0008"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0009"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-CLIP_737438_region0011"/>
+        <mets:fptr FILEID="IMG_OCR-D-CLIP_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-SEG-LINE-tesseract-ocropy_737438"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0000_region0000_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0000_region0000_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0001_region0001_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0001_region0001_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0001_region0001_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0002_region0002_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0002_region0002_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0002_region0002_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0003_region0003_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0004_region0004_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0005_region0005_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0006_region0006_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0006_region0006_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0007_region0007_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0008_region0008_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0000"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0001"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0002"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0009_region0009_line0003"/>
+        <mets:fptr FILEID="IMG_OCR-D-IMG-DEWARP_737438_region0011_region0011_line"/>
+        <mets:fptr FILEID="IMG_OCR-D-DEWARP_737438"/>
+        <mets:fptr FILEID="IMG_OCR-Result_737438"/>
+        <mets:fptr FILEID="IMG_FULLTEXT_737438"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="log737429" DMDID="md737429" ADMID="amd737429" TYPE="monograph" LABEL="Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo Monarchae Et Domino, Christiano VI. Daniae, Norvegiae .. Regi ... D. VI. Ivnii MDCCXXXI. In Celeberrima Lipsiensivm Academia Habita Concentibvs Mv" ORDER="1" CONTENTIDS="urn:nbn:de:gbv:3:3-21437">
+      <mets:div ID="log737433" TYPE="title_page" LABEL="Titelblatt" ORDER="1"/>
+      <mets:div ID="log737435" TYPE="verse" LABEL="[Ode]" ORDER="2"/>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="log737433" xlink:to="phys737434"/>
+    <mets:smLink xlink:from="log737435" xlink:to="phys737436"/>
+    <mets:smLink xlink:from="log737435" xlink:to="phys737437"/>
+    <mets:smLink xlink:from="log737435" xlink:to="phys737438"/>
+  </mets:structLink>
+</mets:mets>
