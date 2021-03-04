@@ -10,19 +10,19 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  verify:
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        # test against legacy and LTS versions:
-        java: [ 8, 11, 14 ]
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up JDK 11-LTS
       uses: actions/setup-java@v1
       with:
-        java-version: ${{ matrix.java }}
+        java-version: 11
+
     - name: Test and verify package creation
-      run: mvn --batch-mode --update-snapshots verify
+      run: | 
+        git clone --branch ulb/master https://github.com/ulb-sachsen-anhalt/mets-model.git
+        cd mets-model && mvn clean install -DskipTests
+        cd ${{github.workspace}} && mvn clean verify
