@@ -4,13 +4,20 @@ Derive new digitals from existing ones.
 
 Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling, classical [iText5](https://github.com/itext/itextpdf) to create PDF, [Apache log4j2](https://github.com/apache/logging-log4j2) for logging and a workflow inspired by [OCR-D/Core](https://github.com/OCR-D/core) METS-driven-Workflows.
 
-Features:
+## Features
 
-* create JPG or PDF from TIF or JPG with constraints on compression rate and max size
-* create generic image footer from template
-* define parallelism level for each step
-* use information from METS/MODS if available
-* customizable configuration
+Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max sizes. For details see [configuration section](#Configuration).
+
+If METS/MODS-information is avaiable, the following will be utilized:
+
+* `mods:recordInfo/mods:recordIdentifier` to name the resulting PDF-file
+* for PDF-outline attribute `mets:div[@ORDER]` for the file containers is strictly respected as defined in the METS physical structMap
+
+If METS/MODS is available and a footer with proper labelling is required, then additionally the following will be utilized:
+
+* `mods:identifier[@type="urn"]` as default URN in Image Footer
+to name the PDF-file
+* if granular URNs exist in METS physical strucMap, information from `mets:div[@CONTENTIDS]` will be used for each individual page in Image Footer
 
 ## Installation
 
