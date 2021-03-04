@@ -18,8 +18,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestDerivans;
-import de.ulb.digital.derivans.derivate.IDerivateer;
-import de.ulb.digital.derivans.derivate.ImageDerivateerToJPG;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateType;
 

@@ -16,8 +16,6 @@ import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import de.ulb.digital.derivans.derivate.IDerivateer;
-import de.ulb.digital.derivans.derivate.PDFDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateType;
 import de.ulb.digital.derivans.model.DescriptiveData;
@@ -94,15 +92,16 @@ public class TestPDFDerivateer {
 		// act
 		PDFMetaInformation pdfMetaInformation = null;
 		Path pdfPath = Paths.get("src/test/resources/pdf/169683404X.pdf");
-			pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(pdfPath);
+		pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(pdfPath);
 
 		// assert
-		assertEquals(pdfMetaInformation.getAuthor(),
-				"Namensteil: Boethius (Typ: family), 480-524 (Typ: date), Anicius Manlius Severinus (Typ: given), authority URI: , value URI: , Rolle: Rollenbezeichnung: aut (Norm: marcrelator, Typ: code), Anzeigeform: Boethius, Anicius Manlius Severinus, Typ: personal, Norm: gnd");
-		assertEquals(pdfMetaInformation.getTitle(),
-				"[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Qu. Cod. 77, Fragment 1]");
-		assertEquals(pdfMetaInformation.getXmpMetadata().getElementsByTagNameNS("*", "recordIdentifier").item(0)
-				.getChildNodes().item(1).getTextContent(), "169683404X");
+		assertEquals(
+				"Namensteil: Boethius (Typ: family), 480-524 (Typ: date), Anicius Manlius Severinus (Typ: given), authority URI: , value URI: , Rolle: Rollenbezeichnung: aut (Norm: marcrelator, Typ: code), Anzeigeform: Boethius, Anicius Manlius Severinus, Typ: personal, Norm: gnd",
+				pdfMetaInformation.getAuthor());
+		assertEquals("[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Qu. Cod. 77, Fragment 1]",
+				pdfMetaInformation.getTitle());
+		assertEquals("169683404X", pdfMetaInformation.getXmpMetadata().getElementsByTagNameNS("*", "recordIdentifier")
+				.item(0).getChildNodes().item(1).getTextContent());
 	}
 
 }

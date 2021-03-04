@@ -32,8 +32,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import de.ulb.digital.derivans.Derivans;
-import de.ulb.digital.derivans.DerivansParameter;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 
 /**
