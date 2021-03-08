@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -179,6 +180,14 @@ public class Derivans {
 
 	private Path calculatePDFPath(DescriptiveData dd, DerivateStep step) throws DigitalDerivansException {
 		Path pdfPath = step.getOutputPath();
+		if (!Files.isDirectory(pdfPath, LinkOption.NOFOLLOW_LINKS)) {
+			pdfPath = step.getOutputPath().getParent().resolve(pdfPath);
+			try {
+				Files.createDirectory(pdfPath);
+			} catch (IOException e) {
+				throw new DigitalDerivansException(e);
+			}
+		}
 		if (Files.isDirectory(pdfPath)) {
 			String identifier = dd.getIdentifier();
 			if (identifier == null) {

@@ -36,6 +36,8 @@ class TestMetadataStore {
 	Path path993571 = Path.of("./src/test/resources/metadata/mets/993571.ulb.xml");
 	
 	Path path133573613 = Path.of("./src/test/resources/metadata/mets/133573613.prep.xml");
+	
+	Path path1237560 = Path.of("./src/test/resources/metadata/mets/1237560.xml");
 
 	@Test
 	void testMetadataStoreGetUrn() throws DigitalDerivansException {
@@ -47,6 +49,12 @@ class TestMetadataStore {
 	void testMetadataStoreGetIdentifier() throws DigitalDerivansException {
 		IMetadataStore mds = new MetadataStore(path143074601);
 		assertEquals("143074601", mds.getDescriptiveData().getIdentifier());
+	}
+	
+	@Test
+	void testMetadataStoreGetIdentifierDifferentSource() throws DigitalDerivansException {
+		IMetadataStore mds = new MetadataStore(path1237560);
+		assertEquals("323633072", mds.getDescriptiveData().getIdentifier());
 	}
 
 	@Test
