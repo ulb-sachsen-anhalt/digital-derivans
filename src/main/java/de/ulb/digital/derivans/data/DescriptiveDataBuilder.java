@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans.data;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -9,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.mets.model.Mets;
 
+import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DescriptiveData;
 
 class DescriptiveDataBuilder {
@@ -18,7 +20,7 @@ class DescriptiveDataBuilder {
 	private String author = MetadataStore.UNKNOWN;
 
 	// watch out!
-	private String identifier;
+	private String identifier = MetadataStore.UNKNOWN;
 
 	private String title = MetadataStore.UNKNOWN;
 
@@ -57,7 +59,7 @@ class DescriptiveDataBuilder {
 		return this;
 	}
 
-	DescriptiveDataBuilder identifier() {
+	DescriptiveDataBuilder identifier() throws DigitalDerivansException {
 		this.identifier = loadIdentifier();
 		return this;
 	}
@@ -113,33 +115,30 @@ class DescriptiveDataBuilder {
 	 * 
 	 * @return
 	 */
-	private String loadIdentifier() {
+	private String loadIdentifier() throws DigitalDerivansException {
 		Element mods = getPrimaryMods();
-		if (mods != null) {
-			Element recordInfo = mods.getChild("recordInfo", MetadataStore.NS_MODS);
-			if (recordInfo != null) {
-				Predicate<Element> sourceGvk = e -> e.getAttribute("source").getValue().equals("gvk-ppn");
-				List<Element> identifiers = recordInfo.getChildren("recordIdentifier", MetadataStore.NS_MODS);
-				Optional<Element> optUrn = identifiers.stream().filter(sourceGvk).findFirst();
-				if (optUrn.isPresent()) {
-					return optUrn.get().getTextTrim();
-				} else {
-					return extractAlternative(identifiers);
-				}
-			}
+		if (mods == null) {
+			return null;
 		}
-		return null;
+		Element recordInfo = mods.getChild("recordInfo", MetadataStore.NS_MODS);
+		Predicate<Element> sourceExists = e -> Objects.nonNull(e.getAttributeValue("source"));
+		List<Element> identifiers = recordInfo.getChildren("recordIdentifier", MetadataStore.NS_MODS);
+		Optional<Element> optUrn = identifiers.stream().filter(sourceExists).findFirst();
+		if (optUrn.isPresent()) {
+			return optUrn.get().getTextTrim();
+		}
+		throw new DigitalDerivansException("found no valid recordIdentifier");
 	}
 
-	private String extractAlternative(List<Element> identifiers) {
-		for (Element identifierElement : identifiers) {
-			String sourceValue = identifierElement.getAttribute("source").getValue();
-			if (sourceValue.toLowerCase().contains("ulb")) {
-				return identifierElement.getTextTrim();
-			}
-		}
-		return MetadataStore.UNKNOWN;
-	}
+//	private String extractAlternative(List<Element> identifiers) {
+//		for (Element identifierElement : identifiers) {
+//			String sourceValue = identifierElement.getAttribute("source").getValue();
+//			if (sourceValue.toLowerCase().contains("ulb")) {
+//				return identifierElement.getTextTrim();
+//			}
+//		}
+//		return MetadataStore.UNKNOWN;
+//	}
 
 	String getTitle() {
 		Element mods = getPrimaryMods();

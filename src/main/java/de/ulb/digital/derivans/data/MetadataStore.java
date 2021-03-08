@@ -139,6 +139,10 @@ public class MetadataStore implements IMetadataStore {
 
 	@Override
 	public boolean enrichPDF(String identifier) {
+		if(MetadataStore.UNKNOWN.equals(identifier)) {
+			LOGGER.warn("no mets available to enrich created PDF");
+			return false;
+		}
 		if (this.handler != null) {
 			String mimeType = "application/pdf";
 			String fileGroup = "DOWNLOAD";
@@ -174,7 +178,11 @@ public class MetadataStore implements IMetadataStore {
 	public DescriptiveData getDescriptiveData() {
 		if (descriptiveData == null) {
 			DescriptiveDataBuilder builder = new DescriptiveDataBuilder(this.mets);
-			descriptiveData = builder.author().access().identifier().title().urn().year().build();
+			try {
+				descriptiveData = builder.author().access().identifier().title().urn().year().build();
+			} catch (DigitalDerivansException e) {
+				LOGGER.error(e);
+			}
 		}
 		return descriptiveData;
 	}
