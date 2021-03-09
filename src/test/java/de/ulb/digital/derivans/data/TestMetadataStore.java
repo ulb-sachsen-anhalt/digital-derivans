@@ -28,6 +28,8 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
 class TestMetadataStore {
 
 	Path path143074601 = Path.of("./src/test/resources/metadata/kitodo2/143074601.xml");
+	
+	Path path147573602 = Path.of("./src/test/resources/metadata/kitodo2/147573602.xml");
 
 	Path path737429 = Path.of("./src/test/resources/metadata/mets/737429.xml");
 
@@ -68,9 +70,52 @@ class TestMetadataStore {
 		}
 	}
 	
+
+	/**
+	 * 
+	 * Check expected information is extracted from METS/MODS-export of kitodo.production2
+	 * 
+	 * imported in open data as:
+	 * https://opendata.uni-halle.de/handle/1981185920/36228
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testDescriptiveDataFromKitodo2() throws DigitalDerivansException {
+		// arrange
+		IMetadataStore mds = new MetadataStore(path147573602);
+		
+		// act
+		DescriptiveData dd = mds.getDescriptiveData();
+		
+		// assert
+		// PDF creator from configuration, not from METS/MODS
+		assertTrue(dd.getCreator().isEmpty());
+		// mods:recodInfo/mods:recordIdentifier[@source]/text()
+		assertEquals("147573602", dd.getIdentifier());
+		// mods:titleInfo/mods:title
+		assertTrue(dd.getTitle().startsWith("Tractätgen von denen Jüdischen Fabeln und Aberglauben"));
+		// mods:accessCondition[type="use and reproduction"]/text()
+		assertEquals("CC-BY-SA 3.0 DE", dd.getLicense().get());
+		// mods:identifier[@type="urn"]
+		assertEquals("urn:nbn:de:gbv:3:1-1192015415-147573602-14", dd.getUrn());
+		// mods:role/mods:displayForm/text() IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut"
+		assertEquals("Christian, Magnus", dd.getPerson());
+		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
+		assertEquals("1718", dd.getYearPublished());
+	}
+
+	/**
+	 * 
+	 * Check expected information is extracted from OAI-record in old VLS 12 format
+	 * 
+	 * http://digital.bibliothek.uni-halle.de/hd/oai/?verb=GetRecord&metadataPrefix=mets&mode=xml&identifier=737429
+	 * 
+	 * @throws DigitalDerivansException
+	 */
 	@Test
 	@Disabled
-	void testDescriptiveDataID737429() throws DigitalDerivansException {
+	void testDescriptiveDataFromVL12OAI() throws DigitalDerivansException {
 		// arrange
 		IMetadataStore mds = new MetadataStore(path737429);
 		
@@ -78,25 +123,27 @@ class TestMetadataStore {
 		DescriptiveData dd = mds.getDescriptiveData();
 		
 		// assert
-		// mods:namePart[@type="family"]/text()
-		// with 
-		// mods:role/mods:roleTerm[@type="code"]/text() = "pbl"
-		assertEquals("Langenheim", dd.getPerson());
+		// PDF creator from configuration, not from METS/MODS
+		assertTrue(dd.getCreator().isEmpty());
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
 		assertEquals("191092622", dd.getIdentifier());
 		// mods:titleInfo/mods:title
-		assertEquals("Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo Monarchae Et Domino, Christiano VI. Daniae, Norvegiae .. Regi ... D. VI. Ivnii MDCCXXXI. In Celeberrima Lipsiensivm Academia Habita Concentibvs Mvsicis Decantata", dd.getTitle());
-		// METS/MODS contains no license information
-		assertTrue(dd.getLicense().isEmpty());
+		assertTrue(dd.getTitle().startsWith("Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo"));
 		// mods:identifier[@type="urn"]
 		assertEquals("urn:nbn:de:gbv:3:3-21437", dd.getUrn());
+		// METS/MODS contains no license information
+		assertTrue(dd.getLicense().isEmpty());
 		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
 		assertEquals("1731", dd.getYearPublished());
-		// PDF creator is external configured, not in METS/MODS
-		assertTrue(dd.getCreator().isEmpty());
+		// mods:role/mods:displayForm/text()
+		// OR
+		// mods:namePart[@type="family"]/text()
+		// WITH 
+		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut" 
+		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl"
+		assertEquals("Langenheim", dd.getPerson());
 	}
-	
-
+		
 	@Test
 	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {
 		
