@@ -183,6 +183,7 @@ public class Derivans {
 		if (!Files.isDirectory(pdfPath, LinkOption.NOFOLLOW_LINKS)) {
 			pdfPath = step.getOutputPath().getParent().resolve(pdfPath);
 			try {
+				LOGGER.warn("create non-existing PDF target path {}", pdfPath);
 				Files.createDirectory(pdfPath);
 			} catch (IOException e) {
 				throw new DigitalDerivansException(e);
@@ -192,7 +193,9 @@ public class Derivans {
 			String identifier = dd.getIdentifier();
 			if (identifier == null) {
 				identifier = pdfPath.getFileName().toString();
+				LOGGER.warn("no descriptive data, use filename '{}' to name PDF-file", identifier);
 			}
+			LOGGER.info("use '{}' to name PDF-file", identifier);
 			String fileName = identifier + ".pdf";
 			String prefix = step.getOutputPrefix();
 			if (prefix != null && (!prefix.isBlank())) {
@@ -200,6 +203,8 @@ public class Derivans {
 			}
 			return pdfPath.resolve(fileName).normalize();
 		}
+		
+		// if output path is set as file
 		throw new DigitalDerivansException("Can't create PDF: '" + pdfPath + "' invalid!");
 	}
 
@@ -235,10 +240,11 @@ public class Derivans {
 
 	private ImageDerivateerJPGFooter transformToJPGFooter(BaseDerivateer base, DerivateStep step)
 			throws DigitalDerivansException {
-		String footerMetadata = getIdentifier();
+		String recordIdentifier = getIdentifier();
+		LOGGER.info("got identifier {}", recordIdentifier);
 		String footerLabel = step.getFooterLabel();
 		Path pathTemplate = step.getPathTemplate();
-		DigitalFooter footer = new DigitalFooter(footerLabel, footerMetadata, pathTemplate);
+		DigitalFooter footer = new DigitalFooter(footerLabel, recordIdentifier, pathTemplate);
 		Integer quality = step.getQuality();
 		ImageDerivateerJPGFooter d = new ImageDerivateerJPGFooter(base, quality, footer);
 		d.setPoolsize(step.getPoolsize());

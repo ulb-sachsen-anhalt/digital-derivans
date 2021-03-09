@@ -130,16 +130,6 @@ class DescriptiveDataBuilder {
 		throw new DigitalDerivansException("found no valid recordIdentifier");
 	}
 
-//	private String extractAlternative(List<Element> identifiers) {
-//		for (Element identifierElement : identifiers) {
-//			String sourceValue = identifierElement.getAttribute("source").getValue();
-//			if (sourceValue.toLowerCase().contains("ulb")) {
-//				return identifierElement.getTextTrim();
-//			}
-//		}
-//		return MetadataStore.UNKNOWN;
-//	}
-
 	String getTitle() {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
