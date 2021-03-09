@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateType;
 import de.ulb.digital.derivans.model.DescriptiveData;
@@ -29,8 +30,6 @@ import de.ulb.digital.derivans.model.PDFMetaInformation;
  *
  */
 public class TestPDFDerivateer {
-
-	String post737429 = "./src/test/resources/metsmods/737429_post.xml";
 
 	private int testPageSize = 20;
 
@@ -86,6 +85,47 @@ public class TestPDFDerivateer {
 		// no default creator information exists
 		assertNull(pdfMetaInformation.getCreator());
 	}
+
+	@Test
+	void testCreatePDFA(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path pathImages = tempDir.resolve("MAX");
+		Files.createDirectory(pathImages);
+		List<DigitalPage> pages = new ArrayList<>();
+		for (int i = 1; i <= testPageSize; i++) {
+			String imageName = String.format("%04d.jpg", i);
+			Path jpgFile = pathImages.resolve(imageName);
+			BufferedImage bi2 = new BufferedImage(2500, 4000, BufferedImage.TYPE_3BYTE_BGR);
+			ImageIO.write(bi2, "JPG", jpgFile.toFile());
+			DigitalPage e = new DigitalPage(i, imageName);
+			pages.add(e);
+		}
+
+		// act
+		String pdfName = String.format("pdfa-image-%04d.pdf", testPageSize);
+		Path outPath = tempDir.resolve(pdfName);
+		DescriptiveData dd = new DescriptiveData();
+		dd.setYearPublished("2020");
+
+		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
+		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
+				pages);
+
+		String conformanceLevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;		
+		boolean result = handler.create(conformanceLevel);
+
+		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
+		
+		// assert
+		assertTrue(result);
+		assertTrue(Files.exists(outPath));
+		assertEquals("n.a.", pdfMetaInformation.getTitle());
+		assertEquals("n.a.", pdfMetaInformation.getAuthor());
+		// no default creator information exists
+		assertNull(pdfMetaInformation.getCreator());
+	}
+
 
 	@Test
 	void testGetPDFMetaInformation01() throws Exception {

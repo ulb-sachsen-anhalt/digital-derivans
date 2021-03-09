@@ -19,4 +19,6 @@ public interface IDerivateer {
 	 */
 	boolean create() throws DigitalDerivansException;
 
+	boolean create(String conformanceLevel) throws DigitalDerivansException;
+
 }

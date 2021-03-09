@@ -14,10 +14,18 @@ public class DefaultConfiguration {
 	public static final Integer DEFAULT_QUALITY = 80;
 	
 	public static final Integer DEFAULT_QUALITY_FOOTER = 95;
-	
+
+	// PDF_A_1A, PDF_A_1B, PDF_A_2A, PDF_A_2B 
+	// PDF_A_2U, PDF_A_3A, PDF_A_3B, PDF_A_3U
+	public static final String PDFA_CONFORMANCE_LEVEL = "PDF_A_1B";
+
+	public static final String DEFAULT_FONT = "./src/test/resources/ttf/FreeMonoBold.ttf";
+
 	public static final String DEFAULT_INPUT_TYPE = "jpg";
 	
 	public static final String DEFAULT_OUTPUT_TYPE = "jpg";
+
+	public static final Integer DEFAULT_FONT_SIZE = 12;
 	
 	public static final Integer DEFAULT_POOLSIZE = 2;
 	

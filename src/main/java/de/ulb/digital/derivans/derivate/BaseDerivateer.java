@@ -37,4 +37,9 @@ public class BaseDerivateer implements IDerivateer {
 	public boolean create() throws DigitalDerivansException {
 		return false;
 	}
+
+	@Override
+	public boolean create(String conformanceLevel) throws DigitalDerivansException {
+		return false;
+	}	
 }

@@ -23,9 +23,15 @@ import org.apache.logging.log4j.Logger;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Header;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfAConformanceException;
+import com.itextpdf.text.pdf.PdfAConformanceLevel;
+import com.itextpdf.text.pdf.PdfAWriter;
 import com.itextpdf.text.pdf.PdfAction;
 import com.itextpdf.text.pdf.PdfDestination;
 import com.itextpdf.text.pdf.PdfOutline;
@@ -34,6 +40,7 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -164,8 +171,8 @@ public class PDFDerivateer extends BaseDerivateer {
 	static PDFMetaInformation getPDFMetaInformation(Path pdfPath) throws IOException {
 		FileInputStream fis = new FileInputStream(pdfPath.toAbsolutePath().toString());
 		PdfReader reader = new PdfReader(fis);
+		
 		Map<String, String> metadata = reader.getInfo();
-
 		String author = metadata.get("Author");
 		String title = metadata.get("Title");
 
@@ -276,5 +283,76 @@ public class PDFDerivateer extends BaseDerivateer {
 				hasOutlineAdded);
 		return result;
 	}
+
+	@Override
+	public boolean create(String conformanceLevel) throws DigitalDerivansException, PdfAConformanceException {
+		List<String> images = new ArrayList<>();
+		try {
+			images = resolvePages();
+		} catch (IOException e) {
+			throw new DigitalDerivansException(e);
+		}
+		// get dimension of first page
+		Image image = null;
+		try {
+			image = Image.getInstance(images.get(0));
+		} catch (BadElementException | IOException e) {
+			throw new DigitalDerivansException(e);
+		}
+		Rectangle firstPageSize = new Rectangle(0, 0, image.getWidth(), image.getHeight());
+		Document document = new Document(firstPageSize, 0f, 0f, 0f, 0f);
+
+		boolean hasImagesAdded = false;
+		boolean hasOutlineAdded = false;
+		String defaultFont = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
+		Integer defaultFontSize = DefaultConfiguration.DEFAULT_FONT_SIZE;
+		Path pathToPDF = this.output.getPath();
+		PdfAConformanceLevel pdfa_level = PdfAConformanceLevel.valueOf(conformanceLevel);
+		Font font = FontFactory.getFont(defaultFont, BaseFont.WINANSI, BaseFont.EMBEDDED, defaultFontSize);
+
+		try {
+			PdfAWriter pdfWriter = PdfAWriter.getInstance(
+				document, new FileOutputStream(pathToPDF.toFile()), pdfa_level);
+
+				// metadata must be added afterwards creation of pdfWriter
+			document.addTitle(this.description.getTitle());
+			document.addAuthor(this.description.getAuthor());
+			Optional<String> optCreator = this.description.getCreator();
+			if (optCreator.isPresent()) {
+				document.addCreator(optCreator.get());
+			}
+			Optional<String> optKeywords = this.description.getKeywords();
+			if (optKeywords.isPresent()) {
+				document.addKeywords(optKeywords.get());
+			}
+			// custom metadata entry -> com.itextpdf.text.Header
+			Optional<String> optLicense = this.description.getLicense();
+			if (optLicense.isPresent()) {
+				document.add(new Header("Access condition", optLicense.get()));
+			}
+			document.add(new Header("Published", this.description.getYearPublished()));
+
+			pdfWriter.createXmpMetadata();
+			document.open();
+
+			int nPagesAdded = addImagePages(document, images);
+			hasImagesAdded = nPagesAdded == images.size();
+			if (structure != null) {
+				hasOutlineAdded = buildOutline(pdfWriter, nPagesAdded, structure);
+			}
+			document.close();
+			pdfWriter.close();
+		} catch (DocumentException | IOException exc) {
+			LOGGER.error(exc);
+			throw new DigitalDerivansException(exc);
+		}
+
+		boolean result = hasImagesAdded && hasOutlineAdded;
+		LOGGER.info("created pdf-a '{}' with level '{}'' and pages (outline:{})", 
+					pathToPDF, pdfa_level, document.getPageNumber(), hasOutlineAdded);
+		return result;
+	}
+
+
 
 }
