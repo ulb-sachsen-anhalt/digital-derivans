@@ -179,7 +179,7 @@ public class MetadataStore implements IMetadataStore {
 		if (descriptiveData == null) {
 			DescriptiveDataBuilder builder = new DescriptiveDataBuilder(this.mets);
 			try {
-				descriptiveData = builder.author().access().identifier().title().urn().year().build();
+				descriptiveData = builder.person().access().identifier().title().urn().year().build();
 			} catch (DigitalDerivansException e) {
 				LOGGER.error(e);
 			}

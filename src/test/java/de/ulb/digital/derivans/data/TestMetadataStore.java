@@ -9,10 +9,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 
@@ -65,6 +67,35 @@ class TestMetadataStore {
 			assertTrue(page.getIdentifier().isEmpty());
 		}
 	}
+	
+	@Test
+	@Disabled
+	void testDescriptiveDataID737429() throws DigitalDerivansException {
+		// arrange
+		IMetadataStore mds = new MetadataStore(path737429);
+		
+		// act
+		DescriptiveData dd = mds.getDescriptiveData();
+		
+		// assert
+		// mods:namePart[@type="family"]/text()
+		// with 
+		// mods:role/mods:roleTerm[@type="code"]/text() = "pbl"
+		assertEquals("Langenheim", dd.getPerson());
+		// mods:recodInfo/mods:recordIdentifier[@source]/text()
+		assertEquals("191092622", dd.getIdentifier());
+		// mods:titleInfo/mods:title
+		assertEquals("Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo Monarchae Et Domino, Christiano VI. Daniae, Norvegiae .. Regi ... D. VI. Ivnii MDCCXXXI. In Celeberrima Lipsiensivm Academia Habita Concentibvs Mvsicis Decantata", dd.getTitle());
+		// METS/MODS contains no license information
+		assertTrue(dd.getLicense().isEmpty());
+		// mods:identifier[@type="urn"]
+		assertEquals("urn:nbn:de:gbv:3:3-21437", dd.getUrn());
+		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
+		assertEquals("1731", dd.getYearPublished());
+		// PDF creator is external configured, not in METS/MODS
+		assertTrue(dd.getCreator().isEmpty());
+	}
+	
 
 	@Test
 	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {

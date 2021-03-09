@@ -13,13 +13,19 @@ import org.mycore.mets.model.Mets;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DescriptiveData;
 
+/**
+ * 
+ * Builder for descriptive Metadata from METS/MODS
+ * 
+ * @author u.hartwig
+ *
+ */
 class DescriptiveDataBuilder {
 
 	private String urn = MetadataStore.UNKNOWN;
 
-	private String author = MetadataStore.UNKNOWN;
+	private String person = MetadataStore.UNKNOWN;
 
-	// watch out!
 	private String identifier = MetadataStore.UNKNOWN;
 
 	private String title = MetadataStore.UNKNOWN;
@@ -54,8 +60,8 @@ class DescriptiveDataBuilder {
 		return this;
 	}
 
-	DescriptiveDataBuilder author() {
-		this.author = getAuthor();
+	DescriptiveDataBuilder person() {
+		this.person = getPerson();
 		return this;
 	}
 
@@ -82,7 +88,7 @@ class DescriptiveDataBuilder {
 	DescriptiveData build() {
 		DescriptiveData dd = new DescriptiveData();
 		dd.setUrn(urn);
-		dd.setAuthor(author);
+		dd.setPerson(person);
 		dd.setIdentifier(identifier);
 		dd.setTitle(title);
 		dd.setYearPublished(year);
@@ -91,7 +97,7 @@ class DescriptiveDataBuilder {
 		return dd;
 	}
 
-	String getAuthor() {
+	String getPerson() {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			Element nameSubtree = mods.getChild("name", MetadataStore.NS_MODS);

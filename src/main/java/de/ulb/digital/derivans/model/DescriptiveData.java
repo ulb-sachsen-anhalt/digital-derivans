@@ -15,9 +15,9 @@ import de.ulb.digital.derivans.data.MetadataStore;
  * <li>Identifier from source catalog source (like PPN)</li> <i>Optional unique
  * URNs for physical pages (granular URNs) might exist</i></li>
  * <li>Title</li>
- * <li>Author (alternative: Editor)</li>
- * <li>optional Creator (user for PDF Metadata)</li>
- * <li>License information from MODS:accessCondition@"use and reproduction" or
+ * <li>Person (being with central Relation, usually Author or Editor)</li>
+ * <li>optional Creator (for PDF Metadata)</li>
+ * <li>License: optional information from MODS:accessCondition@"use and reproduction" or
  * configuration</li>
  * </ul>
  * 
@@ -33,7 +33,7 @@ public class DescriptiveData {
 
 	private String title = MetadataStore.UNKNOWN;
 
-	private String author = MetadataStore.UNKNOWN;
+	private String person = MetadataStore.UNKNOWN;
 
 	private String yearPublished = MetadataStore.UNKNOWN;
 
@@ -67,12 +67,12 @@ public class DescriptiveData {
 		this.title = title;
 	}
 
-	public String getAuthor() {
-		return author;
+	public String getPerson() {
+		return person;
 	}
 
-	public void setAuthor(String author) {
-		this.author = author;
+	public void setPerson(String author) {
+		this.person = author;
 	}
 
 	public Optional<String> getCreator() {
@@ -110,8 +110,8 @@ public class DescriptiveData {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		if (author != null)
-			builder.append(author);
+		if (person != null)
+			builder.append(person);
 		if (yearPublished != null)
 			builder.append('(').append(yearPublished).append(')');
 		if (title != null)
