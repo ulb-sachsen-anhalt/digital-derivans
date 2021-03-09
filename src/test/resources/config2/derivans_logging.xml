@@ -15,9 +15,9 @@
 	</Appenders>
 
 	<Loggers>
-		<Logger name="de.ulb.digital.derivans" level="debug" additivity="false">
-			<AppenderRef ref="LogToConsole" />
-			<AppenderRef ref="derivansLog" level="info" />
+		<Logger name="de.ulb.digital.derivans" level="info" additivity="false">
+			<AppenderRef ref="LogToConsole" level="debug" />
+			<AppenderRef ref="derivansLog" />
 		</Logger>
 		<Root level="error">
 			<AppenderRef ref="LogToConsole" />

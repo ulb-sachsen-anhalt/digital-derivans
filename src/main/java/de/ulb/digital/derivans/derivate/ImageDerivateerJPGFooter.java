@@ -94,7 +94,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 			float ratio = (float) currentW / (float) footerBuffer.getWidth();
 			if (Math.abs(1.0 - ratio) > MAXIMAL_RATIO_DEVIATION) {
 				footerBuffer = imageProcessor.scale(footerBuffer, ratio);
-				LOGGER.info("scale footer {}x{} (ratio: {}) for: {}", 
+				LOGGER.debug("scale footer {}x{} (ratio: {}) for: {}", 
 						footerBuffer.getWidth(), footerBuffer.getHeight(), ratio, pathIn);
 			}
 			BufferedImage currentFooter = imageProcessor.clone(footerBuffer);
@@ -116,7 +116,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 		int nLines = lines.size();
 		int heightPerLine = totalHeight / nLines;
 		int fontSize = (int) (heightPerLine * .5);
-		LOGGER.info("render footer textlayer with totalHeight: '{}', lineHeight: '{}', fontSize: '{}' ({})", totalHeight, heightPerLine, fontSize, footR);
+		LOGGER.debug("render footer textlayer with totalHeight: '{}', lineHeight: '{}', fontSize: '{}' ({})", totalHeight, heightPerLine, fontSize, footR);
 		Font theFont = new Font(DEFAULT_FONT, Font.BOLD, fontSize);
 		Graphics2D g2d = bufferedImage.createGraphics();
 		g2d.setColor(Color.WHITE);
