@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,7 +60,7 @@ public class TestPDFDerivateer {
 		for (int i = 1; i <= testPageSize; i++) {
 			String imageName = String.format("%04d.jpg", i);
 			Path jpgFile = pathImages.resolve(imageName);
-			BufferedImage bi2 = new BufferedImage(2500, 4000, BufferedImage.TYPE_3BYTE_BGR);
+			BufferedImage bi2 = new BufferedImage(1050, 1498, BufferedImage.TYPE_3BYTE_BGR);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
 			DigitalPage e = new DigitalPage(i, imageName);
 			pages.add(e);
@@ -72,7 +74,7 @@ public class TestPDFDerivateer {
 
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
 		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
-				pages);
+				pages, null);
 		boolean result = handler.create();
 
 		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
@@ -96,11 +98,16 @@ public class TestPDFDerivateer {
 		for (int i = 1; i <= testPageSize; i++) {
 			String imageName = String.format("%04d.jpg", i);
 			Path jpgFile = pathImages.resolve(imageName);
-			BufferedImage bi2 = new BufferedImage(2500, 4000, BufferedImage.TYPE_3BYTE_BGR);
+			BufferedImage bi2 = new BufferedImage(575, 799, BufferedImage.TYPE_3BYTE_BGR);
+			Graphics2D g2d = bi2.createGraphics();
+			g2d.setColor(Color.ORANGE);
+			g2d.fillRect(0, 0, 575, 799);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
 			DigitalPage e = new DigitalPage(i, imageName);
 			pages.add(e);
 		}
+//		String level = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
+		String level = null;
 
 		// act
 		String pdfName = String.format("pdfa-image-%04d.pdf", testPageSize);
@@ -110,10 +117,9 @@ public class TestPDFDerivateer {
 
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
 		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
-				pages);
+				pages, level);
 
-		String conformanceLevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;		
-		boolean result = handler.create(conformanceLevel);
+		boolean result = handler.create();
 
 		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
 		

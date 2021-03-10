@@ -11,6 +11,7 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.MetadataStore;
@@ -147,7 +148,9 @@ public class Derivans {
 
 				// calculate final PDF path for post processing of metadata
 				Path pdfPath = calculatePDFPath(dd, step);
-				derivateers.add(new PDFDerivateer(base, pdfPath, structure, dd, pages));
+//				String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
+				String pdfALevel = null;
+				derivateers.add(new PDFDerivateer(base, pdfPath, structure, dd, pages, pdfALevel));
 				optPDFPath = Optional.of(pdfPath);
 			}
 		}

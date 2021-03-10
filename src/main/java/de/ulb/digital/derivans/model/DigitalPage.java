@@ -32,6 +32,11 @@ public class DigitalPage {
 		this.filePointer = filePointer;
 		this.uniqueIdentifier = Optional.empty();
 	}
+	
+	public DigitalPage(Path physicalPath) {
+		this.physicalPath = physicalPath;
+		this.uniqueIdentifier = Optional.empty();
+	}
 
 	public Integer getOrderNr() {
 		return orderNr;
@@ -67,6 +72,8 @@ public class DigitalPage {
 			builder.append(String.format("%04d", orderNr)).append(":");
 		if (filePointer != null)
 			builder.append(filePointer);
+		else if(physicalPath != null)
+			builder.append(physicalPath);
 		builder.append("]");
 		return builder.toString();
 	}

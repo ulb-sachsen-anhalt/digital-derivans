@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -29,10 +30,10 @@ import com.itextpdf.text.Header;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfAConformanceException;
 import com.itextpdf.text.pdf.PdfAConformanceLevel;
 import com.itextpdf.text.pdf.PdfAWriter;
 import com.itextpdf.text.pdf.PdfAction;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfDestination;
 import com.itextpdf.text.pdf.PdfOutline;
 import com.itextpdf.text.pdf.PdfReader;
@@ -63,6 +64,8 @@ public class PDFDerivateer extends BaseDerivateer {
 	private List<DigitalPage> pages;
 
 	private DescriptiveData description;
+	
+	private String pdfConformanceLevel;
 
 	/**
 	 * 
@@ -81,6 +84,15 @@ public class PDFDerivateer extends BaseDerivateer {
 		this.description = descriptiveData;
 		this.pages = pages;
 	}
+	
+	public PDFDerivateer(DerivansData input, DerivansData output, DigitalStructureTree tree,
+			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel) {
+		super(input, output);
+		this.structure = tree;
+		this.description = descriptiveData;
+		this.pages = pages;
+		this.pdfConformanceLevel = conformanceLevel;
+	}
 
 	/**
 	 * 
@@ -92,53 +104,128 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param pages
 	 */
 	public PDFDerivateer(BaseDerivateer basic, Path outputPath, DigitalStructureTree tree,
-			DescriptiveData descriptiveData, List<DigitalPage> pages) {
+			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel
+			) {
 		super(basic.getInput(), basic.getOutput());
 		this.getOutput().setPath(outputPath);
 		this.structure = tree;
 		this.description = descriptiveData;
 		this.pages = pages;
+		this.pdfConformanceLevel = conformanceLevel;
 	}
 
-	private List<String> resolvePages() throws IOException {
-		List<String> images = new ArrayList<>();
-
-		Path pathInput = input.getPath();
-		if (!Files.exists(pathInput)) {
-			throw new IllegalArgumentException("Invalid inputDir '" + pathInput + "'");
+	private List<DigitalPage> resolvePaths() throws IOException {
+		
+		// check input data dir exists
+		if (!Files.exists(input.getPath())) {
+			throw new IllegalArgumentException("Invalid inputDir '" + input.getPath() + "'");
 		}
+		Path pathInput = input.getPath();
 
+		// enrich path from inputPath + filePointer (METS)
 		if (pages != null && !pages.isEmpty()) {
 			for (DigitalPage page : pages) {
-				images.add(pathInput.resolve(page.getFilePointer()).toString());
+				String filePointer = page.getFilePointer();
+				page.setPath(pathInput.resolve(filePointer));
 			}
+			return pages;
 		} else {
-			// try to get jpg file paths directly from imageDir
+			// try to read PDF input images (JPG)from inputPath
 			try (Stream<Path> filesList = Files.list(pathInput)) {
-				return filesList.map(pathInput::resolve).map(Path::toString).filter(p -> p.endsWith(".jpg")).sorted()
+				List<DigitalPage> digitalPages = filesList.map(pathInput::resolve)
+						.filter((Path p) -> p.toString().endsWith(".jpg"))
+						.sorted()
+						.map(DigitalPage::new)
 						.collect(Collectors.toList());
+				if (digitalPages.isEmpty()) {
+					throw new IllegalArgumentException("No Images in '" + pathInput + "'");
+				}
+
+				return digitalPages;
 			}
 		}
-
-		if (images.isEmpty()) {
-			throw new IllegalArgumentException("No Images in '" + pathInput + "'");
-		}
-
-		return images;
 	}
 
-	static int addImagePages(Document document, List<String> imagePaths) throws IOException, DocumentException {
-		int pages = 0;
-		for (String imagePath : imagePaths) {
-			Image image = Image.getInstance(imagePath);
-			Rectangle rect = new Rectangle(0, 0, image.getWidth(), image.getHeight());
-			document.setPageSize(rect);
-			document.newPage();
-			document.add(image);
-			pages++;
+	static int addPages(Document document, PdfWriter writer, List<DigitalPage> pages, String conformance) throws DigitalDerivansException {
+		Integer defaultFontSize = DefaultConfiguration.DEFAULT_FONT_SIZE;
+		
+		int pagesAdded = 0;
+		BaseFont font = null;
+		
+		try {
+			// get font
+			font = determineFont(conformance, defaultFontSize);
+			
+			// process each page
+			for (DigitalPage page : pages) {
+				document.newPage();
+				addPage(writer, font, page);
+				pagesAdded++;
+			}
+			
+		} catch (IOException | DocumentException e) {
+			throw new DigitalDerivansException(e);
 		}
-		document.setPageCount(pages);
-		return pages;
+		return pagesAdded;
+	}
+
+	private static BaseFont determineFont(String conformance, Integer defaultFontSize)
+			throws DocumentException, IOException {
+		if(conformance != null) {
+			return BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED);
+		} else {
+			Font f = FontFactory.getFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, defaultFontSize);
+			return f.getBaseFont();
+		}
+	}
+
+	private static void addPage(PdfWriter writer, BaseFont font, DigitalPage page) throws IOException, DocumentException {
+
+		// save state because to do some graphics stuff
+		PdfContentByte cb = writer.getDirectContentUnder();
+		cb.saveState();
+		
+		// write some text
+		List<String> strings = new ArrayList<>();
+		strings.add("Hello world");
+		strings.add("this is michael");
+		List<Rectangle> boxes = new ArrayList<>();
+		boxes.add(new Rectangle(20f, 50f, 100f, 10f));
+		boxes.add(new Rectangle(20f, 100f, 100f, 60f));
+		
+		float fontSize = 10.0f;
+		int pageHeight = 800;
+
+		for (int i=0; i<strings.size(); i++) {
+			String text = strings.get(i);
+			Rectangle box = boxes.get(i);
+
+			//Calculate vertical transition (text is rendered at baseline -> descending bits are below the chosen position)
+			int descent = (int)font.getDescentPoint(text, fontSize);
+			int ascent = (int)font.getAscentPoint(text, fontSize);
+			int textHeight = Math.abs(descent) + ascent;
+			int transY = descent;
+			
+			if (textHeight < box.getHeight()) {
+				transY = (int)(descent - (box.getHeight() - textHeight) / 2); 
+			}
+
+			// render actual text
+			cb.beginText();
+			cb.moveText(box.getLeft(), pageHeight - box.getBottom());
+			cb.setTextMatrix(box.getLeft(), pageHeight - box.getBottom() - transY);
+			cb.setFontAndSize(font, fontSize);
+			cb.setColorFill(BaseColor.BLACK);
+			cb.showText(text);
+			cb.endText();
+			
+		}		
+		// handle overlying image
+		String imagePath = page.getPath().toString();
+		Image image = Image.getInstance(imagePath);
+		image.setAbsolutePosition(0f, 0f);
+		cb.addImage(image);
+		cb.restoreState();
 	}
 
 	static boolean buildOutline(PdfWriter pdfWriter, int nPages, DigitalStructureTree structure) {
@@ -171,7 +258,7 @@ public class PDFDerivateer extends BaseDerivateer {
 	static PDFMetaInformation getPDFMetaInformation(Path pdfPath) throws IOException {
 		FileInputStream fis = new FileInputStream(pdfPath.toAbsolutePath().toString());
 		PdfReader reader = new PdfReader(fis);
-		
+
 		Map<String, String> metadata = reader.getInfo();
 		String author = metadata.get("Author");
 		String title = metadata.get("Title");
@@ -221,9 +308,8 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	@Override
 	public boolean create() throws DigitalDerivansException {
-		List<String> images = new ArrayList<>();
 		try {
-			images = resolvePages();
+			pages = resolvePaths();
 		} catch (IOException e) {
 			throw new DigitalDerivansException(e);
 		}
@@ -231,19 +317,26 @@ public class PDFDerivateer extends BaseDerivateer {
 		// get dimension of first page
 		Image image = null;
 		try {
-			image = Image.getInstance(images.get(0));
+			image = Image.getInstance(pages.get(0).getPath().toString());
 		} catch (BadElementException | IOException e) {
 			throw new DigitalDerivansException(e);
 		}
 		Rectangle firstPageSize = new Rectangle(0, 0, image.getWidth(), image.getHeight());
 		Document document = new Document(firstPageSize, 0f, 0f, 0f, 0f);
 
-		boolean hasImagesAdded = false;
+		boolean hasPagesAdded = false;
 		boolean hasOutlineAdded = false;
 		Path pathToPDF = this.output.getPath();
 
+		PdfWriter writer = null;
 		try {
-			PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(pathToPDF.toFile()));
+			FileOutputStream fos = new FileOutputStream(pathToPDF.toFile());
+			if(pdfConformanceLevel != null) {
+				PdfAConformanceLevel pdfa_level = PdfAConformanceLevel.valueOf(pdfConformanceLevel);
+				writer = PdfAWriter.getInstance(document, fos, pdfa_level);
+			} else {
+				writer = PdfWriter.getInstance(document, fos);
+			}
 
 			// metadata must be added afterwards creation of pdfWriter
 			document.addTitle(this.description.getTitle());
@@ -263,96 +356,32 @@ public class PDFDerivateer extends BaseDerivateer {
 			}
 			document.add(new Header("Published", this.description.getYearPublished()));
 
-			pdfWriter.createXmpMetadata();
+			writer.createXmpMetadata();
 			document.open();
 
-			int nPagesAdded = addImagePages(document, images);
-			hasImagesAdded = nPagesAdded == images.size();
+			int nPagesAdded = addPages(document, writer, pages, pdfConformanceLevel);
+
+			// inform doc how many pages it holds
+			document.setPageCount(nPagesAdded);
+			hasPagesAdded = nPagesAdded == pages.size();
+			
+			// process outline structure
 			if (structure != null) {
-				hasOutlineAdded = buildOutline(pdfWriter, nPagesAdded, structure);
+				hasOutlineAdded = buildOutline(writer, nPagesAdded, structure);
 			}
+			// finally close resources
 			document.close();
-			pdfWriter.close();
+			writer.close();
+			
 		} catch (DocumentException | IOException exc) {
 			LOGGER.error(exc);
 			throw new DigitalDerivansException(exc);
 		}
 
-		boolean result = hasImagesAdded && hasOutlineAdded;
+		boolean result = hasPagesAdded && hasOutlineAdded;
 		LOGGER.info("created pdf '{}' with {} pages (outline:{})", pathToPDF, document.getPageNumber(),
 				hasOutlineAdded);
 		return result;
 	}
-
-	@Override
-	public boolean create(String conformanceLevel) throws DigitalDerivansException, PdfAConformanceException {
-		List<String> images = new ArrayList<>();
-		try {
-			images = resolvePages();
-		} catch (IOException e) {
-			throw new DigitalDerivansException(e);
-		}
-		// get dimension of first page
-		Image image = null;
-		try {
-			image = Image.getInstance(images.get(0));
-		} catch (BadElementException | IOException e) {
-			throw new DigitalDerivansException(e);
-		}
-		Rectangle firstPageSize = new Rectangle(0, 0, image.getWidth(), image.getHeight());
-		Document document = new Document(firstPageSize, 0f, 0f, 0f, 0f);
-
-		boolean hasImagesAdded = false;
-		boolean hasOutlineAdded = false;
-		String defaultFont = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
-		Integer defaultFontSize = DefaultConfiguration.DEFAULT_FONT_SIZE;
-		Path pathToPDF = this.output.getPath();
-		PdfAConformanceLevel pdfa_level = PdfAConformanceLevel.valueOf(conformanceLevel);
-		Font font = FontFactory.getFont(defaultFont, BaseFont.WINANSI, BaseFont.EMBEDDED, defaultFontSize);
-
-		try {
-			PdfAWriter pdfWriter = PdfAWriter.getInstance(
-				document, new FileOutputStream(pathToPDF.toFile()), pdfa_level);
-
-				// metadata must be added afterwards creation of pdfWriter
-			document.addTitle(this.description.getTitle());
-			document.addAuthor(this.description.getAuthor());
-			Optional<String> optCreator = this.description.getCreator();
-			if (optCreator.isPresent()) {
-				document.addCreator(optCreator.get());
-			}
-			Optional<String> optKeywords = this.description.getKeywords();
-			if (optKeywords.isPresent()) {
-				document.addKeywords(optKeywords.get());
-			}
-			// custom metadata entry -> com.itextpdf.text.Header
-			Optional<String> optLicense = this.description.getLicense();
-			if (optLicense.isPresent()) {
-				document.add(new Header("Access condition", optLicense.get()));
-			}
-			document.add(new Header("Published", this.description.getYearPublished()));
-
-			pdfWriter.createXmpMetadata();
-			document.open();
-
-			int nPagesAdded = addImagePages(document, images);
-			hasImagesAdded = nPagesAdded == images.size();
-			if (structure != null) {
-				hasOutlineAdded = buildOutline(pdfWriter, nPagesAdded, structure);
-			}
-			document.close();
-			pdfWriter.close();
-		} catch (DocumentException | IOException exc) {
-			LOGGER.error(exc);
-			throw new DigitalDerivansException(exc);
-		}
-
-		boolean result = hasImagesAdded && hasOutlineAdded;
-		LOGGER.info("created pdf-a '{}' with level '{}'' and pages (outline:{})", 
-					pathToPDF, pdfa_level, document.getPageNumber(), hasOutlineAdded);
-		return result;
-	}
-
-
 
 }
