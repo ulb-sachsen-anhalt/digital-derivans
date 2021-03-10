@@ -106,8 +106,7 @@ public class TestPDFDerivateer {
 			DigitalPage e = new DigitalPage(i, imageName);
 			pages.add(e);
 		}
-//		String level = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
-		String level = null;
+		String level = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
 
 		// act
 		String pdfName = String.format("pdfa-image-%04d.pdf", testPageSize);

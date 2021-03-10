@@ -1,9 +1,11 @@
 package de.ulb.digital.derivans.derivate;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import com.itextpdf.text.Header;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.ICC_Profile;
 import com.itextpdf.text.pdf.PdfAConformanceLevel;
 import com.itextpdf.text.pdf.PdfAWriter;
 import com.itextpdf.text.pdf.PdfAction;
@@ -172,7 +175,9 @@ public class PDFDerivateer extends BaseDerivateer {
 	private static BaseFont determineFont(String conformance, Integer defaultFontSize)
 			throws DocumentException, IOException {
 		if(conformance != null) {
-			return BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED);
+//			return BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED);
+			Font f = new Font(BaseFont.createFont("ttf/FreeMonoBold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED), 10);
+			return f.getBaseFont();
 		} else {
 			Font f = FontFactory.getFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, defaultFontSize);
 			return f.getBaseFont();
@@ -334,6 +339,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			if(pdfConformanceLevel != null) {
 				PdfAConformanceLevel pdfa_level = PdfAConformanceLevel.valueOf(pdfConformanceLevel);
 				writer = PdfAWriter.getInstance(document, fos, pdfa_level);
+
 			} else {
 				writer = PdfWriter.getInstance(document, fos);
 			}
@@ -358,6 +364,14 @@ public class PDFDerivateer extends BaseDerivateer {
 
 			writer.createXmpMetadata();
 			document.open();
+			
+			// add profile if pdf-a required
+			if(pdfConformanceLevel != null) {
+				String iccPath = "icc/sRGB_CS_profile.icm";
+				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPath);
+				ICC_Profile icc = ICC_Profile.getInstance(is);
+		        writer.setOutputIntents("Custom", "", "http://www.color.org", "sRGB IEC61966-2.1", icc);
+			}
 
 			int nPagesAdded = addPages(document, writer, pages, pdfConformanceLevel);
 
