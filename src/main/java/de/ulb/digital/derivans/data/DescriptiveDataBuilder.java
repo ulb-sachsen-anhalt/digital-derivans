@@ -106,6 +106,13 @@ class DescriptiveDataBuilder {
 				if (displayElement != null) {
 					return displayElement.getTextTrim();
 				}
+			else {
+				for (Element child : nameSubtree.getChildren("namePart", MetadataStore.NS_MODS)) {
+					String val = child.getAttributeValue("type");
+					if (val != null && val.equals("family"))
+						return child.getTextTrim();
+					}
+				}
 			}
 		}
 		return MetadataStore.UNKNOWN;
