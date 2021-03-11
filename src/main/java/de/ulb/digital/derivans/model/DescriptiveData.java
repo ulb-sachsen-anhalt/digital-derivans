@@ -84,6 +84,8 @@ public class DescriptiveData {
 	}
 
 	public void setYearPublished(String yearPublished) {
+		if (yearPublished == MetadataStore.UNKNOWN)
+			yearPublished = "0";
 		this.yearPublished = yearPublished;
 	}
 
@@ -96,6 +98,8 @@ public class DescriptiveData {
 	}
 
 	public void setLicense(Optional<String> labelLicense) {
+		if (labelLicense.get() == MetadataStore.UNKNOWN)
+				labelLicense = Optional.empty();
 		this.license = labelLicense;
 	}
 
