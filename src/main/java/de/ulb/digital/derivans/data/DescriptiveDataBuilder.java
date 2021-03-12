@@ -1,6 +1,9 @@
 package de.ulb.digital.derivans.data;
 
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -100,21 +103,65 @@ class DescriptiveDataBuilder {
 	String getPerson() {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
-			Element nameSubtree = mods.getChild("name", MetadataStore.NS_MODS);
-			if (nameSubtree != null) {
-				Element displayElement = nameSubtree.getChild("displayForm", MetadataStore.NS_MODS);
-				if (displayElement != null) {
-					return displayElement.getTextTrim();
-				}
-			else {
-				// node 'displayForm' is missing --> try alternative way 
-				for (Element child : nameSubtree.getChildren("namePart", MetadataStore.NS_MODS)) {
-					String val = child.getAttributeValue("type");
-					if (val != null && val.equals("family"))
-						return child.getTextTrim();
-					}
+			Hashtable<String, Element> candidates = new Hashtable<String, Element>();
+			List<Element> nameSubtrees = mods.getChildren("name", MetadataStore.NS_MODS);
+			
+			for(Element nameSubtree: nameSubtrees ) { 
+			    if (nameSubtree != null) {
+					Element role = nameSubtree.getChild("role", MetadataStore.NS_MODS);
+						
+					if(role != null) {
+						Predicate<Element> codeExists = e -> Objects.nonNull(e.getAttributeValue("authority"));
+						List<Element> roleTerms = role.getChildren("roleTerm", MetadataStore.NS_MODS);
+						Optional<Element> optRoleTerm = roleTerms.stream().filter(codeExists).findFirst();
+						if (optRoleTerm.isPresent()) {
+							String rt = optRoleTerm.get().getTextNormalize();
+							if(rt.equals("pbl") || rt.equals("aut")) {
+								candidates.put(rt, nameSubtree);
+							}
+						}
+					}						
 				}
 			}
+			// we have pbl's and aut in cadidates
+			if(candidates.size() > 0){
+				Set<Entry<String, Element>> entrySet = candidates.entrySet();
+				String publisher = "";
+
+				for(Entry<String, Element> entry : entrySet) {
+					Element subtree = entry.getValue();
+
+					// predominant marker "aut"!
+					if(entry.getKey().equals("aut")) {
+						Element displayElement = subtree.getChild("displayForm", MetadataStore.NS_MODS);
+						if (displayElement != null) {
+							// fine, we leave here...
+							return displayElement.getTextTrim();
+						}
+						else {
+							for (Element child : subtree.getChildren("namePart", MetadataStore.NS_MODS)) {
+								String val = child.getAttributeValue("type");
+								if (val != null && val.equals("family"))
+									// or we leave here...
+									return child.getTextTrim();
+							}							
+						}	
+					}
+					// we'll collect one or more publisher
+					else{
+						for (Element child : subtree.getChildren("namePart", MetadataStore.NS_MODS)) {
+							String val = child.getAttributeValue("type");
+							if (val != null && val.equals("family"))
+								publisher += child.getTextTrim() + ", ";
+						}							
+					}
+					
+				}
+				if (publisher.endsWith(", "))
+					publisher = publisher.substring(0, publisher.length()-2);
+				return publisher;
+
+			} 
 		}
 		return MetadataStore.UNKNOWN;
 	}
@@ -178,6 +225,7 @@ class DescriptiveDataBuilder {
 	}
 
 	String getYear() {
+		// TODO
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
