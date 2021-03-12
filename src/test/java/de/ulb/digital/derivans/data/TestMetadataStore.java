@@ -134,8 +134,7 @@ class TestMetadataStore {
 		// METS/MODS contains no license information
 		assertTrue(dd.getLicense().isEmpty());
 		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
-		//--> assertEquals("1731", dd.getYearPublished());
-		assertEquals("0", dd.getYearPublished());
+		assertEquals("1731", dd.getYearPublished());
 		// mods:role/mods:displayForm/text()
 		// OR
 		// mods:namePart[@type="family"]/text()
