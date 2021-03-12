@@ -107,6 +107,7 @@ class DescriptiveDataBuilder {
 					return displayElement.getTextTrim();
 				}
 			else {
+				// node 'displayForm' is missing --> try alternative way 
 				for (Element child : nameSubtree.getChildren("namePart", MetadataStore.NS_MODS)) {
 					String val = child.getAttributeValue("type");
 					if (val != null && val.equals("family"))
@@ -189,8 +190,14 @@ class DescriptiveDataBuilder {
 					return issued.getTextNormalize();
 				}
 			}
+			// Attribute 'eventType=publication' of node 'publication' is missing
+			// so try to find/filter node less consistently
+			Element oInfo = mods.getChild("originInfo", MetadataStore.NS_MODS);
+			if (oInfo != null) {
+				Element issued = oInfo.getChild("dateIssued", MetadataStore.NS_MODS);
+				return issued.getTextNormalize();
+			}
 		}
-
 		return MetadataStore.UNKNOWN;
 	}
 
@@ -214,6 +221,7 @@ class PredicateEventTypePublication implements Predicate<Element> {
 
 	@Override
 	public boolean test(Element el) {
+
 		if (el.getAttribute("eventType") != null) {
 			String val = el.getAttributeValue("eventType");
 			return val.equalsIgnoreCase("publication");
