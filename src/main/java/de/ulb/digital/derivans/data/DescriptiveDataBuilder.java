@@ -195,7 +195,9 @@ class DescriptiveDataBuilder {
 			Element oInfo = mods.getChild("originInfo", MetadataStore.NS_MODS);
 			if (oInfo != null) {
 				Element issued = oInfo.getChild("dateIssued", MetadataStore.NS_MODS);
-				return issued.getTextNormalize();
+				if (issued != null) {
+					return issued.getTextNormalize();
+				}
 			}
 		}
 		return MetadataStore.UNKNOWN;
