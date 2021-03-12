@@ -3,6 +3,8 @@ package de.ulb.digital.derivans.model;
 import java.nio.file.Path;
 import java.util.Optional;
 
+import de.ulb.digital.derivans.model.ocr.OCRData;
+
 /**
  * 
  * Representation of a single digital page with the following properties:
@@ -24,6 +26,8 @@ public class DigitalPage {
 	private String filePointer;
 
 	private Path physicalPath;
+	
+	private OCRData ocrData;
 
 	private Optional<String> uniqueIdentifier = Optional.empty();
 
@@ -62,6 +66,14 @@ public class DigitalPage {
 
 	public Path getPath() {
 		return this.physicalPath;
+	}
+
+	public OCRData getOcrData() {
+		return ocrData;
+	}
+
+	public void setOcrData(OCRData ocrData) {
+		this.ocrData = ocrData;
 	}
 
 	@Override

@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,6 +28,7 @@ import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
+import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**
  * 
@@ -121,7 +125,7 @@ public class TestPDFDerivateer {
 		boolean result = handler.create();
 
 		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
-		
+
 		// assert
 		assertTrue(result);
 		assertTrue(Files.exists(outPath));
@@ -131,6 +135,80 @@ public class TestPDFDerivateer {
 		assertNull(pdfMetaInformation.getCreator());
 	}
 
+	@Test
+	void testCreatePDFTextlayer(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path pathImages = tempDir.resolve("MAX");
+		Files.createDirectory(pathImages);
+		List<DigitalPage> pages = new ArrayList<>();
+		for (int i = 1; i <= testPageSize; i++) {
+			String imageName = String.format("%04d.jpg", i);
+			Path jpgFile = pathImages.resolve(imageName);
+			BufferedImage bi2 = new BufferedImage(575, 799, BufferedImage.TYPE_3BYTE_BGR);
+			Graphics2D g2d = bi2.createGraphics();
+			g2d.setColor(Color.ORANGE);
+			g2d.fillRect(0, 0, 575, 799);
+			ImageIO.write(bi2, "JPG", jpgFile.toFile());
+			DigitalPage e = new DigitalPage(i, imageName);
+			
+			// create some ocr data
+			List<OCRData.Text> texts1 = new ArrayList<>();
+			texts1.add(new OCRData.Text("Hello", new Rectangle(100, 100, 100, 50)));
+			texts1.add(new OCRData.Text("World", new Rectangle(300, 100, 100, 50)));
+			List<OCRData.Text> texts4 = new ArrayList<>();
+			texts4.add(new OCRData.Text("BELLA", new Rectangle(50, 200, 50, 30)));
+			texts4.add(new OCRData.Text("CHIAO", new Rectangle(150, 200, 50, 30)));
+			texts4.add(new OCRData.Text("(DELLE", new Rectangle(200, 200, 50, 30)));
+			texts4.add(new OCRData.Text("MODINE)", new Rectangle(250, 200, 50, 30)));
+			List<OCRData.Text> texts2 = new ArrayList<>();
+			texts2.add(new OCRData.Text("Alla", new Rectangle(100, 250, 50, 25)));
+			texts2.add(new OCRData.Text("matina,", new Rectangle(150, 250, 50, 25)));
+			texts2.add(new OCRData.Text("appena", new Rectangle(200, 250, 50, 25)));
+			texts2.add(new OCRData.Text("alzata", new Rectangle(250, 250, 50, 25)));
+			List<OCRData.Text> texts3 = new ArrayList<>();
+			texts3.add(new OCRData.Text("o", new Rectangle(10, 300, 10, 15)));
+			texts3.add(new OCRData.Text("bella", new Rectangle(30, 300, 50, 15)));
+			texts3.add(new OCRData.Text("chiao,", new Rectangle(100, 300, 50, 15)));
+			texts3.add(new OCRData.Text("bella", new Rectangle(160, 300, 50, 15)));
+			texts3.add(new OCRData.Text("chiao,", new Rectangle(240, 300, 50, 15)));
+			texts3.add(new OCRData.Text("bella", new Rectangle(300, 300, 50, 15)));
+			texts3.add(new OCRData.Text("chiao", new Rectangle(360, 300, 50, 15)));
+			texts3.add(new OCRData.Text("chiao", new Rectangle(420, 300, 50, 15)));
+			texts3.add(new OCRData.Text("chiao!", new Rectangle(480, 300, 50, 15)));
+			OCRData ocrData = new OCRData(List.of(
+					new OCRData.Textline(texts1), 
+					new OCRData.Textline(texts4),
+					new OCRData.Textline(texts2),
+					new OCRData.Textline(texts3)));
+			
+			e.setOcrData(ocrData);
+			pages.add(e);
+		}
+		String level = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
+
+		// act
+		String pdfName = String.format("pdfa-image-%04d.pdf", testPageSize);
+		Path outPath = tempDir.resolve(pdfName);
+		DescriptiveData dd = new DescriptiveData();
+		dd.setYearPublished("2020");
+
+		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
+		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
+				pages, level);
+
+		boolean result = handler.create();
+
+		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
+		
+		// assert
+		assertTrue(result);
+		assertTrue(Files.exists(outPath));
+		assertEquals("n.a.", pdfMetaInformation.getTitle());
+		assertEquals("n.a.", pdfMetaInformation.getAuthor());
+		// no default creator information exists
+		assertNull(pdfMetaInformation.getCreator());
+	}
 
 	@Test
 	void testGetPDFMetaInformation01() throws Exception {

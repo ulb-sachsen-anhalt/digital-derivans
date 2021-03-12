@@ -1,14 +1,12 @@
 package de.ulb.digital.derivans.derivate;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -50,6 +48,7 @@ import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
+import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**
  * 
@@ -67,7 +66,7 @@ public class PDFDerivateer extends BaseDerivateer {
 	private List<DigitalPage> pages;
 
 	private DescriptiveData description;
-	
+
 	private String pdfConformanceLevel;
 
 	/**
@@ -87,7 +86,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		this.description = descriptiveData;
 		this.pages = pages;
 	}
-	
+
 	public PDFDerivateer(DerivansData input, DerivansData output, DigitalStructureTree tree,
 			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel) {
 		super(input, output);
@@ -107,8 +106,7 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param pages
 	 */
 	public PDFDerivateer(BaseDerivateer basic, Path outputPath, DigitalStructureTree tree,
-			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel
-			) {
+			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel) {
 		super(basic.getInput(), basic.getOutput());
 		this.getOutput().setPath(outputPath);
 		this.structure = tree;
@@ -118,7 +116,7 @@ public class PDFDerivateer extends BaseDerivateer {
 	}
 
 	private List<DigitalPage> resolvePaths() throws IOException {
-		
+
 		// check input data dir exists
 		if (!Files.exists(input.getPath())) {
 			throw new IllegalArgumentException("Invalid inputDir '" + input.getPath() + "'");
@@ -136,9 +134,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			// try to read PDF input images (JPG)from inputPath
 			try (Stream<Path> filesList = Files.list(pathInput)) {
 				List<DigitalPage> digitalPages = filesList.map(pathInput::resolve)
-						.filter((Path p) -> p.toString().endsWith(".jpg"))
-						.sorted()
-						.map(DigitalPage::new)
+						.filter((Path p) -> p.toString().endsWith(".jpg")).sorted().map(DigitalPage::new)
 						.collect(Collectors.toList());
 				if (digitalPages.isEmpty()) {
 					throw new IllegalArgumentException("No Images in '" + pathInput + "'");
@@ -149,23 +145,24 @@ public class PDFDerivateer extends BaseDerivateer {
 		}
 	}
 
-	static int addPages(Document document, PdfWriter writer, List<DigitalPage> pages, String conformance) throws DigitalDerivansException {
+	static int addPages(Document document, PdfWriter writer, List<DigitalPage> pages, String conformance)
+			throws DigitalDerivansException {
 		Integer defaultFontSize = DefaultConfiguration.DEFAULT_FONT_SIZE;
-		
+
 		int pagesAdded = 0;
 		BaseFont font = null;
-		
+
 		try {
 			// get font
 			font = determineFont(conformance, defaultFontSize);
-			
+
 			// process each page
 			for (DigitalPage page : pages) {
 				document.newPage();
 				addPage(writer, font, page);
 				pagesAdded++;
 			}
-			
+
 		} catch (IOException | DocumentException e) {
 			throw new DigitalDerivansException(e);
 		}
@@ -174,7 +171,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private static BaseFont determineFont(String conformance, Integer defaultFontSize)
 			throws DocumentException, IOException {
-		if(conformance != null) {
+		if (conformance != null) {
 //			return BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED);
 			Font f = new Font(BaseFont.createFont("ttf/FreeMonoBold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED), 10);
 			return f.getBaseFont();
@@ -184,47 +181,49 @@ public class PDFDerivateer extends BaseDerivateer {
 		}
 	}
 
-	private static void addPage(PdfWriter writer, BaseFont font, DigitalPage page) throws IOException, DocumentException {
+	private static void addPage(PdfWriter writer, BaseFont font, DigitalPage page)
+			throws IOException, DocumentException {
 
 		// save state because to do some graphics stuff
 		PdfContentByte cb = writer.getDirectContentUnder();
 		cb.saveState();
-		
-		// write some text
-		List<String> strings = new ArrayList<>();
-		strings.add("Hello world");
-		strings.add("this is michael");
-		List<Rectangle> boxes = new ArrayList<>();
-		boxes.add(new Rectangle(20f, 50f, 100f, 10f));
-		boxes.add(new Rectangle(20f, 100f, 100f, 60f));
-		
-		float fontSize = 10.0f;
+
 		int pageHeight = 800;
 
-		for (int i=0; i<strings.size(); i++) {
-			String text = strings.get(i);
-			Rectangle box = boxes.get(i);
+		// some text, if any
+		if (page.getOcrData() != null) {
+			List<OCRData.Textline> ocrLines = page.getOcrData().getTextlines();
+			for (int i = 0; i < ocrLines.size(); i++) {
+				OCRData.Text line = ocrLines.get(i).getLine();
+				String text = line.getText();
+				float fontSize = line.getHeight();
+				com.itextpdf.awt.geom.Point tPoint = new com.itextpdf.awt.geom.Point(line.getBox().x, line.getBox().y);
+				com.itextpdf.awt.geom.Dimension tDim = new com.itextpdf.awt.geom.Dimension(line.getBox().width,
+						line.getBox().height);
+				com.itextpdf.awt.geom.Rectangle tmp = new com.itextpdf.awt.geom.Rectangle(tPoint, tDim);
+				Rectangle box = new Rectangle(tmp);
 
-			//Calculate vertical transition (text is rendered at baseline -> descending bits are below the chosen position)
-			int descent = (int)font.getDescentPoint(text, fontSize);
-			int ascent = (int)font.getAscentPoint(text, fontSize);
-			int textHeight = Math.abs(descent) + ascent;
-			int transY = descent;
-			
-			if (textHeight < box.getHeight()) {
-				transY = (int)(descent - (box.getHeight() - textHeight) / 2); 
+				// Calculate vertical transition (text is rendered at baseline -> descending
+				// bits are below the chosen position)
+				int descent = (int) font.getDescentPoint(text, fontSize);
+				int ascent = (int) font.getAscentPoint(text, fontSize);
+				int textHeight = Math.abs(descent) + ascent;
+				int transY = descent;
+
+				if (textHeight < box.getHeight()) {
+					transY = (int) (descent - (box.getHeight() - textHeight) / 2);
+				}
+
+				// render actual text
+				cb.beginText();
+				cb.moveText(box.getLeft(), pageHeight - box.getBottom());
+				cb.setTextMatrix(box.getLeft(), pageHeight - box.getBottom() - transY);
+				cb.setFontAndSize(font, fontSize);
+				cb.setColorFill(BaseColor.BLACK);
+				cb.showText(text);
+				cb.endText();
 			}
-
-			// render actual text
-			cb.beginText();
-			cb.moveText(box.getLeft(), pageHeight - box.getBottom());
-			cb.setTextMatrix(box.getLeft(), pageHeight - box.getBottom() - transY);
-			cb.setFontAndSize(font, fontSize);
-			cb.setColorFill(BaseColor.BLACK);
-			cb.showText(text);
-			cb.endText();
-			
-		}		
+		}
 		// handle overlying image
 		String imagePath = page.getPath().toString();
 		Image image = Image.getInstance(imagePath);
@@ -336,7 +335,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		PdfWriter writer = null;
 		try {
 			FileOutputStream fos = new FileOutputStream(pathToPDF.toFile());
-			if(pdfConformanceLevel != null) {
+			if (pdfConformanceLevel != null) {
 				PdfAConformanceLevel pdfa_level = PdfAConformanceLevel.valueOf(pdfConformanceLevel);
 				writer = PdfAWriter.getInstance(document, fos, pdfa_level);
 
@@ -364,13 +363,13 @@ public class PDFDerivateer extends BaseDerivateer {
 
 			writer.createXmpMetadata();
 			document.open();
-			
+
 			// add profile if pdf-a required
-			if(pdfConformanceLevel != null) {
+			if (pdfConformanceLevel != null) {
 				String iccPath = "icc/sRGB_CS_profile.icm";
 				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPath);
 				ICC_Profile icc = ICC_Profile.getInstance(is);
-		        writer.setOutputIntents("Custom", "", "http://www.color.org", "sRGB IEC61966-2.1", icc);
+				writer.setOutputIntents("Custom", "", "http://www.color.org", "sRGB IEC61966-2.1", icc);
 			}
 
 			int nPagesAdded = addPages(document, writer, pages, pdfConformanceLevel);
@@ -378,7 +377,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			// inform doc how many pages it holds
 			document.setPageCount(nPagesAdded);
 			hasPagesAdded = nPagesAdded == pages.size();
-			
+
 			// process outline structure
 			if (structure != null) {
 				hasOutlineAdded = buildOutline(writer, nPagesAdded, structure);
@@ -386,7 +385,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			// finally close resources
 			document.close();
 			writer.close();
-			
+
 		} catch (DocumentException | IOException exc) {
 			LOGGER.error(exc);
 			throw new DigitalDerivansException(exc);
