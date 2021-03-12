@@ -114,14 +114,13 @@ class TestMetadataStore {
 	 * @throws DigitalDerivansException
 	 */
 	@Test
-	//@Disabled
 	void testDescriptiveDataFromVL12OAI() throws DigitalDerivansException {
 		// arrange
 		IMetadataStore mds = new MetadataStore(path737429);
 		
 		// act
 		DescriptiveData dd = mds.getDescriptiveData();
-		
+
 		// assert
 		// PDF creator from configuration, not from METS/MODS
 		assertTrue(dd.getCreator().isEmpty());
@@ -141,7 +140,8 @@ class TestMetadataStore {
 		// WITH 
 		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut" 
 		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl		
-		assertEquals("Brühl", dd.getPerson());
+		
+		assertEquals("Langenheim", dd.getPerson());
 	}
 		
 	@Test
