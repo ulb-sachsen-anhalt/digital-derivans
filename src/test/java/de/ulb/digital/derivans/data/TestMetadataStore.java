@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -114,7 +113,6 @@ class TestMetadataStore {
 	 * @throws DigitalDerivansException
 	 */
 	@Test
-	//@Disabled
 	void testDescriptiveDataFromVL12OAI() throws DigitalDerivansException {
 		// arrange
 		IMetadataStore mds = new MetadataStore(path737429);
@@ -141,7 +139,7 @@ class TestMetadataStore {
 		// WITH 
 		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut" 
 		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl		
-		assertEquals("Brühl", dd.getPerson());
+		assertEquals("Langenheim", dd.getPerson());
 	}
 		
 	@Test
