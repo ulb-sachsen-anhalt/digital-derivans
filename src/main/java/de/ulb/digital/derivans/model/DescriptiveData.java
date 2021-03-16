@@ -15,14 +15,15 @@ import de.ulb.digital.derivans.data.MetadataStore;
  * <li>Identifier from source catalog source (like PPN)</li> <i>Optional unique
  * URNs for physical pages (granular URNs) might exist</i></li>
  * <li>Title</li>
- * <li>Person (being with central Relation, usually Author or Editor)</li>
+ * <li>Person: being with central Relation, as Author or Editor<br />
+ *     listed with mods:displayName, if given, otherwise mods:namePart[@type="family"]</li>
  * <li>optional Creator (for PDF Metadata)</li>
  * <li>License: optional information from MODS:accessCondition@"use and reproduction" or
  * configuration</li>
  * </ul>
  * 
  * 
- * @author hartwig
+ * @author u.hartwig
  *
  */
 public class DescriptiveData {

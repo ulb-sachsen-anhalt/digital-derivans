@@ -1,9 +1,9 @@
 package de.ulb.digital.derivans.data;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -91,10 +91,10 @@ class DescriptiveDataBuilder {
 	DescriptiveData build() {
 		DescriptiveData dd = new DescriptiveData();
 		dd.setUrn(urn);
-		dd.setPerson(person);
 		dd.setIdentifier(identifier);
 		dd.setTitle(title);
 		dd.setYearPublished(year);
+		dd.setPerson(person);
 		dd.setLicense(Optional.of(accessCondition));
 		LOGGER.debug("build data: '{}'", dd);
 		return dd;
@@ -103,67 +103,74 @@ class DescriptiveDataBuilder {
 	String getPerson() {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
-			Hashtable<String, Element> candidates = new Hashtable<String, Element>();
 			List<Element> nameSubtrees = mods.getChildren("name", MetadataStore.NS_MODS);
-			
-			for(Element nameSubtree: nameSubtrees ) { 
-			    if (nameSubtree != null) {
-					Element role = nameSubtree.getChild("role", MetadataStore.NS_MODS);
-						
-					if(role != null) {
-						Predicate<Element> codeExists = e -> Objects.nonNull(e.getAttributeValue("authority"));
-						List<Element> roleTerms = role.getChildren("roleTerm", MetadataStore.NS_MODS);
-						Optional<Element> optRoleTerm = roleTerms.stream().filter(codeExists).findFirst();
-						if (optRoleTerm.isPresent()) {
-							String rt = optRoleTerm.get().getTextNormalize();
-							if(rt.equals("pbl") || rt.equals("aut")) {
-								candidates.put(rt, nameSubtree);
-							}
-						}
-					}						
-				}
+
+			// collect proper name relations
+			Map<MARCRelator, List<Element>> properRelations = getDesiredRelations(nameSubtrees);
+			if(properRelations.isEmpty()) {
+				LOGGER.warn("found no proper related persons!");
+				return MetadataStore.UNKNOWN;
 			}
-			// we have pbl's and aut in cadidates
-			if(candidates.size() > 0){
-				Set<Entry<String, Element>> entrySet = candidates.entrySet();
-				String publisher = "";
 
-				for(Entry<String, Element> entry : entrySet) {
-					Element subtree = entry.getValue();
+			// assume we have pbl's or aut's candidates
+			if(properRelations.containsKey(MARCRelator.AUTHOR)) {
+				return getSomeName(properRelations.get(MARCRelator.AUTHOR));
+			} else if(properRelations.containsKey(MARCRelator.PUBLISHER)) {
+				return getSomeName(properRelations.get(MARCRelator.PUBLISHER));
+			}
 
-					// predominant marker "aut"!
-					if(entry.getKey().equals("aut")) {
-						Element displayElement = subtree.getChild("displayForm", MetadataStore.NS_MODS);
-						if (displayElement != null) {
-							// fine, we leave here...
-							return displayElement.getTextTrim();
-						}
-						else {
-							for (Element child : subtree.getChildren("namePart", MetadataStore.NS_MODS)) {
-								String val = child.getAttributeValue("type");
-								if (val != null && val.equals("family"))
-									// or we leave here...
-									return child.getTextTrim();
-							}							
-						}	
-					}
-					// we'll collect one or more publisher
-					else{
-						for (Element child : subtree.getChildren("namePart", MetadataStore.NS_MODS)) {
-							String val = child.getAttributeValue("type");
-							if (val != null && val.equals("family"))
-								publisher += child.getTextTrim() + ", ";
-						}							
-					}
-					
-				}
-				if (publisher.endsWith(", "))
-					publisher = publisher.substring(0, publisher.length()-2);
-				return publisher;
-
-			} 
 		}
 		return MetadataStore.UNKNOWN;
+	}
+
+	/**
+	 * 
+	 * Get some name for first entry
+	 * 
+	 * @param list
+	 * @return
+	 */
+	private String getSomeName(List<Element> list) {
+		for(Element e : list) {
+			for(Element f : e.getChildren("displayForm", MetadataStore.NS_MODS)) {
+				return f.getTextNormalize();
+			}
+			for(Element f : e.getChildren("namePart", MetadataStore.NS_MODS)) {
+				if("family".equals(f.getAttributeValue("type"))) {
+					return f.getTextNormalize();
+				}
+			}
+		}
+		return MetadataStore.UNKNOWN;
+	}
+
+	private Map<MARCRelator, List<Element>> getDesiredRelations(List<Element> nameSubtrees) {
+		Map<MARCRelator, List<Element>> map = new TreeMap<>();
+		for (Element e : nameSubtrees) {
+			for (Element f : e.getChildren("role", MetadataStore.NS_MODS)) {
+				for (Element g : f.getChildren("roleTerm", MetadataStore.NS_MODS)) {
+					if ("code".equals(g.getAttributeValue("type"))) {
+						String code = g.getTextNormalize();
+						MARCRelator rel = MARCRelator.forCode(code);
+						switch (rel) {
+						case AUTHOR:
+						case PUBLISHER:
+							LOGGER.debug("map '{}' as person", rel);
+							List<Element> currList = new ArrayList<>();
+							currList.add(e);
+							map.merge(rel, currList, (prev, curr) -> {
+								prev.addAll(curr);
+								return prev;
+							});
+							break;
+						default:
+							LOGGER.debug("dont map '{}' as person", rel);
+						}
+					}
+				}
+			}
+		}
+		return map;
 	}
 
 	/**
@@ -225,7 +232,6 @@ class DescriptiveDataBuilder {
 	}
 
 	String getYear() {
-		// TODO
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
@@ -279,4 +285,31 @@ class PredicateEventTypePublication implements Predicate<Element> {
 		return false;
 	}
 
+}
+
+/**
+ * 
+ * Map MARC relator codes with enum
+ * 
+ * @author u.hartwig
+ *
+ */
+enum MARCRelator {
+
+	AUTHOR("aut"), ASSIGNED_NAME("asn"), CONTRIBUTOR("ctb"), OTHER("oth"), PUBLISHER("pbl");
+
+	private String code;
+
+	private MARCRelator(String code) {
+		this.code = code;
+	}
+
+	public static MARCRelator forCode(String code) {
+		for (MARCRelator e : values()) {
+			if (e.code.equals(code)) {
+				return e;
+			}
+		}
+		return null;
+	}
 }

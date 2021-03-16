@@ -28,9 +28,9 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
  */
 class TestMetadataStoreVLS {
 
-	static Path vlInhouse737429 = Path.of("./src/test/resources/metadata/mets/737429.xml");
+	static Path vlInhouse737429 = Path.of("./src/test/resources/metadata/vls/737429.xml");
 
-	static Path vlInhouse201517 = Path.of("./src/test/resources/metadata/mets/201517.xml");
+	static Path vlInhouse201517 = Path.of("./src/test/resources/metadata/vls/201517.xml");
 
 	static IMetadataStore mds737429;
 	
@@ -47,13 +47,6 @@ class TestMetadataStoreVLS {
 		mds201517 = new MetadataStore(vlInhouse201517);
 		dd201517 = mds201517.getDescriptiveData();
 	}
-
-
-
-
-	Path path993571 = Path.of("./src/test/resources/metadata/mets/993571.ulb.xml");
-
-	Path path133573613 = Path.of("./src/test/resources/metadata/mets/133573613.prep.xml");
 
 	/**
 	 * 
@@ -89,7 +82,7 @@ class TestMetadataStoreVLS {
 	@Test
 	void testDescriptiveDataFromVL12MenalibOAI() throws DigitalDerivansException {
 		// arrange
-		Path vlMena1237560 = Path.of("./src/test/resources/metadata/mets/1237560.xml");
+		Path vlMena1237560 = Path.of("./src/test/resources/metadata/vls/1237560.xml");
 		IMetadataStore mds = new MetadataStore(vlMena1237560);
 
 		// act
@@ -202,7 +195,7 @@ class TestMetadataStoreVLS {
 	@Test
 	void testMetadataIsUpdated737429(@TempDir Path tempDir) throws Exception {
 		// arrange
-		Path sourcePathFile = Path.of("src/test/resources/metadata/mets/737429.xml");
+		Path sourcePathFile = Path.of("src/test/resources/metadata/vls/737429.xml");
 		Path targetPathFile = tempDir.resolve("737429.xml");
 		if (Files.exists(targetPathFile)) {
 			Files.delete(targetPathFile);
@@ -227,14 +220,15 @@ class TestMetadataStoreVLS {
 	 * @throws Exception
 	 */
 	@Test
-	void testInvalidStructure() throws Exception {
+	void testInvalidStructure226134857() throws Exception {
 
 		// arrange
-		Path path226134857 = Path.of("./src/test/resources/metadata/mets/226134857.prep.xml");
+		Path path226134857 = Path.of("./src/test/resources/metadata/vls/226134857.prep.xml");
 		IMetadataStore mds = new MetadataStore(path226134857);
 
 		// act
 		DigitalStructureTree tree = mds.getStructure();
+		DescriptiveData dd = mds.getDescriptiveData();
 
 		// assert
 		for (DigitalStructureTree subTree : tree.getSubstructures()) {
@@ -246,20 +240,27 @@ class TestMetadataStoreVLS {
 			}
 			assertTrue(subTree.getPage() > 0);
 		}
+		
+		// assert even some more
+		assertEquals("1740", dd.getYearPublished());
+		assertEquals("Prault, Pierre", dd.getPerson());
 	}
 
 	@Test
 	void testStructurOf133573613() throws Exception {
 
 		// arrange
-
+		Path path133573613 = Path.of("./src/test/resources/metadata/vls/133573613.prep.xml");
 		IMetadataStore store = new MetadataStore(path133573613);
 
 		// act
 		DigitalStructureTree tree = store.getStructure();
+		DescriptiveData dd = store.getDescriptiveData();
 
 		// assert
 		assertEquals(5, tree.getSubstructures().size());
+		assertEquals("1768", dd.getYearPublished());
+		assertEquals("Voltaire", dd.getPerson());
 	}
 
 }

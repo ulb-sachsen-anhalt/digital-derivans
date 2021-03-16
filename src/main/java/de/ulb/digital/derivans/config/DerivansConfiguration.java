@@ -185,15 +185,6 @@ public class DerivansConfiguration {
 			DerivateStep step = new DerivateStep();
 			String outPutType = null;
 
-			// type
-			String keyType = derivateSection + ".input_type";
-			Optional<String> optType = extractValue(conf, keyType, String.class);
-			if (optType.isPresent()) {
-				step.setInputType(outPutType);
-			} else {
-				step.setInputType(DefaultConfiguration.DEFAULT_INPUT_TYPE);
-			}
-
 			// output type
 			String keyOutType = derivateSection + ".output_type";
 			Optional<String> optOutType = extractValue(conf, keyOutType, String.class);
@@ -331,7 +322,6 @@ public class DerivansConfiguration {
 
 	private void provideDefaultSteps() {
 		DerivateStep renderFooter = new DerivateStep();
-		renderFooter.setInputType(DefaultConfiguration.DEFAULT_INPUT_TYPE);
 		renderFooter.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_FOOTER_INPUT_SUB_PATH));
 		renderFooter.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
 		renderFooter.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_FOOTER_OUTPUT_SUB_PATH));
@@ -348,7 +338,6 @@ public class DerivansConfiguration {
 		this.derivateSteps.add(renderFooter);
 
 		DerivateStep createMins = new DerivateStep();
-		createMins.setInputType(DefaultConfiguration.DEFAULT_INPUT_TYPE);
 		createMins.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_FOOTER_OUTPUT_SUB_PATH));
 		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
 		createMins.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_SUB_PATH));
@@ -358,7 +347,6 @@ public class DerivansConfiguration {
 		this.derivateSteps.add(createMins);
 
 		DerivateStep createPdf = new DerivateStep();
-		createPdf.setInputType(DefaultConfiguration.DEFAULT_INPUT_TYPE);
 		createPdf.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_SUB_PATH));
 		createPdf.setDerivateType(DerivateType.PDF);
 		createPdf.setOutputType("pdf");
