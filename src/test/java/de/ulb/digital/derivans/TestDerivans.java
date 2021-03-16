@@ -165,7 +165,7 @@ public class TestDerivans {
 			Files.delete(pathTarget);
 		}
 		Files.createDirectory(pathTarget);
-		Path mets = Path.of("src/test/resources/metadata/mets/737429.xml");
+		Path mets = Path.of("src/test/resources/metadata/vls/737429.xml");
 		Path metsTarget = pathTarget.resolve("737429.xml");
 		Files.copy(mets, metsTarget);
 		Path imagePath = pathTarget.resolve("MAX");

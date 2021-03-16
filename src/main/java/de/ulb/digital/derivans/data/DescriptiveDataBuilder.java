@@ -296,7 +296,13 @@ class PredicateEventTypePublication implements Predicate<Element> {
  */
 enum MARCRelator {
 
-	AUTHOR("aut"), ASSIGNED_NAME("asn"), CONTRIBUTOR("ctb"), OTHER("oth"), PUBLISHER("pbl");
+	AUTHOR("aut"), 
+	ASSIGNED_NAME("asn"), 
+	CONTRIBUTOR("ctb"), 
+	OTHER("oth"), 
+	PUBLISHER("pbl"), 
+	PRINTER("prt"),
+	UNKNOWN("n.a.");
 
 	private String code;
 
@@ -310,6 +316,6 @@ enum MARCRelator {
 				return e;
 			}
 		}
-		return null;
+		return UNKNOWN;
 	}
 }
