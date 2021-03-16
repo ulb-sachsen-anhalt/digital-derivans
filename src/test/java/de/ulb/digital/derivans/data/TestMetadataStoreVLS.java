@@ -8,7 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -24,85 +26,34 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
  * @author hartwig
  *
  */
-class TestMetadataStore {
+class TestMetadataStoreVLS {
 
-	Path path143074601 = Path.of("./src/test/resources/metadata/kitodo2/143074601.xml");
+	static Path vlInhouse737429 = Path.of("./src/test/resources/metadata/mets/737429.xml");
+
+	static Path vlInhouse201517 = Path.of("./src/test/resources/metadata/mets/201517.xml");
+
+	static IMetadataStore mds737429;
 	
-	Path path147573602 = Path.of("./src/test/resources/metadata/kitodo2/147573602.xml");
-
-	Path path737429 = Path.of("./src/test/resources/metadata/mets/737429.xml");
-
-	Path path201517 = Path.of("./src/test/resources/metadata/mets/201517.xml");
-
-	Path path226134857 = Path.of("./src/test/resources/metadata/mets/226134857.prep.xml");
+	static DescriptiveData dd737429;
 	
+	static IMetadataStore mds201517;
+	
+	static DescriptiveData dd201517;
+
+	@BeforeAll
+	static void setupClazz() throws DigitalDerivansException {
+		mds737429 = new MetadataStore(vlInhouse737429);
+		dd737429 = mds737429.getDescriptiveData();
+		mds201517 = new MetadataStore(vlInhouse201517);
+		dd201517 = mds201517.getDescriptiveData();
+	}
+
+
+
+
 	Path path993571 = Path.of("./src/test/resources/metadata/mets/993571.ulb.xml");
-	
+
 	Path path133573613 = Path.of("./src/test/resources/metadata/mets/133573613.prep.xml");
-	
-	Path path1237560 = Path.of("./src/test/resources/metadata/mets/1237560.xml");
-
-	@Test
-	void testMetadataStoreGetUrn() throws DigitalDerivansException {
-		IMetadataStore mds = new MetadataStore(path143074601);
-		assertEquals("urn:nbn:de:gbv:3:1-1192015415-143074601-16", mds.getDescriptiveData().getUrn());
-	}
-
-	@Test
-	void testMetadataStoreGetIdentifier() throws DigitalDerivansException {
-		IMetadataStore mds = new MetadataStore(path143074601);
-		assertEquals("143074601", mds.getDescriptiveData().getIdentifier());
-	}
-	
-	@Test
-	void testMetadataStoreGetIdentifierDifferentSource() throws DigitalDerivansException {
-		IMetadataStore mds = new MetadataStore(path1237560);
-		assertEquals("323633072", mds.getDescriptiveData().getIdentifier());
-	}
-
-	@Test
-	void testDigitalPagesWithoutGranularUrn() throws DigitalDerivansException {
-		IMetadataStore mds = new MetadataStore(path143074601);
-		List<DigitalPage> pages = mds.getDigitalPagesInOrder();
-		for (DigitalPage page : pages) {
-			assertTrue(page.getIdentifier().isEmpty());
-		}
-	}
-	
-
-	/**
-	 * 
-	 * Check expected information is extracted from METS/MODS-export of kitodo.production2
-	 * 
-	 * imported in open data as:
-	 * https://opendata.uni-halle.de/handle/1981185920/36228
-	 * 
-	 * @throws DigitalDerivansException
-	 */
-	@Test
-	void testDescriptiveDataFromKitodo2() throws DigitalDerivansException {
-		// arrange
-		IMetadataStore mds = new MetadataStore(path147573602);
-		
-		// act
-		DescriptiveData dd = mds.getDescriptiveData();
-		
-		// assert
-		// PDF creator from configuration, not from METS/MODS
-		assertTrue(dd.getCreator().isEmpty());
-		// mods:recodInfo/mods:recordIdentifier[@source]/text()
-		assertEquals("147573602", dd.getIdentifier());
-		// mods:titleInfo/mods:title
-		assertTrue(dd.getTitle().startsWith("Tractätgen von denen Jüdischen Fabeln und Aberglauben"));
-		// mods:accessCondition[type="use and reproduction"]/text()
-		assertEquals("CC-BY-SA 3.0 DE", dd.getLicense().get());
-		// mods:identifier[@type="urn"]
-		assertEquals("urn:nbn:de:gbv:3:1-1192015415-147573602-14", dd.getUrn());
-		// mods:role/mods:displayForm/text() IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut"
-		assertEquals("Christian, Magnus", dd.getPerson());
-		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
-		assertEquals("1718", dd.getYearPublished());
-	}
 
 	/**
 	 * 
@@ -113,45 +64,54 @@ class TestMetadataStore {
 	 * @throws DigitalDerivansException
 	 */
 	@Test
-	void testDescriptiveDataFromVL12OAI() throws DigitalDerivansException {
+	void testDescriptiveDataFromVL12InhouseOAI() throws DigitalDerivansException {
+		// PDF creator from configuration, not from METS/MODS
+		assertTrue(dd737429.getCreator().isEmpty());
+		// mods:recodInfo/mods:recordIdentifier[@source]/text()
+		assertEquals("191092622", dd737429.getIdentifier());
+		// mods:titleInfo/mods:title
+		assertTrue(dd737429.getTitle().startsWith("Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo"));
+		// mods:identifier[@type="urn"]
+		assertEquals("urn:nbn:de:gbv:3:3-21437", dd737429.getUrn());
+		// METS/MODS contains no license information
+		assertTrue(dd737429.getLicense().isEmpty());
+		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
+		assertEquals("1731", dd737429.getYearPublished());
+		// mods:role/mods:displayForm/text()
+		// OR
+		// mods:namePart[@type="family"]/text()
+		// WITH
+		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut"
+		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl
+		assertEquals("Langenheim", dd737429.getPerson());
+	}
+
+	@Test
+	void testDescriptiveDataFromVL12MenalibOAI() throws DigitalDerivansException {
 		// arrange
-		IMetadataStore mds = new MetadataStore(path737429);
-		
+		Path vlMena1237560 = Path.of("./src/test/resources/metadata/mets/1237560.xml");
+		IMetadataStore mds = new MetadataStore(vlMena1237560);
+
 		// act
 		DescriptiveData dd = mds.getDescriptiveData();
 
 		// assert
-		// PDF creator from configuration, not from METS/MODS
 		assertTrue(dd.getCreator().isEmpty());
-		// mods:recodInfo/mods:recordIdentifier[@source]/text()
-		assertEquals("191092622", dd.getIdentifier());
-		// mods:titleInfo/mods:title
-		assertTrue(dd.getTitle().startsWith("Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo"));
-		// mods:identifier[@type="urn"]
-		assertEquals("urn:nbn:de:gbv:3:3-21437", dd.getUrn());
-		// METS/MODS contains no license information
+		assertEquals("323633072", dd.getIdentifier());
+		assertEquals("Ṭabaqāt aš-šāfiʿīya al-kubrā", dd.getTitle());
+		assertEquals("urn:nbn:de:gbv:3:5-9308", dd.getUrn());
 		assertTrue(dd.getLicense().isEmpty());
-		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
-		assertEquals("1731", dd.getYearPublished());
-		// mods:role/mods:displayForm/text()
-		// OR
-		// mods:namePart[@type="family"]/text()
-		// WITH 
-		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut" 
-		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl		
-		
-		assertEquals("Langenheim", dd.getPerson());
+		assertEquals("1906", dd.getYearPublished());
+		// this is from mods:displayForm of mods:role/mods:roleTerm/text() = "aut"
+		assertEquals("Subkī, Taqī-ad-Dīn ʿAlī Ibn-ʿAbd-al-Kāfī as-", dd.getPerson());
 	}
-		
+
 	@Test
 	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {
-		
-		// arrange
-		IMetadataStore mds = new MetadataStore(path737429);
 
 		// act
-		List<DigitalPage> pages = mds.getDigitalPagesInOrder();
-		
+		List<DigitalPage> pages = mds737429.getDigitalPagesInOrder();
+
 		// assert
 		for (DigitalPage page : pages) {
 			assertTrue(page.getIdentifier().isPresent());
@@ -169,12 +129,7 @@ class TestMetadataStore {
 
 	@Test
 	void testStructureOf737429() throws DigitalDerivansException {
-		IMetadataStore mds = new MetadataStore(path737429);
-
-		assertEquals("urn:nbn:de:gbv:3:3-21437", mds.getDescriptiveData().getUrn());
-		assertEquals("191092622", mds.getDescriptiveData().getIdentifier());
-
-		DigitalStructureTree dst = mds.getStructure();
+		DigitalStructureTree dst = mds737429.getStructure();
 		assertNotNull(dst);
 
 		assertTrue(dst.getLabel().startsWith("Ode In Solemni Panegyri"));
@@ -190,14 +145,26 @@ class TestMetadataStore {
 		assertEquals(2, children.get(1).getPage());
 	}
 
+	
+	@Test
+	void testDescriptiveDataOf201517() throws DigitalDerivansException {
+		assertEquals("urn:nbn:de:gbv:3:3-6252", dd201517.getUrn());
+		assertEquals("535610149", dd201517.getIdentifier());
+		assertEquals(Optional.empty(), dd201517.getCreator());
+		assertEquals("Micraelius, Johann", dd201517.getPerson());
+		assertEquals("Historia Ecclesiastica, Qua Ab Adamo Judaicae, & a Salvatore nostro Christianae Ecclesiae, ritus, persecutiones, Concilia, Doctores, Haereses & Schismata proponuntur", dd201517.getTitle());
+		assertEquals("1699", dd201517.getYearPublished());
+	}
+	
+	/**
+	 * 
+	 * Check structures for rather large monography (> 2.300 pages)
+	 * 
+	 * @throws DigitalDerivansException
+	 */
 	@Test
 	void testStructureOf201517() throws DigitalDerivansException {
-		IMetadataStore mds = new MetadataStore(path201517);
-
-		assertEquals("urn:nbn:de:gbv:3:3-6252", mds.getDescriptiveData().getUrn());
-		assertEquals("535610149", mds.getDescriptiveData().getIdentifier());
-
-		DigitalStructureTree dst = mds.getStructure();
+		DigitalStructureTree dst = mds201517.getStructure();
 		assertNotNull(dst);
 
 		assertNotNull(dst.getLabel());
@@ -225,7 +192,13 @@ class TestMetadataStore {
 		assertEquals(11, children.get(9).getSubstructures().get(1).getSubstructures().size());
 	}
 
-
+	/**
+	 * 
+	 * Check PDF identifier enriched in Metadata *after* PDF generation
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	void testMetadataIsUpdated737429(@TempDir Path tempDir) throws Exception {
 		// arrange
@@ -254,9 +227,10 @@ class TestMetadataStore {
 	 * @throws Exception
 	 */
 	@Test
-	void testStructureOf226134857() throws Exception {
+	void testInvalidStructure() throws Exception {
 
 		// arrange
+		Path path226134857 = Path.of("./src/test/resources/metadata/mets/226134857.prep.xml");
 		IMetadataStore mds = new MetadataStore(path226134857);
 
 		// act
@@ -278,7 +252,7 @@ class TestMetadataStore {
 	void testStructurOf133573613() throws Exception {
 
 		// arrange
-		
+
 		IMetadataStore store = new MetadataStore(path133573613);
 
 		// act
@@ -287,5 +261,5 @@ class TestMetadataStore {
 		// assert
 		assertEquals(5, tree.getSubstructures().size());
 	}
-	
+
 }
