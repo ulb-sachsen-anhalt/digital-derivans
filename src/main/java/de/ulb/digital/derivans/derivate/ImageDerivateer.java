@@ -91,6 +91,10 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 		}
 	}
 
+	protected int getPoolSize() {
+		return this.poolSize;
+	}
+	
 	public void setMaximal(Integer maximal) {
 		this.maximal = maximal;
 	}
