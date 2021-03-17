@@ -92,5 +92,5 @@ class TestMetadataStoreKitodo2 {
 		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
 		assertEquals("1718", dd147573602.getYearPublished());
 	}
-
+	
 }

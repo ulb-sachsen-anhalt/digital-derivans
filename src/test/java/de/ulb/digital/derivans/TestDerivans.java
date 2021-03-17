@@ -45,7 +45,7 @@ public class TestDerivans {
 
 	@Test
 	@Order(1)
-	void testDerivatesWithConfigurationFile(@TempDir Path tempDir) throws Exception {
+	void testConfig(@TempDir Path tempDir) throws Exception {
 
 		// arrange metadata and images
 		Path pathTarget = arrangeMetaddatenAndImagesFor737429(tempDir);

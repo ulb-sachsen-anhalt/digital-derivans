@@ -118,7 +118,7 @@ public class DescriptiveData {
 		if (person != null)
 			builder.append(person);
 		if (yearPublished != null)
-			builder.append('(').append(yearPublished).append(')');
+			builder.append(" (").append(yearPublished).append(") ");
 		if (title != null)
 			builder.append(" ").append(title);
 		return builder.toString();

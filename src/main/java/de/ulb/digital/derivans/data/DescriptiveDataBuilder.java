@@ -12,9 +12,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.mets.model.Mets;
+import org.mycore.mets.model.sections.DmdSec;
+import org.mycore.mets.model.struct.LogicalStructMap;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DescriptiveData;
+
+import static de.ulb.digital.derivans.data.MetadataStore.*; 
 
 /**
  * 
@@ -38,6 +42,8 @@ class DescriptiveDataBuilder {
 	private String accessCondition = MetadataStore.UNKNOWN;
 
 	private Mets mets;
+	
+	private MetadataHandler handler;
 
 	private static final Logger LOGGER = LogManager.getLogger(DescriptiveDataBuilder.class);
 
@@ -103,7 +109,7 @@ class DescriptiveDataBuilder {
 	String getPerson() {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
-			List<Element> nameSubtrees = mods.getChildren("name", MetadataStore.NS_MODS);
+			List<Element> nameSubtrees = mods.getChildren("name", NS_MODS);
 
 			// collect proper name relations
 			Map<MARCRelator, List<Element>> properRelations = getDesiredRelations(nameSubtrees);
@@ -132,10 +138,10 @@ class DescriptiveDataBuilder {
 	 */
 	private String getSomeName(List<Element> list) {
 		for(Element e : list) {
-			for(Element f : e.getChildren("displayForm", MetadataStore.NS_MODS)) {
+			for(Element f : e.getChildren("displayForm", NS_MODS)) {
 				return f.getTextNormalize();
 			}
-			for(Element f : e.getChildren("namePart", MetadataStore.NS_MODS)) {
+			for(Element f : e.getChildren("namePart", NS_MODS)) {
 				if("family".equals(f.getAttributeValue("type"))) {
 					return f.getTextNormalize();
 				}
@@ -147,8 +153,8 @@ class DescriptiveDataBuilder {
 	private Map<MARCRelator, List<Element>> getDesiredRelations(List<Element> nameSubtrees) {
 		Map<MARCRelator, List<Element>> map = new TreeMap<>();
 		for (Element e : nameSubtrees) {
-			for (Element f : e.getChildren("role", MetadataStore.NS_MODS)) {
-				for (Element g : f.getChildren("roleTerm", MetadataStore.NS_MODS)) {
+			for (Element f : e.getChildren("role", NS_MODS)) {
+				for (Element g : f.getChildren("roleTerm", NS_MODS)) {
 					if ("code".equals(g.getAttributeValue("type"))) {
 						String code = g.getTextNormalize();
 						MARCRelator rel = MARCRelator.forCode(code);
@@ -188,9 +194,9 @@ class DescriptiveDataBuilder {
 		if (mods == null) {
 			return null;
 		}
-		Element recordInfo = mods.getChild("recordInfo", MetadataStore.NS_MODS);
+		Element recordInfo = mods.getChild("recordInfo", NS_MODS);
 		Predicate<Element> sourceExists = e -> Objects.nonNull(e.getAttributeValue("source"));
-		List<Element> identifiers = recordInfo.getChildren("recordIdentifier", MetadataStore.NS_MODS);
+		List<Element> identifiers = recordInfo.getChildren("recordIdentifier", NS_MODS);
 		Optional<Element> optUrn = identifiers.stream().filter(sourceExists).findFirst();
 		if (optUrn.isPresent()) {
 			return optUrn.get().getTextTrim();
@@ -201,8 +207,13 @@ class DescriptiveDataBuilder {
 	String getTitle() {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
-			Element titleInfo = mods.getChild("titleInfo", MetadataStore.NS_MODS);
-			return titleInfo.getChild("title", MetadataStore.NS_MODS).getTextNormalize();
+			Element titleInfo = mods.getChild("titleInfo", NS_MODS);
+			if (titleInfo != null) {
+				return titleInfo.getChild("title", NS_MODS).getTextNormalize();
+			}
+			// take care of host title (kitodo2)
+			// TODO: do some handler stuff
+			// currently, mods:relatedItem is *not* handled by mets-model
 		}
 		return MetadataStore.UNKNOWN;
 	}
@@ -210,7 +221,7 @@ class DescriptiveDataBuilder {
 	String getURN() {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
-			List<Element> identifiers = mods.getChildren("identifier", MetadataStore.NS_MODS);
+			List<Element> identifiers = mods.getChildren("identifier", NS_MODS);
 			Predicate<Element> typeUrn = e -> e.getAttribute("type").getValue().equals("urn");
 			Optional<Element> optUrn = identifiers.stream().filter(typeUrn).findFirst();
 			if (optUrn.isPresent()) {
@@ -223,7 +234,7 @@ class DescriptiveDataBuilder {
 	String getAccessCondition() {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
-			Element cond = mods.getChild("accessCondition", MetadataStore.NS_MODS);
+			Element cond = mods.getChild("accessCondition", NS_MODS);
 			if (cond != null) {
 				return cond.getTextNormalize();
 			}
@@ -235,20 +246,20 @@ class DescriptiveDataBuilder {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
-			Optional<Element> optPubl = mods.getChildren("originInfo", MetadataStore.NS_MODS).stream()
+			Optional<Element> optPubl = mods.getChildren("originInfo", NS_MODS).stream()
 					.filter(publicationEvent).findFirst();
 			if (optPubl.isPresent()) {
 				Element publ = optPubl.get();
-				Element issued = publ.getChild("dateIssued", MetadataStore.NS_MODS);
+				Element issued = publ.getChild("dateIssued", NS_MODS);
 				if (issued != null) {
 					return issued.getTextNormalize();
 				}
 			}
 			// Attribute 'eventType=publication' of node 'publication' is missing
 			// so try to find/filter node less consistently
-			Element oInfo = mods.getChild("originInfo", MetadataStore.NS_MODS);
+			Element oInfo = mods.getChild("originInfo", NS_MODS);
 			if (oInfo != null) {
-				Element issued = oInfo.getChild("dateIssued", MetadataStore.NS_MODS);
+				Element issued = oInfo.getChild("dateIssued", NS_MODS);
 				if (issued != null) {
 					return issued.getTextNormalize();
 				}
@@ -259,10 +270,36 @@ class DescriptiveDataBuilder {
 
 	private Element getPrimaryMods() {
 		if (mets != null) {
-			String dmdId = mets.getLogicalStructMap().getDivContainer().getDmdId();
-			return mets.getDmdSecById(dmdId).getMdWrap().getMetadata();
+			String dmdId = getLinkFromMonography(mets.getLogicalStructMap());
+			DmdSec dmd = mets.getDmdSecById(dmdId);
+			if (dmd != null) {
+				return dmd.getMdWrap().getMetadata();
+			} else {
+				// kitodo2 multivolume work
+				String firstDmdId = getLinkIDsFromFirstVolume(mets.getLogicalStructMap());
+				if(firstDmdId == null) {
+					return null;
+				}
+				dmd = mets.getDmdSecById(firstDmdId);
+				if(dmd != null) {
+					return dmd.getMdWrap().getMetadata();
+				}
+			}
 		}
 		return null;
+	}
+	
+	private static String getLinkFromMonography(LogicalStructMap logMap) {
+		return logMap.getDivContainer().getDmdId();
+	}
+	
+	private String getLinkIDsFromFirstVolume(LogicalStructMap logMap) {
+		return this.handler.requestDMDSubDivIDs("DMDID");
+	}
+
+	public void setHandler(MetadataHandler handler) {
+		this.handler = handler;
+		
 	}
 }
 
