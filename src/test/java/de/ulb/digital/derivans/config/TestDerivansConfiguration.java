@@ -21,7 +21,7 @@ import de.ulb.digital.derivans.model.DerivateType;
 public class TestDerivansConfiguration {
 
 	@Test
-	void testDerivateConfiguration(@TempDir Path tempDir) throws Exception {
+	void testCommonConfiguration(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path targetMetsDir = tempDir.resolve("226134857");

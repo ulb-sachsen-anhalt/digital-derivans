@@ -83,10 +83,12 @@ public class DerivansConfiguration {
 
 		this.derivateSteps = new ArrayList<>();
 		if (params.getPathConfig() != null) {
+			LOGGER.debug("inspect cli config file {}", params.getPathConfig());
 			this.pathConfigFile = params.getPathConfig();
 			this.initConfigurationFromFile();
 		} else {
 			Path defaultConfigLocation = Path.of("").resolve("config").resolve(DefaultConfiguration.DEFAULT_CONFIG_FILE);
+			LOGGER.info("no config from cli, inspect default {}", defaultConfigLocation);
 			if (!Files.exists(defaultConfigLocation)) {
 				LOGGER.warn("no config file '{}'", defaultConfigLocation);
 			} else {
@@ -97,16 +99,17 @@ public class DerivansConfiguration {
 		}
 		if (derivateSteps.isEmpty()) {
 			provideDefaultSteps();
-			LOGGER.warn("no explicite configuration, use fallback with {} steps", this.derivateSteps.size());
+			LOGGER.warn("no config read, use fallback with {} steps", this.derivateSteps.size());
 		}
 	}
 
 	private void initConfigurationFromFile() throws DigitalDerivansException {
-		if (this.pathConfigFile.endsWith(DefaultConfiguration.DEFAULT_CONFIG_FILE)) {
-			INIConfiguration conf = new INIConfiguration();
-			parse(conf);
-			evaluate(conf);
+		if (!this.pathConfigFile.toString().endsWith(".ini")) {
+			LOGGER.warn("consider to change '{}' file ext to '.ini'");
 		}
+		INIConfiguration conf = new INIConfiguration();
+		parse(conf);
+		evaluate(conf);
 	}
 
 	public Path getPathDir() {
