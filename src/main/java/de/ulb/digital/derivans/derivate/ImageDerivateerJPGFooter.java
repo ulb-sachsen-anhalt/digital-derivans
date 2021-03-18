@@ -35,6 +35,12 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 	protected static final Integer DEFAULT_FOOTER_WIDTH = 2400;
 
 	protected static final Float MAXIMAL_RATIO_DEVIATION = 0.02f;
+	
+	/**
+	 * Error marker, if a large number of subsequent down scales 
+	 * make the footer disappear after all 
+	 */
+	protected static final Integer EXPECTED_MINIMAL_HEIGHT = 25;
 
 	protected DigitalFooter footer;
 
@@ -89,21 +95,28 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 			}
 			
 			int currentW = image.getWidth();
+			BufferedImage currentFooter = imageProcessor.clone(footerBuffer);
 			
 			// only scale footer image if ratio is larger than defined threshold
-			float ratio = (float) currentW / (float) footerBuffer.getWidth();
+			float ratio = (float) currentW / (float) currentFooter.getWidth();
 			if (Math.abs(1.0 - ratio) > MAXIMAL_RATIO_DEVIATION) {
-				footerBuffer = imageProcessor.scale(footerBuffer, ratio);
-				LOGGER.debug("scale footer {}x{} (ratio: {}) for: {}", 
-						footerBuffer.getWidth(), footerBuffer.getHeight(), ratio, pathIn);
+				currentFooter = imageProcessor.scale(currentFooter, ratio);
+				String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(), currentFooter.getHeight(), ratio, pathIn);
+				LOGGER.debug(msg);
+				if(currentFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
+					String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
+					LOGGER.error(msg2);
+					throw new DigitalDerivansException(msg2);
+				}
 			}
-			BufferedImage currentFooter = imageProcessor.clone(footerBuffer);
 			BufferedImage bi = addTextLayer2Footer(currentFooter, footer);
 			image = imageProcessor.append(image, bi);
 			
 			float qualityRatio = ((float) quality) / 100.0f;
 			imageProcessor.writeJPGWithQuality(image, target, qualityRatio);
 		} catch (IOException e) {
+			LOGGER.error("pathIn: {}, footer: {} => {}", pathIn, footer, e.getMessage());
+		} catch(Exception e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", pathIn, footer, e.getMessage());
 		}
 
@@ -116,7 +129,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 		int nLines = lines.size();
 		int heightPerLine = totalHeight / nLines;
 		int fontSize = (int) (heightPerLine * .5);
-		LOGGER.debug("render footer textlayer with totalHeight: '{}', lineHeight: '{}', fontSize: '{}' ({})", totalHeight, heightPerLine, fontSize, footR);
+		LOGGER.debug("textlayer total:{}/ line:{}/ fontsize:{} ({})", totalHeight, heightPerLine, fontSize, footR);
 		Font theFont = new Font(DEFAULT_FONT, Font.BOLD, fontSize);
 		Graphics2D g2d = bufferedImage.createGraphics();
 		g2d.setColor(Color.WHITE);
