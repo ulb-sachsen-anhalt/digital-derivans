@@ -38,6 +38,8 @@ public class MetadataStore implements IMetadataStore {
 	public static final String UNKNOWN = "n.a.";
 
 	static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
+	
+	static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 
 	private DescriptiveData descriptiveData;
 
@@ -178,14 +180,16 @@ public class MetadataStore implements IMetadataStore {
 	public DescriptiveData getDescriptiveData() {
 		if (descriptiveData == null) {
 			DescriptiveDataBuilder builder = new DescriptiveDataBuilder(this.mets);
+			builder.setHandler(this.handler);
 			try {
-				descriptiveData = builder.author().access().identifier().title().urn().year().build();
+				descriptiveData = builder.person().access().identifier().title().urn().year().build();
 			} catch (DigitalDerivansException e) {
 				LOGGER.error(e);
 			}
 		}
 		return descriptiveData;
 	}
+	
 }
 
 

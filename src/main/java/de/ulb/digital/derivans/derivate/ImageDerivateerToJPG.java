@@ -55,12 +55,15 @@ public class ImageDerivateerToJPG extends ImageDerivateer {
 
 		try {
 			BufferedImage buffer = ImageIO.read(pathIn.toFile());
+			int type = buffer.getType();
+			LOGGER.debug("read {} ({})", pathIn, type);
 			if (this.maximal != null) {
 				buffer = handleMaximalDimension(buffer);
 			}
 			float qualityRatio = ((float) quality) / 100.0f;
-			LOGGER.debug("write image '{}' with quality '{}'", target, qualityRatio);
+			LOGGER.debug("write {} ({})", target, qualityRatio);
 			imageProcessor.writeJPGWithQuality(buffer, target, qualityRatio);
+			buffer.flush();
 		} catch (IOException e) {
 			LOGGER.error(e);
 		}

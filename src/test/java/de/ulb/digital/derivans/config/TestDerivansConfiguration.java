@@ -21,12 +21,12 @@ import de.ulb.digital.derivans.model.DerivateType;
 public class TestDerivansConfiguration {
 
 	@Test
-	void testDerivateConfiguration(@TempDir Path tempDir) throws Exception {
+	void testCommonConfiguration(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path targetMetsDir = tempDir.resolve("226134857");
 		Files.createDirectory(targetMetsDir);
-		Path metsModsSource = Path.of("src/test/resources/metadata/mets/226134857.prep.xml");
+		Path metsModsSource = Path.of("src/test/resources/metadata/vls/226134857.prep.xml");
 		Path metsModsTarget = targetMetsDir.resolve("226134857.xml");
 		Files.copy(metsModsSource, metsModsTarget);
 		Path conf = Path.of("src/test/resources/config/derivans.ini");
@@ -45,7 +45,6 @@ public class TestDerivansConfiguration {
 		assertEquals(7, steps.size());
 
 		// footer
-		assertEquals("jpg", steps.get(0).getInputType());
 		assertEquals("jpg", steps.get(0).getOutputType());
 		assertEquals(95, steps.get(0).getQuality());
 		assertEquals("Universitäts- und Landesbibliothek Sachsen-Anhalt", steps.get(0).getFooterLabel());
@@ -60,12 +59,10 @@ public class TestDerivansConfiguration {
 		assertEquals(DerivateType.JPG, steps.get(1).getDerivateType());
 
 		// pdf
-		assertEquals("jpg", steps.get(2).getInputType());
 		assertEquals("pdf", steps.get(2).getOutputType());
 		assertEquals(DerivateType.PDF, steps.get(2).getDerivateType());
 
 		// additional assets
-		assertEquals("jpg", steps.get(5).getInputType());
 		assertEquals("BUNDLE_BRANDED_PREVIEW__", steps.get(5).getOutputPrefix());
 		assertEquals(1000, steps.get(5).getMaximal());
 		assertEquals(DerivateType.PDF, steps.get(2).getDerivateType());

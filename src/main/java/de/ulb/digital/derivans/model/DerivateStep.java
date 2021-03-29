@@ -13,8 +13,6 @@ import de.ulb.digital.derivans.config.DefaultConfiguration;
  */
 public class DerivateStep {
 
-	private String inputType;
-
 	private String outputType;
 
 	private Path inputPath;
@@ -36,19 +34,10 @@ public class DerivateStep {
 	private DerivateType derivateType;
 	
 	public DerivateStep() {
-		this.inputType = DefaultConfiguration.DEFAULT_INPUT_TYPE;
 		this.outputType = DefaultConfiguration.DEFAULT_OUTPUT_TYPE;
 		this.quality = DefaultConfiguration.DEFAULT_QUALITY;
 		this.poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 		this.derivateType = DerivateType.JPG;
-	}
-
-	public void setInputType(String type) {
-		this.inputType = type;
-	}
-
-	public String getInputType() {
-		return inputType;
 	}
 
 	public String getOutputType() {
@@ -138,8 +127,8 @@ public class DerivateStep {
 		StringBuilder builder = new StringBuilder();
 		builder.append(super.toString());
 		builder.append('{');
-		if (inputType != null)
-			builder.append(inputType).append(':');
+		if (inputPath != null)
+			builder.append(inputPath).append(':');
 		if (outputType != null)
 			builder.append(outputType);
 		builder.append('}');
