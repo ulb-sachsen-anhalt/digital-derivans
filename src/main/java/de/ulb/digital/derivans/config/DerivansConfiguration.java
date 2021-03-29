@@ -83,10 +83,12 @@ public class DerivansConfiguration {
 
 		this.derivateSteps = new ArrayList<>();
 		if (params.getPathConfig() != null) {
+			LOGGER.debug("inspect cli config file {}", params.getPathConfig());
 			this.pathConfigFile = params.getPathConfig();
 			this.initConfigurationFromFile();
 		} else {
 			Path defaultConfigLocation = Path.of("").resolve("config").resolve(DefaultConfiguration.DEFAULT_CONFIG_FILE);
+			LOGGER.info("no config from cli, inspect default {}", defaultConfigLocation);
 			if (!Files.exists(defaultConfigLocation)) {
 				LOGGER.warn("no config file '{}'", defaultConfigLocation);
 			} else {
@@ -97,16 +99,17 @@ public class DerivansConfiguration {
 		}
 		if (derivateSteps.isEmpty()) {
 			provideDefaultSteps();
-			LOGGER.warn("no explicite configuration, use fallback with {} steps", this.derivateSteps.size());
+			LOGGER.warn("no config read, use fallback with {} steps", this.derivateSteps.size());
 		}
 	}
 
 	private void initConfigurationFromFile() throws DigitalDerivansException {
-		if (this.pathConfigFile.endsWith(DefaultConfiguration.DEFAULT_CONFIG_FILE)) {
-			INIConfiguration conf = new INIConfiguration();
-			parse(conf);
-			evaluate(conf);
+		if (!this.pathConfigFile.toString().endsWith(".ini")) {
+			LOGGER.warn("consider to change '{}' file ext to '.ini'");
 		}
+		INIConfiguration conf = new INIConfiguration();
+		parse(conf);
+		evaluate(conf);
 	}
 
 	public Path getPathDir() {
@@ -184,15 +187,6 @@ public class DerivansConfiguration {
 		while (!section.isEmpty()) {
 			DerivateStep step = new DerivateStep();
 			String outPutType = null;
-
-			// type
-			String keyType = derivateSection + ".input_type";
-			Optional<String> optType = extractValue(conf, keyType, String.class);
-			if (optType.isPresent()) {
-				step.setInputType(outPutType);
-			} else {
-				step.setInputType(DefaultConfiguration.DEFAULT_INPUT_TYPE);
-			}
 
 			// output type
 			String keyOutType = derivateSection + ".output_type";
@@ -331,7 +325,6 @@ public class DerivansConfiguration {
 
 	private void provideDefaultSteps() {
 		DerivateStep renderFooter = new DerivateStep();
-		renderFooter.setInputType(DefaultConfiguration.DEFAULT_INPUT_TYPE);
 		renderFooter.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_FOOTER_INPUT_SUB_PATH));
 		renderFooter.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
 		renderFooter.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_FOOTER_OUTPUT_SUB_PATH));
@@ -348,7 +341,6 @@ public class DerivansConfiguration {
 		this.derivateSteps.add(renderFooter);
 
 		DerivateStep createMins = new DerivateStep();
-		createMins.setInputType(DefaultConfiguration.DEFAULT_INPUT_TYPE);
 		createMins.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_FOOTER_OUTPUT_SUB_PATH));
 		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
 		createMins.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_SUB_PATH));
@@ -358,7 +350,6 @@ public class DerivansConfiguration {
 		this.derivateSteps.add(createMins);
 
 		DerivateStep createPdf = new DerivateStep();
-		createPdf.setInputType(DefaultConfiguration.DEFAULT_INPUT_TYPE);
 		createPdf.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_SUB_PATH));
 		createPdf.setDerivateType(DerivateType.PDF);
 		createPdf.setOutputType("pdf");

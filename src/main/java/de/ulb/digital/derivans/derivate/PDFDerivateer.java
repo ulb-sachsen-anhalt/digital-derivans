@@ -345,7 +345,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 			// metadata must be added afterwards creation of pdfWriter
 			document.addTitle(this.description.getTitle());
-			document.addAuthor(this.description.getAuthor());
+			document.addAuthor(this.description.getPerson());
 			Optional<String> optCreator = this.description.getCreator();
 			if (optCreator.isPresent()) {
 				document.addCreator(optCreator.get());

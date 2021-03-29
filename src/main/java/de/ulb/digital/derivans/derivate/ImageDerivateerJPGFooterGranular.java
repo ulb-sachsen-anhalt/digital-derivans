@@ -54,6 +54,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d, List<DigitalPage> pages) {
 		super(d.getInput(), d.getOutput(), d.getQuality(), d.getDigitalFooter());
 		this.pages = enrichPhysicalPath(input.getPath(), pages);
+		this.poolSize = d.getPoolSize();
 	}
 	
 	/**

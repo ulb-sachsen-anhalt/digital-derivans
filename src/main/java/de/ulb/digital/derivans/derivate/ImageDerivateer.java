@@ -90,6 +90,10 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 			LOGGER.warn("invalid poolsize provided:'{}', fallback to '{}'", poolSize, this.poolSize);
 		}
 	}
+	
+	protected int getPoolSize() {
+		return this.poolSize;
+	}
 
 	public void setMaximal(Integer maximal) {
 		this.maximal = maximal;

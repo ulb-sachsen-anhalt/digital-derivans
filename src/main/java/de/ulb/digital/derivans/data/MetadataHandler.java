@@ -135,7 +135,6 @@ public class MetadataHandler {
 	 */
 	public void addTo(Element asElement, String typeValue, boolean reorder) {
 		var elements = document.getContent(new ElementFilter());
-		
 		var optElement = elements.stream()
 				.map(Element::getChildren)
 				.flatMap(List::stream)
@@ -156,5 +155,32 @@ public class MetadataHandler {
 				container.sortChildren((el1, el2) -> Math.negateExact(el1.getName().compareToIgnoreCase(el2.getName())));
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * Rather hacky way to catch first top-level volume DMDID mapping
+	 * 
+	 * @param typeValue
+	 * @return
+	 */
+	public String requestDMDSubDivIDs(String typeValue) {
+		var elements = document.getContent(new ElementFilter());
+		var optDMDID = elements.stream()
+				.map(Element::getChildren)
+				.flatMap(List::stream)
+				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE")))
+				.map(Element::getChildren)
+				.flatMap(List::stream)
+				.map(Element::getChildren)
+				.flatMap(List::stream)
+				.filter(el -> "volume".equals(el.getAttributeValue("TYPE")))
+				.map(el -> el.getAttributeValue("DMDID"))
+				.findFirst();
+		
+		if(optDMDID.isPresent()) {
+			return optDMDID.get();
+		}
+		return null;
 	}
 }

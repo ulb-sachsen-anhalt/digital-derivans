@@ -1,0 +1,670 @@
+<mets:mets xmlns:a="https:/zvdd" xmlns:dv="http://dfg-viewer.de/" xmlns:mets="http://www.loc.gov/METS/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns" xmlns:ulb="https://bibliothek.uni-halle.de" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" rdf:about="/var/lib/tomcat8/kitodo-hotfolder/147573602.xml" xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/mods.xsd http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd http://www.loc.gov/mix/v10 http://www.loc.gov/standards/mix/mix10/mix10.xsd">
+  <mets:metsHdr CREATEDATE="2021-03-09T14:32:34" LASTMODDATE="2021-03-09T15:33:14.926+01:00">
+    <mets:agent OTHERTYPE="SOFTWARE" ROLE="CREATOR" TYPE="OTHER">
+      <mets:name>Kitodo - kitodo-ugh-2.1.4-SNAPSHOT-v1.11.1-108-g2b516b3 - 03−January−2021</mets:name>
+      <mets:note>Kitodo</mets:note>
+    </mets:agent>
+    <mets:agent OTHERTYPE="Software" ROLE="EDITOR" TYPE="OTHER">
+      <mets:name>zedExporter</mets:name>
+      <mets:note>PDF-Dokument-Downloadlink wurde eingefügt.</mets:note>
+      <mets:note />
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="DMDLOG_0000">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-1192015415-147573602-14</mods:identifier>
+          <mods:identifier type="vd18">11109424</mods:identifier>
+          <mods:recordInfo>
+            <mods:recordIdentifier source="gvk-ppn">147573602</mods:recordIdentifier>
+            <mods:recordCreationDate encoding="marc">22-03-94</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">24-09-20</mods:recordChangeDate>
+          </mods:recordInfo>
+          <mods:titleInfo>
+            <mods:title>Tractätgen von denen Jüdischen Fabeln und Aberglauben</mods:title>
+            <mods:subTitle>So sie haben von ihrer Kranckheit an, bis zum Tode, Begräbniß und Trauer/ Was sie dabey vor Ceremonien und Aberglauben brauchen/ Und Wie dieser Aberglauben widerleget wird : Bestehend in Achtzehen Puncten Aberglauben, Und eben so viel Widerlegungen oder Gegentheilen</mods:subTitle>
+          </mods:titleInfo>
+          <mods:note type="source note">Die Rückseite des Titelblatts ist unbedruckt</mods:note>
+          <mods:note type="source note">Enthält ein Vorwort von: "M. Horn Past. Primar. zu St. Johannis/ wie auch Scholarcha bey der Königlichen Doms-Schule hieselbst"</mods:note>
+          <mods:note type="statement of responsibility">Aufgesetzt von Magnus Christian/ einem Converso</mods:note>
+          <mods:name authority="gnd" authorityURI="http://d-nb.info/gnd/" type="personal" valueURI="http://d-nb.info/gnd/1067961828">
+            <mods:namePart type="given">Magnus</mods:namePart>
+            <mods:namePart type="family">Christian</mods:namePart>
+            <mods:role>
+              <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Christian, Magnus</mods:displayForm>
+          </mods:name>
+          <mods:name authority="gnd" authorityURI="http://d-nb.info/gnd/" type="personal" valueURI="http://d-nb.info/gnd/1034349562">
+            <mods:namePart type="given">Johann</mods:namePart>
+            <mods:namePart type="family">Horn</mods:namePart>
+            <mods:role>
+              <mods:roleTerm authority="marcrelator" type="code">wpr</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Horn, Johann</mods:displayForm>
+          </mods:name>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+          </mods:language>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">heb</mods:languageTerm>
+          </mods:language>
+          <mods:note type="source note">Vorlageform der Veröffentlichungsangabe: Anno 1718.</mods:note>
+          <mods:originInfo eventType="publication">
+            <mods:dateIssued encoding="iso8601" keyDate="yes">1718</mods:dateIssued>
+            <mods:place>
+              <mods:placeTerm type="text">[Erscheinungsort nicht ermittelbar]</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>[Verlag nicht ermittelbar]</mods:publisher>
+          </mods:originInfo>
+          <mods:physicalDescription>
+            <mods:extent>32 Seiten; 4°</mods:extent>
+          </mods:physicalDescription>
+          <mods:genre authority="aad">Judaicum</mods:genre>
+          <mods:extension>
+            <a:zvddWrap>
+              <a:titleWord>Traktat Traktätchen den Krankheit Tod Begräbnis dabei Zeremonien widerlegt Achtzehn 18 Punkten Gegenteilen</a:titleWord>
+            </a:zvddWrap>
+            <ulb:externalType recordSyntax="pica">Aa</ulb:externalType>
+            <ulb:contentType>
+              <ulb:text>Text</ulb:text>
+              <ulb:code>txt</ulb:code>
+            </ulb:contentType>
+          </mods:extension>
+          <mods:originInfo eventType="digitization">
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:place>
+              <mods:placeTerm type="text">Halle (Saale)</mods:placeTerm>
+            </mods:place>
+            <mods:edition>[Electronic ed.]</mods:edition>
+            <mods:dateCaptured encoding="iso8601">2021</mods:dateCaptured>
+          </mods:originInfo>
+          <mods:location>
+            <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
+            <mods:shelfLocator>Pon IIh 633, QK</mods:shelfLocator>
+          </mods:location>
+          <mods:classification authority="ddc">090</mods:classification>
+          <mods:accessCondition xlink:href="https://creativecommons.org/licenses/by-sa/3.0/de/" type="use and reproduction">CC-BY-SA 3.0 DE</mods:accessCondition>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0001">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>Vorrede an den Leser.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0002">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>Fabeln der abergläubischen Juden, so sie bey ihrer Kranckheit , und wenn sie sterben wollen, haben; Dahingegen aber allemahl gewiesen wird, wie wir Christen uns in solchem Fall aufführen und verhalten sollen.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0003">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>Zum Ersten.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0004">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>II. Der Jüden ihr Aberglauben, wenn sie in Sterbens-Nöthen ihr Gebeth thun.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0005">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>III. Von dem Aberglauben der Jüden, daß sie sich nicht fürchten, daß sie sterben, wenn sie kranck sind.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0006">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>IV. Fabeln und Aberglauben, so die Jüden haben, wenn sie gestorben sind.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0007">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>V. Ferner folgen noch mehr Ceremonien, und was vor Aberglauben die Juden dabey haben.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0008">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>VI. Haben die Juden noch einen Aberglauben von den Todten, ehe sie aus der Stube getragen werden, der ist dieser:</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0009">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>VII. Ferner die Ceremonien von Reinigung der Todten, was vor grossen Aberglauben sie darbey haben.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0010">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>IIX.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0011">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>IX. Fabeln und Aberglauben, so die Juden bey ihrem Begräbnis haben.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0012">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>XI. Aberglaube der Juden bey dem Gottsacker.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0013">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>XII. Die Ceremonien und Aberglauben, wenn die Juden den Todten ins Grab legen.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0014">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>XIII. Was die aberglaubischen Juden mehr mit den Todten treiben.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0015">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>XIV. Fabeln und Aberglauben bey der Jüden ihrer Trauer.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0016">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>XV. Aberglaube, den die Juden haben, wann sie vom Gottsacker gehen.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0017">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>XVI. Aberglauben, welchen die Jüden haben, wenn sie vom Gottsacker nach Hause kommen.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0018">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>XVII. Der Juden Aberglaube, den sie in Nachfolge der Trauer haben.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDLOG_0019">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>XVIII.</mods:title>
+          </mods:titleInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="DMDPHYS_0000">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:location>
+            <mods:shelfLocator>Pon IIh 633, QK</mods:shelfLocator>
+          </mods:location>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="AMD">
+    <mets:rightsMD ID="RIGHTS">
+      <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerLogo>Share_it</dv:ownerLogo>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="DIGIPROV">
+      <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links>
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=147573602</dv:reference>
+            <dv:presentation>Share_it</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="MAX">
+      <mets:file ID="FILE_0001_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000001.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0002_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000002.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0003_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000003.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0004_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000004.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0005_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000005.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0006_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000006.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0007_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000007.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0008_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000008.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0009_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000009.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0010_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000010.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0011_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000011.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0012_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000012.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0013_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000013.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0014_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000014.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0015_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000015.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0016_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000016.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0017_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000017.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0018_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000018.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0019_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000019.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0020_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000020.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0021_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000021.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0022_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000022.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0023_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000023.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0024_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000024.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0025_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000025.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0026_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000026.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0027_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000027.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0028_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000028.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0029_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000029.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0030_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000030.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0031_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000031.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0032_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000032.jpg" />
+      </mets:file>
+      <mets:file ID="FILE_0033_MAX" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000033.jpg" />
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="DOWNLOAD">
+      <mets:file ID="zedExporterPDF" MIMETYPE="application/pdf">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content/147573602/147573602.pdf" />
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ADMID="AMD" DMDID="DMDLOG_0000" ID="LOG_0000" LABEL="Tractätgen von denen Jüdischen Fabeln und Aberglauben" ORDERLABEL="Tractätgen von denen Jüdischen Fabeln und Aberglauben" TYPE="monograph">
+      <mets:div ID="LOG_0001" TYPE="title_page" />
+      <mets:div DMDID="DMDLOG_0001" ID="LOG_0002" LABEL="Vorrede an den Leser." TYPE="preface" />
+      <mets:div DMDID="DMDLOG_0002" ID="LOG_0003" LABEL="Fabeln der abergläubischen Juden, so sie bey ihrer Kranckheit , und wenn sie sterben wollen, haben; Dahingegen aber allemahl gewiesen wird, wie wir Christen uns in solchem Fall aufführen und verhalten sollen." TYPE="section">
+        <mets:div DMDID="DMDLOG_0003" ID="LOG_0004" LABEL="Zum Ersten." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0004" ID="LOG_0005" LABEL="II. Der Jüden ihr Aberglauben, wenn sie in Sterbens-Nöthen ihr Gebeth thun." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0005" ID="LOG_0006" LABEL="III. Von dem Aberglauben der Jüden, daß sie sich nicht fürchten, daß sie sterben, wenn sie kranck sind." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0006" ID="LOG_0007" LABEL="IV. Fabeln und Aberglauben, so die Jüden haben, wenn sie gestorben sind." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0007" ID="LOG_0008" LABEL="V. Ferner folgen noch mehr Ceremonien, und was vor Aberglauben die Juden dabey haben." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0008" ID="LOG_0009" LABEL="VI. Haben die Juden noch einen Aberglauben von den Todten, ehe sie aus der Stube getragen werden, der ist dieser:" TYPE="section" />
+        <mets:div DMDID="DMDLOG_0009" ID="LOG_0010" LABEL="VII. Ferner die Ceremonien von Reinigung der Todten, was vor grossen Aberglauben sie darbey haben." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0010" ID="LOG_0011" LABEL="IIX." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0011" ID="LOG_0012" LABEL="IX. Fabeln und Aberglauben, so die Juden bey ihrem Begräbnis haben." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0012" ID="LOG_0013" LABEL="XI. Aberglaube der Juden bey dem Gottsacker." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0013" ID="LOG_0014" LABEL="XII. Die Ceremonien und Aberglauben, wenn die Juden den Todten ins Grab legen." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0014" ID="LOG_0015" LABEL="XIII. Was die aberglaubischen Juden mehr mit den Todten treiben." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0015" ID="LOG_0016" LABEL="XIV. Fabeln und Aberglauben bey der Jüden ihrer Trauer." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0016" ID="LOG_0017" LABEL="XV. Aberglaube, den die Juden haben, wann sie vom Gottsacker gehen." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0017" ID="LOG_0018" LABEL="XVI. Aberglauben, welchen die Jüden haben, wenn sie vom Gottsacker nach Hause kommen." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0018" ID="LOG_0019" LABEL="XVII. Der Juden Aberglaube, den sie in Nachfolge der Trauer haben." TYPE="section" />
+        <mets:div DMDID="DMDLOG_0019" ID="LOG_0020" LABEL="XVIII." TYPE="section" />
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div DMDID="DMDPHYS_0000" ID="PHYS_0000" TYPE="physSequence">
+      <mets:fptr FILEID="zedExporterPDF" />
+      <mets:div ID="PHYS_0001" ORDER="1" ORDERLABEL=" - " TYPE="page">
+        <mets:fptr FILEID="FILE_0001_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0002" ORDER="2" ORDERLABEL="[Leerseite]" TYPE="page">
+        <mets:fptr FILEID="FILE_0002_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0003" ORDER="3" ORDERLABEL=" - " TYPE="page">
+        <mets:fptr FILEID="FILE_0003_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0004" ORDER="4" ORDERLABEL="Seite 4" TYPE="page">
+        <mets:fptr FILEID="FILE_0004_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0005" ORDER="5" ORDERLABEL="Seite 5" TYPE="page">
+        <mets:fptr FILEID="FILE_0005_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0006" ORDER="6" ORDERLABEL="Seite 5" TYPE="page">
+        <mets:fptr FILEID="FILE_0006_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0007" ORDER="7" ORDERLABEL=" - " TYPE="page">
+        <mets:fptr FILEID="FILE_0007_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0008" ORDER="8" ORDERLABEL="Seite 8" TYPE="page">
+        <mets:fptr FILEID="FILE_0008_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0009" ORDER="9" ORDERLABEL="Seite 9" TYPE="page">
+        <mets:fptr FILEID="FILE_0009_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0010" ORDER="10" ORDERLABEL="Seite 10" TYPE="page">
+        <mets:fptr FILEID="FILE_0010_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0011" ORDER="11" ORDERLABEL="Seite 11" TYPE="page">
+        <mets:fptr FILEID="FILE_0011_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0012" ORDER="12" ORDERLABEL="Seite 12" TYPE="page">
+        <mets:fptr FILEID="FILE_0012_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0013" ORDER="13" ORDERLABEL="Gedicht 13" TYPE="page">
+        <mets:fptr FILEID="FILE_0013_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0014" ORDER="14" ORDERLABEL="Seite 14" TYPE="page">
+        <mets:fptr FILEID="FILE_0014_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0015" ORDER="15" ORDERLABEL="Seite 15" TYPE="page">
+        <mets:fptr FILEID="FILE_0015_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0016" ORDER="16" ORDERLABEL="Seite 16" TYPE="page">
+        <mets:fptr FILEID="FILE_0016_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0017" ORDER="17" ORDERLABEL="Seite 17" TYPE="page">
+        <mets:fptr FILEID="FILE_0017_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0018" ORDER="18" ORDERLABEL="Seite 18" TYPE="page">
+        <mets:fptr FILEID="FILE_0018_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0019" ORDER="19" ORDERLABEL="Gedicht 19" TYPE="page">
+        <mets:fptr FILEID="FILE_0019_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0020" ORDER="20" ORDERLABEL="Seite 20" TYPE="page">
+        <mets:fptr FILEID="FILE_0020_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0021" ORDER="21" ORDERLABEL="Seite 21" TYPE="page">
+        <mets:fptr FILEID="FILE_0021_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0022" ORDER="22" ORDERLABEL="Seite 22" TYPE="page">
+        <mets:fptr FILEID="FILE_0022_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0023" ORDER="23" ORDERLABEL="Seite 23" TYPE="page">
+        <mets:fptr FILEID="FILE_0023_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0024" ORDER="24" ORDERLABEL="Seite 24" TYPE="page">
+        <mets:fptr FILEID="FILE_0024_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0025" ORDER="25" ORDERLABEL="Gedicht 25" TYPE="page">
+        <mets:fptr FILEID="FILE_0025_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0026" ORDER="26" ORDERLABEL="Seite 26" TYPE="page">
+        <mets:fptr FILEID="FILE_0026_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0027" ORDER="27" ORDERLABEL="Seite 27" TYPE="page">
+        <mets:fptr FILEID="FILE_0027_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0028" ORDER="28" ORDERLABEL="Seite 28" TYPE="page">
+        <mets:fptr FILEID="FILE_0028_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0029" ORDER="29" ORDERLABEL="Seite 29" TYPE="page">
+        <mets:fptr FILEID="FILE_0029_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0030" ORDER="30" ORDERLABEL="Seite 30" TYPE="page">
+        <mets:fptr FILEID="FILE_0030_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0031" ORDER="31" ORDERLABEL="Seite 31" TYPE="page">
+        <mets:fptr FILEID="FILE_0031_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0032" ORDER="32" ORDERLABEL="Gedicht 32" TYPE="page">
+        <mets:fptr FILEID="FILE_0032_MAX" />
+      </mets:div>
+      <mets:div ID="PHYS_0033" ORDER="33" ORDERLABEL="[Colorchecker]" TYPE="page">
+        <mets:fptr FILEID="FILE_0033_MAX" />
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0001" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0002" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0003" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0004" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0005" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0006" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0007" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0008" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0009" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0010" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0011" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0012" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0013" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0014" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0015" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0016" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0017" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0018" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0019" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0020" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0021" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0022" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0023" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0024" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0025" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0026" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0027" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0028" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0029" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0030" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0031" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0032" />
+    <mets:smLink xlink:from="LOG_0000" xlink:to="PHYS_0033" />
+    <mets:smLink xlink:from="LOG_0001" xlink:to="PHYS_0001" />
+    <mets:smLink xlink:from="LOG_0001" xlink:to="PHYS_0002" />
+    <mets:smLink xlink:from="LOG_0002" xlink:to="PHYS_0003" />
+    <mets:smLink xlink:from="LOG_0002" xlink:to="PHYS_0004" />
+    <mets:smLink xlink:from="LOG_0002" xlink:to="PHYS_0005" />
+    <mets:smLink xlink:from="LOG_0002" xlink:to="PHYS_0006" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0007" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0008" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0009" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0010" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0011" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0012" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0013" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0014" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0015" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0016" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0017" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0018" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0019" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0020" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0021" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0022" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0023" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0024" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0025" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0026" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0027" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0028" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0029" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0030" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0031" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0032" />
+    <mets:smLink xlink:from="LOG_0003" xlink:to="PHYS_0033" />
+    <mets:smLink xlink:from="LOG_0004" xlink:to="PHYS_0007" />
+    <mets:smLink xlink:from="LOG_0005" xlink:to="PHYS_0008" />
+    <mets:smLink xlink:from="LOG_0005" xlink:to="PHYS_0009" />
+    <mets:smLink xlink:from="LOG_0005" xlink:to="PHYS_0010" />
+    <mets:smLink xlink:from="LOG_0006" xlink:to="PHYS_0011" />
+    <mets:smLink xlink:from="LOG_0006" xlink:to="PHYS_0012" />
+    <mets:smLink xlink:from="LOG_0007" xlink:to="PHYS_0013" />
+    <mets:smLink xlink:from="LOG_0007" xlink:to="PHYS_0014" />
+    <mets:smLink xlink:from="LOG_0008" xlink:to="PHYS_0015" />
+    <mets:smLink xlink:from="LOG_0009" xlink:to="PHYS_0016" />
+    <mets:smLink xlink:from="LOG_0010" xlink:to="PHYS_0017" />
+    <mets:smLink xlink:from="LOG_0011" xlink:to="PHYS_0018" />
+    <mets:smLink xlink:from="LOG_0011" xlink:to="PHYS_0019" />
+    <mets:smLink xlink:from="LOG_0012" xlink:to="PHYS_0020" />
+    <mets:smLink xlink:from="LOG_0012" xlink:to="PHYS_0021" />
+    <mets:smLink xlink:from="LOG_0013" xlink:to="PHYS_0022" />
+    <mets:smLink xlink:from="LOG_0014" xlink:to="PHYS_0022" />
+    <mets:smLink xlink:from="LOG_0014" xlink:to="PHYS_0023" />
+    <mets:smLink xlink:from="LOG_0015" xlink:to="PHYS_0024" />
+    <mets:smLink xlink:from="LOG_0015" xlink:to="PHYS_0025" />
+    <mets:smLink xlink:from="LOG_0016" xlink:to="PHYS_0026" />
+    <mets:smLink xlink:from="LOG_0017" xlink:to="PHYS_0027" />
+    <mets:smLink xlink:from="LOG_0018" xlink:to="PHYS_0028" />
+    <mets:smLink xlink:from="LOG_0019" xlink:to="PHYS_0029" />
+    <mets:smLink xlink:from="LOG_0019" xlink:to="PHYS_0030" />
+    <mets:smLink xlink:from="LOG_0020" xlink:to="PHYS_0031" />
+    <mets:smLink xlink:from="LOG_0020" xlink:to="PHYS_0032" />
+    <mets:smLink xlink:from="LOG_0020" xlink:to="PHYS_0033" />
+  </mets:structLink>
+</mets:mets>
