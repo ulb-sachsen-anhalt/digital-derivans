@@ -31,6 +31,8 @@ public class DefaultConfiguration {
 	
 	public static final Path DEFAULT_FOOTER_INPUT_SUB_PATH = Path.of("MAX");
 	
+	public static final Path DEFAULT_FULLTEXT_INPUT_SUB_PATH = Path.of("FULLTEXT");
+	
 	public static final Path DEFAULT_FOOTER_OUTPUT_SUB_PATH = Path.of("FOOTER_MAX");
 	
 	public static final Path DEFAULT_MIN_OUTPUT_SUB_PATH = Path.of("FOOTER_80");

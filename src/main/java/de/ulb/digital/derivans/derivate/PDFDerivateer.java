@@ -52,7 +52,11 @@ import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**
  * 
- * Create PDF derivate
+ * Create PDF derivate from 
+ * <ul>
+ * 	<li>image data in JPG format (and extension *.jpg)</li>
+ * 	<li>XML OCR-Data (ALTO)</li>
+ * </ul>
  * 
  * @author hartwig
  *
@@ -172,7 +176,6 @@ public class PDFDerivateer extends BaseDerivateer {
 	private static BaseFont determineFont(String conformance, Integer defaultFontSize)
 			throws DocumentException, IOException {
 		if (conformance != null) {
-//			return BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED);
 			Font f = new Font(BaseFont.createFont("ttf/FreeMonoBold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED), 10);
 			return f.getBaseFont();
 		} else {
@@ -194,17 +197,16 @@ public class PDFDerivateer extends BaseDerivateer {
 		if (page.getOcrData() != null) {
 			List<OCRData.Textline> ocrLines = page.getOcrData().getTextlines();
 			for (int i = 0; i < ocrLines.size(); i++) {
-				OCRData.Text line = ocrLines.get(i).getLine();
-				String text = line.getText();
-				float fontSize = line.getHeight();
-				com.itextpdf.awt.geom.Point tPoint = new com.itextpdf.awt.geom.Point(line.getBox().x, line.getBox().y);
-				com.itextpdf.awt.geom.Dimension tDim = new com.itextpdf.awt.geom.Dimension(line.getBox().width,
-						line.getBox().height);
+				String text = ocrLines.get(i).getText();
+				java.awt.Rectangle r = ocrLines.get(i).getShape().getBounds();
+				com.itextpdf.awt.geom.Point tPoint = new com.itextpdf.awt.geom.Point(r.x, r.y);
+				com.itextpdf.awt.geom.Dimension tDim = new com.itextpdf.awt.geom.Dimension(r.width,	r.height);
 				com.itextpdf.awt.geom.Rectangle tmp = new com.itextpdf.awt.geom.Rectangle(tPoint, tDim);
 				Rectangle box = new Rectangle(tmp);
 
 				// Calculate vertical transition (text is rendered at baseline -> descending
 				// bits are below the chosen position)
+				float fontSize = r.height;
 				int descent = (int) font.getDescentPoint(text, fontSize);
 				int ascent = (int) font.getAscentPoint(text, fontSize);
 				int textHeight = Math.abs(descent) + ascent;
