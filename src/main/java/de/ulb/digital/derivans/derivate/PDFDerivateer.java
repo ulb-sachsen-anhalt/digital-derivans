@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.derivate;
 
+import java.awt.geom.Area;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -130,8 +131,8 @@ public class PDFDerivateer extends BaseDerivateer {
 		// enrich path from inputPath + filePointer (METS)
 		if (pages != null && !pages.isEmpty()) {
 			for (DigitalPage page : pages) {
-				String filePointer = page.getFilePointer();
-				page.setPath(pathInput.resolve(filePointer));
+				String filePointer = page.getImageFile();
+				page.setImagePath(pathInput.resolve(filePointer));
 			}
 			return pages;
 		} else {
@@ -194,19 +195,17 @@ public class PDFDerivateer extends BaseDerivateer {
 		int pageHeight = 800;
 
 		// some text, if any
-		if (page.getOcrData() != null) {
-			List<OCRData.Textline> ocrLines = page.getOcrData().getTextlines();
+		if (page.getOcrData().isPresent()) {
+			OCRData ocrData = page.getOcrData().get(); 
+			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
 			for (int i = 0; i < ocrLines.size(); i++) {
 				String text = ocrLines.get(i).getText();
-				java.awt.Rectangle r = ocrLines.get(i).getShape().getBounds();
-				com.itextpdf.awt.geom.Point tPoint = new com.itextpdf.awt.geom.Point(r.x, r.y);
-				com.itextpdf.awt.geom.Dimension tDim = new com.itextpdf.awt.geom.Dimension(r.width,	r.height);
-				com.itextpdf.awt.geom.Rectangle tmp = new com.itextpdf.awt.geom.Rectangle(tPoint, tDim);
-				Rectangle box = new Rectangle(tmp);
+				Area a = ocrLines.get(i).getArea();
+				Rectangle box = toItextBox(a);
 
 				// Calculate vertical transition (text is rendered at baseline -> descending
 				// bits are below the chosen position)
-				float fontSize = r.height;
+				float fontSize = a.getBounds().height;
 				int descent = (int) font.getDescentPoint(text, fontSize);
 				int ascent = (int) font.getAscentPoint(text, fontSize);
 				int textHeight = Math.abs(descent) + ascent;
@@ -227,11 +226,20 @@ public class PDFDerivateer extends BaseDerivateer {
 			}
 		}
 		// handle overlying image
-		String imagePath = page.getPath().toString();
+		String imagePath = page.getImagePath().toString();
 		Image image = Image.getInstance(imagePath);
 		image.setAbsolutePosition(0f, 0f);
 		cb.addImage(image);
 		cb.restoreState();
+	}
+
+	private static Rectangle toItextBox(Area a) {
+		java.awt.Rectangle r = a.getBounds();
+		com.itextpdf.awt.geom.Point tPoint = new com.itextpdf.awt.geom.Point(r.x, r.y);
+		com.itextpdf.awt.geom.Dimension tDim = new com.itextpdf.awt.geom.Dimension(r.width,	r.height);
+		com.itextpdf.awt.geom.Rectangle tmp = new com.itextpdf.awt.geom.Rectangle(tPoint, tDim);
+		Rectangle box = new Rectangle(tmp);
+		return box;
 	}
 
 	static boolean buildOutline(PdfWriter pdfWriter, int nPages, DigitalStructureTree structure) {
@@ -323,7 +331,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		// get dimension of first page
 		Image image = null;
 		try {
-			image = Image.getInstance(pages.get(0).getPath().toString());
+			image = Image.getInstance(pages.get(0).getImagePath().toString());
 		} catch (BadElementException | IOException e) {
 			throw new DigitalDerivansException(e);
 		}

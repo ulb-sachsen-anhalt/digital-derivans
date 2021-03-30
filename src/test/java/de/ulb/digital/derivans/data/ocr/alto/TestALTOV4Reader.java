@@ -40,7 +40,7 @@ public class TestALTOV4Reader {
 		assertEquals("AVGVSTISSIMO AC POTENTISSIMO", line15.getText());
 		assertEquals("AVGVSTISSIMO", line15.getTokens().get(0).getText());
 		// geometric data
-		var line15Shape = line15.getShape();
+		var line15Shape = line15.getArea();
 		assertEquals(new Rectangle(222,1055,1979,128), line15Shape.getBounds());
 	}
 	

@@ -11,10 +11,10 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.MetadataStore;
+import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.derivate.ImageDerivateer;
@@ -30,6 +30,7 @@ import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**
  * 
@@ -112,6 +113,7 @@ public class Derivans {
 		// set data
 		DescriptiveData dd = this.metadataStore.getDescriptiveData();
 		var pages = this.metadataStore.getDigitalPagesInOrder();
+		enrichOCRInformation(pages);
 
 		// store optional pdf path
 		Optional<Path> optPDFPath = Optional.empty();
@@ -262,5 +264,26 @@ public class Derivans {
 
 	private String getIdentifier() {
 		return this.metadataStore.getDescriptiveData().getUrn();
+	}
+
+	/**
+	 * 
+	 * Link to ocr data and create OCRData if present
+	 * 
+	 * @param pages
+	 */
+	private void enrichOCRInformation(List<DigitalPage> pages) {
+		for(DigitalPage dp : pages) {
+			if(dp.getOcrFile().isPresent()) {
+				Path pathOcrFile = dp.getOcrFile().get();
+				try {
+					OCRData data = OCRReaderFactory.get(pathOcrFile).get(pathOcrFile);
+					dp.setOcrData(data);
+				} catch (DigitalDerivansException e) {
+					LOGGER.error("unable to enrich ocr data for {}: {}", pathOcrFile, e);
+				}
+			}
+		}
+		
 	}
 }

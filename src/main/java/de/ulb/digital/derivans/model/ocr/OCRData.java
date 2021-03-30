@@ -1,17 +1,16 @@
 package de.ulb.digital.derivans.model.ocr;
 
 import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * 
  * Domain specific model of OCR-Data organized as lists of {@link Textline lines} 
- * which are composed of a list of {@link Text textual tokens}. 
+ * which are itself composed each of a list of {@link Text textual tokens}. 
  * 
  * @author u.hartwig
  *
@@ -28,19 +27,25 @@ public class OCRData {
 		return this.textlines;
 	}
 
+	/**
+	 * 
+	 * Represents a single line of textual tokens that form a conceptual unit.
+	 * 
+	 * @author u.hartwig
+	 *
+	 */
 	public static class Textline {
 		private List<Text> tokens;
 		private String text;
-		private Shape polygon;
+		private Area area;
 
 		public Textline(List<Text> texts) {
 			this.tokens = texts;
-			Optional<Rectangle> optRect = texts.stream().map(Text::getBox).reduce((p, c) -> {
-				p.add(c);
-				return p;
-			});
-			if (optRect.isPresent()) {
-				this.polygon = optRect.get();
+			List<Rectangle> boxes = texts.stream().map(Text::getBox).collect(Collectors.toList());
+			if(!boxes.isEmpty()) {
+				Area first = new Area(boxes.remove(0));
+				boxes.forEach(box -> first.add(new Area(box)));
+				this.area = first;
 			}
 			this.text = String.join(" ",
 					texts.stream().map(Text::getText).filter(Objects::nonNull).collect(Collectors.toList()));
@@ -50,8 +55,8 @@ public class OCRData {
 			return this.text;
 		}
 		
-		public Shape getShape() {
-			return this.polygon;
+		public Area getArea() {
+			return this.area;
 		}
 		
 		public List<Text> getTokens() {
@@ -61,7 +66,7 @@ public class OCRData {
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
-			var shape = this.polygon.getBounds();
+			var shape = this.area.getBounds();
 			Double w = Double.valueOf(shape.getWidth());
 			Double h = Double.valueOf(shape.getHeight());
 			builder.append('[').append(w).append('x').append(h).
@@ -70,6 +75,13 @@ public class OCRData {
 		}
 	}
 
+	/**
+	 * 
+	 * Single textual token, i.e. word, abbreviation or alike.
+	 * 
+	 * @author u.hartwig
+	 *
+	 */
 	public static class Text {
 		private String text;
 		private Rectangle rect;

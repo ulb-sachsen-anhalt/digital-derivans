@@ -157,6 +157,37 @@ public class TestDerivans {
 		Path pdfWritten = pathTarget.resolve("191092622.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
+	
+	@Test
+	@Order(5)
+	void testDerivatesWithOCRLayer(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path pathTarget = tempDir.resolve("737429");
+		Path pathImageMax = pathTarget.resolve("MAX");
+		Files.createDirectories(pathImageMax);
+		generateJpgsFromList(pathImageMax, 1240, 1754, List.of("737434", "737436", "737437", "737438"));
+
+		Path sourceMets = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
+		Path targetMets = pathTarget.resolve(Path.of("737429.mets.xml"));
+		Files.copy(sourceMets, targetMets);
+		Path sourceOcr = Path.of("src/test/resources/alto/737429/FULLTEXT");
+		Path targetOcr = pathTarget.resolve("FULLTEXT");
+		copyTree(sourceOcr, targetOcr);
+
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathInput(pathTarget);
+		dp.setPathInput(targetMets);
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		Derivans derivans = new Derivans(dc);
+
+		// act
+		derivans.create();
+
+		// assert
+		Path pdfWritten = pathTarget.resolve("191092622.pdf");
+		assertTrue(Files.exists(pdfWritten));
+	}
 
 	public static Path arrangeMetaddatenAndImagesFor737429(Path tempDir) throws IOException {
 		Path pathTarget = tempDir.resolve("737429");

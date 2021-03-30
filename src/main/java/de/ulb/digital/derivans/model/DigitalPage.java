@@ -23,31 +23,50 @@ public class DigitalPage {
 
 	private Integer orderNr;
 
-	private String filePointer;
+	/**
+	 * Pointer to single physical image for given page
+	 */
+	private File imgFile;
 
-	private Path physicalPath;
-	
-	private OCRData ocrData;
+	/**
+	 * Pointer to optional OCR Data for given page
+	 */
+	private Optional<File> ocrFile = Optional.empty();
+
+	/**
+	 * Container for optional OCRData used for PDF text layer
+	 */
+	private Optional<OCRData> ocrData = Optional.empty();
 
 	private Optional<String> uniqueIdentifier = Optional.empty();
 
 	public DigitalPage(int orderNr, String filePointer) {
 		this.orderNr = orderNr;
-		this.filePointer = filePointer;
-		this.uniqueIdentifier = Optional.empty();
+		this.imgFile = new File(FileType.IMAGE, Path.of(filePointer));
 	}
-	
+
 	public DigitalPage(Path physicalPath) {
-		this.physicalPath = physicalPath;
-		this.uniqueIdentifier = Optional.empty();
+		this.imgFile = new File(FileType.IMAGE, physicalPath);
+	}
+
+	public void setOcrFile(Path ocrPath) {
+		this.ocrFile = Optional.of(new File(FileType.OCR, ocrPath));
+	}
+
+	public Optional<Path> getOcrFile() {
+		if (this.ocrFile.isPresent()) {
+			File ocrFile = this.ocrFile.get();
+			return Optional.of(ocrFile.getPysicalPath());
+		}
+		return Optional.empty();
 	}
 
 	public Integer getOrderNr() {
 		return orderNr;
 	}
 
-	public String getFilePointer() {
-		return this.filePointer;
+	public String getImageFile() {
+		return this.imgFile.physicalPath.toString();
 	}
 
 	public void setIdentifier(String id) {
@@ -60,20 +79,20 @@ public class DigitalPage {
 		return this.uniqueIdentifier;
 	}
 
-	public void setPath(Path path) {
-		this.physicalPath = path;
+	public Path getImagePath() {
+		return this.imgFile.physicalPath;
 	}
 
-	public Path getPath() {
-		return this.physicalPath;
+	public void setImagePath(Path path) {
+		this.imgFile.physicalPath = path;
 	}
 
-	public OCRData getOcrData() {
+	public Optional<OCRData> getOcrData() {
 		return ocrData;
 	}
 
 	public void setOcrData(OCRData ocrData) {
-		this.ocrData = ocrData;
+		this.ocrData = Optional.of(ocrData);
 	}
 
 	@Override
@@ -82,12 +101,44 @@ public class DigitalPage {
 		builder.append("[");
 		if (orderNr != null)
 			builder.append(String.format("%04d", orderNr)).append(":");
-		if (filePointer != null)
-			builder.append(filePointer);
-		else if(physicalPath != null)
-			builder.append(physicalPath);
+		else if (this.imgFile != null && this.imgFile.physicalPath != null)
+			builder.append(this.imgFile.physicalPath);
 		builder.append("]");
 		return builder.toString();
 	}
 
+	/**
+	 * 
+	 * Store data about associated physical resources
+	 * 
+	 * @author u.hartwig
+	 *
+	 */
+	static class File {
+		private FileType fileType;
+		private Path physicalPath;
+
+		public File(FileType fileType, Path phyiscalPath) {
+			this.fileType = fileType;
+			this.physicalPath = phyiscalPath;
+		}
+
+		public Path getPysicalPath() {
+			return physicalPath;
+		}
+
+		public FileType getFileType() {
+			return fileType;
+		}
+
+		@Override
+		public String toString() {
+			return fileType.name() + ":" + physicalPath;
+		}
+
+	}
+
+	static enum FileType {
+		IMAGE, OCR
+	}
 }

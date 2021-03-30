@@ -67,8 +67,8 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 */
 	private List<DigitalPage> enrichPhysicalPath(Path inputPath, List<DigitalPage> pages) {
 		for (DigitalPage page : pages) {
-			Path digitalPath = inputPath.resolve(Path.of(page.getFilePointer()));
-			page.setPath(digitalPath);
+			Path digitalPath = inputPath.resolve(page.getImagePath());
+			page.setImagePath(digitalPath);
 		}
 		return pages;
 	}
@@ -78,7 +78,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	}
 	
 	private void renderFooterGranular(DigitalPage page) {
-		String source = page.getPath().toString();
+		String source = page.getImagePath().toString();
 		String fileNameOut = new File(source).getName();
 		String target = Path.of(outputDir.toString(), fileNameOut).toString();
 
@@ -123,7 +123,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 				if (Math.abs(1.0 - ratio) > MAXIMAL_RATIO_DEVIATION) {
 					footerBuffer = imageProcessor.scale(footerBuffer, ratio);
 					LOGGER.debug("scale footer {}x{} (ratio: {}) for: {}", 
-							footerBuffer.getWidth(), footerBuffer.getHeight(), ratio, page.getPath());
+							footerBuffer.getWidth(), footerBuffer.getHeight(), ratio, page.getImagePath());
 				}
 				
 				BufferedImage textBuffer = addTextLayer2Footer(footerBuffer, footer);
@@ -133,7 +133,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 				imageProcessor.writeJPGWithQuality(image, target, compressionRatio);
 			}
 		} catch (IOException e) {
-			LOGGER.error("pathIn: {}, footer: {} => {}", page.getPath(), footer, e.getMessage());
+			LOGGER.error("pathIn: {}, footer: {} => {}", page.getImagePath(), footer, e.getMessage());
 		}
 	}
 
