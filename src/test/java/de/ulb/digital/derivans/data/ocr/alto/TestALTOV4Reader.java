@@ -57,4 +57,23 @@ public class TestALTOV4Reader {
 		// assert
 		assertEquals(673, actual.getTextlines().size());
 	}
+	
+	@Test
+	void testALTOfromVLS320808() throws Exception {
+		
+		// arrange
+		Path input = Path.of("src/test/resources/alto/148811035/FULLTEXT/320808.xml");
+		ALTOReader reader = new ALTOReader(Type.ALTO_V4);
+		
+		// act
+		var actual = reader.get(input);
+		
+		// assert
+		assertEquals(25, actual.getTextlines().size());
+		Rectangle r01 = actual.getTextlines().get(0).getArea().getBounds();
+		assertEquals(600, r01.x);
+		assertEquals(751, r01.y);
+		assertEquals(1125, r01.width);
+		assertEquals(88, r01.height);
+	}
 }

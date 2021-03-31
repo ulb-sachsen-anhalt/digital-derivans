@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" SCHEMAVERSION="4.1" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-1.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>00000013.jpg</fileName>
+    </sourceImageInformation>
+    <Processing ID="pro1">
+      <processingStepDescription>preprocessing/optimization/binarization ocrd-olena-binarize</processingStepDescription>
+    </Processing>
+    <Processing ID="pro2">
+      <processingStepDescription>preprocessing/optimization/cropping ocrd-anybaseocr-crop</processingStepDescription>
+    </Processing>
+    <Processing ID="pro3">
+      <processingStepDescription>preprocessing/optimization/despeckling ocrd-cis-ocropy-denoise</processingStepDescription>
+    </Processing>
+    <Processing ID="pro4">
+      <processingStepDescription>preprocessing/optimization/deskewing ocrd-cis-ocropy-deskew</processingStepDescription>
+    </Processing>
+    <Processing ID="pro5">
+      <processingStepDescription>layout/segmentation/region ocrd-tesserocr-segment-region</processingStepDescription>
+    </Processing>
+    <Processing ID="pro6">
+      <processingStepDescription>layout/segmentation/region ocrd-segment-repair</processingStepDescription>
+    </Processing>
+    <Processing ID="pro7">
+      <processingStepDescription>layout/segmentation/region ocrd-cis-ocropy-clip</processingStepDescription>
+    </Processing>
+    <Processing ID="pro8">
+      <processingStepDescription>layout/segmentation/region ocrd-cis-ocropy-segment</processingStepDescription>
+    </Processing>
+    <Processing ID="pro9">
+      <processingStepDescription>preprocessing/optimization/dewarping ocrd-cis-ocropy-dewarp</processingStepDescription>
+    </Processing>
+    <Processing ID="pro10">
+      <processingStepDescription>recognition/text-recognition ocrd-tesserocr-recognize</processingStepDescription>
+    </Processing>
+  </Description>
+  <Layout>
+    <Page HEIGHT="2556" ID="p00000013" PAGECLASS="content" PHYSICAL_IMG_NR="0" WIDTH="2164">
+      <PrintSpace ID="PageSpaceTypeID0">
+        <TextBlock HEIGHT="15" HPOS="253" ID="region0000" IDNEXT="region0001" VPOS="457" WIDTH="20">
+          <TextLine HEIGHT="15" HPOS="253" ID="region0000_line" VPOS="457" WIDTH="20">
+            <String CONTENT="—" HEIGHT="5" HPOS="258" ID="region0000_line_word0000" VPOS="465" WIDTH="10"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock HEIGHT="531" HPOS="166" ID="region0002" VPOS="53" WIDTH="50"/>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

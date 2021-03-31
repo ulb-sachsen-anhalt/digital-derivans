@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" SCHEMAVERSION="4.1" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-1.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>00000005.jpg</fileName>
+    </sourceImageInformation>
+    <Processing ID="pro1">
+      <processingStepDescription>preprocessing/optimization/binarization ocrd-olena-binarize</processingStepDescription>
+    </Processing>
+    <Processing ID="pro2">
+      <processingStepDescription>preprocessing/optimization/cropping ocrd-anybaseocr-crop</processingStepDescription>
+    </Processing>
+    <Processing ID="pro3">
+      <processingStepDescription>preprocessing/optimization/despeckling ocrd-cis-ocropy-denoise</processingStepDescription>
+    </Processing>
+    <Processing ID="pro4">
+      <processingStepDescription>preprocessing/optimization/deskewing ocrd-cis-ocropy-deskew</processingStepDescription>
+    </Processing>
+    <Processing ID="pro5">
+      <processingStepDescription>layout/segmentation/region ocrd-tesserocr-segment-region</processingStepDescription>
+    </Processing>
+    <Processing ID="pro6">
+      <processingStepDescription>layout/segmentation/region ocrd-segment-repair</processingStepDescription>
+    </Processing>
+    <Processing ID="pro7">
+      <processingStepDescription>layout/segmentation/region ocrd-cis-ocropy-clip</processingStepDescription>
+    </Processing>
+    <Processing ID="pro8">
+      <processingStepDescription>layout/segmentation/region ocrd-cis-ocropy-segment</processingStepDescription>
+    </Processing>
+    <Processing ID="pro9">
+      <processingStepDescription>preprocessing/optimization/dewarping ocrd-cis-ocropy-dewarp</processingStepDescription>
+    </Processing>
+    <Processing ID="pro10">
+      <processingStepDescription>recognition/text-recognition ocrd-tesserocr-recognize</processingStepDescription>
+    </Processing>
+  </Description>
+  <Layout>
+    <Page HEIGHT="2556" ID="p00000005" PAGECLASS="content" PHYSICAL_IMG_NR="0" WIDTH="2164">
+      <PrintSpace ID="PageSpaceTypeID0">
+        <TextBlock HEIGHT="83" HPOS="835" ID="region0000" IDNEXT="region0001" VPOS="231" WIDTH="184">
+          <TextLine HEIGHT="82" HPOS="835" ID="region0000_line0000" VPOS="231" WIDTH="183">
+            <String CONTENT="Reue" HEIGHT="78" HPOS="840" ID="region0000_line0000_word0000" VPOS="256" WIDTH="174"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock HEIGHT="202" HPOS="559" ID="region0001" IDNEXT="region0002" VPOS="323" WIDTH="695">
+          <TextLine HEIGHT="201" HPOS="559" ID="region0001_line0000" VPOS="323" WIDTH="694">
+            <String CONTENT="Friedens-" HEIGHT="195" HPOS="564" ID="region0001_line0000_word0000" VPOS="368" WIDTH="685"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock HEIGHT="78" HPOS="812" ID="region0002" IDNEXT="region0003" VPOS="923" WIDTH="201">
+          <TextLine HEIGHT="77" HPOS="812" ID="region0002_line0000" VPOS="923" WIDTH="200">
+            <String CONTENT="Welche" HEIGHT="68" HPOS="817" ID="region0002_line0000_word0000" VPOS="943" WIDTH="191"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock HEIGHT="351" HPOS="168" ID="region0003" IDNEXT="region0004" VPOS="997" WIDTH="1466">
+          <TextLine HEIGHT="157" HPOS="431" ID="region0003_line0000" VPOS="997" WIDTH="987">
+            <String CONTENT="Mon" HEIGHT="137" HPOS="621" ID="region0003_line0000_word0000" VPOS="1041" WIDTH="216"/>
+            <SP/>
+            <String CONTENT="Seiten" HEIGHT="144" HPOS="901" ID="region0003_line0000_word0001" VPOS="1038" WIDTH="314"/>
+          </TextLine>
+          <TextLine HEIGHT="224" HPOS="168" ID="region0003_line0001" VPOS="1123" WIDTH="1465">
+            <String CONTENT="Sr" HEIGHT="152" HPOS="171" ID="region0003_line0001_word0000" VPOS="1228" WIDTH="230"/>
+            <SP/>
+            <String CONTENT="Kaͤyſerlichen" HEIGHT="195" HPOS="412" ID="region0003_line0001_word0001" VPOS="1201" WIDTH="719"/>
+            <SP/>
+            <String CONTENT="ſä" HEIGHT="181" HPOS="1481" ID="region0003_line0001_word0002" VPOS="1187" WIDTH="148"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock HEIGHT="245" HPOS="272" ID="region0004" IDNEXT="region0005" VPOS="1449" WIDTH="1292">
+          <TextLine HEIGHT="204" HPOS="272" ID="region0004_line0000" VPOS="1449" WIDTH="1291">
+            <String CONTENT="SeroVohenMllurten," HEIGHT="191" HPOS="277" ID="region0004_line0000_word0000" VPOS="1504" WIDTH="1282"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock HEIGHT="89" HPOS="723" ID="region0005" IDNEXT="region0006" VPOS="1663" WIDTH="503">
+          <TextLine HEIGHT="88" HPOS="723" ID="region0005_line0000" VPOS="1663" WIDTH="502">
+            <String CONTENT="Denemenget" HEIGHT="74" HPOS="728" ID="region0005_line0000_word0000" VPOS="1686" WIDTH="403"/>
+            <SP/>
+            <String CONTENT="ZZ" HEIGHT="5" HPOS="1214" ID="region0005_line0000_word0001" VPOS="1750" WIDTH="7"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock HEIGHT="159" HPOS="175" ID="region0006" IDNEXT="region0007" VPOS="1771" WIDTH="1514">
+          <TextLine HEIGHT="158" HPOS="175" ID="region0006_line0000" VPOS="1771" WIDTH="1513">
+            <String CONTENT="Do" HEIGHT="136" HPOS="180" ID="region0006_line0000_word0000" VPOS="1811" WIDTH="159"/>
+            <SP/>
+            <String CONTENT="die" HEIGHT="119" HPOS="362" ID="region0006_line0000_word0001" VPOS="1824" WIDTH="121"/>
+            <SP/>
+            <String CONTENT="Vron" HEIGHT="134" HPOS="506" ID="region0006_line0000_word0002" VPOS="1812" WIDTH="265"/>
+            <SP/>
+            <String CONTENT="Rranckreich" HEIGHT="140" HPOS="795" ID="region0006_line0000_word0003" VPOS="1806" WIDTH="523"/>
+            <SP/>
+            <String CONTENT="auf" HEIGHT="122" HPOS="1348" ID="region0006_line0000_word0004" VPOS="1817" WIDTH="153"/>
+            <SP/>
+            <String CONTENT="dem" HEIGHT="112" HPOS="1516" ID="region0006_line0000_word0005" VPOS="1823" WIDTH="172"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock HEIGHT="177" HPOS="366" ID="region0007" IDNEXT="region0008" VPOS="1905" WIDTH="1140">
+          <TextLine HEIGHT="117" HPOS="366" ID="region0007_line0000" VPOS="1905" WIDTH="1139">
+            <String CONTENT="Friedens-Congreß" HEIGHT="85" HPOS="371" ID="region0007_line0000_word0000" VPOS="1923" WIDTH="567"/>
+            <SP/>
+            <String CONTENT="in" HEIGHT="66" HPOS="957" ID="region0007_line0000_word0001" VPOS="1931" WIDTH="65"/>
+            <SP/>
+            <String CONTENT="Utrecht" HEIGHT="85" HPOS="1036" ID="region0007_line0000_word0002" VPOS="1925" WIDTH="222"/>
+            <SP/>
+            <String CONTENT="gethan" HEIGHT="87" HPOS="1279" ID="region0007_line0000_word0003" VPOS="1922" WIDTH="222"/>
+            <SP/>
+            <String CONTENT="/" HEIGHT="109" HPOS="1467" ID="region0007_line0000_word0004" VPOS="1908" WIDTH="35"/>
+          </TextLine>
+          <TextLine HEIGHT="86" HPOS="522" ID="region0007_line0001" VPOS="1995" WIDTH="789">
+            <String CONTENT="entgegen" HEIGHT="61" HPOS="619" ID="region0007_line0001_word0000" VPOS="2011" WIDTH="219"/>
+            <SP/>
+            <String CONTENT="geſetzet" HEIGHT="68" HPOS="861" ID="region0007_line0001_word0001" VPOS="2005" WIDTH="173"/>
+            <SP/>
+            <String CONTENT="worden." HEIGHT="52" HPOS="1045" ID="region0007_line0001_word0002" VPOS="2011" WIDTH="210"/>
+          </TextLine>
+          <TextLine HEIGHT="21" HPOS="1153" ID="region0007_line0002" VPOS="2060" WIDTH="326">
+            <String CONTENT="LLL" HEIGHT="25" HPOS="1183" ID="region0007_line0002_word0000" VPOS="2066" WIDTH="47"/>
+            <SP/>
+            <String CONTENT="—" HEIGHT="5" HPOS="1287" ID="region0007_line0002_word0001" VPOS="2081" WIDTH="43"/>
+            <SP/>
+            <String CONTENT="—" HEIGHT="25" HPOS="1356" ID="region0007_line0002_word0002" VPOS="2066" WIDTH="21"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock HEIGHT="71" HPOS="545" ID="region0008" IDNEXT="region0009" VPOS="2097" WIDTH="728">
+          <TextLine HEIGHT="17" HPOS="545" ID="region0008_line0000" VPOS="2097" WIDTH="177">
+            <String CONTENT="—" HEIGHT="20" HPOS="545" ID="region0008_line0000_word0000" VPOS="2097" WIDTH="26"/>
+            <SP/>
+            <String CONTENT="—SA" HEIGHT="7" HPOS="545" ID="region0008_line0000_word0001" VPOS="2101" WIDTH="169"/>
+          </TextLine>
+          <TextLine HEIGHT="70" HPOS="545" ID="region0008_line0001" VPOS="2097" WIDTH="727">
+            <String CONTENT="Gedruckt" HEIGHT="55" HPOS="550" ID="region0008_line0001_word0000" VPOS="2112" WIDTH="201"/>
+            <SP/>
+            <String CONTENT="den" HEIGHT="45" HPOS="761" ID="region0008_line0001_word0001" VPOS="2113" WIDTH="73"/>
+            <SP/>
+            <String CONTENT="9," HEIGHT="38" HPOS="844" ID="region0008_line0001_word0002" VPOS="2127" WIDTH="44"/>
+            <SP/>
+            <String CONTENT="Mart," HEIGHT="49" HPOS="899" ID="region0008_line0001_word0003" VPOS="2112" WIDTH="145"/>
+            <SP/>
+            <String CONTENT="Anno" HEIGHT="48" HPOS="1053" ID="region0008_line0001_word0004" VPOS="2112" WIDTH="124"/>
+            <SP/>
+            <String CONTENT="171" HEIGHT="37" HPOS="1193" ID="region0008_line0001_word0005" VPOS="2123" WIDTH="75"/>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.data.ocr;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +22,6 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 import de.ulb.digital.derivans.model.ocr.OCRData.Textline;
 
-
-
 /**
  * 
  * Transform ALTO OCR data into domain OCR data
@@ -33,13 +32,13 @@ import de.ulb.digital.derivans.model.ocr.OCRData.Textline;
 public class ALTOReader implements OCRReader {
 
 	private Document document;
-	
+
 	protected Type type;
-	
+
 	public ALTOReader(Type type) {
 		this.type = type;
 	}
-	
+
 	@Override
 	public OCRData get(Path pathOcr) throws DigitalDerivansException {
 		File f = new File(pathOcr.toString());
@@ -51,28 +50,42 @@ public class ALTOReader implements OCRReader {
 			throw new DigitalDerivansException(e);
 		}
 		var lines = extractTextLines();
-		return new OCRData(lines);
+		var dim = extractPageDimension();
+		return new OCRData(lines, dim);
+	}
+
+	private Dimension extractPageDimension() {
+		Element page = extractElements(new ElementFilter("Page")).get(0);
+		int w = Integer.valueOf(page.getAttributeValue("WIDTH"));
+		int h = Integer.valueOf(page.getAttributeValue("HEIGHT"));
+		return new Dimension(w, h);
 	}
 
 	protected List<Textline> extractTextLines() {
 		List<OCRData.Textline> lines = new ArrayList<>();
-		
-		IteratorIterable<Element> elemIt = document.getDescendants(new ElementFilter("TextLine"));
-		while(elemIt.hasNext()) {
-			Element el = elemIt.next();
+		List<Element> altoLines = extractElements(new ElementFilter("TextLine"));
+		for (Element el : altoLines) {
 			List<Element> strings = el.getChildren("String", getType().toNS());
 			var texts = strings.parallelStream().map(ALTOReader::toText).collect(Collectors.toList());
-			if(!texts.isEmpty()) {
+			if (!texts.isEmpty()) {
 				OCRData.Textline line = new OCRData.Textline(texts);
 				lines.add(line);
 			}
 		}
-		
 		return lines;
 	}
 
+	protected List<Element> extractElements(ElementFilter filter) {
+		List<Element> elements = new ArrayList<>();
+		IteratorIterable<Element> elemIt = document.getDescendants(filter);
+		while (elemIt.hasNext()) {
+			elements.add(elemIt.next());
+		}
+		return elements;
+	}
+
 	static OCRData.Text toText(Element word) {
-		String content = word.getAttributeValue("CONTENT"); 
+		String content = word.getAttributeValue("CONTENT");
 		int x = Integer.valueOf(word.getAttributeValue("HPOS"));
 		int y = Integer.valueOf(word.getAttributeValue("VPOS"));
 		int width = Integer.valueOf(word.getAttributeValue("WIDTH"));

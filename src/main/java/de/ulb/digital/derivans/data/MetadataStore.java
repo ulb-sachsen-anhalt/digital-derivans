@@ -1,9 +1,13 @@
 package de.ulb.digital.derivans.data;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,9 +23,11 @@ import org.mycore.mets.model.struct.PhysicalStructMap;
 import org.mycore.mets.model.struct.PhysicalSubDiv;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**
  * 
@@ -32,14 +38,20 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
  */
 public class MetadataStore implements IMetadataStore {
 
-	private static final Logger LOGGER = LogManager.getLogger(MetadataStore.class);
+	// METS file group for images with maximal resolution
+	public static final String FILEGROUP_MAX = "MAX";
+
+	// METS file group for OCR-data with, most likely, MIMETYPE="application/alto+xml"
+	public static final String FILEGROUP_FULLTEXT = "FULLTEXT";
 
 	// Mark unresolved information about author, title, ...
 	public static final String UNKNOWN = "n.a.";
 
-	static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
+	public static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
+
+	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 	
-	static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
+	private static final Logger LOGGER = LogManager.getLogger(MetadataStore.class);
 
 	private DescriptiveData descriptiveData;
 
@@ -89,21 +101,26 @@ public class MetadataStore implements IMetadataStore {
 			PhysicalStructMap physStruct = mets.getPhysicalStructMap();
 			if (physStruct != null) {
 				for (PhysicalSubDiv physSubDiv : physStruct.getDivContainer().getChildren()) {
-					String fptrsFirstId = requestFilePointerID(physSubDiv);
-					String fileRefSegment = requestFileReference(fptrsFirstId);
-					if (!fileRefSegment.isBlank()) {
-						// sanitize file endings that are missing in METS links for valid local access
-						if (!fileRefSegment.endsWith(".jpg")) {
-							fileRefSegment += ".jpg";
-						}
-						DigitalPage page = new DigitalPage(n, fileRefSegment);
-						String contentIds = physSubDiv.getContentIds();
-						if (contentIds != null) {
-							LOGGER.debug("[{}] contentids '{}'", physSubDiv.getId(), contentIds);
-							page.setIdentifier(contentIds);
-						}
-						pages.add(page);
+					List<FilePointerMatch> fptrs = getFilePointer(physSubDiv);
+					DigitalPage page = new DigitalPage(n);
+
+					// handle image file
+					Optional<FilePointerMatch> optMaxImage = fptrs.stream()
+							.filter(fptr -> FILEGROUP_MAX.equals(fptr.getFileGroup())).findFirst();
+					if (optMaxImage.isPresent()) {
+						FilePointerMatch match = optMaxImage.get();
+						enrichImageData(physSubDiv, page, match);
 					}
+					
+					// handle optional attached ocr file
+					Optional<FilePointerMatch> optFulltext = fptrs.stream()
+							.filter(fptr -> FILEGROUP_FULLTEXT.equals(fptr.getFileGroup())).findFirst();
+					if (optFulltext.isPresent()) {
+						FilePointerMatch match = optFulltext.get();
+						enrichFulltextData(physSubDiv, page, match);
+					}
+					
+					pages.add(page);
 					n++;
 				}
 			}
@@ -111,37 +128,95 @@ public class MetadataStore implements IMetadataStore {
 		return pages;
 	}
 
-	private String requestFilePointerID(PhysicalSubDiv physSubDiv) {
-		var filePointers = physSubDiv.getChildren();
-		if (filePointers.isEmpty()) {
-			LOGGER.warn("missing filePointers Entry!");
-			return UNKNOWN;
+	/**
+	 * 
+	 * Enrich Information about physical images that represent pages
+	 * <ul>
+	 * 	<li>sanitize file extension (likely missing when got over OAI)</li>
+	 * 	<li>take care of optional granular URN as unique identifier</li>
+	 * </ul>
+	 * 
+	 * @param physSubDiv
+	 * @param page
+	 * @param match
+	 */
+	private void enrichImageData(PhysicalSubDiv physSubDiv, DigitalPage page, FilePointerMatch match) {
+		String fileRefSegment = match.reference;
+		// sanitize file endings that are missing in METS links for valid local access
+		if (!fileRefSegment.endsWith(".jpg")) {
+			fileRefSegment += ".jpg";
 		}
-		if (filePointers.size() != 1) {
-			LOGGER.warn("ambigious filePointers Entry: {}, use first one anyway", filePointers.size());
+		page.setImagePath(Path.of(fileRefSegment));
+		// handle granular urn (aka CONTENTIDS)
+		String contentIds = physSubDiv.getContentIds();
+		if (contentIds != null) {
+			LOGGER.debug("[{}] contentids '{}'", physSubDiv.getId(), contentIds);
+			page.setIdentifier(contentIds);
 		}
-		return filePointers.get(0).getFileId();
+	}
+	
+	private void enrichFulltextData(PhysicalSubDiv physSubDiv, DigitalPage page, FilePointerMatch match) {
+		String fileRefSegment = match.reference;
+		Path ocrFilePath = sanitizePath(Path.of(fileRefSegment)); 
+		try {
+			OCRData data = OCRReaderFactory.get(ocrFilePath).get(ocrFilePath);
+			page.setOcrData(data);
+			LOGGER.debug("[{}] enriched ocr data with '{}' lines", physSubDiv.getId(), data.getTextlines().size());
+		} catch (DigitalDerivansException e) {
+			LOGGER.error(e);
+		}
 	}
 
-	private String requestFileReference(String fptrId) {
-		// inspect ALL FileGrps, not only "MAX"
+	/**
+	 * 
+	 * Guess where OCR-Data physically resides
+	 * 
+	 * @param path
+	 * @return
+	 */
+	private Path sanitizePath(Path path) {
+		Path metsDir = this.handler.getPath().getParent();
+		Path p = metsDir.resolve(Path.of(FILEGROUP_FULLTEXT)).resolve(path);
+		if(Files.exists(p, LinkOption.NOFOLLOW_LINKS)) {
+			LOGGER.debug("found ocr data file '{}'", p);
+			return p;
+		}
+		return path;
+	}
+
+	private List<FilePointerMatch> getFilePointer(PhysicalSubDiv physSubDiv) {
+		var filePointers = physSubDiv.getChildren();
+		return filePointers.stream().map(Fptr::getFileId).map(this::matchFileGroup).collect(Collectors.toList());
+	}
+
+	/**
+	 * 
+	 * Inspect ALL METS FileGrps, not only "MAX", to match the provided physical
+	 * identifier
+	 * 
+	 * @param fptrId
+	 * @return
+	 */
+	private FilePointerMatch matchFileGroup(String fptrId) {
 		for (FileGrp fileGrp : mets.getFileSec().getFileGroups()) {
 			for (File fileGrpfile : fileGrp.getFileList()) {
 				if (fileGrpfile.getId().equals(fptrId)) {
 					String link = fileGrpfile.getFLocat().getHref();
 					if (!link.isBlank()) {
 						String[] linkTokens = link.split("/");
-						return linkTokens[linkTokens.length - 1];
+						String reference = linkTokens[linkTokens.length - 1];
+						return new FilePointerMatch(fileGrp.getUse(), reference);
 					}
 				}
 			}
 		}
-		return "";
+		// dummy return
+		return new FilePointerMatch();
 	}
 
 	@Override
 	public boolean enrichPDF(String identifier) {
-		if(MetadataStore.UNKNOWN.equals(identifier)) {
+		if (MetadataStore.UNKNOWN.equals(identifier)) {
 			LOGGER.warn("no mets available to enrich created PDF");
 			return false;
 		}
@@ -189,7 +264,34 @@ public class MetadataStore implements IMetadataStore {
 		}
 		return descriptiveData;
 	}
-	
+
+	/**
+	 * 
+	 * Carry the knowledge, which res ID belongs to which group, through execution
+	 * time.
+	 * 
+	 * @author u.hartwig
+	 *
+	 */
+	static class FilePointerMatch {
+
+		private String fileGroup = UNKNOWN;
+		private String reference = UNKNOWN;
+
+		public FilePointerMatch() {
+		}
+
+		public FilePointerMatch(String fileGroup, String reference) {
+			this.fileGroup = fileGroup;
+			this.reference = reference;
+		}
+
+		public String getFileGroup() {
+			return fileGroup;
+		}
+
+		public String getReference() {
+			return reference;
+		}
+	}
 }
-
-

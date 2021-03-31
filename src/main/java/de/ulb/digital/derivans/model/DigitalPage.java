@@ -9,11 +9,12 @@ import de.ulb.digital.derivans.model.ocr.OCRData;
  * 
  * Representation of a single digital page with the following properties:
  * <ul>
- * <li>orderNr: where the page must be sorted in a work that it is part of</li>
- * <li>filePointer: valid link to physical representation (via
+ * <li>orderNr: order of page in a larger, compound work</li>
+ * <li>image file: {@link File} path to physical image representation (via
  * METS-FileGroup)</li>
- * <li>path: Path of physical image representation as local image file</li>
- * <li>optional: sort of unique, granular identifier for each page</li>
+ * <li>opt. ocr file: {@link File} path to physical OCR Data</li>
+ * <li>opt. ocr data: {@link OCRData} that has been read from ocr file</li>
+ * <li>opt. identifier: unique, granular identifier</li>
  * </ul>
  * 
  * @author hartwig
@@ -40,6 +41,11 @@ public class DigitalPage {
 
 	private Optional<String> uniqueIdentifier = Optional.empty();
 
+	
+	public DigitalPage(int orderNr) {
+		this.orderNr = orderNr;
+	}
+	
 	public DigitalPage(int orderNr, String filePointer) {
 		this.orderNr = orderNr;
 		this.imgFile = new File(FileType.IMAGE, Path.of(filePointer));
@@ -84,7 +90,7 @@ public class DigitalPage {
 	}
 
 	public void setImagePath(Path path) {
-		this.imgFile.physicalPath = path;
+		this.imgFile = new File(FileType.IMAGE, path);
 	}
 
 	public Optional<OCRData> getOcrData() {

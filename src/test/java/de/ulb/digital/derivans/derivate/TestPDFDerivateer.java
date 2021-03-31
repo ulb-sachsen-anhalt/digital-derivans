@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -174,11 +175,12 @@ public class TestPDFDerivateer {
 			texts3.add(new OCRData.Text("chiao", new Rectangle(360, 300, 50, 15)));
 			texts3.add(new OCRData.Text("chiao", new Rectangle(420, 300, 50, 15)));
 			texts3.add(new OCRData.Text("chiao!", new Rectangle(480, 300, 50, 15)));
-			OCRData ocrData = new OCRData(List.of(
+			List<OCRData.Textline> lines = List.of(
 					new OCRData.Textline(texts1), 
 					new OCRData.Textline(texts4),
 					new OCRData.Textline(texts2),
-					new OCRData.Textline(texts3)));
+					new OCRData.Textline(texts3));
+			OCRData ocrData = new OCRData(lines, new Dimension(575, 799));
 			
 			e.setOcrData(ocrData);
 			pages.add(e);

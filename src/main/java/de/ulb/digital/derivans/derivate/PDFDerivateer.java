@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -192,37 +193,45 @@ public class PDFDerivateer extends BaseDerivateer {
 		PdfContentByte cb = writer.getDirectContentUnder();
 		cb.saveState();
 
-		int pageHeight = 800;
-
 		// some text, if any
 		if (page.getOcrData().isPresent()) {
 			OCRData ocrData = page.getOcrData().get(); 
+			int pageHeight = ocrData.getPageHeight();
 			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
 			for (int i = 0; i < ocrLines.size(); i++) {
-				String text = ocrLines.get(i).getText();
-				Area a = ocrLines.get(i).getArea();
-				Rectangle box = toItextBox(a);
-
-				// Calculate vertical transition (text is rendered at baseline -> descending
-				// bits are below the chosen position)
-				float fontSize = a.getBounds().height;
-				int descent = (int) font.getDescentPoint(text, fontSize);
-				int ascent = (int) font.getAscentPoint(text, fontSize);
-				int textHeight = Math.abs(descent) + ascent;
-				int transY = descent;
-
-				if (textHeight < box.getHeight()) {
-					transY = (int) (descent - (box.getHeight() - textHeight) / 2);
+				List<OCRData.Text> texts = ocrLines.get(i).getTokens();
+				for(OCRData.Text txt : texts) {
+					
+					String text = txt.getText();
+					Rectangle box = toItextBox(txt.getBox());
+	
+					// Calculate vertical transition (text is rendered at baseline -> descending
+					// bits are below the chosen position)
+					float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
+					
+					// what he hell?
+					int descent = (int) font.getDescentPoint(text, fontSize);
+					int ascent = (int) font.getAscentPoint(text, fontSize);
+					int textHeight = Math.abs(descent) + ascent;
+					int transY = descent;
+	
+					if (textHeight < box.getHeight()) {
+						transY = (int) (descent - (box.getHeight() - textHeight) / 2);
+					}
+	
+					// render actual text
+					cb.beginText();
+					float x = box.getLeft();
+					float y = pageHeight - box.getBottom();
+					LOGGER.info("moveText '{}' to render at {}x{} (fontsize:{})", text, x, y, fontSize);
+//					cb.moveText(x, y);
+//					cb.moveText(box.getLeft(), box.getBottom());
+					cb.setTextMatrix(x, (y - transY - 150));
+					cb.setFontAndSize(font, fontSize);
+					cb.setColorFill(BaseColor.WHITE);
+					cb.showText(text);
+					cb.endText();
 				}
-
-				// render actual text
-				cb.beginText();
-				cb.moveText(box.getLeft(), pageHeight - box.getBottom());
-				cb.setTextMatrix(box.getLeft(), pageHeight - box.getBottom() - transY);
-				cb.setFontAndSize(font, fontSize);
-				cb.setColorFill(BaseColor.BLACK);
-				cb.showText(text);
-				cb.endText();
 			}
 		}
 		// handle overlying image
@@ -232,9 +241,29 @@ public class PDFDerivateer extends BaseDerivateer {
 		cb.addImage(image);
 		cb.restoreState();
 	}
+	
+	/**
+	 * Calculates the font size to fit the given text into the specified dimensions.
+	 * @param text
+	 * @param width
+	 * @param height
+	 * @return
+	 * @throws IOException
+	 */
+	static float calculateFontSize(BaseFont font, String text, float width, float height) throws IOException {
+		float sw = font.getWidth(text);
+		//float fontSizeX = width * 1000.0f / (sw * 0.865f);
+		float fontSizeX = sw / 1000.0f * height;
+		//Validate and reduce font size until it fits
+		Chunk chunk = new Chunk(text, new Font(font, fontSizeX));;
+		while (chunk.getWidthPoint() > width) {
+			fontSizeX -= 5f;
+			chunk = new Chunk(text, new Font(font, fontSizeX));
+		}
+		return fontSizeX;
+	}
 
-	private static Rectangle toItextBox(Area a) {
-		java.awt.Rectangle r = a.getBounds();
+	private static Rectangle toItextBox(java.awt.Rectangle r) {
 		com.itextpdf.awt.geom.Point tPoint = new com.itextpdf.awt.geom.Point(r.x, r.y);
 		com.itextpdf.awt.geom.Dimension tDim = new com.itextpdf.awt.geom.Dimension(r.width,	r.height);
 		com.itextpdf.awt.geom.Rectangle tmp = new com.itextpdf.awt.geom.Rectangle(tPoint, tDim);

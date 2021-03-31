@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.model.ocr;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.util.ArrayList;
@@ -16,15 +17,22 @@ import java.util.stream.Collectors;
  *
  */
 public class OCRData {
+	
+	private Dimension dimension;
 
 	private List<Textline> textlines;
 
-	public OCRData(List<Textline> lines) {
+	public OCRData(List<Textline> lines, Dimension dim) {
 		this.textlines = lines;
+		this.dimension = dim;
 	}
 
 	public List<Textline> getTextlines() {
 		return this.textlines;
+	}
+	
+	public int getPageHeight() {
+		return dimension.height;
 	}
 
 	/**
@@ -41,11 +49,15 @@ public class OCRData {
 
 		public Textline(List<Text> texts) {
 			this.tokens = texts;
+			this.area = new Area();
 			List<Rectangle> boxes = texts.stream().map(Text::getBox).collect(Collectors.toList());
 			if(!boxes.isEmpty()) {
-				Area first = new Area(boxes.remove(0));
-				boxes.forEach(box -> first.add(new Area(box)));
-				this.area = first;
+				for(Rectangle r : boxes) {
+					this.area.add(new Area(r));
+				}
+//				Area first = new Area(boxes.remove(0));
+//				boxes.forEach(box -> first.add(new Area(box)));
+//				this.area = first;
 			}
 			this.text = String.join(" ",
 					texts.stream().map(Text::getText).filter(Objects::nonNull).collect(Collectors.toList()));

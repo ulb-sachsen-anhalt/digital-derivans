@@ -258,7 +258,9 @@ public class Derivans {
 	}
 
 	private boolean inspect(List<DigitalPage> pages) {
-		return pages.stream().filter(page -> page.getIdentifier().isPresent()).map(page -> page.getIdentifier().get())
+		return pages.stream()
+				.filter(page -> page.getIdentifier().isPresent())
+				.map(page -> page.getIdentifier().get())
 				.findAny().isPresent();
 	}
 

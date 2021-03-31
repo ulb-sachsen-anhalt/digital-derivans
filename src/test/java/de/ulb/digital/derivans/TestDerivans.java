@@ -16,6 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
@@ -160,18 +162,21 @@ public class TestDerivans {
 	
 	@Test
 	@Order(5)
-	void testDerivatesWithOCRLayer(@TempDir Path tempDir) throws Exception {
+	void testDerivateWithOCRLayer(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		Path pathTarget = tempDir.resolve("737429");
+		Path pathTarget = tempDir.resolve("148811035");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-		generateJpgsFromList(pathImageMax, 1240, 1754, List.of("737434", "737436", "737437", "737438"));
+//		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
+//		copyTree(sourceImageDir, pathImageMax);
+		List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d", i)).collect(Collectors.toList());
+		generateJpgsFromList(pathImageMax, 2164, 2556, ids);
 
-		Path sourceMets = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
-		Path targetMets = pathTarget.resolve(Path.of("737429.mets.xml"));
+		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
+		Path targetMets = pathTarget.resolve(Path.of("mets.xml"));
 		Files.copy(sourceMets, targetMets);
-		Path sourceOcr = Path.of("src/test/resources/alto/737429/FULLTEXT");
+		Path sourceOcr = Path.of("src/test/resources/alto/148811035/FULLTEXT");
 		Path targetOcr = pathTarget.resolve("FULLTEXT");
 		copyTree(sourceOcr, targetOcr);
 
@@ -185,7 +190,7 @@ public class TestDerivans {
 		derivans.create();
 
 		// assert
-		Path pdfWritten = pathTarget.resolve("191092622.pdf");
+		Path pdfWritten = pathTarget.resolve("148811035.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
 
