@@ -162,7 +162,7 @@ public class TestDerivans {
 	
 	@Test
 	@Order(5)
-	void testDerivateWithOCRLayer(@TempDir Path tempDir) throws Exception {
+	void testDerivateWithFulltext(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path pathTarget = tempDir.resolve("148811035");
@@ -171,7 +171,7 @@ public class TestDerivans {
 //		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
 //		copyTree(sourceImageDir, pathImageMax);
 		List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d", i)).collect(Collectors.toList());
-		generateJpgsFromList(pathImageMax, 2164, 2556, ids);
+		generateJpgsFromList(pathImageMax, 2164, 2448, ids);
 
 		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
 		Path targetMets = pathTarget.resolve(Path.of("mets.xml"));
@@ -184,6 +184,11 @@ public class TestDerivans {
 		dp.setPathInput(pathTarget);
 		dp.setPathInput(targetMets);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		// some scaling, too
+		int maximal = 2339; // A4 200 DPI ok
+//		int maximal = 1754; // A4 150 DPI tw, print vanishes over top up to "Sero ..."
+//		int maximal = 1170; // A4 100 DPI ok with smaller text
+		dc.getDerivateSteps().get(1).setMaximal(maximal);
 		Derivans derivans = new Derivans(dc);
 
 		// act

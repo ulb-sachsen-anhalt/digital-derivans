@@ -1,6 +1,5 @@
 package de.ulb.digital.derivans.derivate;
 
-import java.awt.geom.Area;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,10 +21,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Header;
@@ -51,6 +50,7 @@ import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
 import de.ulb.digital.derivans.model.ocr.OCRData;
+import de.ulb.digital.derivans.model.ocr.OCRData.Textline;
 
 /**
  * 
@@ -123,31 +123,31 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private List<DigitalPage> resolvePaths() throws IOException {
 
-		// check input data dir exists
+		// check input directory exists
 		if (!Files.exists(input.getPath())) {
 			throw new IllegalArgumentException("Invalid inputDir '" + input.getPath() + "'");
 		}
 		Path pathInput = input.getPath();
 
-		// enrich path from inputPath + filePointer (METS)
+		// data from original METS must be replaced, since intermediate 
+		// images are derived unknown to METS-kind
 		if (pages != null && !pages.isEmpty()) {
-			for (DigitalPage page : pages) {
-				String filePointer = page.getImageFile();
-				page.setImagePath(pathInput.resolve(filePointer));
+			for(DigitalPage page : pages) {
+				Path p = page.getImagePath().getFileName();
+				page.setImagePath(pathInput.resolve(p));
 			}
 			return pages;
-		} else {
-			// try to read PDF input images (JPG)from inputPath
-			try (Stream<Path> filesList = Files.list(pathInput)) {
-				List<DigitalPage> digitalPages = filesList.map(pathInput::resolve)
-						.filter((Path p) -> p.toString().endsWith(".jpg")).sorted().map(DigitalPage::new)
-						.collect(Collectors.toList());
-				if (digitalPages.isEmpty()) {
-					throw new IllegalArgumentException("No Images in '" + pathInput + "'");
-				}
-
-				return digitalPages;
+		}
+		// in case of missing any metadata, try to resolve PDF input images (JPG) from inputPath
+		try (Stream<Path> filesList = Files.list(pathInput)) {
+			List<DigitalPage> digitalPages = filesList.map(pathInput::resolve)
+					.filter((Path p) -> p.toString().endsWith(".jpg")).sorted().map(DigitalPage::new)
+					.collect(Collectors.toList());
+			if (digitalPages.isEmpty()) {
+				throw new IllegalArgumentException("No Images in '" + pathInput + "'");
 			}
+
+			return digitalPages;
 		}
 	}
 
@@ -189,61 +189,65 @@ public class PDFDerivateer extends BaseDerivateer {
 	private static void addPage(PdfWriter writer, BaseFont font, DigitalPage page)
 			throws IOException, DocumentException {
 
-		// save state because to do some graphics stuff
-		PdfContentByte cb = writer.getDirectContentUnder();
-		cb.saveState();
-
-		// some text, if any
-		if (page.getOcrData().isPresent()) {
-			OCRData ocrData = page.getOcrData().get(); 
-			int pageHeight = ocrData.getPageHeight();
-			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
-			for (int i = 0; i < ocrLines.size(); i++) {
-				List<OCRData.Text> texts = ocrLines.get(i).getTokens();
-				for(OCRData.Text txt : texts) {
-					
-					String text = txt.getText();
-					Rectangle box = toItextBox(txt.getBox());
-	
-					// Calculate vertical transition (text is rendered at baseline -> descending
-					// bits are below the chosen position)
-					float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
-					
-					// what he hell?
-					int descent = (int) font.getDescentPoint(text, fontSize);
-					int ascent = (int) font.getAscentPoint(text, fontSize);
-					int textHeight = Math.abs(descent) + ascent;
-					int transY = descent;
-	
-					if (textHeight < box.getHeight()) {
-						transY = (int) (descent - (box.getHeight() - textHeight) / 2);
-					}
-	
-					// render actual text
-					cb.beginText();
-					float x = box.getLeft();
-					float y = pageHeight - box.getBottom();
-					LOGGER.info("moveText '{}' to render at {}x{} (fontsize:{})", text, x, y, fontSize);
-//					cb.moveText(x, y);
-//					cb.moveText(box.getLeft(), box.getBottom());
-					cb.setTextMatrix(x, (y - transY - 150));
-					cb.setFontAndSize(font, fontSize);
-					cb.setColorFill(BaseColor.WHITE);
-					cb.showText(text);
-					cb.endText();
-				}
-			}
-		}
-		// handle overlying image
+		PdfContentByte over = writer.getDirectContent();
 		String imagePath = page.getImagePath().toString();
 		Image image = Image.getInstance(imagePath);
+		float currentImageHeight = image.getHeight();
 		image.setAbsolutePosition(0f, 0f);
-		cb.addImage(image);
-		cb.restoreState();
+		over.addImage(image);
+		
+		// some ocr, if any
+		if (page.getOcrData().isPresent()) {
+			
+			OCRData ocrData = page.getOcrData().get(); 
+
+			// get to know current image dimensions - might differ from original size
+			int pageHeight = ocrData.getPageHeight();
+			// especially when footer was appended at image bottom
+			if(page.getFooterHeight().isPresent()) {
+				int footerHeight = page.getFooterHeight().get();
+				pageHeight += footerHeight;
+			}
+			// down we need to scale by now?
+			float ratio = currentImageHeight / pageHeight;
+			if (Math.abs(1.0 - ratio) > 0.01) {
+				LOGGER.info("scale ocr data by '{}'", ratio);
+				ocrData.scale(ratio);
+			}
+			
+			// place optional text *behind* image
+			PdfContentByte cb = writer.getDirectContentUnder();
+			cb.saveState();
+			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
+			for (OCRData.Textline line : ocrLines) {
+				renderLine(font, (int)currentImageHeight, cb, line);
+			}
+			cb.restoreState();
+		}
 	}
-	
+
+	private static void renderLine(BaseFont font, int pageHeight, PdfContentByte cb, Textline line) throws IOException {
+		String text = line.getText();
+		Rectangle box = toItextBox(line.getBounds());
+		float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
+		float x = box.getLeft();
+		float y = pageHeight - box.getBottom();
+		// looks like we need to go down a bit because 
+		// font seems to be rendered not from baseline but from v with shall be
+		// v = y - fontSize 
+		float v = y - fontSize;
+		LOGGER.info("put '{}' at {}x{} (fontsize:{})", text, x, v, fontSize);
+		cb.beginText();
+		cb.setFontAndSize(font, fontSize);
+		cb.showTextAligned(Element.ALIGN_LEFT, text, x, v, 0);
+		cb.endText();
+	}
+
 	/**
-	 * Calculates the font size to fit the given text into the specified dimensions.
+	 * 
+	 * Calculates font size to fit the given text into the specified width.
+	 * Not exact but the best we have so far.
+	 * 
 	 * @param text
 	 * @param width
 	 * @param height
@@ -252,12 +256,10 @@ public class PDFDerivateer extends BaseDerivateer {
 	 */
 	static float calculateFontSize(BaseFont font, String text, float width, float height) throws IOException {
 		float sw = font.getWidth(text);
-		//float fontSizeX = width * 1000.0f / (sw * 0.865f);
 		float fontSizeX = sw / 1000.0f * height;
-		//Validate and reduce font size until it fits
-		Chunk chunk = new Chunk(text, new Font(font, fontSizeX));;
+		Chunk chunk = new Chunk(text, new Font(font, fontSizeX));
 		while (chunk.getWidthPoint() > width) {
-			fontSizeX -= 5f;
+			fontSizeX -= 3f;
 			chunk = new Chunk(text, new Font(font, fontSizeX));
 		}
 		return fontSizeX;

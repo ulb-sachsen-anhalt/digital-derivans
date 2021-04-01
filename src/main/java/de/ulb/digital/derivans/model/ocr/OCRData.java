@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+
 /**
  * 
  * Domain specific model of OCR-Data organized as lists of {@link Textline lines} 
@@ -35,6 +36,21 @@ public class OCRData {
 		return dimension.height;
 	}
 
+	public void scale(float ratio) {
+		for(Textline line : textlines) {
+			for(Text txt : line.getTokens()) {
+				txt.rect.x = Math.round(txt.rect.x * ratio);
+				txt.rect.y = Math.round(txt.rect.y * ratio);
+				txt.rect.width = Math.round(txt.rect.width * ratio);
+				txt.rect.height = Math.round(txt.rect.height * ratio);
+			}
+			line.calculateArea();
+		}
+		int widht = Math.round(dimension.width * ratio);
+		int height = Math.round(dimension.height * ratio);
+		this.dimension = new Dimension(widht, height);
+	}
+	
 	/**
 	 * 
 	 * Represents a single line of textual tokens that form a conceptual unit.
@@ -43,26 +59,25 @@ public class OCRData {
 	 *
 	 */
 	public static class Textline {
-		private List<Text> tokens;
+		private List<Text> texts;
 		private String text;
 		private Area area;
 
 		public Textline(List<Text> texts) {
-			this.tokens = texts;
-			this.area = new Area();
-			List<Rectangle> boxes = texts.stream().map(Text::getBox).collect(Collectors.toList());
-			if(!boxes.isEmpty()) {
-				for(Rectangle r : boxes) {
-					this.area.add(new Area(r));
-				}
-//				Area first = new Area(boxes.remove(0));
-//				boxes.forEach(box -> first.add(new Area(box)));
-//				this.area = first;
-			}
+			this.texts = texts;
+			this.calculateArea();
 			this.text = String.join(" ",
 					texts.stream().map(Text::getText).filter(Objects::nonNull).collect(Collectors.toList()));
 		}
 
+		private void calculateArea() {
+			List<Rectangle> boxes = texts.stream().map(Text::getBox).collect(Collectors.toList());
+			this.area = new Area();
+			for(Rectangle r : boxes) {
+				this.area.add(new Area(r));
+			}
+		}
+		
 		public String getText() {
 			return this.text;
 		}
@@ -71,8 +86,12 @@ public class OCRData {
 			return this.area;
 		}
 		
+		public Rectangle getBounds() {
+			return this.area.getBounds();
+		}
+		
 		public List<Text> getTokens() {
-			return new ArrayList<>(this.tokens);
+			return new ArrayList<>(this.texts);
 		}
 		
 		@Override
@@ -108,11 +127,15 @@ public class OCRData {
 		}
 
 		public Rectangle getBox() {
-			return this.rect;
+			return this.rect.getBounds();
 		}
 
 		public float getHeight() {
 			return this.rect.height;
+		}
+		
+		public boolean hasPrintableChars() {
+			return (this.text != null) && (!this.text.isBlank());
 		}
 
 		@Override

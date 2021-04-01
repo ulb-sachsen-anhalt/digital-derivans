@@ -25,8 +25,6 @@ import de.ulb.digital.derivans.model.DigitalPage;
  */
 public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 
-	private List<DigitalPage> pages;
-
 	private AtomicInteger nGranulars = new AtomicInteger();
 
 	/**
@@ -51,28 +49,12 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 * 
 	 * @param d
 	 */
-	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d, List<DigitalPage> pages) {
+	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d) {
 		super(d.getInput(), d.getOutput(), d.getQuality(), d.getDigitalFooter());
-		this.pages = enrichPhysicalPath(input.getPath(), pages);
+		this.pages = enrichPhysicalPath(input.getPath(), d.getPages());
 		this.poolSize = d.getPoolSize();
 	}
 	
-	/**
-	 * 
-	 * Determine each single Path since each page gets mapped to it's own identifier
-	 * 
-	 * @param inputPath
-	 * @param pages
-	 * @return
-	 */
-	private List<DigitalPage> enrichPhysicalPath(Path inputPath, List<DigitalPage> pages) {
-		for (DigitalPage page : pages) {
-			Path digitalPath = inputPath.resolve(page.getImagePath());
-			page.setImagePath(digitalPath);
-		}
-		return pages;
-	}
-
 	public int getNumberOfGranularIdentifiers() {
 		return nGranulars.get();
 	}
@@ -131,6 +113,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 			
 				float compressionRatio = ((float) quality) / 100.0f;
 				imageProcessor.writeJPGWithQuality(image, target, compressionRatio);
+				page.setFooterHeight(footerBuffer.getHeight());
 			}
 		} catch (IOException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", page.getImagePath(), footer, e.getMessage());

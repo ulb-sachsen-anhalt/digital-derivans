@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -18,6 +19,7 @@ import javax.imageio.ImageIO;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalFooter;
+import de.ulb.digital.derivans.model.DigitalPage;
 
 /**
  * 
@@ -45,21 +47,42 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 	protected DigitalFooter footer;
 
 	protected BufferedImage footerBuffer;
+	
+	protected List<DigitalPage> pages = new ArrayList<>();
 
 	public ImageDerivateerJPGFooter(DerivansData input, DerivansData output, Integer quality, DigitalFooter footer) {
 		super(input, output, quality);
 		this.footer = footer;
 		this.setFooterBuffer();
+		for(Path path : this.inputPaths) {
+			this.pages.add(new DigitalPage(path));
+		}
 	}
 
-	public ImageDerivateerJPGFooter(BaseDerivateer base, Integer quality, DigitalFooter footer) {
+	public ImageDerivateerJPGFooter(BaseDerivateer base, Integer quality, DigitalFooter footer, List<DigitalPage> pages) {
 		super(base.getInput(), base.getOutput(), quality);
 		this.footer = footer;
+		if(pages != null && ! pages.isEmpty()) {
+			this.pages = enrichPhysicalPath(input.getPath(), pages);
+		} else {
+			try {
+				this.inputPaths = getFilePaths(inputDir, imageFilter);
+				for(Path path : this.inputPaths) {
+					this.pages.add(new DigitalPage(path));
+				}
+			} catch (IOException e) {
+				LOGGER.error(e);
+			}
+		}
 		this.setFooterBuffer();
 	}
 
 	protected DigitalFooter getDigitalFooter() {
 		return this.footer;
+	}
+	
+	protected List<DigitalPage> getPages() {
+		return this.pages;
 	}
 	
 	protected void setFooterBuffer() {
@@ -77,9 +100,9 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 		}
 	}
 
-	private String renderFooter(Path pathIn) {
-		String pathStr = pathIn.toString();
-		String fileNameOut = new File(pathStr).getName();
+	private String renderFooter(DigitalPage page) {
+		String source = page.getImagePath().toString();
+		String fileNameOut = new File(source).getName();
 		String target = Path.of(this.outputDir.toString(), fileNameOut).toString();
 
 		// enforce jpg output
@@ -88,7 +111,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 		}
 
 		try {
-			byte[] bytes = Files.readAllBytes(pathIn);
+			byte[] bytes = Files.readAllBytes(Path.of(source));
 			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 			if (this.maximal != null) {
 				image = handleMaximalDimension(image);
@@ -101,7 +124,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 			float ratio = (float) currentW / (float) currentFooter.getWidth();
 			if (Math.abs(1.0 - ratio) > MAXIMAL_RATIO_DEVIATION) {
 				currentFooter = imageProcessor.scale(currentFooter, ratio);
-				String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(), currentFooter.getHeight(), ratio, pathIn);
+				String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(), currentFooter.getHeight(), ratio, source);
 				LOGGER.debug(msg);
 				if(currentFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
 					String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
@@ -111,13 +134,13 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 			}
 			BufferedImage bi = addTextLayer2Footer(currentFooter, footer);
 			image = imageProcessor.append(image, bi);
-			
 			float qualityRatio = ((float) quality) / 100.0f;
 			imageProcessor.writeJPGWithQuality(image, target, qualityRatio);
+			page.setFooterHeight(currentFooter.getHeight());
 		} catch (IOException e) {
-			LOGGER.error("pathIn: {}, footer: {} => {}", pathIn, footer, e.getMessage());
+			LOGGER.error("pathIn: {}, footer: {} => {}", source, footer, e.getMessage());
 		} catch(Exception e) {
-			LOGGER.error("pathIn: {}, footer: {} => {}", pathIn, footer, e.getMessage());
+			LOGGER.error("pathIn: {}, footer: {} => {}", source, footer, e.getMessage());
 		}
 
 		return target;
@@ -149,7 +172,23 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 
 	@Override
 	public boolean forward() throws DigitalDerivansException {
-		return this.runWithPool(() -> this.inputPaths.parallelStream().forEach(this::renderFooter));
+		return this.runWithPool(() -> this.pages.parallelStream().forEach(this::renderFooter));
+	}
+
+	/**
+	 * 
+	 * Determine each single Path since each page gets mapped to it's own identifier
+	 * 
+	 * @param inputPath
+	 * @param pages
+	 * @return
+	 */
+	protected List<DigitalPage> enrichPhysicalPath(Path inputPath, List<DigitalPage> pages) {
+		for (DigitalPage page : pages) {
+			Path digitalPath = inputPath.resolve(page.getImagePath());
+			page.setImagePath(digitalPath);
+		}
+		return pages;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
@@ -33,6 +34,8 @@ public class ALTOReader implements OCRReader {
 
 	private Document document;
 
+	public Predicate<String> containsChars = s -> (s != null) && (!s.isBlank());
+	
 	protected Type type;
 
 	public ALTOReader(Type type) {
@@ -66,8 +69,10 @@ public class ALTOReader implements OCRReader {
 		List<Element> altoLines = extractElements(new ElementFilter("TextLine"));
 		for (Element el : altoLines) {
 			List<Element> strings = el.getChildren("String", getType().toNS());
-			var texts = strings.parallelStream().map(ALTOReader::toText).collect(Collectors.toList());
-			if (!texts.isEmpty()) {
+			var texts = strings.parallelStream().map(ALTOReader::toText)
+					.filter(OCRData.Text::hasPrintableChars)
+					.collect(Collectors.toList());
+			if (!texts.isEmpty()) { 
 				OCRData.Textline line = new OCRData.Textline(texts);
 				lines.add(line);
 			}

@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans.data.ocr.alto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.Rectangle;
@@ -55,7 +56,42 @@ public class TestALTOV4Reader {
 		var actual = reader.get(input);
 		
 		// assert
-		assertEquals(673, actual.getTextlines().size());
+		// original 673, but now 647 since there are some empty textlines
+		assertEquals(647, actual.getTextlines().size());
+	}
+	
+	/**
+	 * 
+	 * Scaling of OCR-Data according to scaled images
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testALTOfromZD1Scale() throws Exception {
+		
+		// arrange
+		Path input = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
+		ALTOReader reader = new ALTOReader(Type.ALTO_V3);
+		var actual = reader.get(input);
+		int originalPageHeigt = actual.getPageHeight(); 
+		assertEquals(10536, originalPageHeigt);
+		OCRData.Textline line001 = actual.getTextlines().get(0);
+		int originalHeightLine001 = line001.getBounds().height;
+		assertEquals(17, originalHeightLine001);
+		OCRData.Textline line646 = actual.getTextlines().get(646);
+		int originalHeightLine646 = line646.getBounds().height;
+		assertEquals(57,  originalHeightLine646);
+		
+		// act
+		int maximal = 4678;
+		float ratio = (float)maximal / (float)actual.getPageHeight();
+		actual.scale(ratio);
+		
+		// assert
+		assertEquals(maximal, actual.getPageHeight());
+		assertNotEquals(originalPageHeigt, actual.getPageHeight());
+		assertEquals(8, line001.getBounds().height);
+		assertEquals(25, line646.getBounds().height);
 	}
 	
 	@Test

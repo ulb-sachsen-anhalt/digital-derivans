@@ -40,6 +40,12 @@ public class DigitalPage {
 	private Optional<OCRData> ocrData = Optional.empty();
 
 	private Optional<String> uniqueIdentifier = Optional.empty();
+	
+	/**
+	 * If Image was extended by Footer vertical, store the added amount.
+	 * Optional OCR-Data needs to know if page was extended.
+	 */
+	private Optional<Integer> footerHeight = Optional.empty();
 
 	
 	public DigitalPage(int orderNr) {
@@ -99,6 +105,14 @@ public class DigitalPage {
 
 	public void setOcrData(OCRData ocrData) {
 		this.ocrData = Optional.of(ocrData);
+	}
+
+	public Optional<Integer> getFooterHeight() {
+		return footerHeight;
+	}
+
+	public void setFooterHeight(int footerHeight) {
+		this.footerHeight = Optional.of(footerHeight);
 	}
 
 	@Override
