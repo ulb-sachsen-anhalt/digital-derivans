@@ -17,6 +17,8 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
@@ -167,10 +169,10 @@ public class TestDerivans {
 		Path pathTarget = tempDir.resolve("148811035");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
-		copyTree(sourceImageDir, pathImageMax);
-//		List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d", i)).collect(Collectors.toList());
-//		generateJpgsFromList(pathImageMax, 2164, 2448, ids);
+//		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
+//		copyTree(sourceImageDir, pathImageMax);
+		List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d", i)).collect(Collectors.toList());
+		generateJpgsFromList(pathImageMax, 2164, 2448, ids);
 
 		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
 		Path targetMets = pathTarget.resolve(Path.of("mets.xml"));
