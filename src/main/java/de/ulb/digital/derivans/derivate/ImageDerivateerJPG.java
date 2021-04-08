@@ -1,15 +1,14 @@
 package de.ulb.digital.derivans.derivate;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.function.Predicate;
 
 import javax.imageio.ImageIO;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DigitalPage;
 
 /**
  * 
@@ -18,7 +17,7 @@ import de.ulb.digital.derivans.model.DerivansData;
  * @author hartwig
  *
  */
-public class ImageDerivateerToJPG extends ImageDerivateer {
+public class ImageDerivateerJPG extends ImageDerivateer {
 
 	/**
 	 * 
@@ -28,30 +27,25 @@ public class ImageDerivateerToJPG extends ImageDerivateer {
 	 * @param output
 	 * @param quality
 	 */
-	public ImageDerivateerToJPG(DerivansData input, DerivansData output, Integer quality) {
+	public ImageDerivateerJPG(DerivansData input, DerivansData output, Integer quality) {
 		super(input, output);
-		this.imageFilter = new PredicateFileJPGorTIF();
 		this.quality = quality;
 	}
 
-	public ImageDerivateerToJPG(BaseDerivateer base, Integer quality) {
+	public ImageDerivateerJPG(BaseDerivateer base, Integer quality) {
 		super(base.getInput(), base.getOutput());
-		this.imageFilter = new PredicateFileJPGorTIF();
+		this.digitalPages = base.getDigitalPages();
 		this.quality = quality;
 	}
 
-	private String render(Path pathIn) {
-		String pathStr = pathIn.toString();
-		String fileNameOut = new File(pathStr).getName();
-		if (getOutputPrefix() != null) {
-			fileNameOut = getOutputPrefix() + fileNameOut;
-		}
-		String target = this.outputDir.resolve(fileNameOut).toString();
-
-		// enforce jpg output
-		if (target.endsWith(".tif")) {
-			target = target.replace(".tif", ".jpg");
-		}
+	private String render(DigitalPage page) {
+		
+		Path pathIn = page.getImagePath();
+		
+		this.resolver.setImagePath(page, this);
+		// now next output must be set
+		String target = page.getImagePath().toString();
+		
 
 		try {
 			BufferedImage buffer = ImageIO.read(pathIn.toFile());
@@ -89,15 +83,7 @@ public class ImageDerivateerToJPG extends ImageDerivateer {
 
 	@Override
 	public boolean forward() throws DigitalDerivansException {
-		return this.runWithPool(() -> this.inputPaths.parallelStream().forEach(this::render));
+		return this.runWithPool(() -> this.getDigitalPages().parallelStream().forEach(this::render));
 	}
 
-	public static class PredicateFileJPGorTIF implements Predicate<Path> {
-
-		@Override
-		public boolean test(Path p) {
-			String pathString = p.toString();
-			return pathString.endsWith(".jpg") || pathString.endsWith(".tif");
-		}
-	}
 }

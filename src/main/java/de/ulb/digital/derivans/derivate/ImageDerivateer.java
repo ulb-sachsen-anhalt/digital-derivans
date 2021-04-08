@@ -5,13 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,8 +29,6 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	public static final int MIN_FREE_CORES = 1;
 
-	protected String prefix;
-
 	protected Boolean insertIntoMets;
 
 	protected Integer quality;
@@ -50,10 +43,6 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	protected Integer maximal;
 
-	protected Predicate<Path> imageFilter;
-
-	protected List<Path> inputPaths;
-	
 	protected ImageProcessor imageProcessor;
 	
 	protected ImageDerivateer(DerivansData input, DerivansData output) {
@@ -63,8 +52,6 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 		this.poolSize = DEFAULT_POOLSIZE;
 		this.inputDir = input.getPath();
 		this.outputDir = output.getPath();
-		this.inputPaths = new ArrayList<>();
-		this.prefix = "";
 		this.imageProcessor = new ImageProcessor();
 	}
 
@@ -99,14 +86,6 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 		this.maximal = maximal;
 	}
 
-	public String getOutputPrefix() {
-		return prefix;
-	}
-
-	public void setOutputPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-
 	protected boolean runWithPool(Runnable runnable) throws DigitalDerivansException {
 		try {
 			ForkJoinPool threadPool = new ForkJoinPool(poolSize);
@@ -125,31 +104,19 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	@Override
 	public boolean create() throws DigitalDerivansException {
-
-		// check basic precondition: output directory must exist
-		if (!Files.exists(outputDir)) {
+		
+		// basic precondition: output directory shall exist
+		if (!Files.exists(this.getOutput().getPath())) {
 			try {
-				Files.createDirectory(outputDir);
+				Files.createDirectory(this.getOutput().getPath());
 			} catch (IOException e) {
 				LOGGER.error(e);
 				throw new DigitalDerivansException(e);
 			}
 		}
 
-		List<Path> inputs = new ArrayList<>();
-		try {
-			inputs = getFilePaths(inputDir, imageFilter);
-		} catch (IOException e) {
-			LOGGER.error(e);
-			throw new DigitalDerivansException("Invalid input data '" + inputDir + "'");
-		}
-		if (inputs.isEmpty()) {
-			throw new DigitalDerivansException(
-					"No images in '" + inputDir + "' match '" + imageFilter.toString() + "'");
-		}
-		this.inputPaths = inputs;
-		String msg = String.format("[%s] process '%02d' images with quality %02d in %02d threads",
-				this.getClass().getSimpleName(), this.inputPaths.size(), this.getQuality(), this.poolSize);
+		String msg = String.format("process '%02d' images in %s with quality %02d in %02d threads",
+				this.digitalPages.size(), inputDir, this.getQuality(), this.poolSize);
 		LOGGER.info(msg);
 
 		Instant start = Instant.now();
@@ -163,8 +130,8 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 		long minsElapsed = Duration.between(start, finish).toMinutesPart();
 
 		if (isSuccess) {
-			String msg2 = String.format("[%s] created '%02d' images at '%s' in '%dm%02ds'",
-					this.getClass().getSimpleName(), this.inputPaths.size(), outputDir, minsElapsed, secsElapsed);
+			String msg2 = String.format("created '%02d' images at '%s' in '%dm%02ds'",
+			 this.digitalPages.size(), outputDir, minsElapsed, secsElapsed);
 			LOGGER.info(msg2);
 			return true;
 		}
@@ -189,9 +156,9 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 	 * @return
 	 * @throws IOException
 	 */
-	public static List<Path> getFilePaths(Path path, Predicate<Path> fileFilter) throws IOException {
-		try (Stream<Path> filesList = Files.list(path)) {
-			return filesList.filter(Files::isRegularFile).filter(fileFilter).sorted().collect(Collectors.toList());
-		}
-	}
+//	public static List<Path> getFilePaths(Path path, Predicate<Path> fileFilter) throws IOException {
+//		try (Stream<Path> filesList = Files.list(path)) {
+//			return filesList.filter(Files::isRegularFile).filter(fileFilter).sorted().collect(Collectors.toList());
+//		}
+//	}
 }

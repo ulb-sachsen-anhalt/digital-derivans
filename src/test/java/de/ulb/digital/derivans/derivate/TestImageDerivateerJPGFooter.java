@@ -20,6 +20,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import de.ulb.digital.derivans.DerivansPathResolver;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateType;
@@ -74,10 +75,12 @@ class TestImageDerivateerJPGFooter {
 		// check template file found
 		assertTrue(Files.exists(target));
 
-		IDerivateer jpgs = new ImageDerivateerJPGFooter(input, output, 95, footer);
+		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, 95, footer);
+		DerivansPathResolver resolver = new DerivansPathResolver();
+		derivateer.setDigitalPages(resolver.resolveFromPath(sourcePath));
 
 		// act
-		boolean outcome = jpgs.create();
+		boolean outcome = derivateer.create();
 
 		// assert
 		assertTrue(outcome);

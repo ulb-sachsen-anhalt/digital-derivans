@@ -13,11 +13,10 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
@@ -168,10 +167,10 @@ public class TestDerivans {
 		Path pathTarget = tempDir.resolve("148811035");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-//		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
-//		copyTree(sourceImageDir, pathImageMax);
-		List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d", i)).collect(Collectors.toList());
-		generateJpgsFromList(pathImageMax, 2164, 2448, ids);
+		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
+		copyTree(sourceImageDir, pathImageMax);
+//		List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d", i)).collect(Collectors.toList());
+//		generateJpgsFromList(pathImageMax, 2164, 2448, ids);
 
 		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
 		Path targetMets = pathTarget.resolve(Path.of("mets.xml"));
@@ -198,6 +197,41 @@ public class TestDerivans {
 		Path pdfWritten = pathTarget.resolve("148811035.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
+	
+	@Test
+	@Order(3)
+	void testDerivatesOnlyWithPathZD(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path pathTarget = tempDir.resolve("zd1");
+		// ocr data
+		Path sourceOcr = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
+		assertTrue(Files.exists(sourceOcr, LinkOption.NOFOLLOW_LINKS));
+		Path sourceFile = sourceOcr.getFileName();
+		Path targetDir = pathTarget.resolve("FULLTEXT");
+		Files.createDirectories(targetDir);
+		Path targetOcr = targetDir.resolve(sourceFile);
+		Files.copy(sourceOcr, targetOcr);
+
+		// image data
+		Path pathImageMax = pathTarget.resolve("TIF");
+		Files.createDirectory(pathImageMax);
+		Path imagePath = pathImageMax.resolve("1667524704_J_0150_0512.tif");
+		writeImage(imagePath, 7544, 10536, BufferedImage.TYPE_BYTE_GRAY, "TIFF");
+
+		// act
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathInput(pathTarget);
+		Path configPath = Path.of("src/test/resources/config3/derivans-tif.ini");
+		dp.setPathConfig(configPath);
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		Derivans derivans = new Derivans(dc);
+		derivans.create();
+
+		// assert
+		Path pdfWritten = pathTarget.resolve("zd1.pdf");
+		assertTrue(Files.exists(pdfWritten));
+	}
 
 	public static Path arrangeMetaddatenAndImagesFor737429(Path tempDir) throws IOException {
 		Path pathTarget = tempDir.resolve("737429");
@@ -220,27 +254,28 @@ public class TestDerivans {
 		}
 		Files.createDirectory(imageDir);
 		for (int i = 1; i <= number; i++) {
-			String imageName = String.format("%04d.jpg", i);
-			writeImage(imageDir, width, height, imageName);
+			String imagePath = String.format("%04d.jpg", i);
+			Path jpgFile = imageDir.resolve(imagePath);
+			writeImage(jpgFile, width, height,  BufferedImage.TYPE_3BYTE_BGR, "JPG");
 		}
 	}
 
-	private static void writeImage(Path imageDir, int width, int height, String imageName) throws IOException {
-		Path jpgFile = imageDir.resolve(imageName);
+	public static void writeImage(Path imagePath, int width, int height, int type, String format) throws IOException {
 		BufferedImage bi2 = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
 		Font theFont = new Font("Helvetica", Font.BOLD, 84);
 		Graphics2D g2d = bi2.createGraphics();
 		g2d.setColor(Color.WHITE);
 		g2d.setFont(theFont);
 		FontMetrics fontMetrics = g2d.getFontMetrics();
+		String imageName = imagePath.getFileName().toString();
 		Rectangle2D rect = fontMetrics.getStringBounds(imageName, g2d);
 		int centerX = (bi2.getWidth() - (int) rect.getWidth()) / 2;
 		g2d.drawString(imageName, centerX, 500);
 		g2d.dispose();
-		ImageIO.write(bi2, "JPG", jpgFile.toFile());
+		ImageIO.write(bi2, format, imagePath.toFile());
 	}
 
-	private static void generateJpgsFromList(Path imageDir, int width, int height, List<String> labels)
+	public static void generateJpgsFromList(Path imageDir, int width, int height, List<String> labels)
 			throws IOException {
 		if (Files.exists(imageDir)) {
 			Files.delete(imageDir);
@@ -253,7 +288,7 @@ public class TestDerivans {
 		}
 	}
 
-	static void copyTree(Path pathSource, Path pathTarget) {
+	public static void copyTree(Path pathSource, Path pathTarget) {
 		try {
 			Files.walk(pathSource).forEach(s -> {
 				try {

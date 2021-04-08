@@ -10,8 +10,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -26,7 +25,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Header;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
@@ -43,7 +41,6 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -69,39 +66,21 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private DigitalStructureTree structure;
 
-	private List<DigitalPage> pages;
-
 	private DescriptiveData description;
+	
+	private AtomicInteger nPagesWithOCR = new AtomicInteger();
 
 	private String pdfConformanceLevel;
-
-	/**
-	 * 
-	 * Default constructor
-	 * 
-	 * @param input
-	 * @param output
-	 * @param tree
-	 * @param descriptiveData
-	 * @param pages
-	 */
-	public PDFDerivateer(DerivansData input, DerivansData output, DigitalStructureTree tree,
-			DescriptiveData descriptiveData, List<DigitalPage> pages) {
-		super(input, output);
-		this.structure = tree;
-		this.description = descriptiveData;
-		this.pages = pages;
-	}
-
+	
 	public PDFDerivateer(DerivansData input, DerivansData output, DigitalStructureTree tree,
 			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel) {
 		super(input, output);
 		this.structure = tree;
 		this.description = descriptiveData;
-		this.pages = pages;
+		this.digitalPages = pages;
 		this.pdfConformanceLevel = conformanceLevel;
 	}
-
+	
 	/**
 	 * 
 	 * Create new instance on top of {@link BaseDerivateer}
@@ -114,79 +93,36 @@ public class PDFDerivateer extends BaseDerivateer {
 	public PDFDerivateer(BaseDerivateer basic, Path outputPath, DigitalStructureTree tree,
 			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel) {
 		super(basic.getInput(), basic.getOutput());
+		// necessary to set specific filename in output dir
 		this.getOutput().setPath(outputPath);
 		this.structure = tree;
 		this.description = descriptiveData;
-		this.pages = pages;
+		this.digitalPages = pages;
 		this.pdfConformanceLevel = conformanceLevel;
 	}
 
-	private List<DigitalPage> resolvePaths() throws IOException {
-
-		// check input directory exists
-		if (!Files.exists(input.getPath())) {
-			throw new IllegalArgumentException("Invalid inputDir '" + input.getPath() + "'");
-		}
-		Path pathInput = input.getPath();
-
-		// data from original METS must be replaced, since intermediate 
-		// images are derived unknown to METS-kind
-		if (pages != null && !pages.isEmpty()) {
-			for(DigitalPage page : pages) {
-				Path p = page.getImagePath().getFileName();
-				page.setImagePath(pathInput.resolve(p));
-			}
-			return pages;
-		}
-		// in case of missing any metadata, try to resolve PDF input images (JPG) from inputPath
-		try (Stream<Path> filesList = Files.list(pathInput)) {
-			List<DigitalPage> digitalPages = filesList.map(pathInput::resolve)
-					.filter((Path p) -> p.toString().endsWith(".jpg")).sorted().map(DigitalPage::new)
-					.collect(Collectors.toList());
-			if (digitalPages.isEmpty()) {
-				throw new IllegalArgumentException("No Images in '" + pathInput + "'");
-			}
-
-			return digitalPages;
-		}
-	}
-
-	static int addPages(Document document, PdfWriter writer, List<DigitalPage> pages, String conformance)
+	private int addPages(Document document, PdfWriter writer, List<DigitalPage> pages, String conformance)
 			throws DigitalDerivansException {
-		Integer defaultFontSize = DefaultConfiguration.DEFAULT_FONT_SIZE;
-
 		int pagesAdded = 0;
-		BaseFont font = null;
 
 		try {
 			// get font
-			font = determineFont(conformance, defaultFontSize);
-
+			FontHandler handler = new FontHandler();
+			BaseFont font = handler.forPDF("ttf/DejaVuSans.ttf");
 			// process each page
 			for (DigitalPage page : pages) {
 				document.newPage();
 				addPage(writer, font, page);
 				pagesAdded++;
 			}
-
 		} catch (IOException | DocumentException e) {
 			throw new DigitalDerivansException(e);
 		}
+		
 		return pagesAdded;
 	}
 
-	private static BaseFont determineFont(String conformance, Integer defaultFontSize)
-			throws DocumentException, IOException {
-		if (conformance != null) {
-			Font f = new Font(BaseFont.createFont("ttf/FreeMonoBold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED), 10);
-			return f.getBaseFont();
-		} else {
-			Font f = FontFactory.getFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, defaultFontSize);
-			return f.getBaseFont();
-		}
-	}
-
-	private static void addPage(PdfWriter writer, BaseFont font, DigitalPage page)
+	private void addPage(PdfWriter writer, BaseFont font, DigitalPage page)
 			throws IOException, DocumentException {
 
 		PdfContentByte over = writer.getDirectContent();
@@ -197,9 +133,10 @@ public class PDFDerivateer extends BaseDerivateer {
 		over.addImage(image);
 		
 		// some ocr, if any
-		if (page.getOcrData().isPresent()) {
+		Optional<OCRData> optOcr = page.getOcrData();
+		if (optOcr.isPresent()) {
 			
-			OCRData ocrData = page.getOcrData().get(); 
+			OCRData ocrData = optOcr.get(); 
 
 			// get to know current image dimensions - might differ from original size
 			int pageHeight = ocrData.getPageHeight();
@@ -211,7 +148,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			// down we need to scale by now?
 			float ratio = currentImageHeight / pageHeight;
 			if (Math.abs(1.0 - ratio) > 0.01) {
-				LOGGER.info("scale ocr data by '{}'", ratio);
+				LOGGER.info("scale ocr data for '{}' by '{}'", page.getImagePath(), ratio);
 				ocrData.scale(ratio);
 			}
 			
@@ -223,6 +160,12 @@ public class PDFDerivateer extends BaseDerivateer {
 				renderLine(font, (int)currentImageHeight, cb, line);
 			}
 			cb.restoreState();
+			
+			// increment number of ocr-ed pages for each PDF
+			nPagesWithOCR.getAndIncrement();
+			
+		} else {
+			LOGGER.info("no ocr data present for '{}'", page.getImagePath());
 		}
 	}
 
@@ -236,7 +179,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		// font seems to be rendered not from baseline but from v with shall be
 		// v = y - fontSize 
 		float v = y - fontSize;
-		LOGGER.info("put '{}' at {}x{} (fontsize:{})", text, x, v, fontSize);
+		LOGGER.debug("put '{}' at {}x{} (fontsize:{})", text, x, v, fontSize);
 		cb.beginText();
 		cb.setFontAndSize(font, fontSize);
 		cb.showTextAligned(Element.ALIGN_LEFT, text, x, v, 0);
@@ -353,16 +296,14 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	@Override
 	public boolean create() throws DigitalDerivansException {
-		try {
-			pages = resolvePaths();
-		} catch (IOException e) {
-			throw new DigitalDerivansException(e);
-		}
+
+		// resolve image paths
+		resolver.enrichWithPath(getDigitalPages(), this.getInput().getPath());
 
 		// get dimension of first page
 		Image image = null;
 		try {
-			image = Image.getInstance(pages.get(0).getImagePath().toString());
+			image = Image.getInstance(digitalPages.get(0).getImagePath().toString());
 		} catch (BadElementException | IOException e) {
 			throw new DigitalDerivansException(e);
 		}
@@ -372,10 +313,16 @@ public class PDFDerivateer extends BaseDerivateer {
 		boolean hasPagesAdded = false;
 		boolean hasOutlineAdded = false;
 		Path pathToPDF = this.output.getPath();
+		
+		// why need to sanitize again here?
+//		if(Files.isDirectory(pathToPDF, LinkOption.NOFOLLOW_LINKS)) {
+//			Path dirName = pathToPDF.getName(pathToPDF.getNameCount() - 1);
+//			pathToPDF = Path.of(pathToPDF.resolve(dirName).toString()+".pdf");
+//		}
 
 		PdfWriter writer = null;
-		try {
-			FileOutputStream fos = new FileOutputStream(pathToPDF.toFile());
+		try (FileOutputStream fos = new FileOutputStream(pathToPDF.toFile())){
+			
 			if (pdfConformanceLevel != null) {
 				PdfAConformanceLevel pdfa_level = PdfAConformanceLevel.valueOf(pdfConformanceLevel);
 				writer = PdfAWriter.getInstance(document, fos, pdfa_level);
@@ -413,11 +360,11 @@ public class PDFDerivateer extends BaseDerivateer {
 				writer.setOutputIntents("Custom", "", "http://www.color.org", "sRGB IEC61966-2.1", icc);
 			}
 
-			int nPagesAdded = addPages(document, writer, pages, pdfConformanceLevel);
+			int nPagesAdded = addPages(document, writer, digitalPages, pdfConformanceLevel);
 
 			// inform doc how many pages it holds
 			document.setPageCount(nPagesAdded);
-			hasPagesAdded = nPagesAdded == pages.size();
+			hasPagesAdded = nPagesAdded == digitalPages.size();
 
 			// process outline structure
 			if (structure != null) {
@@ -436,6 +383,10 @@ public class PDFDerivateer extends BaseDerivateer {
 		LOGGER.info("created pdf '{}' with {} pages (outline:{})", pathToPDF, document.getPageNumber(),
 				hasOutlineAdded);
 		return result;
+	}
+
+	public AtomicInteger getNPagesWithOCR() {
+		return nPagesWithOCR;
 	}
 
 }

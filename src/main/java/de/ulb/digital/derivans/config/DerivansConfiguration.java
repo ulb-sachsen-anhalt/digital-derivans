@@ -34,7 +34,7 @@ public class DerivansConfiguration {
 
 	public static final Logger LOGGER = LogManager.getLogger(DerivansConfiguration.class);
 
-	private Optional<Path> pathFile;
+	private Optional<Path> metadataFile;
 
 	private Path pathDir;
 
@@ -73,11 +73,11 @@ public class DerivansConfiguration {
 
 		// determine if regular METS-file is available or not
 		if (Files.isDirectory(input)) {
-			this.pathFile = Optional.empty();
+			this.metadataFile = Optional.empty();
 			this.pathDir = input;
 			LOGGER.warn("no metadata available in '{}'", input);
 		} else if (Files.isRegularFile(input, LinkOption.NOFOLLOW_LINKS)) {
-			this.pathFile = Optional.of(input);
+			this.metadataFile = Optional.of(input);
 			this.pathDir = input.getParent();
 		}
 
@@ -116,8 +116,8 @@ public class DerivansConfiguration {
 		return this.pathDir;
 	}
 
-	public Optional<Path> getPathFile() {
-		return this.pathFile;
+	public Optional<Path> getMetadataFile() {
+		return this.metadataFile;
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class DerivansConfiguration {
 			LOGGER.error(msg);
 			throw new DigitalDerivansException(msg);
 		}
-		this.pathFile = Optional.of(metsFile);
+		this.metadataFile = Optional.of(metsFile);
 	}
 
 	public Integer getQuality() {

@@ -159,7 +159,7 @@ public class MetadataStore implements IMetadataStore {
 		String fileRefSegment = match.reference;
 		Path ocrFilePath = sanitizePath(Path.of(fileRefSegment)); 
 		try {
-			OCRData data = OCRReaderFactory.get(ocrFilePath).get(ocrFilePath);
+			OCRData data = OCRReaderFactory.from(ocrFilePath).get(ocrFilePath);
 			page.setOcrData(data);
 			LOGGER.debug("[{}] enriched ocr data with '{}' lines", physSubDiv.getId(), data.getTextlines().size());
 		} catch (DigitalDerivansException e) {

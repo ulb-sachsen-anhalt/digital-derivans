@@ -7,11 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -28,63 +26,66 @@ import de.ulb.digital.derivans.model.DigitalPage;
  * @author hartwig
  *
  */
-public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
-
-	protected static final String DEFAULT_FONT = "Helvetica";
+public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 
 	protected static final Integer DEFAULT_FOOTER_HEIGHT = 120;
 
 	protected static final Integer DEFAULT_FOOTER_WIDTH = 2400;
 
 	protected static final Float MAXIMAL_RATIO_DEVIATION = 0.02f;
-	
+
 	/**
-	 * Error marker, if a large number of subsequent down scales 
-	 * make the footer disappear after all 
+	 * Error marker, if a large number of subsequent down scales make the footer
+	 * disappear after all
 	 */
 	protected static final Integer EXPECTED_MINIMAL_HEIGHT = 25;
 
 	protected DigitalFooter footer;
 
 	protected BufferedImage footerBuffer;
+
+	protected FontHandler fontHandler = new FontHandler();
+
+	protected String footerFontFile = FontHandler.DEFAULT_FONT_FILE;
 	
-	protected List<DigitalPage> pages = new ArrayList<>();
+	protected Font footerFont;
 
 	public ImageDerivateerJPGFooter(DerivansData input, DerivansData output, Integer quality, DigitalFooter footer) {
 		super(input, output, quality);
 		this.footer = footer;
-		this.setFooterBuffer();
-		for(Path path : this.inputPaths) {
-			this.pages.add(new DigitalPage(path));
-		}
+		this.init();
 	}
 
-	public ImageDerivateerJPGFooter(BaseDerivateer base, Integer quality, DigitalFooter footer, List<DigitalPage> pages) {
+	/**
+	 * 
+	 * Super type constructor
+	 * 
+	 * @param base
+	 * @param quality
+	 * @param footer
+	 * @param pages
+	 */
+	public ImageDerivateerJPGFooter(BaseDerivateer base, Integer quality, DigitalFooter footer,
+			List<DigitalPage> pages) {
 		super(base.getInput(), base.getOutput(), quality);
+		this.digitalPages = base.getDigitalPages();
 		this.footer = footer;
-		if(pages != null && ! pages.isEmpty()) {
-			this.pages = enrichPhysicalPath(input.getPath(), pages);
-		} else {
-			try {
-				this.inputPaths = getFilePaths(inputDir, imageFilter);
-				for(Path path : this.inputPaths) {
-					this.pages.add(new DigitalPage(path));
-				}
-			} catch (IOException e) {
-				LOGGER.error(e);
-			}
-		}
-		this.setFooterBuffer();
+		this.init();
 	}
 
+	protected void init() {
+		this.setFooterBuffer();
+		try {
+			this.footerFont = this.fontHandler.forGraphics(this.footerFontFile);
+		} catch (DigitalDerivansException e) {
+			LOGGER.error(e);
+		}
+	}
+	
 	protected DigitalFooter getDigitalFooter() {
 		return this.footer;
 	}
-	
-	protected List<DigitalPage> getPages() {
-		return this.pages;
-	}
-	
+
 	protected void setFooterBuffer() {
 		if (this.footer.getBufferedImage() != null) {
 			this.footerBuffer = this.footer.getBufferedImage();
@@ -101,14 +102,10 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 	}
 
 	private String renderFooter(DigitalPage page) {
+		// resolve paths for source and target
 		String source = page.getImagePath().toString();
-		String fileNameOut = new File(source).getName();
-		String target = Path.of(this.outputDir.toString(), fileNameOut).toString();
-
-		// enforce jpg output
-		if (target.endsWith(".tif")) {
-			target = target.replace(".tif", ".jpg");
-		}
+		this.resolver.setImagePath(page, this);
+		String target = page.getImagePath().toString();
 
 		try {
 			byte[] bytes = Files.readAllBytes(Path.of(source));
@@ -116,17 +113,18 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 			if (this.maximal != null) {
 				image = handleMaximalDimension(image);
 			}
-			
+
 			int currentW = image.getWidth();
 			BufferedImage currentFooter = imageProcessor.clone(footerBuffer);
-			
+
 			// only scale footer image if ratio is larger than defined threshold
 			float ratio = (float) currentW / (float) currentFooter.getWidth();
 			if (Math.abs(1.0 - ratio) > MAXIMAL_RATIO_DEVIATION) {
 				currentFooter = imageProcessor.scale(currentFooter, ratio);
-				String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(), currentFooter.getHeight(), ratio, source);
+				String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(),
+						currentFooter.getHeight(), ratio, source);
 				LOGGER.debug(msg);
-				if(currentFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
+				if (currentFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
 					String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
 					LOGGER.error(msg2);
 					throw new DigitalDerivansException(msg2);
@@ -139,7 +137,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 			page.setFooterHeight(currentFooter.getHeight());
 		} catch (IOException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", source, footer, e.getMessage());
-		} catch(Exception e) {
+		} catch (Exception e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", source, footer, e.getMessage());
 		}
 
@@ -153,13 +151,17 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 		int heightPerLine = totalHeight / nLines;
 		int fontSize = (int) (heightPerLine * .5);
 		LOGGER.debug("textlayer total:{}/ line:{}/ fontsize:{} ({})", totalHeight, heightPerLine, fontSize, footR);
-		Font theFont = new Font(DEFAULT_FONT, Font.BOLD, fontSize);
 		Graphics2D g2d = bufferedImage.createGraphics();
 		g2d.setColor(Color.WHITE);
-		g2d.setFont(theFont);
-		FontMetrics fontMetrics = g2d.getFontMetrics();
+		
+		// we want bold font
+		String footerFontName = this.footerFont.getFontName();
+		Font footerFont = new Font(footerFontName, Font.BOLD, fontSize); 
+		g2d.setFont(footerFont);
+
 		int lineHeightRedux = heightPerLine - (int) (heightPerLine * 0.2);
 		int y = lineHeightRedux;
+		FontMetrics fontMetrics = g2d.getFontMetrics();
 		for (String line : lines) {
 			Rectangle2D rect = fontMetrics.getStringBounds(line, g2d);
 			int centerX = (bufferedImage.getWidth() - (int) rect.getWidth()) / 2;
@@ -172,23 +174,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerToJPG {
 
 	@Override
 	public boolean forward() throws DigitalDerivansException {
-		return this.runWithPool(() -> this.pages.parallelStream().forEach(this::renderFooter));
-	}
-
-	/**
-	 * 
-	 * Determine each single Path since each page gets mapped to it's own identifier
-	 * 
-	 * @param inputPath
-	 * @param pages
-	 * @return
-	 */
-	protected List<DigitalPage> enrichPhysicalPath(Path inputPath, List<DigitalPage> pages) {
-		for (DigitalPage page : pages) {
-			Path digitalPath = inputPath.resolve(page.getImagePath());
-			page.setImagePath(digitalPath);
-		}
-		return pages;
+		return this.runWithPool(() -> this.getDigitalPages().parallelStream().forEach(this::renderFooter));
 	}
 
 }

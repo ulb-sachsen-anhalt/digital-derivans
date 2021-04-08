@@ -25,7 +25,7 @@ public class DefaultConfiguration {
 	
 	public static final String DEFAULT_OUTPUT_TYPE = "jpg";
 
-	public static final Integer DEFAULT_FONT_SIZE = 12;
+	public static final Integer DEFAULT_FONT_SIZE = 8;
 	
 	public static final Integer DEFAULT_POOLSIZE = 2;
 	

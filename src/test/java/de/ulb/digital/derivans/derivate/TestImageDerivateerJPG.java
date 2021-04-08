@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import de.ulb.digital.derivans.DerivansPathResolver;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestDerivans;
 import de.ulb.digital.derivans.model.DerivansData;
@@ -52,7 +53,9 @@ class TestImageDerivateerJPG {
 		Files.createDirectory(targetPath);
 		DerivansData input = new DerivansData(sourcePath, DerivateType.JPG);
 		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
-		IDerivateer jpgs = new ImageDerivateerToJPG(input, output, 80);
+		IDerivateer jpgs = new ImageDerivateerJPG(input, output, 80);
+		DerivansPathResolver resolver = new DerivansPathResolver();
+		jpgs.setDigitalPages(resolver.resolveFromPath(sourcePath));
 
 		// act
 		boolean outcome = jpgs.create();
@@ -70,7 +73,9 @@ class TestImageDerivateerJPG {
 		Files.createDirectory(targetPath);
 		DerivansData input = new DerivansData(sourcePath, DerivateType.JPG);
 		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
-		IDerivateer jpgs = new ImageDerivateerToJPG(input, output, 70);
+		IDerivateer jpgs = new ImageDerivateerJPG(input, output, 70);
+		DerivansPathResolver resolver = new DerivansPathResolver();
+		jpgs.setDigitalPages(resolver.resolveFromPath(sourcePath));
 
 		// act
 		boolean outcome = jpgs.create();
@@ -93,16 +98,17 @@ class TestImageDerivateerJPG {
 		Files.createDirectory(targetPath);
 		DerivansData input = new DerivansData(sourcePath, DerivateType.JPG);
 		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
-		ImageDerivateerToJPG jpgs = new ImageDerivateerToJPG(input, output, 70);
-		jpgs.setMaximal(1000);
-		jpgs.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
+		ImageDerivateerJPG derivateer = new ImageDerivateerJPG(input, output, 70);
+		DerivansPathResolver resolver = new DerivansPathResolver();
+		derivateer.setDigitalPages(resolver.resolveFromPath(sourcePath));
+		derivateer.setMaximal(1000);
+		derivateer.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
 
 		// act
-		boolean outcome = jpgs.create();
+		boolean outcome = derivateer.create();
 
 		// assert
 		assertTrue(outcome);
-		Files.list(targetPath).forEach(p -> p.toFile().exists());
 		List<Path> paths = Files.list(targetPath).collect(Collectors.toList());
 		assertEquals(8, paths.size());
 		for (Path p : paths) {

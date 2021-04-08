@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -20,8 +21,11 @@ import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import de.ulb.digital.derivans.DerivansPathResolver;
+import de.ulb.digital.derivans.TestDerivans;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateStep;
 import de.ulb.digital.derivans.model.DerivateType;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -227,4 +231,59 @@ public class TestPDFDerivateer {
 				.item(0).getChildNodes().item(1).getTextContent());
 	}
 
+	/**
+	 * 
+	 * Ensure that OCR Data is really taken into account
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testTextlayerFromFulltextDirectoryOnly(@TempDir Path tempDir) throws Exception {
+		
+		Path pathTarget = tempDir.resolve("zd1");
+
+		// arrange ocr data
+		Path sourceOcr = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
+		assertTrue(Files.exists(sourceOcr, LinkOption.NOFOLLOW_LINKS));
+		Path sourceFile = sourceOcr.getFileName();
+		Path targetDir = pathTarget.resolve("FULLTEXT");
+		Files.createDirectories(targetDir);
+		Path targetOcr = targetDir.resolve(sourceFile);
+		Files.copy(sourceOcr, targetOcr);
+
+		// arrange image data
+		Path pathImageMax = pathTarget.resolve("MAX");
+		Files.createDirectory(pathImageMax);
+		Path imagePath = pathImageMax.resolve("1667524704_J_0150_0512.jpg");
+		TestDerivans.writeImage(imagePath, 7544, 10536, BufferedImage.TYPE_BYTE_GRAY, "JPG");
+
+		// arrange base derivateer
+		DerivansData input = new DerivansData(pathImageMax, DerivateType.JPG);
+		DerivansData output = new DerivansData(pathTarget, DerivateType.PDF);
+		BaseDerivateer base = new BaseDerivateer(input, output);
+		
+		// arrange pdf path and pages
+		DerivansPathResolver resolver = new DerivansPathResolver(pathTarget);
+		DerivateStep step = new DerivateStep();
+		step.setOutputPath(pathTarget);
+		step.setInputPath(pathImageMax);
+		DescriptiveData dd = new DescriptiveData();
+		DigitalStructureTree structure = new DigitalStructureTree();
+		Path pdfPath = resolver.calculatePDFPath(dd, step);
+		List<DigitalPage> pages = resolver.resolveFromStep(step);
+		resolver.enrichOCRFromFilesystem(pages);
+		
+		// go
+		PDFDerivateer handler = new PDFDerivateer(base, pdfPath, structure, dd, pages, null);
+
+		// act
+		boolean result = handler.create();
+
+		// assert
+		assertTrue(result);
+		Path pdfWritten = pathTarget.resolve("zd1.pdf");
+		assertTrue(Files.exists(pdfWritten));
+		assertEquals(1, handler.getNPagesWithOCR().get());
+	}
 }

@@ -27,8 +27,7 @@ public class OCRReaderFactory {
 	
 	private OCRReaderFactory() {}
 	
-	
-	public static OCRReader get(Path path) throws DigitalDerivansException {
+	public static OCRReader from(Path path) throws DigitalDerivansException {
 		
 		String prelude = readStart(path);
 		Type type = mapToType(prelude);

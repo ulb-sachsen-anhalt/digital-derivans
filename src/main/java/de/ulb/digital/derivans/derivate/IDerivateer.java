@@ -1,6 +1,10 @@
 package de.ulb.digital.derivans.derivate;
 
+import java.util.List;
+
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.model.DerivateType;
+import de.ulb.digital.derivans.model.DigitalPage;
 
 /**
  * 
@@ -19,6 +23,11 @@ public interface IDerivateer {
 	 */
 	boolean create() throws DigitalDerivansException;
 
-	boolean create(String conformanceLevel) throws DigitalDerivansException;
+//	boolean create(String conformanceLevel) throws DigitalDerivansException;
 
+	List<DigitalPage> getDigitalPages();
+	
+	void setDigitalPages(List<DigitalPage> pages);
+	
+	DerivateType getType();
 }

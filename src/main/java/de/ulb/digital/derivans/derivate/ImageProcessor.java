@@ -43,7 +43,7 @@ class ImageProcessor {
 	BufferedImage scale(BufferedImage original, float ratio) {
 		int newW = (int) (ratio * original.getWidth());
 		int newH = (int) (ratio * original.getHeight());
-		Image tmp = original.getScaledInstance(newW, newH, Image.SCALE_FAST);
+		Image tmp = original.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
 		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_3BYTE_BGR);
 		Graphics2D g2d = dimg.createGraphics();
 		g2d.drawImage(tmp, 0, 0, null);

@@ -2,7 +2,6 @@ package de.ulb.digital.derivans.derivate;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,7 +39,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	public ImageDerivateerJPGFooterGranular(DerivansData input, DerivansData output, Integer quality,
 			DigitalFooter footer, List<DigitalPage> pages) {
 		super(input, output, quality, footer);
-		this.pages = enrichPhysicalPath(input.getPath(), pages);
+		this.digitalPages = pages;
 	}
 	
 	/**
@@ -51,7 +50,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 */
 	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d) {
 		super(d.getInput(), d.getOutput(), d.getQuality(), d.getDigitalFooter());
-		this.pages = enrichPhysicalPath(input.getPath(), d.getPages());
+		this.digitalPages = d.getDigitalPages();
 		this.poolSize = d.getPoolSize();
 	}
 	
@@ -61,26 +60,15 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	
 	private void renderFooterGranular(DigitalPage page) {
 		String source = page.getImagePath().toString();
-		String fileNameOut = new File(source).getName();
-		String target = Path.of(outputDir.toString(), fileNameOut).toString();
+		this.resolver.setImagePath(page, this);
+		String target = page.getImagePath().toString();
+		LOGGER.debug("read '{}' write '{}'", source, target);
 
-		// sanitize input: mark image file extension if ..
-		// .. no jpg extension and also no tif
-		if (!source.endsWith(".jpg") && !source.endsWith(".tif")) {
-			source = source + ".jpg";
-		}
-
-		// enforce jpg as default output format
-		if (!target.endsWith(".jpg")) {
-			target = target + ".jpg";
-		}
-
-		// granularity
+		// keep track of granularity
 		String urn = "";
 		var optUrn = page.getIdentifier();
 		if (optUrn.isPresent()) {
 			urn = optUrn.get();
-			nGranulars.getAndIncrement();
 		} else {
 			LOGGER.warn("No granular URN for {}!", page);
 		}
@@ -114,14 +102,21 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 				float compressionRatio = ((float) quality) / 100.0f;
 				imageProcessor.writeJPGWithQuality(image, target, compressionRatio);
 				page.setFooterHeight(footerBuffer.getHeight());
+				
+				// keep track of granularity if 
+				// and only if optional granular urn present
+				if(optUrn.isPresent()) {
+					nGranulars.getAndIncrement();
+				}
 			}
 		} catch (IOException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", page.getImagePath(), footer, e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public boolean forward() throws DigitalDerivansException {
-		return this.runWithPool(() -> this.pages.parallelStream().forEach(this::renderFooterGranular));
+		return this.runWithPool(() -> this.getDigitalPages().parallelStream().forEach(this::renderFooterGranular));
 	}
 }

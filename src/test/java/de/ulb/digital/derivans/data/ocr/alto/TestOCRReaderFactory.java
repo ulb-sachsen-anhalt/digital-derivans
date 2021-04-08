@@ -26,7 +26,7 @@ public class TestOCRReaderFactory {
 		Path vlInhouse737434 = Path.of("./src/test/resources/metadata/kitodo2/meta.xml");
 		
 		// act
-		assertThrows(DigitalDerivansException.class, () -> OCRReaderFactory.get(vlInhouse737434)); 
+		assertThrows(DigitalDerivansException.class, () -> OCRReaderFactory.from(vlInhouse737434)); 
 	}
 	
 	@Test
@@ -35,7 +35,7 @@ public class TestOCRReaderFactory {
 		Path vlInhouse737434 = Path.of("./src/test/resources/alto/737429/FULLTEXT/FULLTEXT_737434.xml");
 		
 		// act
-		OCRReader reader = OCRReaderFactory.get(vlInhouse737434);
+		OCRReader reader = OCRReaderFactory.from(vlInhouse737434);
 		OCRData data = reader.get(vlInhouse737434);
 		
 		// assert
@@ -51,7 +51,7 @@ public class TestOCRReaderFactory {
 		Path input = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
 		
 		// act
-		OCRReader reader = OCRReaderFactory.get(input);
+		OCRReader reader = OCRReaderFactory.from(input);
 		
 		// assert
 		assertEquals(reader.getType(), Type.ALTO_V3);

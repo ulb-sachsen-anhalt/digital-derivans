@@ -26,6 +26,7 @@ public class DigitalPage {
 
 	/**
 	 * Pointer to single physical image for given page
+	 * Subject to change due subsequent derivation actions
 	 */
 	private File imgFile;
 

@@ -1,7 +1,14 @@
 package de.ulb.digital.derivans.derivate;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import de.ulb.digital.derivans.DerivansPathResolver;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateType;
+import de.ulb.digital.derivans.model.DigitalPage;
 
 /**
  * 
@@ -16,17 +23,28 @@ public class BaseDerivateer implements IDerivateer {
 	protected DerivansData input;
 
 	protected DerivansData output;
+	
+	protected DerivateType derivateType;
+	
+	protected List<DigitalPage> digitalPages;
+	
+	protected DerivansPathResolver resolver;
+
+	protected Optional<String> outputPrefix;
 
 	public BaseDerivateer(DerivansData input, DerivansData output) {
 		this.input = input;
 		this.output = output;
+		this.resolver = new DerivansPathResolver();
+		this.derivateType = output.getType();
+		this.outputPrefix = Optional.empty();
 	}
-
+	
 	protected DerivansData getInput() {
 		return this.input;
 	}
 
-	protected DerivansData getOutput() {
+	public DerivansData getOutput() {
 		return this.output;
 	}
 
@@ -39,7 +57,28 @@ public class BaseDerivateer implements IDerivateer {
 	}
 
 	@Override
-	public boolean create(String conformanceLevel) throws DigitalDerivansException {
-		return false;
-	}	
+	public List<DigitalPage> getDigitalPages() {
+		return this.digitalPages;
+	}
+
+	@Override
+	public void setDigitalPages(List<DigitalPage> pages) {
+		this.digitalPages = new ArrayList<>(pages);
+	}
+
+	public Optional<String> getOutputPrefix() {
+		return outputPrefix;
+	}
+
+	public void setOutputPrefix(String prefix) {
+		if (prefix != null) {
+			this.outputPrefix = Optional.of(prefix);
+		}
+	}
+	
+	@Override
+	public DerivateType getType() {
+		return this.derivateType;
+	}
+	
 }

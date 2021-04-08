@@ -20,10 +20,6 @@
       <mets:note>2021-03-07 20:30:37</mets:note>
     </mets:agent>
     <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
-      <mets:name>DigitalDerivans</mets:name>
-      <mets:note>PDF FileGroup for PDF_148811035 created at 2021-03-66T20:30:62</mets:note>
-    </mets:agent>
-    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
       <mets:name>OCR 'ocrd/all:2020-08-04'</mets:name>
       <mets:note>2021-03-07 20:30:47</mets:note>
     </mets:agent>
@@ -158,11 +154,6 @@
         <mets:FLocat xlink:href="http://digital.bibliothek.uni-halle.de/hd/download/webcache/1504/00000016" LOCTYPE="URL"/>
       </mets:file>
     </mets:fileGrp>
-    <mets:fileGrp USE="DOWNLOAD">
-      <mets:file ID="PDF_148811035" MIMETYPE="application/pdf">
-        <mets:FLocat LOCTYPE="URL" xlink:href="148811035.pdf"/>
-      </mets:file>
-    </mets:fileGrp>
     <mets:fileGrp USE="FULLTEXT">
       <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320809">
         <mets:FLocat LOCTYPE="URL" xlink:href="320809.xml"/>
@@ -256,7 +247,6 @@
   </mets:structMap>
   <mets:structMap TYPE="LOGICAL">
     <mets:div ID="log320796" DMDID="md320796" ADMID="amd320796" TYPE="monograph" LABEL="Neue Friedens-Vorschläge welche von Seiten Seiner Käyserlichen Majestät und Dero Hohen Alliirten, Denenjenigen, So die Cron Franckreich auf dem Friedens-Congress in Utrecht gethan, entgegengesetzet w" ORDER="1" CONTENTIDS="urn:nbn:de:gbv:3:3-10504">
-      <mets:fptr FILEID="PDF_148811035"/>
       <mets:div ID="log320798" TYPE="cover_front" LABEL="Vorderdeckel" ORDER="1"/>
       <mets:div ID="log320803" TYPE="title_page" LABEL="Titelblatt" ORDER="2"/>
       <mets:div ID="log320807" TYPE="section" LABEL="Abschnitt [ohne Titel]" ORDER="3"/>

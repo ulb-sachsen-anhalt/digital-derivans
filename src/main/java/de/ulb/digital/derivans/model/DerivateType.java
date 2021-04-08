@@ -7,6 +7,6 @@ package de.ulb.digital.derivans.model;
  */
 public enum DerivateType {
 
-	IMAGE, JPG, JPG_FOOTER, PDF;
+	IMAGE, JPG, JPG_FOOTER, PDF, UNKNOWN;
 
 }

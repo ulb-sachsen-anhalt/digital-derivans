@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import de.ulb.digital.derivans.DerivansPathResolver;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateType;
@@ -89,10 +90,14 @@ class TestImageDerivateerJPGFooterGranular {
 			page.setIdentifier(currentURN);
 			pages.add(page);
 		}
-		IDerivateer jpgs = new ImageDerivateerJPGFooterGranular(input, output, 95, footer, pages);
+		
+		// enrich target path
+		DerivansPathResolver resolver = new DerivansPathResolver();
+		pages = resolver.enrichWithPath(pages, sourcePath);
 
 		// act
-		boolean outcome = jpgs.create();
+		IDerivateer derivateerGranular = new ImageDerivateerJPGFooterGranular(input, output, 95, footer, pages);
+		boolean outcome = derivateerGranular.create();
 
 		// assert
 		assertTrue(outcome);
@@ -105,7 +110,7 @@ class TestImageDerivateerJPGFooterGranular {
 			assertEquals(2000, image.getWidth());
 		}
 
-		assertEquals(3, ((ImageDerivateerJPGFooterGranular) jpgs).getNumberOfGranularIdentifiers());
+		assertEquals(3, ((ImageDerivateerJPGFooterGranular) derivateerGranular).getNumberOfGranularIdentifiers());
 	}
 
 	@Test
@@ -138,6 +143,11 @@ class TestImageDerivateerJPGFooterGranular {
 			}
 			pages.add(page);
 		}
+		
+		// enrich target path
+		DerivansPathResolver resolver = new DerivansPathResolver();
+		pages = resolver.enrichWithPath(pages, sourcePath);
+		
 		IDerivateer jpgs = new ImageDerivateerJPGFooterGranular(input, output, 95, footer, pages);
 
 		// act
