@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,8 +76,9 @@ class TestImageDerivateerJPGFooter {
 		// check template file found
 		assertTrue(Files.exists(target));
 
-		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, 95, footer);
 		DerivansPathResolver resolver = new DerivansPathResolver();
+		// empty list at construction time is okay since we re-set the pages immediately
+		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, 95, footer, new ArrayList<>());
 		derivateer.setDigitalPages(resolver.resolveFromPath(sourcePath));
 
 		// act

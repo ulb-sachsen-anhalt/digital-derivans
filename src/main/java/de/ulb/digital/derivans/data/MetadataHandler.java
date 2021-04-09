@@ -164,7 +164,7 @@ public class MetadataHandler {
 	 * @param typeValue
 	 * @return
 	 */
-	public String requestDMDSubDivIDs(String typeValue) {
+	public String requestDMDSubDivIDs() {
 		var elements = document.getContent(new ElementFilter());
 		var optDMDID = elements.stream()
 				.map(Element::getChildren)

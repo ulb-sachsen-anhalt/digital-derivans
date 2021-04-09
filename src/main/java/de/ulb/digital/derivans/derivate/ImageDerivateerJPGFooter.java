@@ -48,11 +48,12 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 
 	protected String footerFontFile = FontHandler.DEFAULT_FONT_FILE;
 	
-	protected Font footerFont;
+	private Font footerFont;
 
-	public ImageDerivateerJPGFooter(DerivansData input, DerivansData output, Integer quality, DigitalFooter footer) {
+	public ImageDerivateerJPGFooter(DerivansData input, DerivansData output, Integer quality, DigitalFooter footer, List<DigitalPage> pages) {
 		super(input, output, quality);
 		this.footer = footer;
+		this.digitalPages = pages;
 		this.init();
 	}
 
@@ -65,8 +66,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	 * @param footer
 	 * @param pages
 	 */
-	public ImageDerivateerJPGFooter(BaseDerivateer base, Integer quality, DigitalFooter footer,
-			List<DigitalPage> pages) {
+	public ImageDerivateerJPGFooter(BaseDerivateer base, Integer quality, DigitalFooter footer) {
 		super(base.getInput(), base.getOutput(), quality);
 		this.digitalPages = base.getDigitalPages();
 		this.footer = footer;
@@ -135,9 +135,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 			float qualityRatio = ((float) quality) / 100.0f;
 			imageProcessor.writeJPGWithQuality(image, target, qualityRatio);
 			page.setFooterHeight(currentFooter.getHeight());
-		} catch (IOException e) {
-			LOGGER.error("pathIn: {}, footer: {} => {}", source, footer, e.getMessage());
-		} catch (Exception e) {
+		} catch (IOException | DigitalDerivansException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", source, footer, e.getMessage());
 		}
 
@@ -154,10 +152,10 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 		Graphics2D g2d = bufferedImage.createGraphics();
 		g2d.setColor(Color.WHITE);
 		
-		// we want bold font
+		// we want bold font with specific actual fontsize
 		String footerFontName = this.footerFont.getFontName();
-		Font footerFont = new Font(footerFontName, Font.BOLD, fontSize); 
-		g2d.setFont(footerFont);
+		Font theFont = new Font(footerFontName, Font.BOLD, fontSize); 
+		g2d.setFont(theFont);
 
 		int lineHeightRedux = heightPerLine - (int) (heightPerLine * 0.2);
 		int y = lineHeightRedux;

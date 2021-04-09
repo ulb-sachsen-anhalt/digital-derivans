@@ -38,7 +38,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 */
 	public ImageDerivateerJPGFooterGranular(DerivansData input, DerivansData output, Integer quality,
 			DigitalFooter footer, List<DigitalPage> pages) {
-		super(input, output, quality, footer);
+		super(input, output, quality, footer, pages);
 		this.digitalPages = pages;
 	}
 	
@@ -49,7 +49,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 * @param d
 	 */
 	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d) {
-		super(d.getInput(), d.getOutput(), d.getQuality(), d.getDigitalFooter());
+		super(d.getInput(), d.getOutput(), d.getQuality(), d.getDigitalFooter(), d.digitalPages);
 		this.digitalPages = d.getDigitalPages();
 		this.poolSize = d.getPoolSize();
 	}
@@ -73,7 +73,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 			LOGGER.warn("No granular URN for {}!", page);
 		}
 		
-		// do the actual rendering
+		// do actual rendering
 		BufferedImage bi = imageProcessor.clone(this.footerBuffer);
 		DigitalFooter footer = new DigitalFooter(this.footer.getText().get(0), urn, bi);
 		try {
@@ -111,7 +111,6 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 			}
 		} catch (IOException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", page.getImagePath(), footer, e.getMessage());
-			e.printStackTrace();
 		}
 	}
 

@@ -79,7 +79,7 @@ public class FontHandler {
 
 	/**
 	 * 
-	 * Create temporary File if Font must be loaded from JAR
+	 * Create temporary File if Font within JAR
 	 * 
 	 * @param resPath
 	 * @return
@@ -88,15 +88,17 @@ public class FontHandler {
 	private String storeAsTempfile(String resPath) throws DigitalDerivansException {
 		ClassLoader cl = this.getClass().getClassLoader();
 		if (cl.getResource(resPath) != null && cl.getResource(resPath).getProtocol().equals("jar")) {
-			try (InputStream input = cl.getResourceAsStream(resPath);) {
+			try (InputStream input = cl.getResourceAsStream(resPath)) {
 				File file = File.createTempFile("derivans-tmp-font-", ".ttf");
-				OutputStream out = new FileOutputStream(file);
-				int read;
-				byte[] bytes = new byte[1024];
-				while ((read = input.read(bytes)) != -1) {
-					out.write(bytes, 0, read);
+				
+				try(OutputStream out = new FileOutputStream(file)) {
+					int read;
+					byte[] bytes = new byte[1024];
+					while ((read = input.read(bytes)) != -1) {
+						out.write(bytes, 0, read);
+					}
 				}
-				out.close();
+
 				file.deleteOnExit();
 				return file.toString();
 			} catch (IOException e) {

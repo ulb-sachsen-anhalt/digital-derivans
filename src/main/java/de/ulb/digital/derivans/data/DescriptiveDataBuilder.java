@@ -131,15 +131,21 @@ class DescriptiveDataBuilder {
 
 	/**
 	 * 
-	 * Get some name for first entry
+	 * Get some name for person-of-interest from MODS:
+	 * 
+	 * <ul>
+	 * 	<li>if any mods:displayForm exists, get the text() from first element</li>
+	 * 	<li>if not, search for mods:namePart elements and get the first with attribute "family"</li>
+	 * </ul>
 	 * 
 	 * @param list
 	 * @return
 	 */
 	private String getSomeName(List<Element> list) {
 		for(Element e : list) {
-			for(Element f : e.getChildren("displayForm", NS_MODS)) {
-				return f.getTextNormalize();
+			List<Element> displayers = e.getChildren("displayForm", NS_MODS);
+			if(!displayers.isEmpty()) {
+				return displayers.get(0).getTextNormalize();
 			}
 			for(Element f : e.getChildren("namePart", NS_MODS)) {
 				if("family".equals(f.getAttributeValue("type"))) {
@@ -276,7 +282,7 @@ class DescriptiveDataBuilder {
 				return dmd.getMdWrap().getMetadata();
 			} else {
 				// kitodo2 multivolume work
-				String firstDmdId = getLinkIDsFromFirstVolume(mets.getLogicalStructMap());
+				String firstDmdId = getLinkIDsFromFirstVolume();
 				if(firstDmdId == null) {
 					return null;
 				}
@@ -293,8 +299,8 @@ class DescriptiveDataBuilder {
 		return logMap.getDivContainer().getDmdId();
 	}
 	
-	private String getLinkIDsFromFirstVolume(LogicalStructMap logMap) {
-		return this.handler.requestDMDSubDivIDs("DMDID");
+	private String getLinkIDsFromFirstVolume() {
+		return this.handler.requestDMDSubDivIDs();
 	}
 
 	public void setHandler(MetadataHandler handler) {

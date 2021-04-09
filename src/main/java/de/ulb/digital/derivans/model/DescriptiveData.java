@@ -85,7 +85,7 @@ public class DescriptiveData {
 	}
 
 	public void setYearPublished(String yearPublished) {
-		if (yearPublished == MetadataStore.UNKNOWN)
+		if (MetadataStore.UNKNOWN.equals(yearPublished))
 			yearPublished = "0";
 		this.yearPublished = yearPublished;
 	}
@@ -99,9 +99,12 @@ public class DescriptiveData {
 	}
 
 	public void setLicense(Optional<String> labelLicense) {
-		if (labelLicense.get() == MetadataStore.UNKNOWN)
-				labelLicense = Optional.empty();
-		this.license = labelLicense;
+		if(labelLicense.isPresent()) {
+			String newLicence = labelLicense.get();
+			if (! MetadataStore.UNKNOWN.equals(newLicence)) {
+				this.license = labelLicense;
+			}
+		}
 	}
 
 	public Optional<String> getKeywords() {

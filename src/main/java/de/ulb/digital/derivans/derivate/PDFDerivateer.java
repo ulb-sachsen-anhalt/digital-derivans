@@ -101,7 +101,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		this.pdfConformanceLevel = conformanceLevel;
 	}
 
-	private int addPages(Document document, PdfWriter writer, List<DigitalPage> pages, String conformance)
+	private int addPages(Document document, PdfWriter writer, List<DigitalPage> pages)
 			throws DigitalDerivansException {
 		int pagesAdded = 0;
 
@@ -138,14 +138,10 @@ public class PDFDerivateer extends BaseDerivateer {
 			
 			OCRData ocrData = optOcr.get(); 
 
-			// get to know current image dimensions - might differ from original size
+			// get to know current image dimensions
+			// most likely to differ due subsequent scaling derivation steps
 			int pageHeight = ocrData.getPageHeight();
-			// especially when footer was appended at image bottom
-			if(page.getFooterHeight().isPresent()) {
-				int footerHeight = page.getFooterHeight().get();
-				pageHeight += footerHeight;
-			}
-			// down we need to scale by now?
+			// need to scale?
 			float ratio = currentImageHeight / pageHeight;
 			if (Math.abs(1.0 - ratio) > 0.01) {
 				LOGGER.info("scale ocr data for '{}' by '{}'", page.getImagePath(), ratio);
@@ -169,7 +165,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		}
 	}
 
-	private static void renderLine(BaseFont font, int pageHeight, PdfContentByte cb, Textline line) throws IOException {
+	private static void renderLine(BaseFont font, int pageHeight, PdfContentByte cb, Textline line) {
 		String text = line.getText();
 		Rectangle box = toItextBox(line.getBounds());
 		float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
@@ -197,7 +193,7 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @return
 	 * @throws IOException
 	 */
-	static float calculateFontSize(BaseFont font, String text, float width, float height) throws IOException {
+	static float calculateFontSize(BaseFont font, String text, float width, float height) {
 		float sw = font.getWidth(text);
 		float fontSizeX = sw / 1000.0f * height;
 		Chunk chunk = new Chunk(text, new Font(font, fontSizeX));
@@ -212,8 +208,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		com.itextpdf.awt.geom.Point tPoint = new com.itextpdf.awt.geom.Point(r.x, r.y);
 		com.itextpdf.awt.geom.Dimension tDim = new com.itextpdf.awt.geom.Dimension(r.width,	r.height);
 		com.itextpdf.awt.geom.Rectangle tmp = new com.itextpdf.awt.geom.Rectangle(tPoint, tDim);
-		Rectangle box = new Rectangle(tmp);
-		return box;
+		return new Rectangle(tmp);
 	}
 
 	static boolean buildOutline(PdfWriter pdfWriter, int nPages, DigitalStructureTree structure) {
@@ -314,18 +309,12 @@ public class PDFDerivateer extends BaseDerivateer {
 		boolean hasOutlineAdded = false;
 		Path pathToPDF = this.output.getPath();
 		
-		// why need to sanitize again here?
-//		if(Files.isDirectory(pathToPDF, LinkOption.NOFOLLOW_LINKS)) {
-//			Path dirName = pathToPDF.getName(pathToPDF.getNameCount() - 1);
-//			pathToPDF = Path.of(pathToPDF.resolve(dirName).toString()+".pdf");
-//		}
-
 		PdfWriter writer = null;
 		try (FileOutputStream fos = new FileOutputStream(pathToPDF.toFile())){
 			
 			if (pdfConformanceLevel != null) {
-				PdfAConformanceLevel pdfa_level = PdfAConformanceLevel.valueOf(pdfConformanceLevel);
-				writer = PdfAWriter.getInstance(document, fos, pdfa_level);
+				PdfAConformanceLevel pdfaLevel = PdfAConformanceLevel.valueOf(pdfConformanceLevel);
+				writer = PdfAWriter.getInstance(document, fos, pdfaLevel);
 
 			} else {
 				writer = PdfWriter.getInstance(document, fos);
@@ -360,7 +349,7 @@ public class PDFDerivateer extends BaseDerivateer {
 				writer.setOutputIntents("Custom", "", "http://www.color.org", "sRGB IEC61966-2.1", icc);
 			}
 
-			int nPagesAdded = addPages(document, writer, digitalPages, pdfConformanceLevel);
+			int nPagesAdded = addPages(document, writer, digitalPages);
 
 			// inform doc how many pages it holds
 			document.setPageCount(nPagesAdded);

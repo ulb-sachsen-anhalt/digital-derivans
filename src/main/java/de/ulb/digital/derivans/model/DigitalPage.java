@@ -68,8 +68,8 @@ public class DigitalPage {
 
 	public Optional<Path> getOcrFile() {
 		if (this.ocrFile.isPresent()) {
-			File ocrFile = this.ocrFile.get();
-			return Optional.of(ocrFile.getPysicalPath());
+			File theFile = this.ocrFile.get();
+			return Optional.of(theFile.getPysicalPath());
 		}
 		return Optional.empty();
 	}
@@ -159,7 +159,7 @@ public class DigitalPage {
 
 	}
 
-	static enum FileType {
+	enum FileType {
 		IMAGE, OCR
 	}
 }

@@ -75,7 +75,7 @@ public class DerivansPathResolver {
 		case PDF:
 			try {
 				if (!Files.exists(inputPath, LinkOption.NOFOLLOW_LINKS)) {
-					LOGGER.info("create path '" + inputPath + "'");
+					LOGGER.info("create path '{}'", inputPath);
 					Files.createDirectory(inputPath);
 				}
 				List<Path> paths = getFilePaths(inputPath, imageFilter);
@@ -88,7 +88,7 @@ public class DerivansPathResolver {
 			break;
 
 		case UNKNOWN:
-			LOGGER.warn("encountered unknown derivate type at " + step);
+			LOGGER.warn("encountered unknown derivate type at step '{}'", step);
 		}
 		return pages;
 	}
@@ -115,8 +115,8 @@ public class DerivansPathResolver {
 		
 		
 		List<Path> ocrFiles = new ArrayList<>();
-		try {
-			ocrFiles = Files.list(ocrPath).collect(Collectors.toList());
+		try (Stream<Path> files = Files.list(ocrPath)) {
+			ocrFiles = files.collect(Collectors.toList());
 		} catch (IOException e) {
 			LOGGER.error(e);
 			return pages;

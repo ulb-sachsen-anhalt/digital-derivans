@@ -60,13 +60,13 @@ public class OCRData {
 	 */
 	public static class Textline {
 		private List<Text> texts;
-		private String text;
+		private String actualText;
 		private Area area;
 
 		public Textline(List<Text> texts) {
 			this.texts = texts;
 			this.calculateArea();
-			this.text = String.join(" ",
+			this.actualText = String.join(" ",
 					texts.stream().map(Text::getText).filter(Objects::nonNull).collect(Collectors.toList()));
 		}
 
@@ -79,7 +79,7 @@ public class OCRData {
 		}
 		
 		public String getText() {
-			return this.text;
+			return this.actualText;
 		}
 		
 		public Area getArea() {
@@ -101,7 +101,7 @@ public class OCRData {
 			Double w = Double.valueOf(shape.getWidth());
 			Double h = Double.valueOf(shape.getHeight());
 			builder.append('[').append(w).append('x').append(h).
-			append(']').append(this.text);
+			append(']').append(this.actualText);
 			return builder.toString();
 		}
 	}
@@ -114,16 +114,16 @@ public class OCRData {
 	 *
 	 */
 	public static class Text {
-		private String text;
+		private String actualText;
 		private Rectangle rect;
 
-		public Text(String text, Rectangle box) {
-			this.text = text;
+		public Text(String actualText, Rectangle box) {
+			this.actualText = actualText;
 			this.rect = box;
 		}
 
 		public String getText() {
-			return this.text;
+			return this.actualText;
 		}
 
 		public Rectangle getBox() {
@@ -135,7 +135,7 @@ public class OCRData {
 		}
 		
 		public boolean hasPrintableChars() {
-			return (this.text != null) && (!this.text.isBlank());
+			return (this.actualText != null) && (!this.actualText.isBlank());
 		}
 
 		@Override
@@ -146,7 +146,7 @@ public class OCRData {
 			Double w = Double.valueOf(rect.getWidth());
 			Double h = Double.valueOf(rect.getHeight());
 			builder.append(hash).append('[').append(w).append('x').append(h).
-			append(']').append(text);
+			append(']').append(actualText);
 			return builder.toString();
 		}
 	}

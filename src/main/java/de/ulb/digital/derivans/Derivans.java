@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
+import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.MetadataStore;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
@@ -151,8 +152,7 @@ public class Derivans {
 
 				// calculate final PDF path for post processing of metadata
 				Path pdfPath = resolver.calculatePDFPath(descriptiveData, step);
-//				String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
-				String pdfALevel = null;
+				String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
 				derivateers.add(new PDFDerivateer(base, pdfPath, structure, descriptiveData, pages, pdfALevel));
 				optPDFPath = Optional.of(pdfPath);
 			}
@@ -228,7 +228,7 @@ public class Derivans {
 		Path pathTemplate = step.getPathTemplate();
 		DigitalFooter footer = new DigitalFooter(footerLabel, recordIdentifier, pathTemplate);
 		Integer quality = step.getQuality();
-		ImageDerivateerJPGFooter d = new ImageDerivateerJPGFooter(base, quality, footer, pages);
+		ImageDerivateerJPGFooter d = new ImageDerivateerJPGFooter(base, quality, footer);
 		d.setPoolsize(step.getPoolsize());
 		d.setMaximal(step.getMaximal());
 		return d;

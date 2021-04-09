@@ -34,7 +34,7 @@ public class ALTOReader implements OCRReader {
 
 	private Document document;
 
-	public Predicate<String> containsChars = s -> (s != null) && (!s.isBlank());
+	public static final Predicate<String> CONTAINS_CHARS = s -> (s != null) && (!s.isBlank());
 	
 	protected Type type;
 
@@ -59,8 +59,8 @@ public class ALTOReader implements OCRReader {
 
 	private Dimension extractPageDimension() {
 		Element page = extractElements(new ElementFilter("Page")).get(0);
-		int w = Integer.valueOf(page.getAttributeValue("WIDTH"));
-		int h = Integer.valueOf(page.getAttributeValue("HEIGHT"));
+		int w = Integer.parseInt(page.getAttributeValue("WIDTH"));
+		int h = Integer.parseInt(page.getAttributeValue("HEIGHT"));
 		return new Dimension(w, h);
 	}
 
@@ -91,13 +91,12 @@ public class ALTOReader implements OCRReader {
 
 	static OCRData.Text toText(Element word) {
 		String content = word.getAttributeValue("CONTENT");
-		int x = Integer.valueOf(word.getAttributeValue("HPOS"));
-		int y = Integer.valueOf(word.getAttributeValue("VPOS"));
-		int width = Integer.valueOf(word.getAttributeValue("WIDTH"));
-		int height = Integer.valueOf(word.getAttributeValue("HEIGHT"));
+		int x = Integer.parseInt(word.getAttributeValue("HPOS"));
+		int y = Integer.parseInt(word.getAttributeValue("VPOS"));
+		int width = Integer.parseInt(word.getAttributeValue("WIDTH"));
+		int height = Integer.parseInt(word.getAttributeValue("HEIGHT"));
 		Rectangle rect = new Rectangle(x, y, width, height);
-		OCRData.Text txt = new OCRData.Text(content, rect);
-		return txt;
+		return new OCRData.Text(content, rect);
 	}
 
 	@Override

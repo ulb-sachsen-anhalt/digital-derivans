@@ -147,18 +147,4 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 	 */
 	public abstract boolean forward() throws DigitalDerivansException;
 
-	/**
-	 * 
-	 * Gather Image Path Information regarding a specific image type specified by fileFilter
-	 * 
-	 * @param path
-	 * @param fileFilter
-	 * @return
-	 * @throws IOException
-	 */
-//	public static List<Path> getFilePaths(Path path, Predicate<Path> fileFilter) throws IOException {
-//		try (Stream<Path> filesList = Files.list(path)) {
-//			return filesList.filter(Files::isRegularFile).filter(fileFilter).sorted().collect(Collectors.toList());
-//		}
-//	}
 }

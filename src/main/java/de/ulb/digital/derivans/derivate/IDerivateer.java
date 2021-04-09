@@ -8,6 +8,7 @@ import de.ulb.digital.derivans.model.DigitalPage;
 
 /**
  * 
+ * Derivateer API
  * 
  * @author hartwig
  *
@@ -22,8 +23,6 @@ public interface IDerivateer {
 	 * @throws DigitalDerivansException
 	 */
 	boolean create() throws DigitalDerivansException;
-
-//	boolean create(String conformanceLevel) throws DigitalDerivansException;
 
 	List<DigitalPage> getDigitalPages();
 	
