@@ -113,6 +113,7 @@ public class MetadataStore implements IMetadataStore {
 					}
 					
 					// handle optional attached ocr file
+					LOGGER.debug("search for {} within {}", FILEGROUP_FULLTEXT, fptrs);
 					Optional<FilePointerMatch> optFulltext = fptrs.stream()
 							.filter(fptr -> FILEGROUP_FULLTEXT.equals(fptr.getFileGroup())).findFirst();
 					if (optFulltext.isPresent()) {
@@ -292,6 +293,11 @@ public class MetadataStore implements IMetadataStore {
 
 		public String getReference() {
 			return reference;
+		}
+		
+		@Override
+		public String toString() {
+			return fileGroup + "=>" + reference;
 		}
 	}
 }

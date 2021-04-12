@@ -182,7 +182,6 @@ public class TestDerivans {
 		copyTree(sourceOcr, targetOcr);
 
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathInput(pathTarget);
 		dp.setPathInput(targetMets);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		// some scaling, too
