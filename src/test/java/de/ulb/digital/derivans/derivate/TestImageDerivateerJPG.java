@@ -120,4 +120,53 @@ class TestImageDerivateerJPG {
 		}
 	}
 
+	/**
+	 * 
+	 * Ensure that cascading works as expected, i.e. prefixes are being
+	 * handled properly between different derivate steps
+	 * 
+	 * @throws DigitalDerivansException
+	 * @throws IOException
+	 */
+	@Test
+	void testRendererCascadingwithAttributes() throws DigitalDerivansException, IOException {
+		// arrange
+		Path sourcePath = sharedTempDir.resolve("IMAGE");
+		Path targetPath = sharedTempDir.resolve("PREVIEW");
+		Path finalPath = sharedTempDir.resolve("FINAL");
+		Files.createDirectory(targetPath);
+		
+		DerivansData input = new DerivansData(sourcePath, DerivateType.JPG);
+		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
+		ImageDerivateerJPG id1 = new ImageDerivateerJPG(input, output, 50);
+		DerivansPathResolver resolver = new DerivansPathResolver();
+		id1.setDigitalPages(resolver.resolveFromPath(sourcePath));
+		id1.setMaximal(800);
+		id1.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
+
+		DerivansData input2 = new DerivansData(targetPath, DerivateType.JPG);
+		DerivansData output2 = new DerivansData(finalPath, DerivateType.JPG);
+		ImageDerivateerJPG id2 = new ImageDerivateerJPG(input2, output2, 50);
+		resolver = new DerivansPathResolver();
+		id2.setDigitalPages(resolver.resolveFromPath(sourcePath));
+		id2.setMaximal(640);
+		id2.setOutputPrefix("BUNDLE_HUMBLE__");
+		
+		// act
+		id1.create();
+		boolean outcome = id2.create();
+
+		// assert
+		assertTrue(outcome);
+		List<Path> paths = Files.list(finalPath).sorted().collect(Collectors.toList());
+		assertEquals(8, paths.size());
+		for (int i=0; i < paths.size(); i++) {
+			Path p = paths.get(i);
+			assertTrue(Files.exists(p));
+			BufferedImage bi = ImageIO.read(p.toFile());
+			assertEquals(640, bi.getHeight());
+			String fileName = p.getFileName().toString();
+			assertEquals(fileName, String.format("BUNDLE_HUMBLE__000%d.jpg", i+1));
+		}
+	}
 }
