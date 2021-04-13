@@ -36,6 +36,7 @@ public class ImageDerivateerJPG extends ImageDerivateer {
 		super(base.getInput(), base.getOutput());
 		this.digitalPages = base.getDigitalPages();
 		this.quality = quality;
+		this.resolver = base.getResolver();
 	}
 
 	private String render(DigitalPage page) {

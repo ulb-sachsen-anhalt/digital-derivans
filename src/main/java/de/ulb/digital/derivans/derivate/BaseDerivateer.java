@@ -40,6 +40,14 @@ public class BaseDerivateer implements IDerivateer {
 		this.outputPrefix = Optional.empty();
 	}
 	
+	public void setResolver(DerivansPathResolver resolver) {
+		this.resolver = resolver;
+	}
+	
+	public DerivansPathResolver getResolver() {
+		return this.resolver;
+	}
+	
 	protected DerivansData getInput() {
 		return this.input;
 	}

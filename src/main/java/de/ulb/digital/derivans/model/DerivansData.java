@@ -25,9 +25,13 @@ public class DerivansData {
 	public void setPath(Path path) {
 		this.pathData = path;
 	}
-	
+
 	public DerivateType getType() {
 		return type;
 	}
 
+	@Override
+	public String toString() {
+		return type + ":" + pathData;
+	}
 }

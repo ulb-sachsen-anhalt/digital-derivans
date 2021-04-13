@@ -48,6 +48,8 @@ public class DerivansPathResolver {
 
 	private Predicate<Path> imageFilter;
 	
+	private List<String> namePrefixes;
+	
 	private Path rootDir;
 
 	/**
@@ -59,12 +61,23 @@ public class DerivansPathResolver {
 	public DerivansPathResolver(Path rootDir) {
 		this.rootDir = rootDir;
 		this.imageFilter = new PredicateFileJPGorTIF();
+		this.namePrefixes = new ArrayList<>();
 	}
 
 	public DerivansPathResolver() {
 		this(null);
 	}
 	
+	/**
+	 * 
+	 * Set optional {@link DerivateStep} information about used prefixes for images
+	 * 
+	 * @param prefixes
+	 */
+	public void setNamePrefixes(List<String> prefixes) {
+		this.namePrefixes = new ArrayList<>(prefixes);
+	}
+
 	public List<DigitalPage> resolveFromStep(DerivateStep step) {
 		List<DigitalPage> pages = new ArrayList<>();
 		Path inputPath = step.getInputPath();
@@ -217,6 +230,16 @@ public class DerivansPathResolver {
 			fileName += ".jpg";
 		}
 
+		// prefix in name present?
+		if(! namePrefixes.isEmpty()) {
+			for(String prefix : namePrefixes) {
+				if(fileName.contains(prefix)) {
+					LOGGER.trace("replace prefix '{}' in '{}'", prefix, fileName);
+					fileName = fileName.replace(prefix, "");
+				}
+			}
+		}
+		
 		// prefix required?
 		if (optPrefix.isPresent()) {
 			String prefix = optPrefix.get();

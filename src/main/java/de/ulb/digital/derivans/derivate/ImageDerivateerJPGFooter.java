@@ -69,6 +69,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	public ImageDerivateerJPGFooter(BaseDerivateer base, Integer quality, DigitalFooter footer) {
 		super(base.getInput(), base.getOutput(), quality);
 		this.digitalPages = base.getDigitalPages();
+		this.resolver = base.getResolver();
 		this.footer = footer;
 		this.init();
 	}

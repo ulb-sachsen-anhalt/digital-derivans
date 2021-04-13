@@ -76,6 +76,7 @@ public class Derivans {
 		}
 		this.processDir = path;
 		this.resolver = new DerivansPathResolver(this.processDir);
+		this.resolver.setNamePrefixes(conf.getPrefixes());
 
 		// common configuration
 		this.commonConfiguration = conf.getCommon();
@@ -130,6 +131,7 @@ public class Derivans {
 			DerivansData input = new DerivansData(step.getInputPath(), DerivateType.IMAGE);
 			DerivansData output = new DerivansData(step.getOutputPath(), DerivateType.JPG);
 			BaseDerivateer base = new BaseDerivateer(input, output);
+			base.setResolver(resolver);
 			base.setDigitalPages(pages);
 
 			// respect type

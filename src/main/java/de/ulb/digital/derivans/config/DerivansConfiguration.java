@@ -47,6 +47,8 @@ public class DerivansConfiguration {
 	private List<DerivateStep> derivateSteps;
 	
 	private CommonConfiguration commonConfiguration;
+	
+	private List<String> prefixes;
 
 	/**
 	 * 
@@ -57,6 +59,7 @@ public class DerivansConfiguration {
 	 */
 	public DerivansConfiguration(DerivansParameter params) throws DigitalDerivansException {
 		this.quality = DefaultConfiguration.DEFAULT_QUALITY;
+		this.prefixes = new ArrayList<>();
 		this.commonConfiguration = new CommonConfiguration();
 		if (params.getQuality() != null) {
 			this.quality = params.getQuality();
@@ -156,6 +159,18 @@ public class DerivansConfiguration {
 		 return this.commonConfiguration;
 	}
 	
+	/**
+	 * 
+	 * Derivates that also carry a prefix in their name,
+	 * keep track of this information which is later required for
+	 * proper name and path resolving. 
+	 * 
+	 * @return
+	 */
+	public List<String> getPrefixes() {
+		return this.prefixes;
+	}
+	
 	private void evaluate(INIConfiguration conf) {
 
 		// read global configuration
@@ -206,7 +221,9 @@ public class DerivansConfiguration {
 			String keyOutPrefix = derivateSection + ".output_prefix";
 			Optional<String> optOutPrefix = extractValue(conf, keyOutPrefix, String.class);
 			if (optOutPrefix.isPresent()) {
-				step.setOutputPrefix(optOutPrefix.get());
+				String prefix = optOutPrefix.get();
+				step.setOutputPrefix(prefix);
+				prefixes.add(prefix);
 			}
 
 			// poolsize

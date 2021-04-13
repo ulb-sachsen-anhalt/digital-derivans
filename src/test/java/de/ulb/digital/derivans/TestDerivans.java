@@ -54,6 +54,7 @@ public class TestDerivans {
 		Path pathTarget = arrangeMetaddatenAndImagesFor737429(tempDir);
 
 		// arrange configuration
+		// migration configuration with extended derivates
 		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
@@ -90,6 +91,16 @@ public class TestDerivans {
 		Element firstChild = parent.getChildren().get(0);
 		assertNotNull(firstChild.getAttribute("FILEID"));
 		assertEquals("PDF_191092622", firstChild.getAttribute("FILEID").getValue());
+		
+		Path bundle2 = pathTarget.resolve("BUNDLE_THUMBNAIL__");
+		assertTrue(Files.exists(bundle2));
+		List<Path> b2ps = Files.list(bundle2).sorted().collect(Collectors.toList());
+		Path p = b2ps.get(0);
+		assertTrue(Files.exists(p));
+		BufferedImage bi = ImageIO.read(p.toFile());
+		assertEquals(128, bi.getHeight());
+		String fileName = p.getFileName().toString();
+		assertEquals("BUNDLE_THUMBNAIL__737434.jpg", fileName);
 	}
 
 	@Test
