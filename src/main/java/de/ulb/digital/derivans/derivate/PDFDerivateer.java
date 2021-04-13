@@ -51,10 +51,10 @@ import de.ulb.digital.derivans.model.ocr.OCRData.Textline;
 
 /**
  * 
- * Create PDF derivate from 
+ * Create PDF derivate from
  * <ul>
- * 	<li>image data in JPG format (and extension *.jpg)</li>
- * 	<li>XML OCR-Data (ALTO)</li>
+ * <li>image data in JPG format (and extension *.jpg)</li>
+ * <li>XML OCR-Data (ALTO)</li>
  * </ul>
  * 
  * @author hartwig
@@ -67,11 +67,11 @@ public class PDFDerivateer extends BaseDerivateer {
 	private DigitalStructureTree structure;
 
 	private DescriptiveData description;
-	
+
 	private AtomicInteger nPagesWithOCR = new AtomicInteger();
 
 	private String pdfConformanceLevel;
-	
+
 	public PDFDerivateer(DerivansData input, DerivansData output, DigitalStructureTree tree,
 			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel) {
 		super(input, output);
@@ -80,7 +80,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		this.digitalPages = pages;
 		this.pdfConformanceLevel = conformanceLevel;
 	}
-	
+
 	/**
 	 * 
 	 * Create new instance on top of {@link BaseDerivateer}
@@ -101,8 +101,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		this.pdfConformanceLevel = conformanceLevel;
 	}
 
-	private int addPages(Document document, PdfWriter writer, List<DigitalPage> pages)
-			throws DigitalDerivansException {
+	private int addPages(Document document, PdfWriter writer, List<DigitalPage> pages) throws DigitalDerivansException {
 		int pagesAdded = 0;
 
 		try {
@@ -118,12 +117,11 @@ public class PDFDerivateer extends BaseDerivateer {
 		} catch (IOException | DocumentException e) {
 			throw new DigitalDerivansException(e);
 		}
-		
+
 		return pagesAdded;
 	}
 
-	private void addPage(PdfWriter writer, BaseFont font, DigitalPage page)
-			throws IOException, DocumentException {
+	private void addPage(PdfWriter writer, BaseFont font, DigitalPage page) throws IOException, DocumentException {
 
 		PdfContentByte over = writer.getDirectContent();
 		String imagePath = page.getImagePath().toString();
@@ -131,22 +129,23 @@ public class PDFDerivateer extends BaseDerivateer {
 		float actualImageDerivateHeight = image.getHeight();
 		image.setAbsolutePosition(0f, 0f);
 		over.addImage(image);
-		
+
 		// some ocr, if any
 		Optional<OCRData> optOcr = page.getOcrData();
 		if (optOcr.isPresent()) {
-			
-			OCRData ocrData = optOcr.get(); 
+
+			OCRData ocrData = optOcr.get();
 
 			// get to know current image dimensions
 			// most likely to differ due subsequent scaling derivation steps
 			int pageHeight = ocrData.getPageHeight();
-			int footerHeight = 0; 
+			int footerHeight = 0;
 			Optional<Integer> optFooterHeight = page.getFooterHeight();
-			if(optFooterHeight.isPresent()) {
+			if (optFooterHeight.isPresent()) {
 				footerHeight = optFooterHeight.get();
 				pageHeight += footerHeight;
-				LOGGER.debug("add footerHeight '{}' to original pageHeight '{}' from OCR-time", footerHeight, pageHeight);
+				LOGGER.debug("add footerHeight '{}' to original pageHeight '{}' from OCR-time", footerHeight,
+						pageHeight);
 			}
 			// need to scale?
 			float ratio = actualImageDerivateHeight / pageHeight;
@@ -154,33 +153,46 @@ public class PDFDerivateer extends BaseDerivateer {
 				LOGGER.trace("scale ocr data for '{}' by '{}'", page.getImagePath(), ratio);
 				ocrData.scale(ratio);
 			}
-			
+
 			// place optional text *behind* image
 			PdfContentByte cb = writer.getDirectContentUnder();
 			cb.saveState();
 			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
 			for (OCRData.Textline line : ocrLines) {
-				renderLine(font, (int)actualImageDerivateHeight, cb, line);
+				renderLine(font, (int) actualImageDerivateHeight, cb, line);
 			}
 			cb.restoreState();
-			
+
 			// increment number of ocr-ed pages for each PDF
 			nPagesWithOCR.getAndIncrement();
-			
+
 		} else {
 			LOGGER.info("no ocr data present for '{}'", page.getImagePath());
 		}
 	}
 
+	/**
+	 * 
+	 * Render a single row of textual tokens, if a valid fontSize can be calculated
+	 * 
+	 * @param font
+	 * @param pageHeight
+	 * @param cb
+	 * @param line
+	 */
 	private static void renderLine(BaseFont font, int pageHeight, PdfContentByte cb, Textline line) {
 		String text = line.getText();
 		Rectangle box = toItextBox(line.getBounds());
 		float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
+		if (fontSize < 1.0) {
+			LOGGER.warn("attenzione - font to small: '{}' for text '{}' - resist to render", fontSize, line);
+			return;
+		}
 		float x = box.getLeft();
 		float y = pageHeight - box.getBottom();
-		// looks like we need to go down a bit because 
+		// looks like we need to go down a bit because
 		// font seems to be rendered not from baseline but from v with shall be
-		// v = y - fontSize 
+		// v = y - fontSize
 		float v = y - fontSize;
 		LOGGER.trace("put '{}' at {}x{} (fontsize:{})", text, x, v, fontSize);
 		cb.beginText();
@@ -191,8 +203,8 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	/**
 	 * 
-	 * Calculates font size to fit the given text into the specified width.
-	 * Not exact but the best we have so far.
+	 * Calculates font size to fit the given text into the specified width. Not
+	 * exact but the best we have so far.
 	 * 
 	 * @param text
 	 * @param width
@@ -213,7 +225,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private static Rectangle toItextBox(java.awt.Rectangle r) {
 		com.itextpdf.awt.geom.Point tPoint = new com.itextpdf.awt.geom.Point(r.x, r.y);
-		com.itextpdf.awt.geom.Dimension tDim = new com.itextpdf.awt.geom.Dimension(r.width,	r.height);
+		com.itextpdf.awt.geom.Dimension tDim = new com.itextpdf.awt.geom.Dimension(r.width, r.height);
 		com.itextpdf.awt.geom.Rectangle tmp = new com.itextpdf.awt.geom.Rectangle(tPoint, tDim);
 		return new Rectangle(tmp);
 	}
@@ -315,10 +327,10 @@ public class PDFDerivateer extends BaseDerivateer {
 		boolean hasPagesAdded = false;
 		boolean hasOutlineAdded = false;
 		Path pathToPDF = this.output.getPath();
-		
+
 		PdfWriter writer = null;
-		try (FileOutputStream fos = new FileOutputStream(pathToPDF.toFile())){
-			
+		try (FileOutputStream fos = new FileOutputStream(pathToPDF.toFile())) {
+
 			if (pdfConformanceLevel != null) {
 				PdfAConformanceLevel pdfaLevel = PdfAConformanceLevel.valueOf(pdfConformanceLevel);
 				writer = PdfAWriter.getInstance(document, fos, pdfaLevel);

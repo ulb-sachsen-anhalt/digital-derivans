@@ -41,7 +41,7 @@ public class TestOCRReaderFactory {
 		// assert
 		var actualType = reader.getType();
 		assertEquals(Type.ALTO_V4, actualType);
-		assertEquals(33, data.getTextlines().size());
+		assertEquals(29, data.getTextlines().size());
 	}
 	
 	@Test

@@ -1,8 +1,10 @@
 package de.ulb.digital.derivans.derivate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,6 +22,8 @@ import javax.imageio.ImageIO;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import com.itextpdf.text.pdf.BaseFont;
 
 import de.ulb.digital.derivans.DerivansPathResolver;
 import de.ulb.digital.derivans.TestDerivans;
@@ -285,5 +289,54 @@ public class TestPDFDerivateer {
 		Path pdfWritten = pathTarget.resolve("zd1.pdf");
 		assertTrue(Files.exists(pdfWritten));
 		assertEquals(1, handler.getNPagesWithOCR().get());
+	}
+	
+	/**
+	 * 
+	 * Testdata from VL HD ID 369765, page 316642  
+	 * 
+	 * <String CONTENT="⸗" HEIGHT="12" HPOS="939" ID="region0000_line0021_word0000" VPOS="1293" WIDTH="14"/>
+	 * 
+	 * Please note:
+	 * 	iText5 is not able to calculate a valid length for this char, therefore it crashes
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testFontSizeForBadLines() throws Exception {
+		String fontPath = "src/main/resources/ttf/DejaVuSans.ttf";
+		assumeTrue(Files.exists(Path.of(fontPath)));
+		BaseFont font = new FontHandler().forPDF(fontPath);
+		
+		// 31662.xml 
+		String text = "⸗";
+		
+		assertFalse(Character.isAlphabetic(text.toCharArray()[0]));
+		// act
+		float size = PDFDerivateer.calculateFontSize(font, text, 14, 12);
+		assertEquals(0.0, size);
+	}
+
+	/**
+	 * 
+	 * Testdata from VL HD ID 369765, page 316642  
+	 * 
+	 * <String CONTENT="/" HEIGHT="45" HPOS="394" ID="region0000_line0023_word0001" VPOS="1372" WIDTH="11"/>
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testFontSizeForBackslash() throws Exception {
+		String fontPath = "src/main/resources/ttf/DejaVuSans.ttf";
+		assumeTrue(Files.exists(Path.of(fontPath)));
+		BaseFont font = new FontHandler().forPDF(fontPath);
+		
+		// 316642.xml  
+		String backslash = "/";
+		
+		// act
+		assertFalse(Character.isAlphabetic(backslash.toCharArray()[0]));
+		float size = PDFDerivateer.calculateFontSize(font, backslash, 45, 11);
+		assertTrue(size > 3.0);
 	}
 }

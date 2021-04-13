@@ -34,7 +34,7 @@ public class ALTOReader implements OCRReader {
 
 	private Document document;
 
-	public static final Predicate<String> CONTAINS_CHARS = s -> (s != null) && (!s.isBlank());
+	public static final Predicate<String> VALID_TEXT = new ValidTextPredicate();
 	
 	protected Type type;
 
@@ -69,7 +69,9 @@ public class ALTOReader implements OCRReader {
 		List<Element> altoLines = extractElements(new ElementFilter("TextLine"));
 		for (Element el : altoLines) {
 			List<Element> strings = el.getChildren("String", getType().toNS());
-			var texts = strings.parallelStream().map(ALTOReader::toText)
+			var texts = strings.parallelStream()
+					.filter(e -> VALID_TEXT.test(e.getAttributeValue("CONTENT")))
+					.map(ALTOReader::toText)
 					.filter(OCRData.Text::hasPrintableChars)
 					.collect(Collectors.toList());
 			if (!texts.isEmpty()) { 
