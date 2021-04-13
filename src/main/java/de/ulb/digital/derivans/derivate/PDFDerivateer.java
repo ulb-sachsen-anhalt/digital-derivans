@@ -128,7 +128,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		PdfContentByte over = writer.getDirectContent();
 		String imagePath = page.getImagePath().toString();
 		Image image = Image.getInstance(imagePath);
-		float currentImageHeight = image.getHeight();
+		float actualImageDerivateHeight = image.getHeight();
 		image.setAbsolutePosition(0f, 0f);
 		over.addImage(image);
 		
@@ -141,10 +141,17 @@ public class PDFDerivateer extends BaseDerivateer {
 			// get to know current image dimensions
 			// most likely to differ due subsequent scaling derivation steps
 			int pageHeight = ocrData.getPageHeight();
+			int footerHeight = 0; 
+			Optional<Integer> optFooterHeight = page.getFooterHeight();
+			if(optFooterHeight.isPresent()) {
+				footerHeight = optFooterHeight.get();
+				pageHeight += footerHeight;
+				LOGGER.debug("add footerHeight '{}' to original pageHeight '{}' from OCR-time", footerHeight, pageHeight);
+			}
 			// need to scale?
-			float ratio = currentImageHeight / pageHeight;
+			float ratio = actualImageDerivateHeight / pageHeight;
 			if (Math.abs(1.0 - ratio) > 0.01) {
-				LOGGER.info("scale ocr data for '{}' by '{}'", page.getImagePath(), ratio);
+				LOGGER.trace("scale ocr data for '{}' by '{}'", page.getImagePath(), ratio);
 				ocrData.scale(ratio);
 			}
 			
@@ -153,7 +160,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			cb.saveState();
 			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
 			for (OCRData.Textline line : ocrLines) {
-				renderLine(font, (int)currentImageHeight, cb, line);
+				renderLine(font, (int)actualImageDerivateHeight, cb, line);
 			}
 			cb.restoreState();
 			
@@ -175,7 +182,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		// font seems to be rendered not from baseline but from v with shall be
 		// v = y - fontSize 
 		float v = y - fontSize;
-		LOGGER.debug("put '{}' at {}x{} (fontsize:{})", text, x, v, fontSize);
+		LOGGER.trace("put '{}' at {}x{} (fontsize:{})", text, x, v, fontSize);
 		cb.beginText();
 		cb.setFontAndSize(font, fontSize);
 		cb.showTextAligned(Element.ALIGN_LEFT, text, x, v, 0);

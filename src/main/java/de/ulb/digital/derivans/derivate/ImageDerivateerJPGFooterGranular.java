@@ -92,7 +92,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 				float ratio = (float) currentImageWidth / (float) footerBuffer.getWidth();
 				if (Math.abs(1.0 - ratio) > MAXIMAL_RATIO_DEVIATION) {
 					footerBuffer = imageProcessor.scale(footerBuffer, ratio);
-					LOGGER.debug("scale footer {}x{} (ratio: {}) for: {}", 
+					LOGGER.trace("scale footer {}x{} (ratio: {}) for: {}", 
 							footerBuffer.getWidth(), footerBuffer.getHeight(), ratio, page.getImagePath());
 				}
 				

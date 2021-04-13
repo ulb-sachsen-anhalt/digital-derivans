@@ -123,7 +123,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 				currentFooter = imageProcessor.scale(currentFooter, ratio);
 				String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(),
 						currentFooter.getHeight(), ratio, source);
-				LOGGER.debug(msg);
+				LOGGER.trace(msg);
 				if (currentFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
 					String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
 					LOGGER.error(msg2);

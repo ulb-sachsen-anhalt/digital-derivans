@@ -32,6 +32,14 @@ public class OCRData {
 		return this.textlines;
 	}
 	
+	/**
+	 * 
+	 * The Height of the original image which passed actual OCR-creation.
+	 * Need to remember, since of derivans scaling abilities the actual 
+	 * image from which the PDF later on is being created <b>will be different</b>.
+	 * 
+	 * @return
+	 */
 	public int getPageHeight() {
 		return dimension.height;
 	}

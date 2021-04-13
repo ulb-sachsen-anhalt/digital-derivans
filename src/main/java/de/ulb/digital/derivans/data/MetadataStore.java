@@ -103,6 +103,7 @@ public class MetadataStore implements IMetadataStore {
 				for (PhysicalSubDiv physSubDiv : physStruct.getDivContainer().getChildren()) {
 					List<FilePointerMatch> fptrs = getFilePointer(physSubDiv);
 					DigitalPage page = new DigitalPage(n);
+					LOGGER.debug("create digital page from {}", fptrs);
 
 					// handle image file
 					Optional<FilePointerMatch> optMaxImage = fptrs.stream()
@@ -113,7 +114,7 @@ public class MetadataStore implements IMetadataStore {
 					}
 					
 					// handle optional attached ocr file
-					LOGGER.debug("search for {} within {}", FILEGROUP_FULLTEXT, fptrs);
+					LOGGER.trace("search for {} within {}", FILEGROUP_FULLTEXT, fptrs);
 					Optional<FilePointerMatch> optFulltext = fptrs.stream()
 							.filter(fptr -> FILEGROUP_FULLTEXT.equals(fptr.getFileGroup())).findFirst();
 					if (optFulltext.isPresent()) {

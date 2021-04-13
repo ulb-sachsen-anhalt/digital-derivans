@@ -147,7 +147,7 @@ class StructureMapper {
 						File current = fileGrp.getFileList().get(i);
 						if (current.getId().equals(fileId)) {
 							int index = i + 1;
-							LOGGER.debug("mapped '{}' => logId '{}' ({})", index, logId, label);
+							LOGGER.trace("mapped '{}' => logId '{}' ({})", index, logId, label);
 							return index;
 						}
 					}
