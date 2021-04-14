@@ -309,7 +309,7 @@ public class PDFDerivateer extends BaseDerivateer {
 	}
 
 	@Override
-	public boolean create() throws DigitalDerivansException {
+	public int create() throws DigitalDerivansException {
 
 		// resolve image paths
 		resolver.enrichWithPath(getDigitalPages(), this.getInput().getPath());
@@ -390,7 +390,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		boolean result = hasPagesAdded && hasOutlineAdded;
 		LOGGER.info("created pdf '{}' with {} pages (outline:{})", pathToPDF, document.getPageNumber(),
 				hasOutlineAdded);
-		return result;
+		return result ? 1 : 0;
 	}
 
 	public AtomicInteger getNPagesWithOCR() {

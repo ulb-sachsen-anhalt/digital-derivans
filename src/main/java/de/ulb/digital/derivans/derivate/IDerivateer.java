@@ -19,14 +19,23 @@ public interface IDerivateer {
 	 * 
 	 * Derive digitalization data.
 	 * 
+	 * Return number of created derivates, which will be 1 in case of a PDF file
+	 * and can be many with regular images.
+	 * 
 	 * @return
 	 * @throws DigitalDerivansException
 	 */
-	boolean create() throws DigitalDerivansException;
+	int create() throws DigitalDerivansException;
 
 	List<DigitalPage> getDigitalPages();
 	
 	void setDigitalPages(List<DigitalPage> pages);
 	
+	/**
+	 * 
+	 * Get to know what {@link DerivateType} this one will create.
+	 * 
+	 * @return
+	 */
 	DerivateType getType();
 }

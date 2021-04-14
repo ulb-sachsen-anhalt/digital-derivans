@@ -3,6 +3,8 @@ package de.ulb.digital.derivans;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -168,8 +170,29 @@ public class Derivans {
 
 		// run derivateers
 		for (IDerivateer derivateer : derivateers) {
-			boolean isSuccess = derivateer.create();
-			LOGGER.info("finished derivate step '{}': '{}'", derivateer.getClass().getSimpleName(), isSuccess);
+			
+			int pages = derivateer.getDigitalPages().size();
+			String msg = String.format("process '%02d' digital pages", pages);
+			LOGGER.info(msg);
+
+			Instant start = Instant.now();
+
+			// forward to actual image creation implementation
+			// subject to each concrete subclass
+			int results = derivateer.create();
+
+			Instant finish = Instant.now();
+			long secsElapsed = Duration.between(start, finish).toSecondsPart();
+			long minsElapsed = Duration.between(start, finish).toMinutesPart();
+
+			if (results > 0) {
+				String msg2 = String.format("created '%02d' results in '%dm%02ds'",
+				 results, minsElapsed, secsElapsed);
+				LOGGER.info(msg2);
+			}
+			
+//			boolean isSuccess = derivateer.create();
+			LOGGER.info("finished derivate step '{}': '{}'", derivateer.getClass().getSimpleName(), true);
 		}
 
 		// post processing: enrich PDF in metadata if both exist

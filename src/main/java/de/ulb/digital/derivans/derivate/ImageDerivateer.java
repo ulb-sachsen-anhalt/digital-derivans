@@ -3,8 +3,6 @@ package de.ulb.digital.derivans.derivate;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 
@@ -44,7 +42,7 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 	protected Integer maximal;
 
 	protected ImageProcessor imageProcessor;
-	
+
 	protected ImageDerivateer(DerivansData input, DerivansData output) {
 		super(input, output);
 		this.insertIntoMets = false;
@@ -58,7 +56,7 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 	public Integer getQuality() {
 		return this.quality;
 	}
-	
+
 	public void setImageProcessor(ImageProcessor processor) {
 		this.imageProcessor = processor;
 	}
@@ -77,7 +75,7 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 			LOGGER.warn("invalid poolsize provided:'{}', fallback to '{}'", poolSize, this.poolSize);
 		}
 	}
-	
+
 	protected int getPoolSize() {
 		return this.poolSize;
 	}
@@ -103,8 +101,8 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 	}
 
 	@Override
-	public boolean create() throws DigitalDerivansException {
-		
+	public int create() throws DigitalDerivansException {
+
 		// basic precondition: output directory shall exist
 		if (!Files.exists(this.getOutput().getPath())) {
 			try {
@@ -119,23 +117,15 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 				this.digitalPages.size(), inputDir, this.getQuality(), this.poolSize);
 		LOGGER.info(msg);
 
-		Instant start = Instant.now();
-
 		// forward to actual image creation implementation
 		// subject to each concrete subclass
 		boolean isSuccess = forward();
 
-		Instant finish = Instant.now();
-		long secsElapsed = Duration.between(start, finish).toSecondsPart();
-		long minsElapsed = Duration.between(start, finish).toMinutesPart();
-
 		if (isSuccess) {
-			String msg2 = String.format("created '%02d' images at '%s' in '%dm%02ds'",
-			 this.digitalPages.size(), outputDir, minsElapsed, secsElapsed);
+			String msg2 = String.format("created '%02d' images at '%s'", digitalPages.size(), outputDir);
 			LOGGER.info(msg2);
-			return true;
 		}
-		return false;
+		return this.digitalPages.size();
 	}
 
 	/**

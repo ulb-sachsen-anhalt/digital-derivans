@@ -82,10 +82,10 @@ class TestImageDerivateerJPGFooter {
 		derivateer.setDigitalPages(resolver.resolveFromPath(sourcePath));
 
 		// act
-		boolean outcome = derivateer.create();
+		int outcome = derivateer.create();
 
 		// assert
-		assertTrue(outcome);
+		assertEquals(8, outcome);
 		List<Path> resultPaths = Files.list(targetPath).collect(Collectors.toList());
 		for (Path p : resultPaths) {
 			assertTrue(p.toFile().exists());

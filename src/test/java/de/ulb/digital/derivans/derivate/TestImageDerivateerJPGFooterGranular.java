@@ -97,10 +97,10 @@ class TestImageDerivateerJPGFooterGranular {
 
 		// act
 		IDerivateer derivateerGranular = new ImageDerivateerJPGFooterGranular(input, output, 95, footer, pages);
-		boolean outcome = derivateerGranular.create();
+		int outcome = derivateerGranular.create();
 
 		// assert
-		assertTrue(outcome);
+		assertEquals(3, outcome);
 		List<Path> resultPaths = Files.list(targetPath).collect(Collectors.toList());
 		for (Path p : resultPaths) {
 			assertTrue(p.toFile().exists());
@@ -151,10 +151,10 @@ class TestImageDerivateerJPGFooterGranular {
 		IDerivateer jpgs = new ImageDerivateerJPGFooterGranular(input, output, 95, footer, pages);
 
 		// act
-		boolean outcome = jpgs.create();
+		int outcome = jpgs.create();
 
 		// assert
-		assertTrue(outcome);
+		assertEquals(3, outcome);
 		List<Path> resultPaths = Files.list(targetPath).collect(Collectors.toList());
 		for (Path p : resultPaths) {
 			assertTrue(p.toFile().exists());

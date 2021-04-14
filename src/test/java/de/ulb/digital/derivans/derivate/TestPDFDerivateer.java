@@ -86,12 +86,12 @@ public class TestPDFDerivateer {
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
 		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
 				pages, null);
-		boolean result = handler.create();
+		int result = handler.create();
 
 		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
 
 		// assert
-		assertTrue(result);
+		assertEquals(1, result);
 		assertTrue(Files.exists(outPath));
 		assertEquals("n.a.", pdfMetaInformation.getTitle());
 		assertEquals("n.a.", pdfMetaInformation.getAuthor());
@@ -129,12 +129,12 @@ public class TestPDFDerivateer {
 		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
 				pages, level);
 
-		boolean result = handler.create();
+		int result = handler.create();
 
 		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
 
 		// assert
-		assertTrue(result);
+		assertEquals(1, result);
 		assertTrue(Files.exists(outPath));
 		assertEquals("n.a.", pdfMetaInformation.getTitle());
 		assertEquals("n.a.", pdfMetaInformation.getAuthor());
@@ -205,12 +205,12 @@ public class TestPDFDerivateer {
 		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
 				pages, level);
 
-		boolean result = handler.create();
+		int result = handler.create();
 
 		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
 		
 		// assert
-		assertTrue(result);
+		assertEquals(1, result);
 		assertTrue(Files.exists(outPath));
 		assertEquals("n.a.", pdfMetaInformation.getTitle());
 		assertEquals("n.a.", pdfMetaInformation.getAuthor());
@@ -282,10 +282,10 @@ public class TestPDFDerivateer {
 		PDFDerivateer handler = new PDFDerivateer(base, pdfPath, structure, dd, pages, null);
 
 		// act
-		boolean result = handler.create();
+		int result = handler.create();
 
 		// assert
-		assertTrue(result);
+		assertEquals(1, result);
 		Path pdfWritten = pathTarget.resolve("zd1.pdf");
 		assertTrue(Files.exists(pdfWritten));
 		assertEquals(1, handler.getNPagesWithOCR().get());

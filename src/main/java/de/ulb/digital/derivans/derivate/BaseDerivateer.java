@@ -60,8 +60,8 @@ public class BaseDerivateer implements IDerivateer {
 	 * Dummy implementation of Interface
 	 */
 	@Override
-	public boolean create() throws DigitalDerivansException {
-		return false;
+	public int create() throws DigitalDerivansException {
+		return 0;
 	}
 
 	@Override

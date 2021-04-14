@@ -58,10 +58,10 @@ class TestImageDerivateerJPG {
 		jpgs.setDigitalPages(resolver.resolveFromPath(sourcePath));
 
 		// act
-		boolean outcome = jpgs.create();
+		int outcome = jpgs.create();
 
 		// assert
-		assertTrue(outcome);
+		assertEquals(8, outcome);
 		Files.list(targetPath).forEach(p -> p.toFile().exists());
 	}
 
@@ -78,10 +78,10 @@ class TestImageDerivateerJPG {
 		jpgs.setDigitalPages(resolver.resolveFromPath(sourcePath));
 
 		// act
-		boolean outcome = jpgs.create();
+		int outcome = jpgs.create();
 
 		// assert
-		assertTrue(outcome);
+		assertEquals(8, outcome);
 		Files.list(targetPath).forEach(p -> p.toFile().exists());
 		List<Path> paths = Files.list(targetPath).collect(Collectors.toList());
 		assertEquals(8, paths.size());
@@ -105,10 +105,10 @@ class TestImageDerivateerJPG {
 		derivateer.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
 
 		// act
-		boolean outcome = derivateer.create();
+		int outcome = derivateer.create();
 
 		// assert
-		assertTrue(outcome);
+		assertEquals(8, outcome);
 		List<Path> paths = Files.list(targetPath).collect(Collectors.toList());
 		assertEquals(8, paths.size());
 		for (Path p : paths) {
@@ -154,10 +154,10 @@ class TestImageDerivateerJPG {
 		
 		// act
 		id1.create();
-		boolean outcome = id2.create();
+		int outcome = id2.create();
 
 		// assert
-		assertTrue(outcome);
+		assertEquals(8, outcome);
 		List<Path> paths = Files.list(finalPath).sorted().collect(Collectors.toList());
 		assertEquals(8, paths.size());
 		for (int i=0; i < paths.size(); i++) {
