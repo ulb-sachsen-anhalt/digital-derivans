@@ -9,7 +9,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
 
@@ -22,6 +24,7 @@ import org.jdom2.filter.ElementFilter;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.jdom2.util.IteratorIterable;
 import org.mycore.mets.model.Mets;
 
 import de.ulb.digital.derivans.Derivans;
@@ -35,7 +38,7 @@ import de.ulb.digital.derivans.Derivans;
  */
 public class MetadataHandler {
 
-	private static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
+	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 
 	private DateTimeFormatter dtFormatter = new DateTimeFormatterBuilder().appendPattern("YYYY-MM-DD")
 			.appendLiteral('T').appendPattern("HH:mm:SS").toFormatter();
@@ -149,7 +152,7 @@ public class MetadataHandler {
 			// create new list with element as first entry
 			container.addContent(asElement);
 			
-			// ATTENTION: the specific goal to reorder is inversion 
+			// ATTENTION: the specific goal to re-order is inversion 
 			// to ensure mets:fptr is *before* any subsequent mets:divs 
 			if(reorder) {
 				container.sortChildren((el1, el2) -> Math.negateExact(el1.getName().compareToIgnoreCase(el2.getName())));
@@ -159,28 +162,92 @@ public class MetadataHandler {
 	
 	/**
 	 * 
-	 * Rather hacky way to catch first top-level volume DMDID mapping
+	 * Rather hacky way to catch first sub-level volume DMDID mapping
 	 * 
 	 * @param typeValue
 	 * @return
 	 */
 	public String requestDMDSubDivIDs() {
 		var elements = document.getContent(new ElementFilter());
-		var optDMDID = elements.stream()
+		List<Element> dmdElements = elements.stream()
 				.map(Element::getChildren)
 				.flatMap(List::stream)
 				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE")))
-				.map(Element::getChildren)
-				.flatMap(List::stream)
-				.map(Element::getChildren)
-				.flatMap(List::stream)
-				.filter(el -> "volume".equals(el.getAttributeValue("TYPE")))
-				.map(el -> el.getAttributeValue("DMDID"))
-				.findFirst();
-		
-		if(optDMDID.isPresent()) {
-			return optDMDID.get();
+				.collect(Collectors.toList());
+		if(dmdElements.isEmpty()) {
+			return null;
+		} else {
+			Element logRoot = dmdElements.get(0);
+			IteratorIterable<Element> iter = logRoot.getDescendants(new LogSubContainers());
+			List<Element> dmdIds = new ArrayList<>();
+			for (Element el : iter) {
+				dmdIds.add(el);
+			}
+			// easy Kitodo 2 MVW
+			if (dmdIds.get(0).getAttributeValue("DMDID").startsWith("DMDLOG_")) {
+				return "DMDLOG_0001";
+			}
+			
+			// rather tricky semantics mappings
+			List<Element> children = new ArrayList<>();
+			for (Element el : dmdIds) {
+				Element elParent = el.getParentElement();
+				String dmdIDParent = elParent.getAttributeValue("DMDID");
+				// if we have the upper most, skip it
+				if (dmdIDParent == null) {
+					continue;
+				}
+				for (Element el2 : dmdIds) {
+					String dmdIDChild = el2.getAttributeValue("DMDID");
+					// dont pick same element
+					if(dmdIDParent.equals(dmdIDChild)) {
+						continue;
+					}
+					children.add(el2);
+				}
+			}
+			return children.get(0).getAttributeValue("DMDID");
+		}
+	}
+}
+
+/**
+ * 
+ * Get all Descendants with attribute "DMDID"
+ * 
+ * @author u.hartwig
+ *
+ */
+class LogSubContainers extends ElementFilter {
+	
+	String name = "div";
+	Namespace namespace = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public Element filter(Object content) {
+		if (content instanceof Element) {
+			Element el = (Element) content;
+			if (!name.equals(el.getName())) {
+				return null;
+			}
+			if (!namespace.equals(el.getNamespace())) {
+				return null;
+			}
+			boolean hasDMDID = el.getAttribute("DMDID") != null;
+			if (hasDMDID) {
+				return el;
+			}
+//			if (!hasDMDID) {
+//				// but maybe has ID starting Kitodo-like?
+//				String attrValID = el.getAttributeValue("ID");		
+//				return attrValID.startsWith("LOG_") ? el : null;
+//			}
 		}
 		return null;
 	}
+	
 }

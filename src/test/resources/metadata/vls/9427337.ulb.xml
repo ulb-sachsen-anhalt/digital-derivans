@@ -1,0 +1,1805 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:vl="http://visuallibrary.net/vl" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="5" LABEL="Drucke des 18. Jahrhunderts (VD18)">
+  <mets:metsHdr CREATEDATE="2021-06-29T10:05:11">
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>vls/2012</mets:name>
+      <mets:note>legacy vlid: 9427337</mets:note>
+      <mets:note>legacy date: 2015-02-09T07:21:06Z</mets:note>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="INSTANCE">
+      <mets:name>ulbhalvd</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="REPOSITORY">
+      <mets:name>digitale.bibliothek.uni-halle.de/vd18</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="BUILDER">
+      <mets:name>vd</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>Migration</mets:name>
+      <mets:note>2021-06-29 20:47:27</mets:note>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="md9427337">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:titleInfo type="alternative">
+            <mods:title>Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen</mods:title>
+          </mods:titleInfo>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/118798774">
+            <mods:namePart type="given">James</mods:namePart>
+            <mods:namePart type="family">Steuart</mods:namePart>
+            <mods:namePart type="date">1712-1780</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Steuart, James</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/136671403">
+            <mods:namePart type="given">Johann Gottlieb</mods:namePart>
+            <mods:namePart type="family">Leyser</mods:namePart>
+            <mods:namePart type="date">1699-1780</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">trl</mods:roleTerm>
+              <mods:roleTerm type="text">Übers.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Leyser, Johann Gottlieb</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/5056474-2">
+            <mods:namePart type="family">J. G. Cotta'sche Buchhandlung</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>J. G. Cotta'sche Buchhandlung</mods:displayForm>
+          </mods:name>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Tübingen</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Cotta</mods:publisher>
+            <mods:dateIssued encoding="iso8601" keyDate="yes">1771</mods:dateIssued>
+            <mods:issuance>monographic</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo>
+            <mods:edition>[Electronic ed.]</mods:edition>
+            <mods:place>
+              <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:dateIssued>2015</mods:dateIssued>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+          </mods:language>
+          <mods:physicalDescription>
+            <mods:extent>[2] Bl., 148 S. ; 8°</mods:extent>
+            <mods:extent>Autopsie nach Exemplar der ULB Sachsen-Anhalt</mods:extent>
+            <mods:extent>Vorlageform des Erscheinungsvermerks: Tübingen bey Johann Georg Cotta 1771.</mods:extent>
+            <mods:extent>Übersetzer am Ende des Privilegium genannt</mods:extent>
+            <mods:extent>Übersetzer am Ende des Privilegium genannt</mods:extent>
+          </mods:physicalDescription>
+          <mods:subject>
+            <mods:geographic>Tübingen</mods:geographic>
+          </mods:subject>
+          <mods:identifier type="vd18">90311817</mods:identifier>
+          <mods:identifier type="gbv">211999628</mods:identifier>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-635986</mods:identifier>
+          <mods:relatedItem type="host">
+            <mods:titleInfo>
+              <mods:title>Sir James Stewarts, Baronets, Untersuchung der Grund-Säze von der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen</mods:title>
+              <mods:subTitle>aus dem Englischen übersezt</mods:subTitle>
+            </mods:titleInfo>
+            <mods:titleInfo type="uniform">
+              <mods:nonSort>An</mods:nonSort>
+              <mods:title>inquiry into the principles of political economy &lt;dt.&gt;</mods:title>
+            </mods:titleInfo>
+            <mods:titleInfo type="alternative">
+              <mods:title>Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen</mods:title>
+            </mods:titleInfo>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/118798774">
+              <mods:namePart type="given">James</mods:namePart>
+              <mods:namePart type="family">Steuart</mods:namePart>
+              <mods:namePart type="date">1712-1780</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Steuart, James</mods:displayForm>
+            </mods:name>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/136671403">
+              <mods:namePart type="given">Johann Gottlieb</mods:namePart>
+              <mods:namePart type="family">Leyser</mods:namePart>
+              <mods:namePart type="date">1699-1780</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">trl</mods:roleTerm>
+                <mods:roleTerm type="text">Übers.</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Leyser, Johann Gottlieb</mods:displayForm>
+            </mods:name>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/5056474-2">
+              <mods:namePart type="family">J. G. Cotta'sche Buchhandlung</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+                <mods:roleTerm type="text">Verl.</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>J. G. Cotta'sche Buchhandlung</mods:displayForm>
+            </mods:name>
+            <mods:typeOfResource collection="yes">text</mods:typeOfResource>
+            <mods:genre authority="aad">Handbuch</mods:genre>
+            <mods:originInfo eventType="publication">
+              <mods:place>
+                <mods:placeTerm type="text">Tübingen</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Cotta</mods:publisher>
+              <mods:dateIssued encoding="iso8601" point="start">1769</mods:dateIssued>
+              <mods:dateIssued encoding="iso8601" point="end">1772</mods:dateIssued>
+              <mods:issuance>monographic</mods:issuance>
+            </mods:originInfo>
+            <mods:originInfo>
+              <mods:edition>[Electronic ed.]</mods:edition>
+              <mods:place>
+                <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+              <mods:dateIssued>2015</mods:dateIssued>
+            </mods:originInfo>
+            <mods:language>
+              <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+            </mods:language>
+            <mods:note type="statement of responsibility">[Übersetzer Johann Gottlieb Leyser]</mods:note>
+            <mods:subject>
+              <mods:geographic>Tübingen</mods:geographic>
+            </mods:subject>
+            <mods:identifier type="vd18">11228628</mods:identifier>
+            <mods:identifier type="gbv">211999504</mods:identifier>
+            <mods:identifier type="urn">urn:nbn:de:gbv:3:1-636051</mods:identifier>
+            <mods:extension>
+              <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
+                <zvdd:titleWord>Grund-Sätze Staatswirtschaft bei freien</zvdd:titleWord>
+              </zvdd:zvddWrap>
+              <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+              <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Ac</ulb:externalType>
+            </mods:extension>
+            <mods:recordInfo>
+              <mods:recordCreationDate encoding="marc">20-06-96</mods:recordCreationDate>
+              <mods:recordChangeDate encoding="marc">08-05-20</mods:recordChangeDate>
+              <mods:recordIdentifier source="gvk-ppn">211999504</mods:recordIdentifier>
+              <mods:descriptionStandard>rak</mods:descriptionStandard>
+            </mods:recordInfo>
+            <mods:extension>
+              <vl:id>9427342</vl:id>
+              <vl:odid>5</vl:odid>
+              <vl:datatype>1</vl:datatype>
+              <vl:type>19</vl:type>
+              <vl:state>1</vl:state>
+            </mods:extension>
+          </mods:relatedItem>
+          <mods:part type="host" order="3">
+            <mods:detail>
+              <mods:number>Buch 3, Stük 2</mods:number>
+            </mods:detail>
+          </mods:part>
+          <mods:extension>
+            <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
+              <zvdd:titleWord>Grund-Sätze Staatswirtschaft bei freien</zvdd:titleWord>
+            </zvdd:zvddWrap>
+            <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+            <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Af</ulb:externalType>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">20-06-96</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">08-05-20</mods:recordChangeDate>
+            <mods:recordIdentifier source="gvk-ppn">211999628</mods:recordIdentifier>
+            <mods:descriptionStandard>rak</mods:descriptionStandard>
+          </mods:recordInfo>
+          <mods:location>
+            <mods:physicalLocation authority="local library code">65</mods:physicalLocation>
+            <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
+            <mods:shelfLocator>Lb 712 a (3,2)</mods:shelfLocator>
+          </mods:location>
+          <mods:accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/licenses/by-sa/3.0/de">CC-BY-SA 3.0 DE</mods:accessCondition>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="md9427342">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:titleInfo>
+            <mods:title>Sir James Stewarts, Baronets, Untersuchung der Grund-Säze von der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen</mods:title>
+            <mods:subTitle>aus dem Englischen übersezt</mods:subTitle>
+          </mods:titleInfo>
+          <mods:titleInfo type="uniform">
+            <mods:nonSort>An</mods:nonSort>
+            <mods:title>inquiry into the principles of political economy &lt;dt.&gt;</mods:title>
+          </mods:titleInfo>
+          <mods:titleInfo type="alternative">
+            <mods:title>Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen</mods:title>
+          </mods:titleInfo>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/118798774">
+            <mods:namePart type="given">James</mods:namePart>
+            <mods:namePart type="family">Steuart</mods:namePart>
+            <mods:namePart type="date">1712-1780</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Steuart, James</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/136671403">
+            <mods:namePart type="given">Johann Gottlieb</mods:namePart>
+            <mods:namePart type="family">Leyser</mods:namePart>
+            <mods:namePart type="date">1699-1780</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">trl</mods:roleTerm>
+              <mods:roleTerm type="text">Übers.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Leyser, Johann Gottlieb</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/5056474-2">
+            <mods:namePart type="family">J. G. Cotta'sche Buchhandlung</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>J. G. Cotta'sche Buchhandlung</mods:displayForm>
+          </mods:name>
+          <mods:typeOfResource collection="yes">text</mods:typeOfResource>
+          <mods:genre authority="aad">Handbuch</mods:genre>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Tübingen</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Cotta</mods:publisher>
+            <mods:dateIssued encoding="iso8601" point="start">1769</mods:dateIssued>
+            <mods:dateIssued encoding="iso8601" point="end">1772</mods:dateIssued>
+            <mods:issuance>monographic</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo>
+            <mods:edition>[Electronic ed.]</mods:edition>
+            <mods:place>
+              <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:dateIssued>2015</mods:dateIssued>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+          </mods:language>
+          <mods:note type="statement of responsibility">[Übersetzer Johann Gottlieb Leyser]</mods:note>
+          <mods:subject>
+            <mods:geographic>Tübingen</mods:geographic>
+          </mods:subject>
+          <mods:identifier type="vd18">11228628</mods:identifier>
+          <mods:identifier type="gbv">211999504</mods:identifier>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-636051</mods:identifier>
+          <mods:extension>
+            <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
+              <zvdd:titleWord>Grund-Sätze Staatswirtschaft bei freien</zvdd:titleWord>
+            </zvdd:zvddWrap>
+            <vlz:externalType xmlns:vlz="http://visuallibrary.net/vlz/1.0/" recordSyntax="pica" code="Ac"/>
+            <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">20-06-96</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">08-05-20</mods:recordChangeDate>
+            <mods:recordIdentifier source="gvk-ppn">211999504</mods:recordIdentifier>
+            <mods:descriptionStandard>rak</mods:descriptionStandard>
+          </mods:recordInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd9427337">
+    <mets:rightsMD ID="rights9427337">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>Share_it</dv:ownerLogo>
+            <dv:owner>Halle, Saale : Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov9427337">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=211999628</dv:reference>
+            <dv:presentation>Share_it</dv:presentation>
+            <dv:iiif>https://digitale.bibliothek.uni-halle.de/vd18/i3f/v20/9427337/manifest</dv:iiif>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:amdSec ID="amd9427342">
+    <mets:rightsMD ID="rights9427342">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>https://digitale.bibliothek.uni-halle.de/vd18//domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Halle, Saale : Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov9427342">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=211999504</dv:reference>
+            <dv:presentation>https://digitale.bibliothek.uni-halle.de/vd18/id/9427342</dv:presentation>
+            <dv:iiif>https://digitale.bibliothek.uni-halle.de/vd18/i3f/v20/9427342/manifest</dv:iiif>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="MAX">
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502715">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502715" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502716">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502716" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502718">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502718" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502719">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502719" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502721">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502721" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502722">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502722" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502724">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502724" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502725">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502725" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502727">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502727" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502728">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502728" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502729">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502729" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502730">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502730" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502731">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502731" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502732">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502732" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502733">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502733" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502734">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502734" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502735">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502735" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502736">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502736" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502737">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502737" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502738">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502738" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502739">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502739" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502740">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502740" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502741">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502741" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502742">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502742" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502743">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502743" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502744">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502744" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502745">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502745" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502746">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502746" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502747">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502747" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502748">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502748" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502749">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502749" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502750">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502750" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502751">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502751" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502752">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502752" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502753">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502753" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502754">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502754" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502755">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502755" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502756">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502756" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502757">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502757" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502758">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502758" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502759">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502759" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502761">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502761" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502762">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502762" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502763">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502763" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502764">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502764" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502765">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502765" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502766">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502766" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502767">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502767" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502769">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502769" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502770">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502770" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502771">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502771" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502772">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502772" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502773">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502773" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502774">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502774" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502775">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502775" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502776">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502776" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502777">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502777" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502778">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502778" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502779">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502779" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502780">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502780" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502782">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502782" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502783">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502783" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502784">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502784" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502785">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502785" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502786">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502786" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502787">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502787" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502788">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502788" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502789">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502789" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502791">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502791" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502792">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502792" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502793">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502793" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502794">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502794" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502795">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502795" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502796">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502796" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502797">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502797" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502798">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502798" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502799">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502799" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502800">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502800" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502801">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502801" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502802">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502802" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502803">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502803" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502804">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502804" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502805">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502805" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502806">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502806" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502807">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502807" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502808">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502808" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502809">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502809" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502810">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502810" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502811">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502811" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502812">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502812" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502813">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502813" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502814">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502814" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502815">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502815" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502816">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502816" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502817">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502817" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502818">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502818" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502819">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502819" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502820">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502820" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502821">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502821" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502822">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502822" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502823">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502823" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502824">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502824" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502825">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502825" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502826">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502826" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502827">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502827" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502828">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502828" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502829">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502829" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502830">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502830" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502831">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502831" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502832">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502832" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502833">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502833" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502834">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502834" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502835">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502835" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502836">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502836" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502837">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502837" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502838">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502838" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502839">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502839" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502840">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502840" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502842">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502842" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502843">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502843" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502844">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502844" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502845">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502845" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502846">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502846" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502847">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502847" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502848">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502848" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502849">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502849" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502850">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502850" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502851">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502851" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502852">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502852" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502853">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502853" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502854">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502854" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502855">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502855" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502856">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502856" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502857">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502857" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502858">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502858" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502859">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502859" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502860">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502860" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502861">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502861" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502862">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502862" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502863">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502863" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502864">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502864" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502865">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502865" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502866">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502866" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502867">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502867" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502868">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502868" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502869">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502869" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502870">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502870" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502871">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502871" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502872">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502872" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502873">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502873" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502874">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502874" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502875">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502875" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502876">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502876" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502877">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502877" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502878">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502878" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502879">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502879" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502880">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502880" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502881">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502881" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502883">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502883" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_9502884">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd18/download/webcache/0/9502884" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys9502715" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0001-4" ORDER="1" ORDERLABEL="[Seite 3]">
+        <mets:fptr FILEID="IMG_MAX_9502715"/>
+      </mets:div>
+      <mets:div ID="phys9502716" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0002-0" ORDER="2" ORDERLABEL="[Seite 4]">
+        <mets:fptr FILEID="IMG_MAX_9502716"/>
+      </mets:div>
+      <mets:div ID="phys9502718" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0003-5" ORDER="3" ORDERLABEL="[Seite 5]">
+        <mets:fptr FILEID="IMG_MAX_9502718"/>
+      </mets:div>
+      <mets:div ID="phys9502719" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0004-1" ORDER="4" ORDERLABEL="[Leerseite]">
+        <mets:fptr FILEID="IMG_MAX_9502719"/>
+      </mets:div>
+      <mets:div ID="phys9502721" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0005-7" ORDER="5" ORDERLABEL="[Seite 7]">
+        <mets:fptr FILEID="IMG_MAX_9502721"/>
+      </mets:div>
+      <mets:div ID="phys9502722" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0006-2" ORDER="6" ORDERLABEL="[Seite 8]">
+        <mets:fptr FILEID="IMG_MAX_9502722"/>
+      </mets:div>
+      <mets:div ID="phys9502724" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0007-8" ORDER="7" ORDERLABEL="[Seite 9]">
+        <mets:fptr FILEID="IMG_MAX_9502724"/>
+      </mets:div>
+      <mets:div ID="phys9502725" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0008-4" ORDER="8" ORDERLABEL="[Leerseite]">
+        <mets:fptr FILEID="IMG_MAX_9502725"/>
+      </mets:div>
+      <mets:div ID="phys9502727" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0009-2" ORDER="9" ORDERLABEL="[Seite]">
+        <mets:fptr FILEID="IMG_MAX_9502727"/>
+      </mets:div>
+      <mets:div ID="phys9502728" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0010-4" ORDER="10" ORDERLABEL="Seite 4">
+        <mets:fptr FILEID="IMG_MAX_9502728"/>
+      </mets:div>
+      <mets:div ID="phys9502729" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0011-9" ORDER="11" ORDERLABEL="Seite 5">
+        <mets:fptr FILEID="IMG_MAX_9502729"/>
+      </mets:div>
+      <mets:div ID="phys9502730" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0012-5" ORDER="12" ORDERLABEL="Seite 6">
+        <mets:fptr FILEID="IMG_MAX_9502730"/>
+      </mets:div>
+      <mets:div ID="phys9502731" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0013-1" ORDER="13" ORDERLABEL="Seite 7">
+        <mets:fptr FILEID="IMG_MAX_9502731"/>
+      </mets:div>
+      <mets:div ID="phys9502732" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0014-6" ORDER="14" ORDERLABEL="Seite 8">
+        <mets:fptr FILEID="IMG_MAX_9502732"/>
+      </mets:div>
+      <mets:div ID="phys9502733" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0015-2" ORDER="15" ORDERLABEL="Seite 9">
+        <mets:fptr FILEID="IMG_MAX_9502733"/>
+      </mets:div>
+      <mets:div ID="phys9502734" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0016-8" ORDER="16" ORDERLABEL="Seite 10">
+        <mets:fptr FILEID="IMG_MAX_9502734"/>
+      </mets:div>
+      <mets:div ID="phys9502735" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0017-3" ORDER="17" ORDERLABEL="Seite 11">
+        <mets:fptr FILEID="IMG_MAX_9502735"/>
+      </mets:div>
+      <mets:div ID="phys9502736" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0018-9" ORDER="18" ORDERLABEL="Seite 12">
+        <mets:fptr FILEID="IMG_MAX_9502736"/>
+      </mets:div>
+      <mets:div ID="phys9502737" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0019-8" ORDER="19" ORDERLABEL="Seite 13">
+        <mets:fptr FILEID="IMG_MAX_9502737"/>
+      </mets:div>
+      <mets:div ID="phys9502738" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0020-9" ORDER="20" ORDERLABEL="Seite 14">
+        <mets:fptr FILEID="IMG_MAX_9502738"/>
+      </mets:div>
+      <mets:div ID="phys9502739" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0021-5" ORDER="21" ORDERLABEL="Seite 15">
+        <mets:fptr FILEID="IMG_MAX_9502739"/>
+      </mets:div>
+      <mets:div ID="phys9502740" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0022-1" ORDER="22" ORDERLABEL="Seite 16">
+        <mets:fptr FILEID="IMG_MAX_9502740"/>
+      </mets:div>
+      <mets:div ID="phys9502741" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0023-6" ORDER="23" ORDERLABEL="Seite 17">
+        <mets:fptr FILEID="IMG_MAX_9502741"/>
+      </mets:div>
+      <mets:div ID="phys9502742" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0024-2" ORDER="24" ORDERLABEL="Seite 18">
+        <mets:fptr FILEID="IMG_MAX_9502742"/>
+      </mets:div>
+      <mets:div ID="phys9502743" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0025-8" ORDER="25" ORDERLABEL="Seite 19">
+        <mets:fptr FILEID="IMG_MAX_9502743"/>
+      </mets:div>
+      <mets:div ID="phys9502744" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0026-3" ORDER="26" ORDERLABEL="Seite 20">
+        <mets:fptr FILEID="IMG_MAX_9502744"/>
+      </mets:div>
+      <mets:div ID="phys9502745" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0027-9" ORDER="27" ORDERLABEL="Seite 21">
+        <mets:fptr FILEID="IMG_MAX_9502745"/>
+      </mets:div>
+      <mets:div ID="phys9502746" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0028-5" ORDER="28" ORDERLABEL="Seite 22">
+        <mets:fptr FILEID="IMG_MAX_9502746"/>
+      </mets:div>
+      <mets:div ID="phys9502747" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0029-3" ORDER="29" ORDERLABEL="Seite 23">
+        <mets:fptr FILEID="IMG_MAX_9502747"/>
+      </mets:div>
+      <mets:div ID="phys9502748" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0030-5" ORDER="30" ORDERLABEL="Seite 24">
+        <mets:fptr FILEID="IMG_MAX_9502748"/>
+      </mets:div>
+      <mets:div ID="phys9502749" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0031-1" ORDER="31" ORDERLABEL="Seite 25">
+        <mets:fptr FILEID="IMG_MAX_9502749"/>
+      </mets:div>
+      <mets:div ID="phys9502750" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0032-6" ORDER="32" ORDERLABEL="Seite 26">
+        <mets:fptr FILEID="IMG_MAX_9502750"/>
+      </mets:div>
+      <mets:div ID="phys9502751" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0033-2" ORDER="33" ORDERLABEL="Seite 27">
+        <mets:fptr FILEID="IMG_MAX_9502751"/>
+      </mets:div>
+      <mets:div ID="phys9502752" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0034-8" ORDER="34" ORDERLABEL="Seite 28">
+        <mets:fptr FILEID="IMG_MAX_9502752"/>
+      </mets:div>
+      <mets:div ID="phys9502753" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0035-3" ORDER="35" ORDERLABEL="Seite 29">
+        <mets:fptr FILEID="IMG_MAX_9502753"/>
+      </mets:div>
+      <mets:div ID="phys9502754" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0036-9" ORDER="36" ORDERLABEL="Seite 30">
+        <mets:fptr FILEID="IMG_MAX_9502754"/>
+      </mets:div>
+      <mets:div ID="phys9502755" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0037-5" ORDER="37" ORDERLABEL="Seite 31">
+        <mets:fptr FILEID="IMG_MAX_9502755"/>
+      </mets:div>
+      <mets:div ID="phys9502756" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0038-0" ORDER="38" ORDERLABEL="Seite 32">
+        <mets:fptr FILEID="IMG_MAX_9502756"/>
+      </mets:div>
+      <mets:div ID="phys9502757" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0039-9" ORDER="39" ORDERLABEL="Seite 33">
+        <mets:fptr FILEID="IMG_MAX_9502757"/>
+      </mets:div>
+      <mets:div ID="phys9502758" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0040-0" ORDER="40" ORDERLABEL="Seite 34">
+        <mets:fptr FILEID="IMG_MAX_9502758"/>
+      </mets:div>
+      <mets:div ID="phys9502759" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0041-6" ORDER="41" ORDERLABEL="Seite 35">
+        <mets:fptr FILEID="IMG_MAX_9502759"/>
+      </mets:div>
+      <mets:div ID="phys9502761" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0042-2" ORDER="42" ORDERLABEL="Seite 36">
+        <mets:fptr FILEID="IMG_MAX_9502761"/>
+      </mets:div>
+      <mets:div ID="phys9502762" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0043-7" ORDER="43" ORDERLABEL="Seite 37">
+        <mets:fptr FILEID="IMG_MAX_9502762"/>
+      </mets:div>
+      <mets:div ID="phys9502763" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0044-3" ORDER="44" ORDERLABEL="Seite 38">
+        <mets:fptr FILEID="IMG_MAX_9502763"/>
+      </mets:div>
+      <mets:div ID="phys9502764" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0045-9" ORDER="45" ORDERLABEL="Seite 39">
+        <mets:fptr FILEID="IMG_MAX_9502764"/>
+      </mets:div>
+      <mets:div ID="phys9502765" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0046-4" ORDER="46" ORDERLABEL="Seite 40">
+        <mets:fptr FILEID="IMG_MAX_9502765"/>
+      </mets:div>
+      <mets:div ID="phys9502766" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0047-0" ORDER="47" ORDERLABEL="Seite 41">
+        <mets:fptr FILEID="IMG_MAX_9502766"/>
+      </mets:div>
+      <mets:div ID="phys9502767" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0048-6" ORDER="48" ORDERLABEL="Seite 42">
+        <mets:fptr FILEID="IMG_MAX_9502767"/>
+      </mets:div>
+      <mets:div ID="phys9502769" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0049-5" ORDER="49" ORDERLABEL="Seite 43">
+        <mets:fptr FILEID="IMG_MAX_9502769"/>
+      </mets:div>
+      <mets:div ID="phys9502770" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0050-6" ORDER="50" ORDERLABEL="Seite 44">
+        <mets:fptr FILEID="IMG_MAX_9502770"/>
+      </mets:div>
+      <mets:div ID="phys9502771" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0051-2" ORDER="51" ORDERLABEL="Seite 45">
+        <mets:fptr FILEID="IMG_MAX_9502771"/>
+      </mets:div>
+      <mets:div ID="phys9502772" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0052-7" ORDER="52" ORDERLABEL="Seite 46">
+        <mets:fptr FILEID="IMG_MAX_9502772"/>
+      </mets:div>
+      <mets:div ID="phys9502773" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0053-3" ORDER="53" ORDERLABEL="Seite 47">
+        <mets:fptr FILEID="IMG_MAX_9502773"/>
+      </mets:div>
+      <mets:div ID="phys9502774" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0054-9" ORDER="54" ORDERLABEL="Seite 48">
+        <mets:fptr FILEID="IMG_MAX_9502774"/>
+      </mets:div>
+      <mets:div ID="phys9502775" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0055-4" ORDER="55" ORDERLABEL="Seite 49">
+        <mets:fptr FILEID="IMG_MAX_9502775"/>
+      </mets:div>
+      <mets:div ID="phys9502776" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0056-0" ORDER="56" ORDERLABEL="Seite 50">
+        <mets:fptr FILEID="IMG_MAX_9502776"/>
+      </mets:div>
+      <mets:div ID="phys9502777" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0057-6" ORDER="57" ORDERLABEL="Seite 51">
+        <mets:fptr FILEID="IMG_MAX_9502777"/>
+      </mets:div>
+      <mets:div ID="phys9502778" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0058-1" ORDER="58" ORDERLABEL="Seite 52">
+        <mets:fptr FILEID="IMG_MAX_9502778"/>
+      </mets:div>
+      <mets:div ID="phys9502779" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0059-0" ORDER="59" ORDERLABEL="Seite 53">
+        <mets:fptr FILEID="IMG_MAX_9502779"/>
+      </mets:div>
+      <mets:div ID="phys9502780" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0060-2" ORDER="60" ORDERLABEL="Seite 54">
+        <mets:fptr FILEID="IMG_MAX_9502780"/>
+      </mets:div>
+      <mets:div ID="phys9502782" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0061-7" ORDER="61" ORDERLABEL="Seite 55">
+        <mets:fptr FILEID="IMG_MAX_9502782"/>
+      </mets:div>
+      <mets:div ID="phys9502783" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0062-3" ORDER="62" ORDERLABEL="Seite 56">
+        <mets:fptr FILEID="IMG_MAX_9502783"/>
+      </mets:div>
+      <mets:div ID="phys9502784" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0063-9" ORDER="63" ORDERLABEL="Seite 57">
+        <mets:fptr FILEID="IMG_MAX_9502784"/>
+      </mets:div>
+      <mets:div ID="phys9502785" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0064-4" ORDER="64" ORDERLABEL="Seite 58">
+        <mets:fptr FILEID="IMG_MAX_9502785"/>
+      </mets:div>
+      <mets:div ID="phys9502786" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0065-0" ORDER="65" ORDERLABEL="Seite 59">
+        <mets:fptr FILEID="IMG_MAX_9502786"/>
+      </mets:div>
+      <mets:div ID="phys9502787" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0066-6" ORDER="66" ORDERLABEL="Seite 60">
+        <mets:fptr FILEID="IMG_MAX_9502787"/>
+      </mets:div>
+      <mets:div ID="phys9502788" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0067-1" ORDER="67" ORDERLABEL="Seite 61">
+        <mets:fptr FILEID="IMG_MAX_9502788"/>
+      </mets:div>
+      <mets:div ID="phys9502789" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0068-7" ORDER="68" ORDERLABEL="Seite 62">
+        <mets:fptr FILEID="IMG_MAX_9502789"/>
+      </mets:div>
+      <mets:div ID="phys9502791" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0069-6" ORDER="69" ORDERLABEL="Seite 63">
+        <mets:fptr FILEID="IMG_MAX_9502791"/>
+      </mets:div>
+      <mets:div ID="phys9502792" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0070-7" ORDER="70" ORDERLABEL="Seite 64">
+        <mets:fptr FILEID="IMG_MAX_9502792"/>
+      </mets:div>
+      <mets:div ID="phys9502793" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0071-3" ORDER="71" ORDERLABEL="Seite 65">
+        <mets:fptr FILEID="IMG_MAX_9502793"/>
+      </mets:div>
+      <mets:div ID="phys9502794" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0072-8" ORDER="72" ORDERLABEL="Seite 66">
+        <mets:fptr FILEID="IMG_MAX_9502794"/>
+      </mets:div>
+      <mets:div ID="phys9502795" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0073-4" ORDER="73" ORDERLABEL="Seite 67">
+        <mets:fptr FILEID="IMG_MAX_9502795"/>
+      </mets:div>
+      <mets:div ID="phys9502796" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0074-0" ORDER="74" ORDERLABEL="Seite 68">
+        <mets:fptr FILEID="IMG_MAX_9502796"/>
+      </mets:div>
+      <mets:div ID="phys9502797" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0075-5" ORDER="75" ORDERLABEL="Seite 69">
+        <mets:fptr FILEID="IMG_MAX_9502797"/>
+      </mets:div>
+      <mets:div ID="phys9502798" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0076-1" ORDER="76" ORDERLABEL="Seite 70">
+        <mets:fptr FILEID="IMG_MAX_9502798"/>
+      </mets:div>
+      <mets:div ID="phys9502799" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0077-7" ORDER="77" ORDERLABEL="Seite 71">
+        <mets:fptr FILEID="IMG_MAX_9502799"/>
+      </mets:div>
+      <mets:div ID="phys9502800" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0078-2" ORDER="78" ORDERLABEL="Seite 72">
+        <mets:fptr FILEID="IMG_MAX_9502800"/>
+      </mets:div>
+      <mets:div ID="phys9502801" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0079-1" ORDER="79" ORDERLABEL="Seite 73">
+        <mets:fptr FILEID="IMG_MAX_9502801"/>
+      </mets:div>
+      <mets:div ID="phys9502802" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0080-3" ORDER="80" ORDERLABEL="Seite 74">
+        <mets:fptr FILEID="IMG_MAX_9502802"/>
+      </mets:div>
+      <mets:div ID="phys9502803" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0081-8" ORDER="81" ORDERLABEL="Seite 75">
+        <mets:fptr FILEID="IMG_MAX_9502803"/>
+      </mets:div>
+      <mets:div ID="phys9502804" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0082-4" ORDER="82" ORDERLABEL="Seite 76">
+        <mets:fptr FILEID="IMG_MAX_9502804"/>
+      </mets:div>
+      <mets:div ID="phys9502805" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0083-0" ORDER="83" ORDERLABEL="Seite 77">
+        <mets:fptr FILEID="IMG_MAX_9502805"/>
+      </mets:div>
+      <mets:div ID="phys9502806" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0084-5" ORDER="84" ORDERLABEL="Seite 78">
+        <mets:fptr FILEID="IMG_MAX_9502806"/>
+      </mets:div>
+      <mets:div ID="phys9502807" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0085-1" ORDER="85" ORDERLABEL="Seite 79">
+        <mets:fptr FILEID="IMG_MAX_9502807"/>
+      </mets:div>
+      <mets:div ID="phys9502808" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0086-7" ORDER="86" ORDERLABEL="Seite 80">
+        <mets:fptr FILEID="IMG_MAX_9502808"/>
+      </mets:div>
+      <mets:div ID="phys9502809" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0087-2" ORDER="87" ORDERLABEL="Seite 81">
+        <mets:fptr FILEID="IMG_MAX_9502809"/>
+      </mets:div>
+      <mets:div ID="phys9502810" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0088-8" ORDER="88" ORDERLABEL="Seite 82">
+        <mets:fptr FILEID="IMG_MAX_9502810"/>
+      </mets:div>
+      <mets:div ID="phys9502811" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0089-7" ORDER="89" ORDERLABEL="Seite 83">
+        <mets:fptr FILEID="IMG_MAX_9502811"/>
+      </mets:div>
+      <mets:div ID="phys9502812" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0090-2" ORDER="90" ORDERLABEL="Seite 84">
+        <mets:fptr FILEID="IMG_MAX_9502812"/>
+      </mets:div>
+      <mets:div ID="phys9502813" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0091-8" ORDER="91" ORDERLABEL="Seite 85">
+        <mets:fptr FILEID="IMG_MAX_9502813"/>
+      </mets:div>
+      <mets:div ID="phys9502814" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0092-4" ORDER="92" ORDERLABEL="Seite 86">
+        <mets:fptr FILEID="IMG_MAX_9502814"/>
+      </mets:div>
+      <mets:div ID="phys9502815" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0093-9" ORDER="93" ORDERLABEL="Seite 87">
+        <mets:fptr FILEID="IMG_MAX_9502815"/>
+      </mets:div>
+      <mets:div ID="phys9502816" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0094-5" ORDER="94" ORDERLABEL="Seite 88">
+        <mets:fptr FILEID="IMG_MAX_9502816"/>
+      </mets:div>
+      <mets:div ID="phys9502817" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0095-1" ORDER="95" ORDERLABEL="Seite 89">
+        <mets:fptr FILEID="IMG_MAX_9502817"/>
+      </mets:div>
+      <mets:div ID="phys9502818" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0096-7" ORDER="96" ORDERLABEL="Seite 90">
+        <mets:fptr FILEID="IMG_MAX_9502818"/>
+      </mets:div>
+      <mets:div ID="phys9502819" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0097-2" ORDER="97" ORDERLABEL="Seite 91">
+        <mets:fptr FILEID="IMG_MAX_9502819"/>
+      </mets:div>
+      <mets:div ID="phys9502820" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0098-8" ORDER="98" ORDERLABEL="Seite 92">
+        <mets:fptr FILEID="IMG_MAX_9502820"/>
+      </mets:div>
+      <mets:div ID="phys9502821" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0099-7" ORDER="99" ORDERLABEL="Seite 93">
+        <mets:fptr FILEID="IMG_MAX_9502821"/>
+      </mets:div>
+      <mets:div ID="phys9502822" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0100-4" ORDER="100" ORDERLABEL="Seite 94">
+        <mets:fptr FILEID="IMG_MAX_9502822"/>
+      </mets:div>
+      <mets:div ID="phys9502823" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0101-9" ORDER="101" ORDERLABEL="Seite 95">
+        <mets:fptr FILEID="IMG_MAX_9502823"/>
+      </mets:div>
+      <mets:div ID="phys9502824" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0102-5" ORDER="102" ORDERLABEL="Seite 96">
+        <mets:fptr FILEID="IMG_MAX_9502824"/>
+      </mets:div>
+      <mets:div ID="phys9502825" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0103-1" ORDER="103" ORDERLABEL="Seite 97">
+        <mets:fptr FILEID="IMG_MAX_9502825"/>
+      </mets:div>
+      <mets:div ID="phys9502826" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0104-6" ORDER="104" ORDERLABEL="Seite 98">
+        <mets:fptr FILEID="IMG_MAX_9502826"/>
+      </mets:div>
+      <mets:div ID="phys9502827" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0105-2" ORDER="105" ORDERLABEL="Seite 99">
+        <mets:fptr FILEID="IMG_MAX_9502827"/>
+      </mets:div>
+      <mets:div ID="phys9502828" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0106-8" ORDER="106" ORDERLABEL="Seite 100">
+        <mets:fptr FILEID="IMG_MAX_9502828"/>
+      </mets:div>
+      <mets:div ID="phys9502829" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0107-3" ORDER="107" ORDERLABEL="Seite 101">
+        <mets:fptr FILEID="IMG_MAX_9502829"/>
+      </mets:div>
+      <mets:div ID="phys9502830" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0108-9" ORDER="108" ORDERLABEL="Seite 102">
+        <mets:fptr FILEID="IMG_MAX_9502830"/>
+      </mets:div>
+      <mets:div ID="phys9502831" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0109-8" ORDER="109" ORDERLABEL="Seite 103">
+        <mets:fptr FILEID="IMG_MAX_9502831"/>
+      </mets:div>
+      <mets:div ID="phys9502832" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0110-9" ORDER="110" ORDERLABEL="Seite 104">
+        <mets:fptr FILEID="IMG_MAX_9502832"/>
+      </mets:div>
+      <mets:div ID="phys9502833" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0111-5" ORDER="111" ORDERLABEL="Seite 105">
+        <mets:fptr FILEID="IMG_MAX_9502833"/>
+      </mets:div>
+      <mets:div ID="phys9502834" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0112-1" ORDER="112" ORDERLABEL="Seite 106">
+        <mets:fptr FILEID="IMG_MAX_9502834"/>
+      </mets:div>
+      <mets:div ID="phys9502835" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0113-6" ORDER="113" ORDERLABEL="Seite 107">
+        <mets:fptr FILEID="IMG_MAX_9502835"/>
+      </mets:div>
+      <mets:div ID="phys9502836" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0114-2" ORDER="114" ORDERLABEL="Seite 108">
+        <mets:fptr FILEID="IMG_MAX_9502836"/>
+      </mets:div>
+      <mets:div ID="phys9502837" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0115-8" ORDER="115" ORDERLABEL="Seite 109">
+        <mets:fptr FILEID="IMG_MAX_9502837"/>
+      </mets:div>
+      <mets:div ID="phys9502838" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0116-3" ORDER="116" ORDERLABEL="Seite 110">
+        <mets:fptr FILEID="IMG_MAX_9502838"/>
+      </mets:div>
+      <mets:div ID="phys9502839" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0117-9" ORDER="117" ORDERLABEL="Seite 111">
+        <mets:fptr FILEID="IMG_MAX_9502839"/>
+      </mets:div>
+      <mets:div ID="phys9502840" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0118-5" ORDER="118" ORDERLABEL="Seite 112">
+        <mets:fptr FILEID="IMG_MAX_9502840"/>
+      </mets:div>
+      <mets:div ID="phys9502842" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0119-3" ORDER="119" ORDERLABEL="Seite 113">
+        <mets:fptr FILEID="IMG_MAX_9502842"/>
+      </mets:div>
+      <mets:div ID="phys9502843" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0120-5" ORDER="120" ORDERLABEL="Seite 114">
+        <mets:fptr FILEID="IMG_MAX_9502843"/>
+      </mets:div>
+      <mets:div ID="phys9502844" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0121-0" ORDER="121" ORDERLABEL="Seite 115">
+        <mets:fptr FILEID="IMG_MAX_9502844"/>
+      </mets:div>
+      <mets:div ID="phys9502845" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0122-6" ORDER="122" ORDERLABEL="Seite 116">
+        <mets:fptr FILEID="IMG_MAX_9502845"/>
+      </mets:div>
+      <mets:div ID="phys9502846" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0123-2" ORDER="123" ORDERLABEL="Tabelle 117">
+        <mets:fptr FILEID="IMG_MAX_9502846"/>
+      </mets:div>
+      <mets:div ID="phys9502847" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0124-7" ORDER="124" ORDERLABEL="Seite 118">
+        <mets:fptr FILEID="IMG_MAX_9502847"/>
+      </mets:div>
+      <mets:div ID="phys9502848" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0125-3" ORDER="125" ORDERLABEL="Seite 119">
+        <mets:fptr FILEID="IMG_MAX_9502848"/>
+      </mets:div>
+      <mets:div ID="phys9502849" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0126-9" ORDER="126" ORDERLABEL="Seite 120">
+        <mets:fptr FILEID="IMG_MAX_9502849"/>
+      </mets:div>
+      <mets:div ID="phys9502850" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0127-4" ORDER="127" ORDERLABEL="Seite 121">
+        <mets:fptr FILEID="IMG_MAX_9502850"/>
+      </mets:div>
+      <mets:div ID="phys9502851" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0128-0" ORDER="128" ORDERLABEL="Seite 122">
+        <mets:fptr FILEID="IMG_MAX_9502851"/>
+      </mets:div>
+      <mets:div ID="phys9502852" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0129-9" ORDER="129" ORDERLABEL="Seite 123">
+        <mets:fptr FILEID="IMG_MAX_9502852"/>
+      </mets:div>
+      <mets:div ID="phys9502853" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0130-0" ORDER="130" ORDERLABEL="Seite 124">
+        <mets:fptr FILEID="IMG_MAX_9502853"/>
+      </mets:div>
+      <mets:div ID="phys9502854" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0131-6" ORDER="131" ORDERLABEL="Seite 125">
+        <mets:fptr FILEID="IMG_MAX_9502854"/>
+      </mets:div>
+      <mets:div ID="phys9502855" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0132-2" ORDER="132" ORDERLABEL="Seite 126">
+        <mets:fptr FILEID="IMG_MAX_9502855"/>
+      </mets:div>
+      <mets:div ID="phys9502856" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0133-7" ORDER="133" ORDERLABEL="Seite 127">
+        <mets:fptr FILEID="IMG_MAX_9502856"/>
+      </mets:div>
+      <mets:div ID="phys9502857" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0134-3" ORDER="134" ORDERLABEL="Seite 128">
+        <mets:fptr FILEID="IMG_MAX_9502857"/>
+      </mets:div>
+      <mets:div ID="phys9502858" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0135-9" ORDER="135" ORDERLABEL="Seite 129">
+        <mets:fptr FILEID="IMG_MAX_9502858"/>
+      </mets:div>
+      <mets:div ID="phys9502859" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0136-4" ORDER="136" ORDERLABEL="Seite 130">
+        <mets:fptr FILEID="IMG_MAX_9502859"/>
+      </mets:div>
+      <mets:div ID="phys9502860" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0137-0" ORDER="137" ORDERLABEL="Seite 131">
+        <mets:fptr FILEID="IMG_MAX_9502860"/>
+      </mets:div>
+      <mets:div ID="phys9502861" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0138-6" ORDER="138" ORDERLABEL="Seite 132">
+        <mets:fptr FILEID="IMG_MAX_9502861"/>
+      </mets:div>
+      <mets:div ID="phys9502862" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0139-4" ORDER="139" ORDERLABEL="Seite 133">
+        <mets:fptr FILEID="IMG_MAX_9502862"/>
+      </mets:div>
+      <mets:div ID="phys9502863" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0140-6" ORDER="140" ORDERLABEL="Seite 134">
+        <mets:fptr FILEID="IMG_MAX_9502863"/>
+      </mets:div>
+      <mets:div ID="phys9502864" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0141-2" ORDER="141" ORDERLABEL="Seite 135">
+        <mets:fptr FILEID="IMG_MAX_9502864"/>
+      </mets:div>
+      <mets:div ID="phys9502865" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0142-7" ORDER="142" ORDERLABEL="Seite 136">
+        <mets:fptr FILEID="IMG_MAX_9502865"/>
+      </mets:div>
+      <mets:div ID="phys9502866" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0143-3" ORDER="143" ORDERLABEL="Seite 137">
+        <mets:fptr FILEID="IMG_MAX_9502866"/>
+      </mets:div>
+      <mets:div ID="phys9502867" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0144-9" ORDER="144" ORDERLABEL="Seite 138">
+        <mets:fptr FILEID="IMG_MAX_9502867"/>
+      </mets:div>
+      <mets:div ID="phys9502868" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0145-4" ORDER="145" ORDERLABEL="Seite 139">
+        <mets:fptr FILEID="IMG_MAX_9502868"/>
+      </mets:div>
+      <mets:div ID="phys9502869" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0146-0" ORDER="146" ORDERLABEL="Seite 140">
+        <mets:fptr FILEID="IMG_MAX_9502869"/>
+      </mets:div>
+      <mets:div ID="phys9502870" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0147-6" ORDER="147" ORDERLABEL="Seite 141">
+        <mets:fptr FILEID="IMG_MAX_9502870"/>
+      </mets:div>
+      <mets:div ID="phys9502871" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0148-1" ORDER="148" ORDERLABEL="Seite 142">
+        <mets:fptr FILEID="IMG_MAX_9502871"/>
+      </mets:div>
+      <mets:div ID="phys9502872" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0149-0" ORDER="149" ORDERLABEL="Seite 143">
+        <mets:fptr FILEID="IMG_MAX_9502872"/>
+      </mets:div>
+      <mets:div ID="phys9502873" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0150-1" ORDER="150" ORDERLABEL="Seite 144">
+        <mets:fptr FILEID="IMG_MAX_9502873"/>
+      </mets:div>
+      <mets:div ID="phys9502874" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0151-7" ORDER="151" ORDERLABEL="Seite 145">
+        <mets:fptr FILEID="IMG_MAX_9502874"/>
+      </mets:div>
+      <mets:div ID="phys9502875" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0152-3" ORDER="152" ORDERLABEL="Seite 146">
+        <mets:fptr FILEID="IMG_MAX_9502875"/>
+      </mets:div>
+      <mets:div ID="phys9502876" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0153-8" ORDER="153" ORDERLABEL="Seite 147">
+        <mets:fptr FILEID="IMG_MAX_9502876"/>
+      </mets:div>
+      <mets:div ID="phys9502877" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0154-4" ORDER="154" ORDERLABEL="Seite 148">
+        <mets:fptr FILEID="IMG_MAX_9502877"/>
+      </mets:div>
+      <mets:div ID="phys9502878" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0155-0" ORDER="155" ORDERLABEL="[Leerseite]">
+        <mets:fptr FILEID="IMG_MAX_9502878"/>
+      </mets:div>
+      <mets:div ID="phys9502879" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0156-5" ORDER="156" ORDERLABEL="[Leerseite]">
+        <mets:fptr FILEID="IMG_MAX_9502879"/>
+      </mets:div>
+      <mets:div ID="phys9502880" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0157-1" ORDER="157" ORDERLABEL="[Seite]">
+        <mets:fptr FILEID="IMG_MAX_9502880"/>
+      </mets:div>
+      <mets:div ID="phys9502881" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0158-7" ORDER="158" ORDERLABEL="[Seite]">
+        <mets:fptr FILEID="IMG_MAX_9502881"/>
+      </mets:div>
+      <mets:div ID="phys9502883" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0159-6" ORDER="159" ORDERLABEL="[Seite 161]">
+        <mets:fptr FILEID="IMG_MAX_9502883"/>
+      </mets:div>
+      <mets:div ID="phys9502884" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-635986-p0160-7" ORDER="160" ORDERLABEL="[Seite 162]">
+        <mets:fptr FILEID="IMG_MAX_9502884"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="log9427342" DMDID="md9427342" ADMID="amd9427342" TYPE="multivolume_work" LABEL="Sir James Stewarts, Baronets, Untersuchung der Grund-Säze von der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen" ORDER="1">
+      <mets:div ID="log9427337" DMDID="md9427337" ADMID="amd9427337" TYPE="volume" LABEL="Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen" ORDER="1" CONTENTIDS="urn:nbn:de:gbv:3:1-635986">
+        <mets:div ID="log9502714" TYPE="cover_front" ORDER="1"/>
+        <mets:div ID="log9503309" TYPE="bookplate" ORDER="2"/>
+        <mets:div ID="log9502717" TYPE="title_page" ORDER="3"/>
+        <mets:div ID="log9502720" TYPE="contents" LABEL="Inhalt des dritten Buchs, zweyten Stüks." ORDER="4"/>
+        <mets:div ID="log9502723" TYPE="section" LABEL="Untersuchung der Grundsäze der Staats-Wirthschaft Drittes Buch von Geld und Münze." ORDER="5">
+          <mets:div ID="log9503311" TYPE="section" LABEL="Zweyter Theil Anwendung der Grundsäze vom Geld auf die Handlung." ORDER="1">
+            <mets:div ID="log9502726" TYPE="chapter" LABEL="Cap. 1. Folgen, die aus den Münzkosten und der Gebühr wegen des Münzrechts bey einer Nation entspringen, in so fern sie auf den Preis des Billons, und aller anderer Waaren, einen Einfluß haben." ORDER="1"/>
+            <mets:div ID="log9503313" TYPE="chapter" LABEL="Cap. 2. Von dem Einfluß, den eine Auflage für die Münzkosten und die Gebühr für das Münzrecht in der englichen Münze auf den Wechselcours und die Handlung Gros-Britanniens haben würde." ORDER="2"/>
+            <mets:div ID="log9502760" TYPE="chapter" LABEL="Cap. 3. Ist der Verlust, den der Wechselcours bei der Handlung Grosbritanniens mit Frankreich angibt, würklich oder nur anscheinend?" ORDER="3"/>
+            <mets:div ID="log9502768" TYPE="chapter" LABEL="Cap. 4. Von den verschiedenen Methoden, auf das Münzwesen eine Auflage zu legen; und von dem Einfluß, den jeden auf den Werth der Geld-Einheit, und auf das einheimische Interesse der Nation habe." ORDER="4"/>
+            <mets:div ID="log9502781" TYPE="chapter" LABEL="Cap. 5. Wie ein Versuch angestellt werden könne, die würkliche Folgen des Schlagschazes mit Gewißheit zu entdecken." ORDER="5"/>
+            <mets:div ID="log9502790" TYPE="chapter" LABEL="Cap. 6. Vermischte Fragen und Anmerkungen über die Lehre von Geld und Münze." ORDER="6"/>
+            <mets:div ID="log9503314" TYPE="chapter" LABEL="Cap. 7. Von der Einrichtung, die in Frankreich in Absicht auf Münze, Billon und Gold- und Silber-Geschirr beobachtet wird." ORDER="7"/>
+            <mets:div ID="log9502841" TYPE="chapter" LABEL="Cap. 8. Von der Einrichtung, die in Ansehung der Münze und des Billons in Holland beobachtet wird." ORDER="8"/>
+          </mets:div>
+        </mets:div>
+        <mets:div ID="log9502882" TYPE="cover_back" ORDER="6"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="log9427337" xlink:to="physroot"/>
+    <mets:smLink xlink:from="log9502714" xlink:to="phys9502715"/>
+    <mets:smLink xlink:from="log9503309" xlink:to="phys9502716"/>
+    <mets:smLink xlink:from="log9502717" xlink:to="phys9502718"/>
+    <mets:smLink xlink:from="log9502717" xlink:to="phys9502719"/>
+    <mets:smLink xlink:from="log9502720" xlink:to="phys9502721"/>
+    <mets:smLink xlink:from="log9502720" xlink:to="phys9502722"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502724"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502725"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502727"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502728"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502729"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502730"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502731"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502732"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502733"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502734"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502735"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502736"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502737"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502738"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502739"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502740"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502741"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502742"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502743"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502744"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502745"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502746"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502747"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502748"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502749"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502750"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502751"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502752"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502753"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502754"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502755"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502756"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502757"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502758"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502759"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502761"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502762"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502763"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502764"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502765"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502766"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502767"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502769"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502770"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502771"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502772"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502773"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502774"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502775"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502776"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502777"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502778"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502779"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502780"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502782"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502783"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502784"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502785"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502786"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502787"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502788"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502789"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502791"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502792"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502793"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502794"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502795"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502796"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502797"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502798"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502799"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502800"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502801"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502802"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502803"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502804"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502805"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502806"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502807"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502808"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502809"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502810"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502811"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502812"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502813"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502814"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502815"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502816"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502817"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502818"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502819"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502820"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502821"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502822"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502823"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502824"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502825"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502826"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502827"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502828"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502829"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502830"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502831"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502832"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502833"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502834"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502835"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502836"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502837"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502838"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502839"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502840"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502842"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502843"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502844"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502845"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502846"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502847"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502848"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502849"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502850"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502851"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502852"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502853"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502854"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502855"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502856"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502857"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502858"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502859"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502860"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502861"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502862"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502863"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502864"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502865"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502866"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502867"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502868"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502869"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502870"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502871"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502872"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502873"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502874"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502875"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502876"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502877"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502878"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502879"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502880"/>
+    <mets:smLink xlink:from="log9502723" xlink:to="phys9502881"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502724"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502725"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502727"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502728"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502729"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502730"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502731"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502732"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502733"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502734"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502735"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502736"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502737"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502738"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502739"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502740"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502741"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502742"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502743"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502744"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502745"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502746"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502747"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502748"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502749"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502750"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502751"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502752"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502753"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502754"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502755"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502756"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502757"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502758"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502759"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502761"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502762"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502763"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502764"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502765"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502766"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502767"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502769"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502770"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502771"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502772"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502773"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502774"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502775"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502776"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502777"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502778"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502779"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502780"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502782"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502783"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502784"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502785"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502786"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502787"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502788"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502789"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502791"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502792"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502793"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502794"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502795"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502796"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502797"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502798"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502799"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502800"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502801"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502802"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502803"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502804"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502805"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502806"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502807"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502808"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502809"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502810"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502811"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502812"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502813"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502814"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502815"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502816"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502817"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502818"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502819"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502820"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502821"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502822"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502823"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502824"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502825"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502826"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502827"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502828"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502829"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502830"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502831"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502832"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502833"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502834"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502835"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502836"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502837"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502838"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502839"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502840"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502842"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502843"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502844"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502845"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502846"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502847"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502848"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502849"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502850"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502851"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502852"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502853"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502854"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502855"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502856"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502857"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502858"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502859"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502860"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502861"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502862"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502863"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502864"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502865"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502866"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502867"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502868"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502869"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502870"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502871"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502872"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502873"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502874"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502875"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502876"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502877"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502878"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502879"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502880"/>
+    <mets:smLink xlink:from="log9503311" xlink:to="phys9502881"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502727"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502728"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502729"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502730"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502731"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502732"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502733"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502734"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502735"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502736"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502737"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502738"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502739"/>
+    <mets:smLink xlink:from="log9502726" xlink:to="phys9502740"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502741"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502742"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502743"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502744"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502745"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502746"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502747"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502748"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502749"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502750"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502751"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502752"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502753"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502754"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502755"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502756"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502757"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502758"/>
+    <mets:smLink xlink:from="log9503313" xlink:to="phys9502759"/>
+    <mets:smLink xlink:from="log9502760" xlink:to="phys9502761"/>
+    <mets:smLink xlink:from="log9502760" xlink:to="phys9502762"/>
+    <mets:smLink xlink:from="log9502760" xlink:to="phys9502763"/>
+    <mets:smLink xlink:from="log9502760" xlink:to="phys9502764"/>
+    <mets:smLink xlink:from="log9502760" xlink:to="phys9502765"/>
+    <mets:smLink xlink:from="log9502760" xlink:to="phys9502766"/>
+    <mets:smLink xlink:from="log9502760" xlink:to="phys9502767"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502769"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502770"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502771"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502772"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502773"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502774"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502775"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502776"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502777"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502778"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502779"/>
+    <mets:smLink xlink:from="log9502768" xlink:to="phys9502780"/>
+    <mets:smLink xlink:from="log9502781" xlink:to="phys9502782"/>
+    <mets:smLink xlink:from="log9502781" xlink:to="phys9502783"/>
+    <mets:smLink xlink:from="log9502781" xlink:to="phys9502784"/>
+    <mets:smLink xlink:from="log9502781" xlink:to="phys9502785"/>
+    <mets:smLink xlink:from="log9502781" xlink:to="phys9502786"/>
+    <mets:smLink xlink:from="log9502781" xlink:to="phys9502787"/>
+    <mets:smLink xlink:from="log9502781" xlink:to="phys9502788"/>
+    <mets:smLink xlink:from="log9502781" xlink:to="phys9502789"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502791"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502792"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502793"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502794"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502795"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502796"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502797"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502798"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502799"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502800"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502801"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502802"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502803"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502804"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502805"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502806"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502807"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502808"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502809"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502810"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502811"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502812"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502813"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502814"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502815"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502816"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502817"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502818"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502819"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502820"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502821"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502822"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502823"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502824"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502825"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502826"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502827"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502828"/>
+    <mets:smLink xlink:from="log9502790" xlink:to="phys9502829"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502830"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502831"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502832"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502833"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502834"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502835"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502836"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502837"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502838"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502839"/>
+    <mets:smLink xlink:from="log9503314" xlink:to="phys9502840"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502842"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502843"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502844"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502845"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502846"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502847"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502848"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502849"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502850"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502851"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502852"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502853"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502854"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502855"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502856"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502857"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502858"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502859"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502860"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502861"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502862"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502863"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502864"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502865"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502866"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502867"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502868"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502869"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502870"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502871"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502872"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502873"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502874"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502875"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502876"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502877"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502878"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502879"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502880"/>
+    <mets:smLink xlink:from="log9502841" xlink:to="phys9502881"/>
+    <mets:smLink xlink:from="log9502882" xlink:to="phys9502883"/>
+    <mets:smLink xlink:from="log9502882" xlink:to="phys9502884"/>
+  </mets:structLink>
+</mets:mets>

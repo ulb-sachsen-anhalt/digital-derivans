@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.mets.model.Mets;
 import org.mycore.mets.model.sections.DmdSec;
+import org.mycore.mets.model.struct.LogicalDiv;
 import org.mycore.mets.model.struct.LogicalStructMap;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -200,12 +201,14 @@ class DescriptiveDataBuilder {
 		if (mods == null) {
 			return null;
 		}
-		Element recordInfo = mods.getChild("recordInfo", NS_MODS);
+		List<Element> recordInfos = mods.getChildren("recordInfo", NS_MODS);
 		Predicate<Element> sourceExists = e -> Objects.nonNull(e.getAttributeValue("source"));
-		List<Element> identifiers = recordInfo.getChildren("recordIdentifier", NS_MODS);
-		Optional<Element> optUrn = identifiers.stream().filter(sourceExists).findFirst();
-		if (optUrn.isPresent()) {
-			return optUrn.get().getTextTrim();
+		for(Element recordInfo : recordInfos) {
+			List<Element> identifiers = recordInfo.getChildren("recordIdentifier", NS_MODS);
+			Optional<Element> optUrn = identifiers.stream().filter(sourceExists).findFirst();
+			if (optUrn.isPresent()) {
+				return optUrn.get().getTextTrim();
+			}
 		}
 		throw new DigitalDerivansException("found no valid recordIdentifier");
 	}
@@ -276,13 +279,13 @@ class DescriptiveDataBuilder {
 
 	private Element getPrimaryMods() {
 		if (mets != null) {
-			String dmdId = getLinkFromMonography(mets.getLogicalStructMap());
+			String dmdId = getLinkFromLogicalRoot(mets.getLogicalStructMap());
 			DmdSec dmd = mets.getDmdSecById(dmdId);
 			if (dmd != null) {
 				return dmd.getMdWrap().getMetadata();
 			} else {
-				// kitodo2 multivolume work
-				String firstDmdId = getLinkIDsFromFirstVolume();
+				// hierarchical multivolume works from kitodo or semantics
+				String firstDmdId = getLinkFromFirstVolume();
 				if(firstDmdId == null) {
 					return null;
 				}
@@ -295,11 +298,24 @@ class DescriptiveDataBuilder {
 		return null;
 	}
 	
-	private static String getLinkFromMonography(LogicalStructMap logMap) {
-		return logMap.getDivContainer().getDmdId();
+	/**
+	 * 
+	 * Only return from logical root element when we can be sure that
+	 * it is an monograph
+	 * 
+	 * @param logMap
+	 * @return
+	 */
+	private static String getLinkFromLogicalRoot(LogicalStructMap logMap) {
+		LogicalDiv logRoot = logMap.getDivContainer(); 
+		if (logRoot.getType().equals("monograph")) {
+			return logRoot.getDmdId();
+		}
+		// hacky way to overcome semantics METS layout with MVW
+		return null;
 	}
 	
-	private String getLinkIDsFromFirstVolume() {
+	private String getLinkFromFirstVolume() {
 		return this.handler.requestDMDSubDivIDs();
 	}
 

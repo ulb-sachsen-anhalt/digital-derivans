@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -31,6 +32,8 @@ class TestMetadataStoreVLS {
 	static Path vlInhouse737429 = Path.of("./src/test/resources/metadata/vls/737429.xml");
 
 	static Path vlInhouse201517 = Path.of("./src/test/resources/metadata/vls/201517.xml");
+	
+	static Path vlMVWVD189427337 = Path.of("./src/test/resources/metadata/vls/9427337.ulb.xml");
 
 	static IMetadataStore mds737429;
 	
@@ -39,6 +42,10 @@ class TestMetadataStoreVLS {
 	static IMetadataStore mds201517;
 	
 	static DescriptiveData dd201517;
+	
+	static IMetadataStore mds9427337;
+	
+	static DescriptiveData dd9427337;
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
@@ -46,6 +53,8 @@ class TestMetadataStoreVLS {
 		dd737429 = mds737429.getDescriptiveData();
 		mds201517 = new MetadataStore(vlInhouse201517);
 		dd201517 = mds201517.getDescriptiveData();
+		mds9427337 = new MetadataStore(vlMVWVD189427337);
+		dd9427337 = mds9427337.getDescriptiveData();
 	}
 
 	/**
@@ -79,6 +88,12 @@ class TestMetadataStoreVLS {
 		assertEquals("Langenheim", dd737429.getPerson());
 	}
 
+	/**
+	 * 
+	 * Some MVW F-Stage from menadoc with logical structure "section" / "section" 
+	 * 
+	 * @throws DigitalDerivansException
+	 */
 	@Test
 	void testDescriptiveDataFromVL12MenalibOAI() throws DigitalDerivansException {
 		// arrange
@@ -90,10 +105,10 @@ class TestMetadataStoreVLS {
 
 		// assert
 		assertTrue(dd.getCreator().isEmpty());
-		assertEquals("323633072", dd.getIdentifier());
-		assertEquals("Ṭabaqāt aš-šāfiʿīya al-kubrā", dd.getTitle());
-		assertEquals("urn:nbn:de:gbv:3:5-9308", dd.getUrn());
-		assertTrue(dd.getLicense().isEmpty());
+		assertEquals("385228910", dd.getIdentifier());
+		assertEquals("n.a.", dd.getTitle());
+		assertEquals("urn:nbn:de:gbv:3:5-8691", dd.getUrn());
+		assertTrue(dd.getLicense().isPresent());
 		assertEquals("1906", dd.getYearPublished());
 		// this is from mods:displayForm of mods:role/mods:roleTerm/text() = "aut"
 		assertEquals("Subkī, Taqī-ad-Dīn ʿAlī Ibn-ʿAbd-al-Kāfī as-", dd.getPerson());
@@ -151,10 +166,56 @@ class TestMetadataStoreVLS {
 	
 	/**
 	 * 
-	 * Check structures for rather large monography (> 2.300 pages)
+	 * Check descriptive data for common VD18 MVW F-Stage
 	 * 
 	 * @throws DigitalDerivansException
 	 */
+	@Test
+	void testDescriptiveDataOf9427337() throws DigitalDerivansException {
+		assertEquals("urn:nbn:de:gbv:3:1-635986", dd9427337.getUrn());
+		assertEquals(Optional.empty(), dd9427337.getCreator());
+		assertEquals("Steuart, James", dd9427337.getPerson());
+		assertEquals("1771", dd9427337.getYearPublished());
+		assertEquals("Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen", dd9427337.getTitle());
+		assertEquals("211999628", dd9427337.getIdentifier());
+	}
+	
+	/**
+	 * 
+	 * Check structure for common VD18 MVW F-Stage
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test @Disabled
+	void testStructureOf9427337() throws DigitalDerivansException {
+		DigitalStructureTree dst = mds9427337.getStructure();
+		assertNotNull(dst);
+
+		assertNotNull(dst.getLabel());
+		assertEquals(1, dst.getPage());
+		assertTrue(dst.hasSubstructures());
+
+		// level 1
+		List<DigitalStructureTree> children = dst.getSubstructures();
+		assertEquals(12, children.size());
+		assertEquals("Vorderdeckel", children.get(0).getLabel());
+		assertEquals(1, children.get(0).getPage());
+		assertEquals("Kupfertitel", children.get(1).getLabel());
+		assertEquals(6, children.get(1).getPage());
+
+		// level 1+2
+		assertEquals("Liber Primus,", children.get(5).getLabel());
+		assertTrue(children.get(5).hasSubstructures());
+		assertEquals(2, children.get(5).getSubstructures().size());
+
+		// level 1+2+3
+		assertEquals(
+				"Continuatio Historiae Ecclesiasticae Iohannis Micraelii, Secunda Hac Editione Emendata & plurimis locis aucta à Daniele Hartnaccio, Pomerano.",
+				children.get(9).getLabel());
+		assertEquals(4, children.get(9).getSubstructures().size());
+		assertEquals(11, children.get(9).getSubstructures().get(1).getSubstructures().size());
+	}
+	
 	@Test
 	void testStructureOf201517() throws DigitalDerivansException {
 		DigitalStructureTree dst = mds201517.getStructure();
