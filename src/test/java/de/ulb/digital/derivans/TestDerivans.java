@@ -180,10 +180,12 @@ public class TestDerivans {
 		Path pathTarget = tempDir.resolve("148811035");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-//		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
-//		copyTree(sourceImageDir, pathImageMax);
-		List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d", i)).collect(Collectors.toList());
-		generateJpgsFromList(pathImageMax, 2164, 2448, ids);
+		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
+		copyTree(sourceImageDir, pathImageMax);
+		
+		// create artificial testimages
+		// List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d", i)).collect(Collectors.toList());
+		// generateJpgsFromList(pathImageMax, 2164, 2448, ids);
 
 		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
 		Path targetMets = pathTarget.resolve(Path.of("mets.xml"));
@@ -195,7 +197,8 @@ public class TestDerivans {
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(targetMets);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
-		// some scaling, too
+		
+		// apply some scaling, too
 		int maximal = 2339; // A4 200 DPI ok
 //		int maximal = 1754; // A4 150 DPI tw, print vanishes over top up to "Sero ..."
 //		int maximal = 1170; // A4 100 DPI ok with smaller text

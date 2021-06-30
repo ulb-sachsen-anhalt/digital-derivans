@@ -186,34 +186,29 @@ class TestMetadataStoreVLS {
 	 * 
 	 * @throws DigitalDerivansException
 	 */
-	@Test @Disabled
+	@Test
 	void testStructureOf9427337() throws DigitalDerivansException {
 		DigitalStructureTree dst = mds9427337.getStructure();
 		assertNotNull(dst);
 
-		assertNotNull(dst.getLabel());
+		assertEquals("Sir James Stewarts, Baronets, Untersuchung der Grund-Säze von der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen", dst.getLabel());
 		assertEquals(1, dst.getPage());
 		assertTrue(dst.hasSubstructures());
 
-		// level 1
+		// level 1 - F-Stage
 		List<DigitalStructureTree> children = dst.getSubstructures();
-		assertEquals(12, children.size());
-		assertEquals("Vorderdeckel", children.get(0).getLabel());
+		assertEquals(1, children.size());
+		assertEquals("Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen", children.get(0).getLabel());
 		assertEquals(1, children.get(0).getPage());
-		assertEquals("Kupfertitel", children.get(1).getLabel());
-		assertEquals(6, children.get(1).getPage());
 
-		// level 1+2
-		assertEquals("Liber Primus,", children.get(5).getLabel());
-		assertTrue(children.get(5).hasSubstructures());
-		assertEquals(2, children.get(5).getSubstructures().size());
-
-		// level 1+2+3
-		assertEquals(
-				"Continuatio Historiae Ecclesiasticae Iohannis Micraelii, Secunda Hac Editione Emendata & plurimis locis aucta à Daniele Hartnaccio, Pomerano.",
-				children.get(9).getLabel());
-		assertEquals(4, children.get(9).getSubstructures().size());
-		assertEquals(11, children.get(9).getSubstructures().get(1).getSubstructures().size());
+		// level 1+2 - F-Stage
+		assertTrue(children.get(0).hasSubstructures());
+		assertEquals(6, children.get(0).getSubstructures().size());
+		var grandChildren = children.get(0).getSubstructures();
+		assertEquals("Exlibris", grandChildren.get(1).getLabel());
+		assertEquals(2, grandChildren.get(1).getPage());
+		assertEquals("Untersuchung der Grundsäze der Staats-Wirthschaft Drittes Buch von Geld und Münze.", grandChildren.get(4).getLabel());
+		assertEquals(7, grandChildren.get(4).getPage());
 	}
 	
 	@Test

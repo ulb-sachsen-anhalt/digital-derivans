@@ -50,36 +50,35 @@ class StructureMapper {
 				throw new DigitalDerivansException(msg);
 			}
 			LogicalDiv logicalRoot = lsm.getDivContainer();
-			if (logicalRoot.getType().equalsIgnoreCase("monograph")) {
-				DigitalStructureTree structureRoot = new DigitalStructureTree();
-				String label = logicalRoot.getLabel();
+			DigitalStructureTree structureRoot = new DigitalStructureTree();
+			String label = logicalRoot.getLabel();
+			if (label == null) {
+				label = logicalRoot.getOrderLabel();
 				if (label == null) {
-					label = logicalRoot.getOrderLabel();
-					if (label == null) {
-						label = this.title;
-					}
+					label = this.title;
 				}
-				structureRoot.setLabel(label);
-				structureRoot.setPage(1);
-				for (LogicalDiv logicalChild : logicalRoot.getChildren()) {
-					// hack around bug: not only div children are respected
-					if (logicalChild.getType() != null) {
-						DigitalStructureTree subTree = new DigitalStructureTree();
-						structureRoot.addSubStructure(subTree);
-						extendStructure(subTree, logicalChild);
-					}
-				}
-
-				// review
-				clearStructure(structureRoot);
-
-				return structureRoot;
 			}
+			structureRoot.setLabel(label);
+			structureRoot.setPage(1);
+			for (LogicalDiv logicalChild : logicalRoot.getChildren()) {
+				// hack around bug: not only div children are respected
+				if (logicalChild.getType() != null) {
+					DigitalStructureTree subTree = new DigitalStructureTree();
+					structureRoot.addSubStructure(subTree);
+					extendStructure(subTree, logicalChild);
+				}
+			}
+
+			// review
+			clearStructure(structureRoot);
+
+			return structureRoot;
 		} else {
 			LOGGER.warn("no mets avaiable");
 		}
 		return null;
 	}
+
 
 	/**
 	 * 
