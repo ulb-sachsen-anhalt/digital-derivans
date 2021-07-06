@@ -6,6 +6,12 @@ Derive new digitals from existing ones.
 
 Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling, classical [iText5](https://github.com/itext/itextpdf) to create PDF, [Apache log4j2](https://github.com/apache/logging-log4j2) for logging and a workflow inspired by [OCR-D/Core](https://github.com/OCR-D/core) METS-driven-Workflows.
 
+* [Features](#features)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Configuration](#configuration)
+* [License](#license)
+
 ## Features
 
 Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max sizes. For details see [configuration section](#Configuration).
