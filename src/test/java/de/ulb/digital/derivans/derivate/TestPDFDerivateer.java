@@ -35,6 +35,7 @@ import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
+import de.ulb.digital.derivans.model.PDFPageformation;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**
@@ -88,7 +89,8 @@ public class TestPDFDerivateer {
 				pages, null);
 		int result = handler.create();
 
-		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
+		PDFInspector inspector = new PDFInspector(outPath);
+		PDFMetaInformation pdfMetaInformation = inspector.getPDFMetaInformation();
 
 		// assert
 		assertEquals(1, result);
@@ -97,6 +99,51 @@ public class TestPDFDerivateer {
 		assertEquals("n.a.", pdfMetaInformation.getAuthor());
 		// no default creator information exists
 		assertNull(pdfMetaInformation.getCreator());
+	}
+	
+	@Test
+	void testCreatePDFWithDifferentSizeImages(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		int n_pages = 10;
+		Path pathImages = tempDir.resolve("MAX");
+		Files.createDirectory(pathImages);
+		List<DigitalPage> pages = new ArrayList<>();
+		for (int i = 1; i <= n_pages; i++) {
+			String imageName = String.format("%04d.jpg", i);
+			Path jpgFile = pathImages.resolve(imageName);
+			int width = (i % 2 == 0) ? 500 : 625; 
+			int heigth = (i % 2 == 1) ? 600 : 700;
+			BufferedImage bi2 = new BufferedImage(width, heigth, BufferedImage.TYPE_3BYTE_BGR);
+			ImageIO.write(bi2, "JPG", jpgFile.toFile());
+			DigitalPage e = new DigitalPage(i, imageName);
+			pages.add(e);
+		}
+		DigitalStructureTree kap1 = new DigitalStructureTree(1, "Teil 1");
+		DigitalStructureTree kap21 = new DigitalStructureTree(4, "Abschnitt 2.1");
+		DigitalStructureTree kap22 = new DigitalStructureTree(6, "Abschnitt 2.2");
+		DigitalStructureTree kap2 = new DigitalStructureTree(4, "Teil 2", List.of(kap21, kap22));
+		DigitalStructureTree tree = new DigitalStructureTree(1, "Buch 1", List.of(kap1, kap2));
+
+		// act
+		String pdfName = String.format("pdf-image-%04d.pdf", n_pages);
+		Path outPath = tempDir.resolve(pdfName);
+		DescriptiveData dd = new DescriptiveData();
+		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
+		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, tree, dd,
+				pages, null);
+		handler.create();
+
+		PDFInspector inspector = new PDFInspector(outPath);
+		List<PDFPageformation> pagesInfo = inspector.getPageInformation();
+
+		// assert
+		assertEquals(10, pagesInfo.size());
+		assertEquals(1, pagesInfo.get(0).getNumber());
+		assertEquals(625, pagesInfo.get(0).getDimension().width);
+		assertEquals(600, pagesInfo.get(0).getDimension().height);
+		assertEquals(500, pagesInfo.get(5).getDimension().width);
+		assertEquals(700, pagesInfo.get(5).getDimension().height);
 	}
 
 	@Test
@@ -131,7 +178,8 @@ public class TestPDFDerivateer {
 
 		int result = handler.create();
 
-		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
+		PDFInspector inspector = new PDFInspector(outPath);
+		PDFMetaInformation pdfMetaInformation = inspector.getPDFMetaInformation();
 
 		// assert
 		assertEquals(1, result);
@@ -207,7 +255,8 @@ public class TestPDFDerivateer {
 
 		int result = handler.create();
 
-		PDFMetaInformation pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(outPath);
+		PDFInspector inspector = new PDFInspector(outPath);
+		PDFMetaInformation pdfMetaInformation = inspector.getPDFMetaInformation();
 		
 		// assert
 		assertEquals(1, result);
@@ -221,9 +270,9 @@ public class TestPDFDerivateer {
 	@Test
 	void testGetPDFMetaInformation01() throws Exception {
 		// act
-		PDFMetaInformation pdfMetaInformation = null;
 		Path pdfPath = Paths.get("src/test/resources/pdf/169683404X.pdf");
-		pdfMetaInformation = PDFDerivateer.getPDFMetaInformation(pdfPath);
+		PDFInspector inspector = new PDFInspector(pdfPath);
+		PDFMetaInformation pdfMetaInformation = inspector.getPDFMetaInformation();
 
 		// assert
 		assertEquals(

@@ -1,20 +1,13 @@
 package de.ulb.digital.derivans.derivate;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -110,6 +103,14 @@ public class PDFDerivateer extends BaseDerivateer {
 			BaseFont font = handler.forPDF("ttf/DejaVuSans.ttf");
 			// process each page
 			for (DigitalPage page : pages) {
+				String imagePath = page.getImagePath().toString();
+				Image image = Image.getInstance(imagePath);
+				float imageHeight = image.getHeight();
+				float imageWidth = image.getWidth();
+				// re-set page document dimension for *each* page since
+				if (document.setPageSize(new Rectangle(imageWidth, imageHeight))) {
+					LOGGER.debug("re-set document pageSize {}x{}", imageWidth, imageHeight);
+				}
 				document.newPage();
 				addPage(writer, font, page);
 				pagesAdded++;
@@ -120,17 +121,19 @@ public class PDFDerivateer extends BaseDerivateer {
 
 		return pagesAdded;
 	}
+	
 
 	private void addPage(PdfWriter writer, BaseFont font, DigitalPage page) throws IOException, DocumentException {
 
-		PdfContentByte over = writer.getDirectContent();
 		String imagePath = page.getImagePath().toString();
 		Image image = Image.getInstance(imagePath);
-		float actualImageDerivateHeight = image.getHeight();
+		
+		// push image data as base graphic content
+		PdfContentByte over = writer.getDirectContent();
 		image.setAbsolutePosition(0f, 0f);
 		over.addImage(image);
 
-		// some ocr, if any
+		// push ocr if any
 		Optional<OCRData> optOcr = page.getOcrData();
 		if (optOcr.isPresent()) {
 
@@ -138,6 +141,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 			// get to know current image dimensions
 			// most likely to differ due subsequent scaling derivation steps
+			// height has also changed if additional footer has been applied to image
 			int pageHeight = ocrData.getPageHeight();
 			int footerHeight = 0;
 			Optional<Integer> optFooterHeight = page.getFooterHeight();
@@ -148,7 +152,9 @@ public class PDFDerivateer extends BaseDerivateer {
 						pageHeight);
 			}
 			// need to scale?
-			float ratio = actualImageDerivateHeight / pageHeight;
+			// page height corresponds to original image height
+			float currentImageHeight = image.getHeight();
+			float ratio = currentImageHeight / pageHeight;
 			if (Math.abs(1.0 - ratio) > 0.01) {
 				LOGGER.trace("scale ocr data for '{}' by '{}'", page.getImagePath(), ratio);
 				ocrData.scale(ratio);
@@ -159,7 +165,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			cb.saveState();
 			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
 			for (OCRData.Textline line : ocrLines) {
-				renderLine(font, (int) actualImageDerivateHeight, cb, line);
+				renderLine(font, (int) currentImageHeight, cb, line);
 			}
 			cb.restoreState();
 
@@ -257,36 +263,6 @@ public class PDFDerivateer extends BaseDerivateer {
 		}
 	}
 
-	static PDFMetaInformation getPDFMetaInformation(Path pdfPath) throws IOException {
-		FileInputStream fis = new FileInputStream(pdfPath.toAbsolutePath().toString());
-		PdfReader reader = new PdfReader(fis);
-
-		Map<String, String> metadata = reader.getInfo();
-		String author = metadata.get("Author");
-		String title = metadata.get("Title");
-
-		byte[] xmpMetadataBytes = reader.getMetadata();
-		org.w3c.dom.Document xmpMetadata = null;
-		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setNamespaceAware(true);
-			// please sonarqube "Disable XML external entity (XXE) processing"
-			factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			builder.setErrorHandler(null);
-			xmpMetadata = builder.parse(new ByteArrayInputStream(xmpMetadataBytes));
-		} catch (Exception e) {
-			// no xmpMetadata is fine. so setting it to null.
-		}
-		fis.close();
-
-		PDFMetaInformation pmi = new PDFMetaInformation(author, title, metadata, xmpMetadata);
-		String creator = metadata.get("Creator");
-		pmi.setCreator(creator);
-
-		return pmi;
-	}
-
 	/**
 	 * Use with caution as the PDF File needs to be read entirely in memory.
 	 * 
@@ -334,7 +310,6 @@ public class PDFDerivateer extends BaseDerivateer {
 			if (pdfConformanceLevel != null) {
 				PdfAConformanceLevel pdfaLevel = PdfAConformanceLevel.valueOf(pdfConformanceLevel);
 				writer = PdfAWriter.getInstance(document, fos, pdfaLevel);
-
 			} else {
 				writer = PdfWriter.getInstance(document, fos);
 			}
