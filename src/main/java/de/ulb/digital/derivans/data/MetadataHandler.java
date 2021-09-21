@@ -1,7 +1,10 @@
 package de.ulb.digital.derivans.data;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
@@ -83,13 +87,48 @@ public class MetadataHandler {
 		agent.setAttribute("ROLE", "OTHER");
 		agent.setAttribute("OTHERTYPE", "SOFTWARE");
 		Element agentName = new Element("name", NS_METS);
-		agentName.setText(Derivans.LABEL);
+		agentName.setText(this.getLabel());
 		Element agentNote = new Element("note", NS_METS);
 		String ts = LocalDateTime.now().format(dtFormatter);
 		String agentNoteText = "PDF FileGroup for " + fileId + " created at " + ts;
 		agentNote.setText(agentNoteText);
 		agent.addContent(List.of(agentName, agentNote));
 		return agent;
+	}
+
+	/**
+	 * 
+	 * Read version label from properties-file if exists, otherwise use hard-coded
+	 * default value
+	 * 
+	 * @return
+	 */
+	public String getLabel() {
+		return readRevisionProperties().orElse(Derivans.LABEL);
+	}
+	
+	private Optional<String> readRevisionProperties() {
+		String fileName = "derivans-git.properties";
+		ClassLoader classLoader = getClass().getClassLoader();
+		InputStream inputStream = classLoader.getResourceAsStream(fileName);
+		StringBuilder resultStringBuilder = new StringBuilder();
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				if (line.strip().length() > 3) {
+					resultStringBuilder.append(line);
+				}
+			}
+			String contents = resultStringBuilder.toString();
+			String[] parts = contents.split(":");
+			if (parts.length > 1) {
+				String version = parts[1].replace('"', ' ').strip();
+				return Optional.of(Derivans.LABEL + " V" + version); 
+			}
+		} catch (IOException e) {
+			Derivans.LOGGER.warn("cannot read {}", fileName);
+		}
+		return Optional.empty();
 	}
 
 	public Path getPath() {
@@ -138,28 +177,26 @@ public class MetadataHandler {
 	 */
 	public void addTo(Element asElement, String typeValue, boolean reorder) {
 		var elements = document.getContent(new ElementFilter());
-		var optElement = elements.stream()
-				.map(Element::getChildren)
-				.flatMap(List::stream)
+		var optElement = elements.stream().map(Element::getChildren).flatMap(List::stream)
 				.filter(el -> el.getAttribute("TYPE") != null)
-				.filter(el -> el.getAttribute("TYPE").getValue().equals(typeValue))
-				.findFirst();
-		
-		if(optElement.isPresent()) {
+				.filter(el -> el.getAttribute("TYPE").getValue().equals(typeValue)).findFirst();
+
+		if (optElement.isPresent()) {
 			Element element = optElement.get();
 			Element container = element.getChild("div", NS_METS);
-			
+
 			// create new list with element as first entry
 			container.addContent(asElement);
-			
-			// ATTENTION: the specific goal to re-order is inversion 
-			// to ensure mets:fptr is *before* any subsequent mets:divs 
-			if(reorder) {
-				container.sortChildren((el1, el2) -> Math.negateExact(el1.getName().compareToIgnoreCase(el2.getName())));
+
+			// ATTENTION: the specific goal to re-order is inversion
+			// to ensure mets:fptr is *before* any subsequent mets:divs
+			if (reorder) {
+				container
+						.sortChildren((el1, el2) -> Math.negateExact(el1.getName().compareToIgnoreCase(el2.getName())));
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * Rather hacky way to catch first sub-level volume DMDID mapping
@@ -169,12 +206,9 @@ public class MetadataHandler {
 	 */
 	public String requestDMDSubDivIDs() {
 		var elements = document.getContent(new ElementFilter());
-		List<Element> dmdElements = elements.stream()
-				.map(Element::getChildren)
-				.flatMap(List::stream)
-				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE")))
-				.collect(Collectors.toList());
-		if(dmdElements.isEmpty()) {
+		List<Element> dmdElements = elements.stream().map(Element::getChildren).flatMap(List::stream)
+				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE"))).collect(Collectors.toList());
+		if (dmdElements.isEmpty()) {
 			return null;
 		} else {
 			Element logRoot = dmdElements.get(0);
@@ -187,7 +221,7 @@ public class MetadataHandler {
 			if (dmdIds.get(0).getAttributeValue("DMDID").startsWith("DMDLOG_")) {
 				return "DMDLOG_0001";
 			}
-			
+
 			// rather tricky semantics mappings
 			List<Element> children = new ArrayList<>();
 			for (Element el : dmdIds) {
@@ -200,7 +234,7 @@ public class MetadataHandler {
 				for (Element el2 : dmdIds) {
 					String dmdIDChild = el2.getAttributeValue("DMDID");
 					// dont pick same element
-					if(dmdIDParent.equals(dmdIDChild)) {
+					if (dmdIDParent.equals(dmdIDChild)) {
 						continue;
 					}
 					children.add(el2);
@@ -219,15 +253,15 @@ public class MetadataHandler {
  *
  */
 class LogSubContainers extends ElementFilter {
-	
+
 	String name = "div";
 	Namespace namespace = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public Element filter(Object content) {
 		if (content instanceof Element) {
 			Element el = (Element) content;
@@ -241,13 +275,13 @@ class LogSubContainers extends ElementFilter {
 			if (hasDMDID) {
 				return el;
 			}
-//			if (!hasDMDID) {
-//				// but maybe has ID starting Kitodo-like?
-//				String attrValID = el.getAttributeValue("ID");		
-//				return attrValID.startsWith("LOG_") ? el : null;
-//			}
+			// if (!hasDMDID) {
+			// // but maybe has ID starting Kitodo-like?
+			// String attrValID = el.getAttributeValue("ID");
+			// return attrValID.startsWith("LOG_") ? el : null;
+			// }
 		}
 		return null;
 	}
-	
+
 }
