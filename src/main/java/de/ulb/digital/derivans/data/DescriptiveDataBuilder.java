@@ -1,20 +1,30 @@
 package de.ulb.digital.derivans.data;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.mets.model.Mets;
+import org.mycore.mets.model.files.File;
+import org.mycore.mets.model.files.FileGrp;
 import org.mycore.mets.model.sections.DmdSec;
 import org.mycore.mets.model.struct.LogicalDiv;
 import org.mycore.mets.model.struct.LogicalStructMap;
+import org.mycore.mets.model.struct.PhysicalStructMap;
+import org.mycore.mets.model.struct.SmLink;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DescriptiveData;
@@ -279,7 +289,8 @@ class DescriptiveDataBuilder {
 
 	private Element getPrimaryMods() {
 		if (mets != null) {
-			String dmdId = getLinkFromLogicalRoot(mets.getLogicalStructMap());
+//			String dmdId = getLinkFromLogicalRoot(mets.getLogicalStructMap());
+			String dmdId = getDescriptiveMetadataIdentifier();
 			DmdSec dmd = mets.getDmdSecById(dmdId);
 			if (dmd != null) {
 				return dmd.getMdWrap().getMetadata();
@@ -293,6 +304,62 @@ class DescriptiveDataBuilder {
 				if(dmd != null) {
 					return dmd.getMdWrap().getMetadata();
 				}
+			}
+		}
+		return null;
+//		throw new DigitalDerivansException("can't identify primary MODS section");
+	}
+	
+	/**
+	 * 
+	 * Resolve identifier for descriptive section backwards
+	 * start from Phys top container for MAX-Filegroup, and if 
+	 * defaults to "physroot", over the struct map link for 
+	 * "physroot" to the logical struct's DMDID-attribute 
+	 * (VLS-like)
+	 * OR
+	 * count all map linkings, and pick the from link with 
+	 * half of the links 
+	 * (Kitodo-like)
+	 * 
+	 * @return
+	 */
+	private String getDescriptiveMetadataIdentifier() {
+		LogicalStructMap logMap = (LogicalStructMap)mets.getStructMap("LOGICAL");
+		LogicalDiv logDiv = logMap.getDivContainer();
+		List<SmLink> smLinks = mets.getStructLink().getSmLinkByTo("physroot");
+		if(! smLinks.isEmpty()) {
+			String fromID = smLinks.get(0).getFrom();
+			return inspectLogStruct(logDiv, fromID);
+		} else {
+			Map<String, Integer> mapToN = new HashMap<>();
+			List<SmLink> links = mets.getStructLink().getSmLinks();
+			int nLinks = links.size();
+			for(SmLink link : links) {
+				if (!mapToN.containsKey(link.getFrom())) {
+					mapToN.put(link.getFrom(), 1);
+				} else {
+					mapToN.computeIfPresent(link.getFrom(), (k,v) -> v + 1);
+				}
+			}
+			System.out.println(mapToN);
+			for (Entry<String, Integer> entry : mapToN.entrySet()) {
+				if(entry.getValue() * 2 == nLinks) {
+					String fromID = entry.getKey();
+					return inspectLogStruct(logDiv, fromID);
+				}
+			}
+		}
+		return null;
+	}
+	
+	private static String inspectLogStruct(LogicalDiv logDiv, String fromID) {
+		if (logDiv.getId().equals(fromID)) {
+			return logDiv.getDmdId();
+		}
+		for (LogicalDiv logSubDiv : logDiv.getDescendants()) {
+			if (logSubDiv != null && fromID.equals(logSubDiv.getId())) {
+				return logSubDiv.getDmdId();
 			}
 		}
 		return null;

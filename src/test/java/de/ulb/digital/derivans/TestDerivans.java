@@ -111,7 +111,7 @@ public class TestDerivans {
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathInput(pathTarget.resolve("737429.xml"));
+		dp.setPathInput(pathTarget.resolve("737429.mets.xml"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		derivans.create();
@@ -255,7 +255,7 @@ public class TestDerivans {
 			Files.delete(pathTarget);
 		}
 		Files.createDirectory(pathTarget);
-		Path mets = Path.of("src/test/resources/metadata/vls/737429.xml");
+		Path mets = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
 		Path metsTarget = pathTarget.resolve("737429.xml");
 		Files.copy(mets, metsTarget);
 		Path imagePath = pathTarget.resolve("MAX");

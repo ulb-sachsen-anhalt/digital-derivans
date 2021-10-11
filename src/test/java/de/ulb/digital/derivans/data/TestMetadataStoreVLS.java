@@ -29,7 +29,7 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
  */
 class TestMetadataStoreVLS {
 
-	static Path vlInhouse737429 = Path.of("./src/test/resources/metadata/vls/737429.xml");
+	static Path vlInhouse737429 = Path.of("./src/test/resources/metadata/vls/737429.mets.xml");
 
 	static Path vlInhouse201517 = Path.of("./src/test/resources/metadata/vls/201517.xml");
 	
