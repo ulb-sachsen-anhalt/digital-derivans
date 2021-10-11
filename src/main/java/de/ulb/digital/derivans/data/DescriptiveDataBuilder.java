@@ -1,35 +1,29 @@
 package de.ulb.digital.derivans.data;
 
+import static de.ulb.digital.derivans.data.MetadataStore.NS_MODS;
+import static de.ulb.digital.derivans.data.MetadataStore.UNKNOWN;
+
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
+import java.util.TreeMap;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.mets.model.Mets;
-import org.mycore.mets.model.files.File;
-import org.mycore.mets.model.files.FileGrp;
 import org.mycore.mets.model.sections.DmdSec;
 import org.mycore.mets.model.struct.LogicalDiv;
 import org.mycore.mets.model.struct.LogicalStructMap;
-import org.mycore.mets.model.struct.PhysicalStructMap;
 import org.mycore.mets.model.struct.SmLink;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.model.DescriptiveData;
-
-import static de.ulb.digital.derivans.data.MetadataStore.*; 
+import de.ulb.digital.derivans.model.DescriptiveData; 
 
 /**
  * 
@@ -75,12 +69,12 @@ class DescriptiveDataBuilder {
 		this.mets = mets;
 	}
 
-	DescriptiveDataBuilder urn() {
+	DescriptiveDataBuilder urn() throws DigitalDerivansException {
 		this.urn = getURN();
 		return this;
 	}
 
-	DescriptiveDataBuilder person() {
+	DescriptiveDataBuilder person() throws DigitalDerivansException {
 		this.person = getPerson();
 		return this;
 	}
@@ -90,17 +84,17 @@ class DescriptiveDataBuilder {
 		return this;
 	}
 
-	DescriptiveDataBuilder title() {
+	DescriptiveDataBuilder title() throws DigitalDerivansException {
 		this.title = getTitle();
 		return this;
 	}
 
-	DescriptiveDataBuilder access() {
+	DescriptiveDataBuilder access() throws DigitalDerivansException {
 		accessCondition = getAccessCondition();
 		return this;
 	}
 
-	DescriptiveDataBuilder year() {
+	DescriptiveDataBuilder year() throws DigitalDerivansException {
 		year = getYear();
 		return this;
 	}
@@ -117,7 +111,7 @@ class DescriptiveDataBuilder {
 		return dd;
 	}
 
-	String getPerson() {
+	String getPerson() throws DigitalDerivansException {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			List<Element> nameSubtrees = mods.getChildren("name", NS_MODS);
@@ -223,7 +217,7 @@ class DescriptiveDataBuilder {
 		throw new DigitalDerivansException("found no valid recordIdentifier");
 	}
 
-	String getTitle() {
+	String getTitle() throws DigitalDerivansException {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			Element titleInfo = mods.getChild("titleInfo", NS_MODS);
@@ -237,7 +231,7 @@ class DescriptiveDataBuilder {
 		return MetadataStore.UNKNOWN;
 	}
 
-	String getURN() {
+	String getURN() throws DigitalDerivansException {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			List<Element> identifiers = mods.getChildren("identifier", NS_MODS);
@@ -250,7 +244,7 @@ class DescriptiveDataBuilder {
 		return MetadataStore.UNKNOWN;
 	}
 
-	String getAccessCondition() {
+	String getAccessCondition() throws DigitalDerivansException {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			Element cond = mods.getChild("accessCondition", NS_MODS);
@@ -261,7 +255,7 @@ class DescriptiveDataBuilder {
 		return MetadataStore.UNKNOWN;
 	}
 
-	String getYear() {
+	String getYear() throws DigitalDerivansException {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
@@ -287,9 +281,8 @@ class DescriptiveDataBuilder {
 		return MetadataStore.UNKNOWN;
 	}
 
-	private Element getPrimaryMods() {
+	private Element getPrimaryMods() throws DigitalDerivansException {
 		if (mets != null) {
-//			String dmdId = getLinkFromLogicalRoot(mets.getLogicalStructMap());
 			String dmdId = getDescriptiveMetadataIdentifier();
 			DmdSec dmd = mets.getDmdSecById(dmdId);
 			if (dmd != null) {
@@ -306,8 +299,7 @@ class DescriptiveDataBuilder {
 				}
 			}
 		}
-		return null;
-//		throw new DigitalDerivansException("can't identify primary MODS section");
+		throw new DigitalDerivansException("can't identify primary MODS section");
 	}
 	
 	/**
@@ -334,7 +326,6 @@ class DescriptiveDataBuilder {
 		} else {
 			Map<String, Integer> mapToN = new HashMap<>();
 			List<SmLink> links = mets.getStructLink().getSmLinks();
-			int nLinks = links.size();
 			for(SmLink link : links) {
 				if (!mapToN.containsKey(link.getFrom())) {
 					mapToN.put(link.getFrom(), 1);
@@ -342,15 +333,16 @@ class DescriptiveDataBuilder {
 					mapToN.computeIfPresent(link.getFrom(), (k,v) -> v + 1);
 				}
 			}
-			System.out.println(mapToN);
+			String idLinks = UNKNOWN;
+			Integer maxLinks = 0;
 			for (Entry<String, Integer> entry : mapToN.entrySet()) {
-				if(entry.getValue() * 2 == nLinks) {
-					String fromID = entry.getKey();
-					return inspectLogStruct(logDiv, fromID);
+				if (entry.getValue() > maxLinks) {
+					maxLinks = entry.getValue();
+					idLinks = entry.getKey();
 				}
 			}
+			return inspectLogStruct(logDiv, idLinks);
 		}
-		return null;
 	}
 	
 	private static String inspectLogStruct(LogicalDiv logDiv, String fromID) {
@@ -362,23 +354,6 @@ class DescriptiveDataBuilder {
 				return logSubDiv.getDmdId();
 			}
 		}
-		return null;
-	}
-	
-	/**
-	 * 
-	 * Only return from logical root element when we can be sure that
-	 * it is an monograph
-	 * 
-	 * @param logMap
-	 * @return
-	 */
-	private static String getLinkFromLogicalRoot(LogicalStructMap logMap) {
-		LogicalDiv logRoot = logMap.getDivContainer(); 
-		if (logRoot.getType().equals("monograph")) {
-			return logRoot.getDmdId();
-		}
-		// hacky way to overcome semantics METS layout with MVW
 		return null;
 	}
 	

@@ -135,58 +135,6 @@
     </mets:digiprovMD>
   </mets:amdSec>
   <mets:fileSec>
-    <mets:fileGrp USE="DOWNLOAD">
-      <mets:file MIMETYPE="application/pdf" CHECKSUM="99d8d65fde15a5d2a9cd14b3fa228b78c2449ec6" CREATED="2013-05-22T16:11:11.469300Z" CHECKSUMTYPE="SHA-1" SIZE="1156208" ID="PDF_737429">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/pdf/737429" LOCTYPE="URL"/>
-      </mets:file>
-    </mets:fileGrp>
-    <mets:fileGrp USE="TEASER">
-      <mets:file MIMETYPE="image/jpeg" CREATED="2010-10-20T10:15:35.330400Z" ID="IMG_TEASER_737434">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/304/737434" LOCTYPE="URL"/>
-      </mets:file>
-    </mets:fileGrp>
-    <mets:fileGrp USE="DEFAULT">
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_737434">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/1000/737434" LOCTYPE="URL"/>
-      </mets:file>
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_737436">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/1000/737436" LOCTYPE="URL"/>
-      </mets:file>
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_737437">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/1000/737437" LOCTYPE="URL"/>
-      </mets:file>
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_737438">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/1000/737438" LOCTYPE="URL"/>
-      </mets:file>
-    </mets:fileGrp>
-    <mets:fileGrp USE="THUMBS">
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_737434">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/128/737434" LOCTYPE="URL"/>
-      </mets:file>
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_737436">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/128/737436" LOCTYPE="URL"/>
-      </mets:file>
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_737437">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/128/737437" LOCTYPE="URL"/>
-      </mets:file>
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_737438">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/128/737438" LOCTYPE="URL"/>
-      </mets:file>
-    </mets:fileGrp>
-    <mets:fileGrp USE="MIN">
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_737434">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/600/737434" LOCTYPE="URL"/>
-      </mets:file>
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_737436">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/600/737436" LOCTYPE="URL"/>
-      </mets:file>
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_737437">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/600/737437" LOCTYPE="URL"/>
-      </mets:file>
-      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_737438">
-        <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/600/737438" LOCTYPE="URL"/>
-      </mets:file>
-    </mets:fileGrp>
     <mets:fileGrp USE="MAX">
       <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_737434">
         <mets:FLocat xlink:href="https://digital.bibliothek.uni-halle.de/hd/download/webcache/0/737434" LOCTYPE="URL"/>
@@ -205,35 +153,21 @@
   <mets:structMap TYPE="PHYSICAL">
     <mets:div TYPE="physSequence" ID="physroot">
       <mets:div ID="phys737434" TYPE="page" LABEL="[Seite 2]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0001-0" ORDER="1">
-        <mets:fptr FILEID="IMG_DEFAULT_737434"/>
-        <mets:fptr FILEID="IMG_THUMBS_737434"/>
-        <mets:fptr FILEID="IMG_MIN_737434"/>
         <mets:fptr FILEID="IMG_MAX_737434"/>
       </mets:div>
       <mets:div ID="phys737436" TYPE="page" LABEL="[Seite 3]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0002-5" ORDER="2">
-        <mets:fptr FILEID="IMG_DEFAULT_737436"/>
-        <mets:fptr FILEID="IMG_THUMBS_737436"/>
-        <mets:fptr FILEID="IMG_MIN_737436"/>
         <mets:fptr FILEID="IMG_MAX_737436"/>
       </mets:div>
       <mets:div ID="phys737437" TYPE="page" LABEL="[Seite 4]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0003-1" ORDER="3">
-        <mets:fptr FILEID="IMG_DEFAULT_737437"/>
-        <mets:fptr FILEID="IMG_THUMBS_737437"/>
-        <mets:fptr FILEID="IMG_MIN_737437"/>
         <mets:fptr FILEID="IMG_MAX_737437"/>
       </mets:div>
       <mets:div ID="phys737438" TYPE="page" LABEL="[Seite 5]" CONTENTIDS="urn:nbn:de:gbv:3:3-21437-p0004-6" ORDER="4">
-        <mets:fptr FILEID="IMG_DEFAULT_737438"/>
-        <mets:fptr FILEID="IMG_THUMBS_737438"/>
-        <mets:fptr FILEID="IMG_MIN_737438"/>
         <mets:fptr FILEID="IMG_MAX_737438"/>
       </mets:div>
     </mets:div>
   </mets:structMap>
   <mets:structMap TYPE="LOGICAL">
     <mets:div ID="log737429" DMDID="md737429" ADMID="amd737429" TYPE="monograph" LABEL="Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo Monarchae Et Domino, Christiano VI. Daniae, Norvegiae .. Regi ... D. VI. Ivnii MDCCXXXI. In Celeberrima Lipsiensivm Academia Habita Concentibvs Mvsicis Decantata" ORDER="1" CONTENTIDS="urn:nbn:de:gbv:3:3-21437">
-      <mets:fptr FILEID="PDF_737429"/>
-      <mets:fptr FILEID="IMG_TEASER_737434"/>
       <mets:div ID="log737433" TYPE="title_page" LABEL="Titelblatt" ORDER="1"/>
       <mets:div ID="log737435" TYPE="verse" LABEL="[Ode]" ORDER="2"/>
     </mets:div>

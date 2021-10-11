@@ -18,7 +18,6 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
@@ -111,7 +110,7 @@ public class TestDerivans {
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathInput(pathTarget.resolve("737429.mets.xml"));
+		dp.setPathInput(pathTarget.resolve("737429.xml"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		derivans.create();

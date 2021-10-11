@@ -85,7 +85,7 @@ class TestMetadataStoreVLS {
 		// WITH
 		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut"
 		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl
-		assertEquals("Langenheim", dd737429.getPerson());
+		assertEquals("Officina Langenhemia", dd737429.getPerson());
 	}
 
 	/**
@@ -251,7 +251,7 @@ class TestMetadataStoreVLS {
 	@Test
 	void testMetadataIsUpdated737429(@TempDir Path tempDir) throws Exception {
 		// arrange
-		Path sourcePathFile = Path.of("src/test/resources/metadata/vls/737429.xml");
+		Path sourcePathFile = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
 		Path targetPathFile = tempDir.resolve("737429.xml");
 		if (Files.exists(targetPathFile)) {
 			Files.delete(targetPathFile);
