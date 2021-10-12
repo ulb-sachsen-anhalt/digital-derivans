@@ -3,13 +3,13 @@ package de.ulb.digital.derivans.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 
@@ -32,12 +32,9 @@ class TestMetadataStoreKitodo2 {
 
 	@BeforeAll
 	static void setup() throws Exception {
-		Path kitodo2143074601 = Path.of("./src/test/resources/metadata/kitodo2/143074601.xml");
-		mds143074601 = new MetadataStore(kitodo2143074601);
+		mds143074601 = new MetadataStore(TestResource.K2_Aa_143074601.get());
 		dd143074601 = mds143074601.getDescriptiveData();
-
-		Path kitodo2147573602 = Path.of("./src/test/resources/metadata/kitodo2/147573602.xml");
-		mds147573602 = new MetadataStore(kitodo2147573602);
+		mds147573602 = new MetadataStore(TestResource.K2_Aa_147573602.get());
 		dd147573602 = mds147573602.getDescriptiveData();
 	}
 

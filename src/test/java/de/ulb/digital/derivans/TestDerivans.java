@@ -152,10 +152,10 @@ public class TestDerivans {
 		Files.createDirectories(pathImageMax);
 		generateJpgsFromList(pathImageMax, 1240, 1754, List.of("737434", "737436", "737437", "737438"));
 
-		Path sourceMets = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
-		assertTrue(Files.exists(sourceMets));
+//		Path sourceMets = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
+//		assertTrue(Files.exists(sourceMets));
 		Path targetMets = pathTarget.resolve(Path.of("737429.mets.xml"));
-		Files.copy(sourceMets, targetMets);
+		Files.copy(TestResource.HD_Aa_737429.get(), targetMets);
 
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
@@ -254,9 +254,9 @@ public class TestDerivans {
 			Files.delete(pathTarget);
 		}
 		Files.createDirectory(pathTarget);
-		Path mets = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
+//		Path mets = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
 		Path metsTarget = pathTarget.resolve("737429.xml");
-		Files.copy(mets, metsTarget);
+		Files.copy(TestResource.HD_Aa_737429.get(), metsTarget);
 		Path imagePath = pathTarget.resolve("MAX");
 		generateJpgsFromList(imagePath, 2367, 3737, List.of("737434", "737436", "737437", "737438"));
 		return pathTarget;

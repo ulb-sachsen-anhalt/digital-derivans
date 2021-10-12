@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:vl="http://visuallibrary.net/vl" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="2" LABEL="Drucke des 17. Jahrhunderts (VD17)">
+  <mets:metsHdr CREATEDATE="2021-10-12T09:06:29">
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>vls/2012</mets:name>
+      <mets:note>legacy vlid: 11250807</mets:note>
+      <mets:note>legacy date: 2016-09-20T04:46:18Z</mets:note>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="INSTANCE">
+      <mets:name>ulbhalvd</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="REPOSITORY">
+      <mets:name>digitale.bibliothek.uni-halle.de/vd17</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="BUILDER">
+      <mets:name>vd</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>Migration</mets:name>
+      <mets:note>2021-10-12 09:06:53</mets:note>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="md8909646">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:titleInfo>
+            <mods:title>Cursus Philosophici Disputatio ...</mods:title>
+          </mods:titleInfo>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/100205828">
+            <mods:namePart type="given">Jakob</mods:namePart>
+            <mods:namePart type="family">Martini</mods:namePart>
+            <mods:namePart type="date">1570-1649</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Martini, Jakob</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037501861">
+            <mods:namePart type="given">Johann</mods:namePart>
+            <mods:namePart type="family">Gormann</mods:namePart>
+            <mods:namePart type="date">????-1628</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Gormann, Johann</mods:displayForm>
+          </mods:name>
+          <mods:name type="corporate">
+            <mods:namePart>Universität Wittenberg</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">asn</mods:roleTerm>
+              <mods:roleTerm type="text">Beteiligte Person</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Universität Wittenberg</mods:displayForm>
+          </mods:name>
+          <mods:typeOfResource collection="yes">text</mods:typeOfResource>
+          <mods:genre authority="aad">Dissertationensammlung</mods:genre>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Wittebergae</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Gormannus</mods:publisher>
+            <mods:dateIssued encoding="iso8601" keyDate="yes">1615</mods:dateIssued>
+            <mods:issuance>monographic</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo>
+            <mods:edition>[Electronic ed.]</mods:edition>
+            <mods:place>
+              <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:dateIssued>2016</mods:dateIssued>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">lat</mods:languageTerm>
+          </mods:language>
+          <mods:note type="statement of responsibility">In Alma Wittebergensi Academia Praeside Dn. Jacobo Martini Profess. Log. &amp; Phil. Pract. Publ. ...</mods:note>
+          <mods:subject>
+            <mods:geographic>Wittenberg</mods:geographic>
+          </mods:subject>
+          <mods:identifier type="vda">547:686805D</mods:identifier>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-626466</mods:identifier>
+          <mods:extension>
+            <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
+              <zvdd:titleWord>Iacobo</zvdd:titleWord>
+            </zvdd:zvddWrap>
+            <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Vorlageform des Erscheinungsvermerks in Disputatio 1 (1615): VVITEBERGÆ, Typis Johannis Gormanni, Anno 1615</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Erschienen: 1 (1615) -</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Schlüsselseiten aus dem Exemplar der UB Erfurt: 03 - Ts. 8° 03549 (08)</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Signaturformel: A - A4, B2</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Vorlageform des Erscheinungsvermerks: VVITEBERGÆ, Typis Johannis Gormanni, Anno 1616</ulb:note>
+            <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Ac</ulb:externalType>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">05-07-06</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">02-06-21</mods:recordChangeDate>
+            <mods:recordIdentifier source="gvk-ppn">005836050</mods:recordIdentifier>
+            <mods:descriptionStandard>rak</mods:descriptionStandard>
+          </mods:recordInfo>
+          <mods:accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/licenses/by-sa/3.0/de/">CC-BY-SA 3.0 DE</mods:accessCondition>
+          <mods:classification authority="ddc">090</mods:classification>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="md11250807">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:titleInfo>
+            <mods:title>De Compositione Syllogismi</mods:title>
+          </mods:titleInfo>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/100205828">
+            <mods:namePart type="given">Jakob</mods:namePart>
+            <mods:namePart type="family">Martini</mods:namePart>
+            <mods:namePart type="date">1570-1649</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Martini, Jakob</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/128464399">
+            <mods:namePart type="given">Christian</mods:namePart>
+            <mods:namePart type="family">Hüler</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Hüler, Christian</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037501861">
+            <mods:namePart type="given">Johann</mods:namePart>
+            <mods:namePart type="family">Gormann</mods:namePart>
+            <mods:namePart type="date">????-1628</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Gormann, Johann</mods:displayForm>
+          </mods:name>
+          <mods:name type="corporate">
+            <mods:namePart>Universität Wittenberg</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">asn</mods:roleTerm>
+              <mods:roleTerm type="text">Beteiligte Person</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Universität Wittenberg</mods:displayForm>
+          </mods:name>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:genre authority="aad">Dissertation:phil.</mods:genre>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Witebergae</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Gormannus</mods:publisher>
+            <mods:dateIssued encoding="iso8601" keyDate="yes">1616</mods:dateIssued>
+            <mods:issuance>monographic</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo eventType="digitization">
+            <mods:edition>[Electronic ed.]</mods:edition>
+            <mods:place>
+              <mods:placeTerm type="text">Halle (Saale)</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:dateCaptured encoding="iso8601">2016</mods:dateCaptured>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">lat</mods:languageTerm>
+          </mods:language>
+          <mods:physicalDescription>
+            <mods:extent>[6] Bl ; 4°</mods:extent>
+          </mods:physicalDescription>
+          <mods:note type="statement of responsibility">Proposita In Alma Witebergensi Academia Praeside Dn. Jacobo Martini; Profess. Log. &amp; Phil. Pract. Publ. Respondente, Christiano Hülero Suinfurtensi Franco. Ad diem 10. Ianuarii, loco &amp; horis consuetis</mods:note>
+          <mods:subject>
+            <mods:geographic>Wittenberg</mods:geographic>
+          </mods:subject>
+          <mods:identifier type="vda">547:686832A</mods:identifier>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-699854</mods:identifier>
+          <mods:relatedItem type="host">
+            <mods:titleInfo>
+              <mods:title>Cursus Philosophici Disputatio ...</mods:title>
+            </mods:titleInfo>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/100205828">
+              <mods:namePart type="given">Jakob</mods:namePart>
+              <mods:namePart type="family">Martini</mods:namePart>
+              <mods:namePart type="date">1570-1649</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Martini, Jakob</mods:displayForm>
+            </mods:name>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037501861">
+              <mods:namePart type="given">Johann</mods:namePart>
+              <mods:namePart type="family">Gormann</mods:namePart>
+              <mods:namePart type="date">????-1628</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+                <mods:roleTerm type="text">Verl.</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Gormann, Johann</mods:displayForm>
+            </mods:name>
+            <mods:name type="corporate">
+              <mods:namePart>Universität Wittenberg</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">asn</mods:roleTerm>
+                <mods:roleTerm type="text">Beteiligte Person</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Universität Wittenberg</mods:displayForm>
+            </mods:name>
+            <mods:typeOfResource collection="yes">text</mods:typeOfResource>
+            <mods:genre authority="aad">Dissertationensammlung</mods:genre>
+            <mods:originInfo eventType="publication">
+              <mods:place>
+                <mods:placeTerm type="text">Wittebergae</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Gormannus</mods:publisher>
+              <mods:issuance>monographic</mods:issuance>
+            </mods:originInfo>
+            <mods:originInfo>
+              <mods:edition>[Electronic ed.]</mods:edition>
+              <mods:place>
+                <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            </mods:originInfo>
+            <mods:language>
+              <mods:languageTerm authority="iso639-2b" type="code">lat</mods:languageTerm>
+            </mods:language>
+            <mods:note type="statement of responsibility">In Alma Wittebergensi Academia Praeside Dn. Jacobo Martini Profess. Log. &amp; Phil. Pract. Publ. ...</mods:note>
+            <mods:note>Vorlageform des Erscheinungsvermerks in Disputatio 1 (1615): VVITEBERGÆ, Typis Johannis Gormanni, Anno 1615</mods:note>
+            <mods:note>Erschienen: 1 (1615) -</mods:note>
+            <mods:subject>
+              <mods:geographic>Wittenberg</mods:geographic>
+            </mods:subject>
+            <mods:identifier type="vda">547:686805D</mods:identifier>
+            <mods:identifier type="urn">urn:nbn:de:gbv:3:1-626466</mods:identifier>
+            <mods:extension>
+              <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
+                <zvdd:titleWord>Iacobo</zvdd:titleWord>
+              </zvdd:zvddWrap>
+              <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+              <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Ac</ulb:externalType>
+            </mods:extension>
+            <mods:recordInfo>
+              <mods:recordCreationDate encoding="marc">05-07-06</mods:recordCreationDate>
+              <mods:recordChangeDate encoding="marc">02-06-21</mods:recordChangeDate>
+              <mods:recordIdentifier source="gvk-ppn">005836050</mods:recordIdentifier>
+              <mods:descriptionStandard>rak</mods:descriptionStandard>
+            </mods:recordInfo>
+            <mods:extension>
+              <vl:id>8909646</vl:id>
+              <vl:odid>2</vl:odid>
+              <vl:datatype>1</vl:datatype>
+              <vl:type>19</vl:type>
+              <vl:state>1</vl:state>
+            </mods:extension>
+          </mods:relatedItem>
+          <mods:location>
+            <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
+            <mods:shelfLocator>06 A 970 (7)</mods:shelfLocator>
+          </mods:location>
+          <mods:part type="host" order="7">
+            <mods:detail>
+              <mods:number>7</mods:number>
+            </mods:detail>
+          </mods:part>
+          <mods:extension>
+            <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Vorlageform des Erscheinungsvermerks in Disputatio 1 (1615): VVITEBERGÆ, Typis Johannis Gormanni, Anno 1615</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Erschienen: 1 (1615) -</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Schlüsselseiten aus dem Exemplar der UB Erfurt: 03 - Ts. 8° 03549 (08)</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Signaturformel: A - A4, B2</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Vorlageform des Erscheinungsvermerks: VVITEBERGÆ, Typis Johannis Gormanni, Anno 1616</ulb:note>
+            <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">AF</ulb:externalType>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">05-07-06</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">10-06-20</mods:recordChangeDate>
+            <mods:recordIdentifier source="gvk-ppn">005836395</mods:recordIdentifier>
+            <mods:descriptionStandard>rak</mods:descriptionStandard>
+          </mods:recordInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd11250807">
+    <mets:rightsMD ID="rights11250807">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>Share_it</dv:ownerLogo>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov11250807">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://gso.gbv.de/xslt/DB=1.28/CMD?ACT=SRCHA&amp;IKT=8079&amp;TRM=547%3A686832A</dv:reference>
+            <dv:presentation>Share_it</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:amdSec ID="amd8909646">
+    <mets:rightsMD ID="rights8909646">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>https://digitale.bibliothek.uni-halle.de/vd17//domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov8909646">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://gso.gbv.de/xslt/DB=1.28/CMD?ACT=SRCHA&amp;IKT=8079&amp;TRM=547%3A686805D</dv:reference>
+            <dv:presentation>https://digitale.bibliothek.uni-halle.de/vd17/id/8909646</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="MAX">
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304313">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304313" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304314">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304314" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304316">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304316" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304317">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304317" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304319">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304319" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304320">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304320" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304321">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304321" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304322">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304322" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304323">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304323" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304324">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304324" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304325">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304325" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304326">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304326" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304327">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304327" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304328">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304328" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304330">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304330" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_12304331">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/12304331" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys12304313" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0001-6" ORDER="1" ORDERLABEL="[Seite 3]">
+        <mets:fptr FILEID="IMG_MAX_12304313"/>
+      </mets:div>
+      <mets:div ID="phys12304314" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0002-2" ORDER="2" ORDERLABEL="[Seite 4]">
+        <mets:fptr FILEID="IMG_MAX_12304314"/>
+      </mets:div>
+      <mets:div ID="phys12304316" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0003-8" ORDER="3" ORDERLABEL="[Seite 5]">
+        <mets:fptr FILEID="IMG_MAX_12304316"/>
+      </mets:div>
+      <mets:div ID="phys12304317" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0004-4" ORDER="4" ORDERLABEL="[Leerseite]">
+        <mets:fptr FILEID="IMG_MAX_12304317"/>
+      </mets:div>
+      <mets:div ID="phys12304319" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0005-9" ORDER="5" ORDERLABEL="[Seite 7]">
+        <mets:fptr FILEID="IMG_MAX_12304319"/>
+      </mets:div>
+      <mets:div ID="phys12304320" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0006-5" ORDER="6" ORDERLABEL="[Seite 8]">
+        <mets:fptr FILEID="IMG_MAX_12304320"/>
+      </mets:div>
+      <mets:div ID="phys12304321" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0007-1" ORDER="7" ORDERLABEL="[Seite 9]">
+        <mets:fptr FILEID="IMG_MAX_12304321"/>
+      </mets:div>
+      <mets:div ID="phys12304322" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0008-7" ORDER="8" ORDERLABEL="[Seite 10]">
+        <mets:fptr FILEID="IMG_MAX_12304322"/>
+      </mets:div>
+      <mets:div ID="phys12304323" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0009-5" ORDER="9" ORDERLABEL="[Seite 11]">
+        <mets:fptr FILEID="IMG_MAX_12304323"/>
+      </mets:div>
+      <mets:div ID="phys12304324" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0010-6" ORDER="10" ORDERLABEL="[Seite 12]">
+        <mets:fptr FILEID="IMG_MAX_12304324"/>
+      </mets:div>
+      <mets:div ID="phys12304325" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0011-2" ORDER="11" ORDERLABEL="[Seite 13]">
+        <mets:fptr FILEID="IMG_MAX_12304325"/>
+      </mets:div>
+      <mets:div ID="phys12304326" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0012-8" ORDER="12" ORDERLABEL="[Seite 14]">
+        <mets:fptr FILEID="IMG_MAX_12304326"/>
+      </mets:div>
+      <mets:div ID="phys12304327" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0013-4" ORDER="13" ORDERLABEL="[Seite 15]">
+        <mets:fptr FILEID="IMG_MAX_12304327"/>
+      </mets:div>
+      <mets:div ID="phys12304328" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0014-9" ORDER="14" ORDERLABEL="[Leerseite]">
+        <mets:fptr FILEID="IMG_MAX_12304328"/>
+      </mets:div>
+      <mets:div ID="phys12304330" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0015-5" ORDER="15" ORDERLABEL="[Seite 17]">
+        <mets:fptr FILEID="IMG_MAX_12304330"/>
+      </mets:div>
+      <mets:div ID="phys12304331" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-699854-p0016-1" ORDER="16" ORDERLABEL="[Seite 18]">
+        <mets:fptr FILEID="IMG_MAX_12304331"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="log8909646" DMDID="md8909646" ADMID="amd8909646" TYPE="multivolume_work" LABEL="Cursus Philosophici Disputatio ..." ORDER="1">
+      <mets:div ID="log11250807" DMDID="md11250807" ADMID="amd11250807" TYPE="volume" LABEL="De Compositione Syllogismi" ORDER="1" CONTENTIDS="urn:nbn:de:gbv:3:1-699854">
+        <mets:div ID="log12304312" TYPE="cover_front" ORDER="1"/>
+        <mets:div ID="log12304315" TYPE="title_page" ORDER="2"/>
+        <mets:div ID="log12304318" TYPE="section" ORDER="3"/>
+        <mets:div ID="log12304329" TYPE="cover_back" ORDER="4"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="log11250807" xlink:to="physroot"/>
+    <mets:smLink xlink:from="log12304312" xlink:to="phys12304313"/>
+    <mets:smLink xlink:from="log12304312" xlink:to="phys12304314"/>
+    <mets:smLink xlink:from="log12304315" xlink:to="phys12304316"/>
+    <mets:smLink xlink:from="log12304315" xlink:to="phys12304317"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304319"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304320"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304321"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304322"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304323"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304324"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304325"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304326"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304327"/>
+    <mets:smLink xlink:from="log12304318" xlink:to="phys12304328"/>
+    <mets:smLink xlink:from="log12304329" xlink:to="phys12304330"/>
+    <mets:smLink xlink:from="log12304329" xlink:to="phys12304331"/>
+  </mets:structLink>
+</mets:mets>

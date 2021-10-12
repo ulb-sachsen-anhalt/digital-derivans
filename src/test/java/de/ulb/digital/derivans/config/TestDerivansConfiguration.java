@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DerivansParameter;
+import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DerivateStep;
 import de.ulb.digital.derivans.model.DerivateType;
 
@@ -26,9 +27,8 @@ public class TestDerivansConfiguration {
 		// arrange
 		Path targetMetsDir = tempDir.resolve("226134857");
 		Files.createDirectory(targetMetsDir);
-		Path metsModsSource = Path.of("src/test/resources/metadata/vls/226134857.prep.xml");
 		Path metsModsTarget = targetMetsDir.resolve("226134857.xml");
-		Files.copy(metsModsSource, metsModsTarget);
+		Files.copy(TestResource.HD_Aa_226134857.get(), metsModsTarget);
 		Path conf = Path.of("src/test/resources/config/derivans.ini");
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(conf);

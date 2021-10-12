@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:vl="http://visuallibrary.net/vl" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="5" LABEL="Drucke des 18. Jahrhunderts (VD18)">
-  <mets:metsHdr CREATEDATE="2021-06-29T10:05:11">
+  <mets:metsHdr CREATEDATE="2021-06-25T14:39:13">
     <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
       <mets:name>vls/2012</mets:name>
       <mets:note>legacy vlid: 9427337</mets:note>
@@ -17,7 +17,7 @@
     </mets:agent>
     <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
       <mets:name>Migration</mets:name>
-      <mets:note>2021-06-29 20:47:27</mets:note>
+      <mets:note>2021-10-12 09:36:17</mets:note>
     </mets:agent>
   </mets:metsHdr>
   <mets:dmdSec ID="md9427337">
@@ -64,23 +64,19 @@
             <mods:dateIssued encoding="iso8601" keyDate="yes">1771</mods:dateIssued>
             <mods:issuance>monographic</mods:issuance>
           </mods:originInfo>
-          <mods:originInfo>
+          <mods:originInfo eventType="digitization">
             <mods:edition>[Electronic ed.]</mods:edition>
             <mods:place>
-              <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+              <mods:placeTerm type="text">Halle (Saale)</mods:placeTerm>
             </mods:place>
             <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
-            <mods:dateIssued>2015</mods:dateIssued>
+            <mods:dateCaptured encoding="iso8601">2015</mods:dateCaptured>
           </mods:originInfo>
           <mods:language>
             <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
           </mods:language>
           <mods:physicalDescription>
             <mods:extent>[2] Bl., 148 S. ; 8°</mods:extent>
-            <mods:extent>Autopsie nach Exemplar der ULB Sachsen-Anhalt</mods:extent>
-            <mods:extent>Vorlageform des Erscheinungsvermerks: Tübingen bey Johann Georg Cotta 1771.</mods:extent>
-            <mods:extent>Übersetzer am Ende des Privilegium genannt</mods:extent>
-            <mods:extent>Übersetzer am Ende des Privilegium genannt</mods:extent>
           </mods:physicalDescription>
           <mods:subject>
             <mods:geographic>Tübingen</mods:geographic>
@@ -151,6 +147,7 @@
               <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
             </mods:language>
             <mods:note type="statement of responsibility">[Übersetzer Johann Gottlieb Leyser]</mods:note>
+            <mods:note>Übersetzer am Ende des Privilegium genannt</mods:note>
             <mods:subject>
               <mods:geographic>Tübingen</mods:geographic>
             </mods:subject>
@@ -178,6 +175,10 @@
               <vl:state>1</vl:state>
             </mods:extension>
           </mods:relatedItem>
+          <mods:location>
+            <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
+            <mods:shelfLocator>Lb 712 a (3,2)</mods:shelfLocator>
+          </mods:location>
           <mods:part type="host" order="3">
             <mods:detail>
               <mods:number>Buch 3, Stük 2</mods:number>
@@ -188,6 +189,9 @@
               <zvdd:titleWord>Grund-Sätze Staatswirtschaft bei freien</zvdd:titleWord>
             </zvdd:zvddWrap>
             <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Autopsie nach Exemplar der ULB Sachsen-Anhalt</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Vorlageform des Erscheinungsvermerks: Tübingen bey Johann Georg Cotta 1771.</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Übersetzer am Ende des Privilegium genannt</ulb:note>
             <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Af</ulb:externalType>
           </mods:extension>
           <mods:recordInfo>
@@ -196,12 +200,8 @@
             <mods:recordIdentifier source="gvk-ppn">211999628</mods:recordIdentifier>
             <mods:descriptionStandard>rak</mods:descriptionStandard>
           </mods:recordInfo>
-          <mods:location>
-            <mods:physicalLocation authority="local library code">65</mods:physicalLocation>
-            <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
-            <mods:shelfLocator>Lb 712 a (3,2)</mods:shelfLocator>
-          </mods:location>
-          <mods:accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/licenses/by-sa/3.0/de">CC-BY-SA 3.0 DE</mods:accessCondition>
+          <mods:accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/licenses/by-sa/3.0/de/">CC-BY-SA 3.0 DE</mods:accessCondition>
+          <mods:classification authority="ddc">090</mods:classification>
         </mods:mods>
       </mets:xmlData>
     </mets:mdWrap>
@@ -256,8 +256,6 @@
               <mods:placeTerm type="text">Tübingen</mods:placeTerm>
             </mods:place>
             <mods:publisher>Cotta</mods:publisher>
-            <mods:dateIssued encoding="iso8601" point="start">1769</mods:dateIssued>
-            <mods:dateIssued encoding="iso8601" point="end">1772</mods:dateIssued>
             <mods:issuance>monographic</mods:issuance>
           </mods:originInfo>
           <mods:originInfo>
@@ -266,7 +264,6 @@
               <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
             </mods:place>
             <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
-            <mods:dateIssued>2015</mods:dateIssued>
           </mods:originInfo>
           <mods:language>
             <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
@@ -282,8 +279,11 @@
             <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
               <zvdd:titleWord>Grund-Sätze Staatswirtschaft bei freien</zvdd:titleWord>
             </zvdd:zvddWrap>
-            <vlz:externalType xmlns:vlz="http://visuallibrary.net/vlz/1.0/" recordSyntax="pica" code="Ac"/>
             <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Autopsie nach Exemplar der ULB Sachsen-Anhalt</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Vorlageform des Erscheinungsvermerks: Tübingen bey Johann Georg Cotta 1771.</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Übersetzer am Ende des Privilegium genannt</ulb:note>
+            <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Ac</ulb:externalType>
           </mods:extension>
           <mods:recordInfo>
             <mods:recordCreationDate encoding="marc">20-06-96</mods:recordCreationDate>
@@ -301,9 +301,8 @@
         <mets:xmlData>
           <dv:rights xmlns:dv="http://dfg-viewer.de/">
             <dv:ownerLogo>Share_it</dv:ownerLogo>
-            <dv:owner>Halle, Saale : Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
             <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
-            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
             <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
           </dv:rights>
         </mets:xmlData>
@@ -315,7 +314,6 @@
           <dv:links xmlns:dv="http://dfg-viewer.de/">
             <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=211999628</dv:reference>
             <dv:presentation>Share_it</dv:presentation>
-            <dv:iiif>https://digitale.bibliothek.uni-halle.de/vd18/i3f/v20/9427337/manifest</dv:iiif>
           </dv:links>
         </mets:xmlData>
       </mets:mdWrap>
@@ -327,7 +325,7 @@
         <mets:xmlData>
           <dv:rights xmlns:dv="http://dfg-viewer.de/">
             <dv:ownerLogo>https://digitale.bibliothek.uni-halle.de/vd18//domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
-            <dv:owner>Halle, Saale : Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
             <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
             <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
           </dv:rights>
@@ -340,7 +338,6 @@
           <dv:links xmlns:dv="http://dfg-viewer.de/">
             <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=211999504</dv:reference>
             <dv:presentation>https://digitale.bibliothek.uni-halle.de/vd18/id/9427342</dv:presentation>
-            <dv:iiif>https://digitale.bibliothek.uni-halle.de/vd18/i3f/v20/9427342/manifest</dv:iiif>
           </dv:links>
         </mets:xmlData>
       </mets:mdWrap>

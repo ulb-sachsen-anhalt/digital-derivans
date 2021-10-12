@@ -241,11 +241,6 @@ class LogSubContainers extends ElementFilter {
 			if (hasDMDID) {
 				return el;
 			}
-//			if (!hasDMDID) {
-//				// but maybe has ID starting Kitodo-like?
-//				String attrValID = el.getAttributeValue("ID");		
-//				return attrValID.startsWith("LOG_") ? el : null;
-//			}
 		}
 		return null;
 	}

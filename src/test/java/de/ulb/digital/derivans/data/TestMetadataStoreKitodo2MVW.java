@@ -2,11 +2,10 @@ package de.ulb.digital.derivans.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.nio.file.Path;
-
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DescriptiveData;
 
 /**
@@ -27,8 +26,7 @@ class TestMetadataStoreKitodo2MVW {
 	@Test
 	void testKitodo2MultivolumeMetadata() throws DigitalDerivansException {
 		// arrange
-		Path kitodo2140257772 = Path.of("./src/test/resources/metadata/kitodo2/140257772/140257772.xml");
-		IMetadataStore mds140257772 = new MetadataStore(kitodo2140257772);
+		IMetadataStore mds140257772 = new MetadataStore(TestResource.K2_Af_140257772.get());
 		
 		// act
 		DescriptiveData dd140257772 = mds140257772.getDescriptiveData();

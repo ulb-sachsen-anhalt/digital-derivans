@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
@@ -24,16 +24,10 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
  * 
  * Specification of {@link MetadataStore}
  * 
- * @author hartwig
+ * @author u.hartwig
  *
  */
 class TestMetadataStoreVLS {
-
-	static Path vlInhouse737429 = Path.of("./src/test/resources/metadata/vls/737429.mets.xml");
-
-	static Path vlInhouse201517 = Path.of("./src/test/resources/metadata/vls/201517.xml");
-	
-	static Path vlMVWVD189427337 = Path.of("./src/test/resources/metadata/vls/9427337.ulb.xml");
 
 	static IMetadataStore mds737429;
 	
@@ -43,18 +37,12 @@ class TestMetadataStoreVLS {
 	
 	static DescriptiveData dd201517;
 	
-	static IMetadataStore mds9427337;
-	
-	static DescriptiveData dd9427337;
-
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		mds737429 = new MetadataStore(vlInhouse737429);
+		mds737429 = new MetadataStore(TestResource.HD_Aa_737429.get());
 		dd737429 = mds737429.getDescriptiveData();
-		mds201517 = new MetadataStore(vlInhouse201517);
+		mds201517 = new MetadataStore(TestResource.HD_Aa_201517.get());
 		dd201517 = mds201517.getDescriptiveData();
-		mds9427337 = new MetadataStore(vlMVWVD189427337);
-		dd9427337 = mds9427337.getDescriptiveData();
 	}
 
 	/**
@@ -66,7 +54,7 @@ class TestMetadataStoreVLS {
 	 * @throws DigitalDerivansException
 	 */
 	@Test
-	void testDescriptiveDataFromVL12InhouseOAI() throws DigitalDerivansException {
+	void testDescriptiveDataHDmonography() throws DigitalDerivansException {
 		// PDF creator from configuration, not from METS/MODS
 		assertTrue(dd737429.getCreator().isEmpty());
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
@@ -88,31 +76,7 @@ class TestMetadataStoreVLS {
 		assertEquals("Officina Langenhemia", dd737429.getPerson());
 	}
 
-	/**
-	 * 
-	 * Some MVW F-Stage from menadoc with logical structure "section" / "section" 
-	 * 
-	 * @throws DigitalDerivansException
-	 */
-	@Test
-	void testDescriptiveDataFromVL12MenalibOAI() throws DigitalDerivansException {
-		// arrange
-		Path vlMena1237560 = Path.of("./src/test/resources/metadata/vls/1237560.xml");
-		IMetadataStore mds = new MetadataStore(vlMena1237560);
-
-		// act
-		DescriptiveData dd = mds.getDescriptiveData();
-
-		// assert
-		assertTrue(dd.getCreator().isEmpty());
-		assertEquals("385228910", dd.getIdentifier());
-		assertEquals("n.a.", dd.getTitle());
-		assertEquals("urn:nbn:de:gbv:3:5-8691", dd.getUrn());
-		assertTrue(dd.getLicense().isPresent());
-		assertEquals("1906", dd.getYearPublished());
-		// this is from mods:displayForm of mods:role/mods:roleTerm/text() = "aut"
-		assertEquals("Subkī, Taqī-ad-Dīn ʿAlī Ibn-ʿAbd-al-Kāfī as-", dd.getPerson());
-	}
+	
 
 	@Test
 	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {
@@ -164,52 +128,7 @@ class TestMetadataStoreVLS {
 		assertEquals("1699", dd201517.getYearPublished());
 	}
 	
-	/**
-	 * 
-	 * Check descriptive data for common VD18 MVW F-Stage
-	 * 
-	 * @throws DigitalDerivansException
-	 */
-	@Test
-	void testDescriptiveDataOf9427337() throws DigitalDerivansException {
-		assertEquals("urn:nbn:de:gbv:3:1-635986", dd9427337.getUrn());
-		assertEquals(Optional.empty(), dd9427337.getCreator());
-		assertEquals("Steuart, James", dd9427337.getPerson());
-		assertEquals("1771", dd9427337.getYearPublished());
-		assertEquals("Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen", dd9427337.getTitle());
-		assertEquals("211999628", dd9427337.getIdentifier());
-	}
 	
-	/**
-	 * 
-	 * Check structure for common VD18 MVW F-Stage
-	 * 
-	 * @throws DigitalDerivansException
-	 */
-	@Test
-	void testStructureOf9427337() throws DigitalDerivansException {
-		DigitalStructureTree dst = mds9427337.getStructure();
-		assertNotNull(dst);
-
-		assertEquals("Sir James Stewarts, Baronets, Untersuchung der Grund-Säze von der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen", dst.getLabel());
-		assertEquals(1, dst.getPage());
-		assertTrue(dst.hasSubstructures());
-
-		// level 1 - F-Stage
-		List<DigitalStructureTree> children = dst.getSubstructures();
-		assertEquals(1, children.size());
-		assertEquals("Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen", children.get(0).getLabel());
-		assertEquals(1, children.get(0).getPage());
-
-		// level 1+2 - F-Stage
-		assertTrue(children.get(0).hasSubstructures());
-		assertEquals(6, children.get(0).getSubstructures().size());
-		var grandChildren = children.get(0).getSubstructures();
-		assertEquals("Exlibris", grandChildren.get(1).getLabel());
-		assertEquals(2, grandChildren.get(1).getPage());
-		assertEquals("Untersuchung der Grundsäze der Staats-Wirthschaft Drittes Buch von Geld und Münze.", grandChildren.get(4).getLabel());
-		assertEquals(7, grandChildren.get(4).getPage());
-	}
 	
 	@Test
 	void testStructureOf201517() throws DigitalDerivansException {
@@ -251,12 +170,11 @@ class TestMetadataStoreVLS {
 	@Test
 	void testMetadataIsUpdated737429(@TempDir Path tempDir) throws Exception {
 		// arrange
-		Path sourcePathFile = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
 		Path targetPathFile = tempDir.resolve("737429.xml");
 		if (Files.exists(targetPathFile)) {
 			Files.delete(targetPathFile);
 		}
-		Files.copy(sourcePathFile, targetPathFile);
+		Files.copy(TestResource.HD_Aa_737429.get(), targetPathFile);
 		IMetadataStore mds = new MetadataStore(targetPathFile);
 
 		// act
@@ -279,8 +197,7 @@ class TestMetadataStoreVLS {
 	void testInvalidStructure226134857() throws Exception {
 
 		// arrange
-		Path path226134857 = Path.of("./src/test/resources/metadata/vls/226134857.prep.xml");
-		IMetadataStore mds = new MetadataStore(path226134857);
+		IMetadataStore mds = new MetadataStore(TestResource.HD_Aa_226134857.get());
 
 		// act
 		DigitalStructureTree tree = mds.getStructure();
@@ -300,23 +217,6 @@ class TestMetadataStoreVLS {
 		// assert even some more
 		assertEquals("1740", dd.getYearPublished());
 		assertEquals("Prault, Pierre", dd.getPerson());
-	}
-
-	@Test
-	void testStructurOf133573613() throws Exception {
-
-		// arrange
-		Path path133573613 = Path.of("./src/test/resources/metadata/vls/133573613.prep.xml");
-		IMetadataStore store = new MetadataStore(path133573613);
-
-		// act
-		DigitalStructureTree tree = store.getStructure();
-		DescriptiveData dd = store.getDescriptiveData();
-
-		// assert
-		assertEquals(5, tree.getSubstructures().size());
-		assertEquals("1768", dd.getYearPublished());
-		assertEquals("Voltaire", dd.getPerson());
 	}
 
 }

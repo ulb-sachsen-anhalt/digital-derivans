@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:vl="http://visuallibrary.net/vl" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="2" LABEL="Drucke des 17. Jahrhunderts (VD17)">
+  <mets:metsHdr CREATEDATE="2021-10-12T08:58:53">
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>vls/2012</mets:name>
+      <mets:note>legacy vlid: 19788</mets:note>
+      <mets:note>legacy date: 2008-01-30T21:10:31Z</mets:note>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="INSTANCE">
+      <mets:name>ulbhalvd</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="REPOSITORY">
+      <mets:name>digitale.bibliothek.uni-halle.de/vd17</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="BUILDER">
+      <mets:name>vd</mets:name>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>Migration</mets:name>
+      <mets:note>2021-10-12 09:04:30</mets:note>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="md19788">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:titleInfo>
+            <mods:title>Disputatio Ethica Prima De Summo Bono Practico Quod Sit Et Quid Sit</mods:title>
+          </mods:titleInfo>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/122573285">
+            <mods:namePart type="given">David</mods:namePart>
+            <mods:namePart type="family">Schwertner</mods:namePart>
+            <mods:namePart type="date">1625-1666</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Schwertner, David</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/104299304">
+            <mods:namePart type="given">Friedrich</mods:namePart>
+            <mods:namePart type="family">Schmidt</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Schmidt, Friedrich</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal">
+            <mods:namePart type="given">Phillippus</mods:namePart>
+            <mods:namePart type="family">Stolle</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">dte</mods:roleTerm>
+              <mods:roleTerm type="text">WidmungsempfängerIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Stolle, Phillippus</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal">
+            <mods:namePart type="given">Christianus</mods:namePart>
+            <mods:namePart type="family">Hartigius</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">dte</mods:roleTerm>
+              <mods:roleTerm type="text">WidmungsempfängerIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Hartigius, Christianus</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal">
+            <mods:namePart type="given">Casparus</mods:namePart>
+            <mods:namePart type="family">Hertranft</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">dte</mods:roleTerm>
+              <mods:roleTerm type="text">WidmungsempfängerIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Hertranft, Casparus</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal">
+            <mods:namePart type="given">Johannes</mods:namePart>
+            <mods:namePart type="family">Eichlerus</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">dte</mods:roleTerm>
+              <mods:roleTerm type="text">WidmungsempfängerIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Eichlerus, Johannes</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal">
+            <mods:namePart type="given">Jacob</mods:namePart>
+            <mods:namePart type="family">Thomasius</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">ctb</mods:roleTerm>
+              <mods:roleTerm type="text">BeiträgerIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Thomasius, Jacob</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037523660">
+            <mods:namePart type="given">Quirin</mods:namePart>
+            <mods:namePart type="family">Bauch</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Bauch, Quirin</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037511557">
+            <mods:namePart type="given">Johann</mods:namePart>
+            <mods:namePart type="family">Bauer</mods:namePart>
+            <mods:namePart type="date">????-1678</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Bauer, Johann</mods:displayForm>
+          </mods:name>
+          <mods:name type="corporate">
+            <mods:namePart>Universität Leipzig</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">asn</mods:roleTerm>
+              <mods:roleTerm type="text">Beteiligte Person</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Universität Leipzig</mods:displayForm>
+          </mods:name>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:genre authority="aad">Dissertation:phil.</mods:genre>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Lipsiae</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Bauchiana</mods:publisher>
+            <mods:dateIssued encoding="iso8601" keyDate="yes">1654</mods:dateIssued>
+            <mods:place>
+              <mods:placeTerm type="text">Lipsiae</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Bauer</mods:publisher>
+            <mods:issuance>monographic</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo eventType="digitization">
+            <mods:edition>[Electronic ed.]</mods:edition>
+            <mods:place>
+              <mods:placeTerm type="text">Halle (Saale)</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:dateCaptured encoding="iso8601">2008</mods:dateCaptured>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">lat</mods:languageTerm>
+          </mods:language>
+          <mods:physicalDescription>
+            <mods:extent>[11] Bl ; 4°</mods:extent>
+          </mods:physicalDescription>
+          <mods:note type="statement of responsibility">Quam ... Praeses M. David Schwertner ... Respondens Fridericus Schmidt ...</mods:note>
+          <mods:subject>
+            <mods:geographic>Leipzig</mods:geographic>
+          </mods:subject>
+          <mods:identifier type="vda">3:645513M</mods:identifier>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-2085</mods:identifier>
+          <mods:relatedItem type="host">
+            <mods:titleInfo>
+              <mods:title>... Idea Summi Boni Practici</mods:title>
+            </mods:titleInfo>
+            <mods:titleInfo type="alternative">
+              <mods:title>Disputatio Ethica</mods:title>
+            </mods:titleInfo>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/122573285">
+              <mods:namePart type="given">David</mods:namePart>
+              <mods:namePart type="family">Schwertner</mods:namePart>
+              <mods:namePart type="date">1625-1666</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Schwertner, David</mods:displayForm>
+            </mods:name>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/104299312">
+              <mods:namePart type="given">Christian</mods:namePart>
+              <mods:namePart type="family">Bernhardi</mods:namePart>
+              <mods:namePart type="date">1629-1699</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Bernhardi, Christian</mods:displayForm>
+            </mods:name>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/104299320">
+              <mods:namePart type="given">Heinricus</mods:namePart>
+              <mods:namePart type="family">Zienius</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Zienius, Heinricus</mods:displayForm>
+            </mods:name>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/104299304">
+              <mods:namePart type="given">Friedrich</mods:namePart>
+              <mods:namePart type="family">Schmidt</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">ctb</mods:roleTerm>
+                <mods:roleTerm type="text">BeiträgerIn</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Schmidt, Friedrich</mods:displayForm>
+            </mods:name>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037523660">
+              <mods:namePart type="given">Quirin</mods:namePart>
+              <mods:namePart type="family">Bauch</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+                <mods:roleTerm type="text">Verl.</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Bauch, Quirin</mods:displayForm>
+            </mods:name>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/115462864">
+              <mods:namePart type="given">Johann</mods:namePart>
+              <mods:namePart type="family">Wittigau</mods:namePart>
+              <mods:namePart type="date">1616-1671</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+                <mods:roleTerm type="text">Verl.</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Wittigau, Johann</mods:displayForm>
+            </mods:name>
+            <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037511557">
+              <mods:namePart type="given">Johann</mods:namePart>
+              <mods:namePart type="family">Bauer</mods:namePart>
+              <mods:namePart type="date">????-1678</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+                <mods:roleTerm type="text">Verl.</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Bauer, Johann</mods:displayForm>
+            </mods:name>
+            <mods:name type="corporate">
+              <mods:namePart>Universität Leipzig</mods:namePart>
+              <mods:role>
+                <mods:roleTerm type="code" authority="marcrelator">asn</mods:roleTerm>
+                <mods:roleTerm type="text">Beteiligte Person</mods:roleTerm>
+              </mods:role>
+              <mods:displayForm>Universität Leipzig</mods:displayForm>
+            </mods:name>
+            <mods:typeOfResource collection="yes">text</mods:typeOfResource>
+            <mods:genre authority="aad">Dissertationensammlung</mods:genre>
+            <mods:originInfo eventType="publication">
+              <mods:place>
+                <mods:placeTerm type="text">Lipsiae</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Bauchiana</mods:publisher>
+              <mods:place>
+                <mods:placeTerm type="text">Lipsiae</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Wittigau</mods:publisher>
+              <mods:issuance>monographic</mods:issuance>
+            </mods:originInfo>
+            <mods:originInfo>
+              <mods:edition>[Electronic ed.]</mods:edition>
+              <mods:place>
+                <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+              <mods:dateIssued>2014</mods:dateIssued>
+            </mods:originInfo>
+            <mods:language>
+              <mods:languageTerm authority="iso639-2b" type="code">lat</mods:languageTerm>
+            </mods:language>
+            <mods:note type="statement of responsibility">Tribus Disputationibus adumbrata a M. Davide Schwertnern/ Bohemo, Facuktatis Philosophicae in Acad. Lips. ...</mods:note>
+            <mods:note>Drucker Bd. 1 [1654]: Bauch ; Bauer; Bd. 2 (1654): Wittigau; Bd. 3 (1654): Bauch</mods:note>
+            <mods:note>Erschienen: 1 ([1654]) - 3 (1654)</mods:note>
+            <mods:subject>
+              <mods:geographic>Leipzig</mods:geographic>
+            </mods:subject>
+            <mods:identifier type="vda">3:645511W</mods:identifier>
+            <mods:identifier type="urn">urn:nbn:de:gbv:3:1-500869</mods:identifier>
+            <mods:extension>
+              <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+              <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Ac</ulb:externalType>
+            </mods:extension>
+            <mods:recordInfo>
+              <mods:recordCreationDate encoding="marc">02-04-04</mods:recordCreationDate>
+              <mods:recordChangeDate encoding="marc">07-05-19</mods:recordChangeDate>
+              <mods:recordIdentifier source="gvk-ppn">005209226</mods:recordIdentifier>
+              <mods:descriptionStandard>rak</mods:descriptionStandard>
+            </mods:recordInfo>
+            <mods:extension>
+              <vl:id>34828</vl:id>
+              <vl:odid>2</vl:odid>
+              <vl:datatype>1</vl:datatype>
+              <vl:type>19</vl:type>
+              <vl:state>1</vl:state>
+            </mods:extension>
+          </mods:relatedItem>
+          <mods:part type="host" order="1">
+            <mods:detail>
+              <mods:number>[1]</mods:number>
+            </mods:detail>
+          </mods:part>
+          <mods:extension>
+            <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Schlüsselseiten aus dem Exemplar der ULB Halle: Pon IIf 784, QK (1)</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Signaturformel: [1], A - B4, C2</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Drucker Bd. 1 [1654]: Bauch ; Bauer; Bd. 2 (1654): Wittigau; Bd. 3 (1654): Bauch</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Erschienen: 1 ([1654]) - 3 (1654)</ulb:note>
+            <ulb:dateIssued xmlns:ulb="https://bibliothek.uni-halle.de" type="alternative">[1654]</ulb:dateIssued>
+            <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Af</ulb:externalType>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">02-04-04</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">10-06-20</mods:recordChangeDate>
+            <mods:recordIdentifier source="gvk-ppn">005209242</mods:recordIdentifier>
+            <mods:descriptionStandard>rak</mods:descriptionStandard>
+          </mods:recordInfo>
+          <mods:accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/licenses/by-sa/3.0/de/">CC-BY-SA 3.0 DE</mods:accessCondition>
+          <mods:location>
+            <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
+          </mods:location>
+          <mods:classification authority="ddc">090</mods:classification>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="md34828">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:titleInfo>
+            <mods:title>... Idea Summi Boni Practici</mods:title>
+          </mods:titleInfo>
+          <mods:titleInfo type="alternative">
+            <mods:title>Disputatio Ethica</mods:title>
+          </mods:titleInfo>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/122573285">
+            <mods:namePart type="given">David</mods:namePart>
+            <mods:namePart type="family">Schwertner</mods:namePart>
+            <mods:namePart type="date">1625-1666</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Schwertner, David</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/104299312">
+            <mods:namePart type="given">Christian</mods:namePart>
+            <mods:namePart type="family">Bernhardi</mods:namePart>
+            <mods:namePart type="date">1629-1699</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Bernhardi, Christian</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/104299320">
+            <mods:namePart type="given">Heinricus</mods:namePart>
+            <mods:namePart type="family">Zienius</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+              <mods:roleTerm type="text">VerfasserIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Zienius, Heinricus</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/104299304">
+            <mods:namePart type="given">Friedrich</mods:namePart>
+            <mods:namePart type="family">Schmidt</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">ctb</mods:roleTerm>
+              <mods:roleTerm type="text">BeiträgerIn</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Schmidt, Friedrich</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037523660">
+            <mods:namePart type="given">Quirin</mods:namePart>
+            <mods:namePart type="family">Bauch</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Bauch, Quirin</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/115462864">
+            <mods:namePart type="given">Johann</mods:namePart>
+            <mods:namePart type="family">Wittigau</mods:namePart>
+            <mods:namePart type="date">1616-1671</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Wittigau, Johann</mods:displayForm>
+          </mods:name>
+          <mods:name type="personal" authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/1037511557">
+            <mods:namePart type="given">Johann</mods:namePart>
+            <mods:namePart type="family">Bauer</mods:namePart>
+            <mods:namePart type="date">????-1678</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">pbl</mods:roleTerm>
+              <mods:roleTerm type="text">Verl.</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Bauer, Johann</mods:displayForm>
+          </mods:name>
+          <mods:name type="corporate">
+            <mods:namePart>Universität Leipzig</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">asn</mods:roleTerm>
+              <mods:roleTerm type="text">Beteiligte Person</mods:roleTerm>
+            </mods:role>
+            <mods:displayForm>Universität Leipzig</mods:displayForm>
+          </mods:name>
+          <mods:typeOfResource collection="yes">text</mods:typeOfResource>
+          <mods:genre authority="aad">Dissertationensammlung</mods:genre>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Lipsiae</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Bauchiana</mods:publisher>
+            <mods:place>
+              <mods:placeTerm type="text">Lipsiae</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Wittigau</mods:publisher>
+            <mods:issuance>monographic</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo>
+            <mods:edition>[Electronic ed.]</mods:edition>
+            <mods:place>
+              <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">lat</mods:languageTerm>
+          </mods:language>
+          <mods:note type="statement of responsibility">Tribus Disputationibus adumbrata a M. Davide Schwertnern/ Bohemo, Facuktatis Philosophicae in Acad. Lips. ...</mods:note>
+          <mods:subject>
+            <mods:geographic>Leipzig</mods:geographic>
+          </mods:subject>
+          <mods:identifier type="vda">3:645511W</mods:identifier>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-500869</mods:identifier>
+          <mods:extension>
+            <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Schlüsselseiten aus dem Exemplar der ULB Halle: Pon IIf 784, QK (1)</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Signaturformel: [1], A - B4, C2</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Drucker Bd. 1 [1654]: Bauch ; Bauer; Bd. 2 (1654): Wittigau; Bd. 3 (1654): Bauch</ulb:note>
+            <ulb:note xmlns:ulb="https://bibliothek.uni-halle.de" type="vls-migration">Erschienen: 1 ([1654]) - 3 (1654)</ulb:note>
+            <ulb:externalType xmlns:ulb="https://bibliothek.uni-halle.de" recordSyntax="pica">Ac</ulb:externalType>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">02-04-04</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">07-05-19</mods:recordChangeDate>
+            <mods:recordIdentifier source="gvk-ppn">005209226</mods:recordIdentifier>
+            <mods:descriptionStandard>rak</mods:descriptionStandard>
+          </mods:recordInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd19788">
+    <mets:rightsMD ID="rights19788">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>Share_it</dv:ownerLogo>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov19788">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://gso.gbv.de/xslt/DB=1.28/CMD?ACT=SRCHA&amp;IKT=8079&amp;TRM=3%3A645513M</dv:reference>
+            <dv:presentation>Share_it</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:amdSec ID="amd34828">
+    <mets:rightsMD ID="rights34828">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>https://digitale.bibliothek.uni-halle.de/vd17//domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov34828">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://gso.gbv.de/xslt/DB=1.28/CMD?ACT=SRCHA&amp;IKT=8079&amp;TRM=3%3A645511W</dv:reference>
+            <dv:presentation>https://digitale.bibliothek.uni-halle.de/vd17/id/34828</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="MAX">
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61196">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61196" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61198">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61198" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61200">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61200" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61201">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61201" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61203">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61203" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61204">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61204" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61205">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61205" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61206">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61206" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61207">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61207" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61208">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61208" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61209">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61209" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61210">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61210" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61211">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61211" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61212">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61212" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61213">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61213" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61214">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61214" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61215">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61215" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61216">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61216" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61217">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61217" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61218">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61218" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61219">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61219" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_61220">
+        <mets:FLocat xlink:href="https://digitale.bibliothek.uni-halle.de/vd17/download/webcache/0/61220" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys61196" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0001-3" ORDER="1" ORDERLABEL="[Seite 1]">
+        <mets:fptr FILEID="IMG_MAX_61196"/>
+      </mets:div>
+      <mets:div ID="phys61198" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0002-9" ORDER="2" ORDERLABEL="[Seite 2]">
+        <mets:fptr FILEID="IMG_MAX_61198"/>
+      </mets:div>
+      <mets:div ID="phys61200" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0003-4" ORDER="3" ORDERLABEL="[Seite 3]">
+        <mets:fptr FILEID="IMG_MAX_61200"/>
+      </mets:div>
+      <mets:div ID="phys61201" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0004-9" ORDER="4" ORDERLABEL="[Leerseite]">
+        <mets:fptr FILEID="IMG_MAX_61201"/>
+      </mets:div>
+      <mets:div ID="phys61203" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0005-5" ORDER="5" ORDERLABEL="[Seite 5]">
+        <mets:fptr FILEID="IMG_MAX_61203"/>
+      </mets:div>
+      <mets:div ID="phys61204" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0006-0" ORDER="6" ORDERLABEL="[Seite 6]">
+        <mets:fptr FILEID="IMG_MAX_61204"/>
+      </mets:div>
+      <mets:div ID="phys61205" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0007-5" ORDER="7" ORDERLABEL="[Seite 7]">
+        <mets:fptr FILEID="IMG_MAX_61205"/>
+      </mets:div>
+      <mets:div ID="phys61206" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0008-1" ORDER="8" ORDERLABEL="[Seite 8]">
+        <mets:fptr FILEID="IMG_MAX_61206"/>
+      </mets:div>
+      <mets:div ID="phys61207" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0009-1" ORDER="9" ORDERLABEL="[Seite 9]">
+        <mets:fptr FILEID="IMG_MAX_61207"/>
+      </mets:div>
+      <mets:div ID="phys61208" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0010-3" ORDER="10" ORDERLABEL="[Seite 10]">
+        <mets:fptr FILEID="IMG_MAX_61208"/>
+      </mets:div>
+      <mets:div ID="phys61209" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0011-9" ORDER="11" ORDERLABEL="[Seite 11]">
+        <mets:fptr FILEID="IMG_MAX_61209"/>
+      </mets:div>
+      <mets:div ID="phys61210" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0012-4" ORDER="12" ORDERLABEL="[Seite 12]">
+        <mets:fptr FILEID="IMG_MAX_61210"/>
+      </mets:div>
+      <mets:div ID="phys61211" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0013-9" ORDER="13" ORDERLABEL="[Seite 13]">
+        <mets:fptr FILEID="IMG_MAX_61211"/>
+      </mets:div>
+      <mets:div ID="phys61212" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0014-5" ORDER="14" ORDERLABEL="[Seite 14]">
+        <mets:fptr FILEID="IMG_MAX_61212"/>
+      </mets:div>
+      <mets:div ID="phys61213" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0015-0" ORDER="15" ORDERLABEL="[Seite 15]">
+        <mets:fptr FILEID="IMG_MAX_61213"/>
+      </mets:div>
+      <mets:div ID="phys61214" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0016-5" ORDER="16" ORDERLABEL="[Seite 16]">
+        <mets:fptr FILEID="IMG_MAX_61214"/>
+      </mets:div>
+      <mets:div ID="phys61215" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0017-1" ORDER="17" ORDERLABEL="[Seite 17]">
+        <mets:fptr FILEID="IMG_MAX_61215"/>
+      </mets:div>
+      <mets:div ID="phys61216" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0018-6" ORDER="18" ORDERLABEL="[Seite 18]">
+        <mets:fptr FILEID="IMG_MAX_61216"/>
+      </mets:div>
+      <mets:div ID="phys61217" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0019-6" ORDER="19" ORDERLABEL="[Seite 19]">
+        <mets:fptr FILEID="IMG_MAX_61217"/>
+      </mets:div>
+      <mets:div ID="phys61218" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0020-8" ORDER="20" ORDERLABEL="[Seite 20]">
+        <mets:fptr FILEID="IMG_MAX_61218"/>
+      </mets:div>
+      <mets:div ID="phys61219" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0021-4" ORDER="21" ORDERLABEL="[Seite 21]">
+        <mets:fptr FILEID="IMG_MAX_61219"/>
+      </mets:div>
+      <mets:div ID="phys61220" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:1-2085-p0022-9" ORDER="22" ORDERLABEL="[Seite 22]">
+        <mets:fptr FILEID="IMG_MAX_61220"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="log34828" DMDID="md34828" ADMID="amd34828" TYPE="multivolume_work" LABEL="... Idea Summi Boni Practici" ORDER="1">
+      <mets:div ID="log19788" DMDID="md19788" ADMID="amd19788" TYPE="volume" LABEL="Disputatio Ethica Prima De Summo Bono Practico Quod Sit Et Quid Sit" ORDER="1" CONTENTIDS="urn:nbn:de:gbv:3:1-2085">
+        <mets:div ID="log61195" TYPE="title_page" LABEL="Titelblatt" ORDER="1"/>
+        <mets:div ID="log61197" TYPE="dedication" LABEL="Widmung" ORDER="2"/>
+        <mets:div ID="log61199" TYPE="title_page" LABEL="Titelblatt" ORDER="3"/>
+        <mets:div ID="log61202" TYPE="section" LABEL="Abschnitt" ORDER="4"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="log19788" xlink:to="physroot"/>
+    <mets:smLink xlink:from="log61195" xlink:to="phys61196"/>
+    <mets:smLink xlink:from="log61197" xlink:to="phys61198"/>
+    <mets:smLink xlink:from="log61199" xlink:to="phys61200"/>
+    <mets:smLink xlink:from="log61199" xlink:to="phys61201"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61203"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61204"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61205"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61206"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61207"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61208"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61209"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61210"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61211"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61212"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61213"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61214"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61215"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61216"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61217"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61218"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61219"/>
+    <mets:smLink xlink:from="log61202" xlink:to="phys61220"/>
+  </mets:structLink>
+</mets:mets>
