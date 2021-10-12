@@ -1,7 +1,10 @@
 package de.ulb.digital.derivans.data;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
@@ -83,13 +87,48 @@ public class MetadataHandler {
 		agent.setAttribute("ROLE", "OTHER");
 		agent.setAttribute("OTHERTYPE", "SOFTWARE");
 		Element agentName = new Element("name", NS_METS);
-		agentName.setText(Derivans.LABEL);
+		agentName.setText(this.getLabel());
 		Element agentNote = new Element("note", NS_METS);
 		String ts = LocalDateTime.now().format(dtFormatter);
 		String agentNoteText = "PDF FileGroup for " + fileId + " created at " + ts;
 		agentNote.setText(agentNoteText);
 		agent.addContent(List.of(agentName, agentNote));
 		return agent;
+	}
+
+	/**
+	 * 
+	 * Read version label from properties-file if exists, otherwise use hard-coded
+	 * default value
+	 * 
+	 * @return
+	 */
+	public String getLabel() {
+		return readRevisionProperties().orElse(Derivans.LABEL);
+	}
+	
+	private Optional<String> readRevisionProperties() {
+		String fileName = "derivans-git.properties";
+		ClassLoader classLoader = getClass().getClassLoader();
+		InputStream inputStream = classLoader.getResourceAsStream(fileName);
+		StringBuilder resultStringBuilder = new StringBuilder();
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				if (line.strip().length() > 3) {
+					resultStringBuilder.append(line);
+				}
+			}
+			String contents = resultStringBuilder.toString();
+			String[] parts = contents.split(":");
+			if (parts.length > 1) {
+				String version = parts[1].replace('"', ' ').strip();
+				return Optional.of(Derivans.LABEL + " V" + version); 
+			}
+		} catch (IOException e) {
+			Derivans.LOGGER.warn("cannot read {}", fileName);
+		}
+		return Optional.empty();
 	}
 
 	public Path getPath() {
@@ -223,11 +262,9 @@ class LogSubContainers extends ElementFilter {
 	String name = "div";
 	Namespace namespace = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
+	@Override
 	public Element filter(Object content) {
 		if (content instanceof Element) {
 			Element el = (Element) content;

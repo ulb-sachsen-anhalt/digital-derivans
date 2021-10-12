@@ -4,7 +4,7 @@ import static de.ulb.digital.derivans.data.MetadataStore.NS_MODS;
 import static de.ulb.digital.derivans.data.MetadataStore.UNKNOWN;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Predicate;
+import static java.util.stream.Collectors.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,7 @@ import org.mycore.mets.model.struct.LogicalStructMap;
 import org.mycore.mets.model.struct.SmLink;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.model.DescriptiveData; 
+import de.ulb.digital.derivans.model.DescriptiveData;
 
 /**
  * 
@@ -224,9 +225,7 @@ class DescriptiveDataBuilder {
 			if (titleInfo != null) {
 				return titleInfo.getChild("title", NS_MODS).getTextNormalize();
 			}
-			// take care of host title (kitodo2)
-			// TODO: do some handler stuff
-			// currently, mods:relatedItem is *not* handled by mets-model
+			// TODO: evaluate if mods:relatedItem must be taken into account
 		}
 		return MetadataStore.UNKNOWN;
 	}
@@ -283,7 +282,7 @@ class DescriptiveDataBuilder {
 
 	private Element getPrimaryMods() throws DigitalDerivansException {
 		if (mets != null) {
-			String dmdId = getDescriptiveMetadataIdentifier();
+			String dmdId = getDescriptiveMetadataIdentifierOfInterest();
 			DmdSec dmd = mets.getDmdSecById(dmdId);
 			if (dmd != null) {
 				return dmd.getMdWrap().getMetadata();
@@ -310,13 +309,14 @@ class DescriptiveDataBuilder {
 	 * "physroot" to the logical struct's DMDID-attribute 
 	 * (VLS-like)
 	 * OR
-	 * count all map linkings, and pick the from link with 
-	 * half of the links 
+	 * count strctMap-linkings from logical to physical, 
+	 * pick the DMDID of the one with the most from-links 
+	 * which will likely be the main element (of "Af", "AF")
 	 * (Kitodo-like)
 	 * 
 	 * @return
 	 */
-	private String getDescriptiveMetadataIdentifier() {
+	private String getDescriptiveMetadataIdentifierOfInterest() {
 		LogicalStructMap logMap = (LogicalStructMap)mets.getStructMap("LOGICAL");
 		LogicalDiv logDiv = logMap.getDivContainer();
 		List<SmLink> smLinks = mets.getStructLink().getSmLinkByTo("physroot");
@@ -324,22 +324,17 @@ class DescriptiveDataBuilder {
 			String fromID = smLinks.get(0).getFrom();
 			return inspectLogStruct(logDiv, fromID);
 		} else {
-			Map<String, Integer> mapToN = new HashMap<>();
 			List<SmLink> links = mets.getStructLink().getSmLinks();
-			for(SmLink link : links) {
-				if (!mapToN.containsKey(link.getFrom())) {
-					mapToN.put(link.getFrom(), 1);
-				} else {
-					mapToN.computeIfPresent(link.getFrom(), (k,v) -> v + 1);
-				}
-			}
+			// map SmLinks to their @from-count
+			Map<String, Integer> mapToN = links.stream()
+					.collect(groupingBy(SmLink::getFrom, summingInt(n -> 1)));
+			// get identifier of SmLink with MAX counts
+			var optMaxLink = mapToN.entrySet().stream()
+					.max(Comparator.comparingInt(Entry::getValue));
 			String idLinks = UNKNOWN;
-			Integer maxLinks = 0;
-			for (Entry<String, Integer> entry : mapToN.entrySet()) {
-				if (entry.getValue() > maxLinks) {
-					maxLinks = entry.getValue();
-					idLinks = entry.getKey();
-				}
+			if (optMaxLink.isPresent()) {
+				var maxMapping = optMaxLink.get(); 
+				idLinks = maxMapping.getKey();
 			}
 			return inspectLogStruct(logDiv, idLinks);
 		}
