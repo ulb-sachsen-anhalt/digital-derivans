@@ -201,25 +201,30 @@ public class MetadataHandler {
 	
 	/**
 	 * 
-	 * Rather hacky way to catch first sub-level volume DMDID mapping
+	 * Catch logical sub-containers with attribute DMDID ->
+	 * must have a descriptive MODS section
 	 * 
 	 * @param typeValue
 	 * @return
 	 */
 	public List<Element> requestLogicalSubcontainers() {
-		var elements = document.getContent(new ElementFilter());
-		Element logRoot = elements.stream()
-				.map(Element::getChildren)
-				.flatMap(List::stream)
-				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE")))
-				.findFirst()
-				.get();
+		Element logRoot = extractStructLogicalRoot();
 		IteratorIterable<Element> iter = logRoot.getDescendants(new LogSubContainers());
 		List<Element> subConainers = new ArrayList<>();
 		for (Element el : iter) {
 			subConainers.add(el);
 		}
 		return subConainers;
+	}
+
+	private Element extractStructLogicalRoot() {
+		var elements = document.getContent(new ElementFilter());
+		return elements.stream()
+				.map(Element::getChildren)
+				.flatMap(List::stream)
+				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE")))
+				.findFirst()
+				.get();
 	}
 }
 

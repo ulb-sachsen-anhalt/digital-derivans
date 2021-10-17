@@ -223,9 +223,17 @@ class DescriptiveDataBuilder {
 		if (mods != null) {
 			Element titleInfo = mods.getChild("titleInfo", NS_MODS);
 			if (titleInfo != null) {
-				return titleInfo.getChild("title", NS_MODS).getTextNormalize();
+				String titleText = titleInfo.getChild("title", NS_MODS).getTextNormalize();
+				if (titleText != null) {
+					return titleText;
+				}
+			} else {
+				// if exists a relatedItem ...
+				if(mods.getChild("relatedItem", NS_MODS) != null) {
+					// ... then it must be a volume of something
+					return "Band";
+				}
 			}
-			// TODO: evaluate if mods:relatedItem must be taken into account
 		}
 		return MetadataStore.UNKNOWN;
 	}
@@ -299,12 +307,10 @@ class DescriptiveDataBuilder {
 
 	/**
 	 * 
-	 * Resolve identifier for descriptive section backwards start from Phys top
-	 * container for MAX-Filegroup, and if defaults to "physroot", over the struct
-	 * map link for "physroot" to the logical struct's DMDID-attribute (VLS-like) OR
-	 * count strctMap-linkings from logical to physical, pick the DMDID of the one
-	 * with the most from-links which will likely be the main element (of "Af",
-	 * "AF") (Kitodo-like)
+	 * Resolve identifier for descriptive section backwards.
+	 * Starting from Physical Top-Level container of MAX filegroup,
+	 * pick the most reasonable link and use this to identify the
+	 * proper logical structure.
 	 * 
 	 * TODO review mets-model
 	 * conversions necessary since mets-model doesn't read
@@ -327,6 +333,20 @@ class DescriptiveDataBuilder {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * If the structMap links contain a mapping to "physroot", 
+	 * then this is considered to link the logical struct's
+	 * corresponding to the main logical structure (VLS-like)
+	 * OR
+	 * count strctMap-links from logical to physical, and identify the 
+	 * one containing most links / as many links as there are physical
+	 * containers (Kitodo2-like)
+	 * 
+	 * In both cases, follow the link's origin to the logical map. 
+	 * 
+	 * @return
+	 */
 	private String getLogicalLinkFromStructMapping() {
 		List<SmLink> smLinksToPhysRoot = mets.getStructLink().getSmLinkByTo("physroot");
 		if (!smLinksToPhysRoot.isEmpty()) {

@@ -91,7 +91,7 @@ class TestMetadataStoreVLSMultivolumes {
 		// assert
 		assertTrue(dd.getCreator().isEmpty());
 		assertEquals("385228910", dd.getIdentifier());
-		assertEquals("n.a.", dd.getTitle());
+		assertEquals("Band", dd.getTitle());
 		assertEquals("urn:nbn:de:gbv:3:5-8691", dd.getUrn());
 		assertTrue(dd.getLicense().isPresent());
 		assertEquals("1906", dd.getYearPublished());
@@ -251,5 +251,11 @@ class TestMetadataStoreVLSMultivolumes {
 		var mds = new MetadataStore(TestResource.VD17_AF_11250807.get());
 		var dd = mds.getDescriptiveData();
 		var strct = mds.getStructure();
+		
+		// assert
+		assertEquals("De Compositione Syllogismi", dd.getTitle());
+		assertEquals("Cursus Philosophici Disputatio ...", strct.getLabel());
+		assertEquals("De Compositione Syllogismi", strct.getSubstructures().get(0).getLabel());
+		assertEquals("Vorderdeckel", strct.getSubstructures().get(0).getSubstructures().get(0).getLabel());
 	}
 }

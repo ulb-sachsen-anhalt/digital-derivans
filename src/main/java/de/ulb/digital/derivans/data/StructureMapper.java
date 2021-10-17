@@ -49,18 +49,18 @@ class StructureMapper {
 				LOGGER.error(msg);
 				throw new DigitalDerivansException(msg);
 			}
-			LogicalDiv logicalRoot = lsm.getDivContainer();
+			LogicalDiv logDiv = lsm.getDivContainer();
 			DigitalStructureTree structureRoot = new DigitalStructureTree();
-			String label = logicalRoot.getLabel();
+			String label = logDiv.getLabel();
 			if (label == null) {
-				label = logicalRoot.getOrderLabel();
+				label = logDiv.getOrderLabel();
 				if (label == null) {
 					label = this.title;
 				}
 			}
 			structureRoot.setLabel(label);
 			structureRoot.setPage(1);
-			for (LogicalDiv logicalChild : logicalRoot.getChildren()) {
+			for (LogicalDiv logicalChild : logDiv.getChildren()) {
 				// hack around bug: not only div children are respected
 				if (logicalChild.getType() != null) {
 					DigitalStructureTree subTree = new DigitalStructureTree();
@@ -236,6 +236,9 @@ class StructureMapper {
 			return "Kapitel";
 		case "index":
 			return "Register";
+		// important if volume misses "LABEL"
+		case "volume":
+			return "Band";
 		default:
 			LOGGER.warn("no mapping for logical type: '{}'", logicalType);
 			return "n.a.";

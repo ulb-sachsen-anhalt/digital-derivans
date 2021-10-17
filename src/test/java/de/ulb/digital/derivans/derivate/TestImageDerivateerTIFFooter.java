@@ -35,6 +35,7 @@ import de.ulb.digital.derivans.model.DigitalFooter;
  * @author hartwig
  *
  */
+@Disabled
 class TestImageDerivateerTIFFooter {
 
 	private static String urn = "my:urn:bibliothek-123-4-1";
@@ -60,7 +61,7 @@ class TestImageDerivateerTIFFooter {
 		}
 	}
 
-	@Test @Disabled
+	@Test
 	void testRendererFooterImagesFromTIFInput() throws DigitalDerivansException, IOException {
 		// arrange
 		Path sourcePath = sharedTempDir.resolve("IMAGE");
