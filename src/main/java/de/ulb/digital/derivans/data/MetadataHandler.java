@@ -15,7 +15,6 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
 
@@ -43,6 +42,7 @@ import de.ulb.digital.derivans.Derivans;
 public class MetadataHandler {
 
 	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
+	public static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
 
 	private DateTimeFormatter dtFormatter = new DateTimeFormatterBuilder().appendPattern("YYYY-MM-DD")
 			.appendLiteral('T').appendPattern("HH:mm:SS").toFormatter();
@@ -206,47 +206,20 @@ public class MetadataHandler {
 	 * @param typeValue
 	 * @return
 	 */
-	public String requestDMDSubDivIDs() {
+	public List<Element> requestLogicalSubcontainers() {
 		var elements = document.getContent(new ElementFilter());
-		List<Element> dmdElements = elements.stream()
+		Element logRoot = elements.stream()
 				.map(Element::getChildren)
 				.flatMap(List::stream)
 				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE")))
-				.collect(Collectors.toList());
-		if(dmdElements.isEmpty()) {
-			return null;
-		} else {
-			Element logRoot = dmdElements.get(0);
-			IteratorIterable<Element> iter = logRoot.getDescendants(new LogSubContainers());
-			List<Element> dmdIds = new ArrayList<>();
-			for (Element el : iter) {
-				dmdIds.add(el);
-			}
-			// easy Kitodo 2 MVW
-			if (dmdIds.get(0).getAttributeValue("DMDID").startsWith("DMDLOG_")) {
-				return "DMDLOG_0001";
-			}
-			
-			// rather tricky semantics mappings
-			List<Element> children = new ArrayList<>();
-			for (Element el : dmdIds) {
-				Element elParent = el.getParentElement();
-				String dmdIDParent = elParent.getAttributeValue("DMDID");
-				// if we have the upper most, skip it
-				if (dmdIDParent == null) {
-					continue;
-				}
-				for (Element el2 : dmdIds) {
-					String dmdIDChild = el2.getAttributeValue("DMDID");
-					// dont pick same element
-					if(dmdIDParent.equals(dmdIDChild)) {
-						continue;
-					}
-					children.add(el2);
-				}
-			}
-			return children.get(0).getAttributeValue("DMDID");
+				.findFirst()
+				.get();
+		IteratorIterable<Element> iter = logRoot.getDescendants(new LogSubContainers());
+		List<Element> subConainers = new ArrayList<>();
+		for (Element el : iter) {
+			subConainers.add(el);
 		}
+		return subConainers;
 	}
 }
 
@@ -276,6 +249,30 @@ class LogSubContainers extends ElementFilter {
 			}
 			boolean hasDMDID = el.getAttribute("DMDID") != null;
 			if (hasDMDID) {
+				return el;
+			}
+		}
+		return null;
+	}
+	
+}
+
+/**
+ * 
+ * Get the real mods:mods elements
+ * 
+ * @author u.hartwig
+ *
+ */
+class ModsFilter extends ElementFilter {
+	
+	private static final long serialVersionUID = 1L;
+	
+	@Override
+	public Element filter(Object content) {
+		if (content instanceof Element) {
+			Element el = (Element) content;
+			if ("mods".equals(el.getName())) {
 				return el;
 			}
 		}

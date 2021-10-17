@@ -1,7 +1,6 @@
 package de.ulb.digital.derivans.data;
 
 import static de.ulb.digital.derivans.data.MetadataStore.NS_MODS;
-import static de.ulb.digital.derivans.data.MetadataStore.UNKNOWN;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,8 +18,6 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.mets.model.Mets;
 import org.mycore.mets.model.sections.DmdSec;
-import org.mycore.mets.model.struct.LogicalDiv;
-import org.mycore.mets.model.struct.LogicalStructMap;
 import org.mycore.mets.model.struct.SmLink;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -48,7 +45,9 @@ class DescriptiveDataBuilder {
 	private String accessCondition = MetadataStore.UNKNOWN;
 
 	private Mets mets;
-	
+
+	private Element primaryMods;
+
 	private MetadataHandler handler;
 
 	private static final Logger LOGGER = LogManager.getLogger(DescriptiveDataBuilder.class);
@@ -119,15 +118,15 @@ class DescriptiveDataBuilder {
 
 			// collect proper name relations
 			Map<MARCRelator, List<Element>> properRelations = getDesiredRelations(nameSubtrees);
-			if(properRelations.isEmpty()) {
+			if (properRelations.isEmpty()) {
 				LOGGER.warn("found no proper related persons!");
 				return MetadataStore.UNKNOWN;
 			}
 
 			// assume we have pbl's or aut's candidates
-			if(properRelations.containsKey(MARCRelator.AUTHOR)) {
+			if (properRelations.containsKey(MARCRelator.AUTHOR)) {
 				return getSomeName(properRelations.get(MARCRelator.AUTHOR));
-			} else if(properRelations.containsKey(MARCRelator.PUBLISHER)) {
+			} else if (properRelations.containsKey(MARCRelator.PUBLISHER)) {
 				return getSomeName(properRelations.get(MARCRelator.PUBLISHER));
 			}
 
@@ -140,21 +139,22 @@ class DescriptiveDataBuilder {
 	 * Get some name for person-of-interest from MODS:
 	 * 
 	 * <ul>
-	 * 	<li>if any mods:displayForm exists, get the text() from first element</li>
-	 * 	<li>if not, search for mods:namePart elements and get the first with attribute "family"</li>
+	 * <li>if any mods:displayForm exists, get the text() from first element</li>
+	 * <li>if not, search for mods:namePart elements and get the first with
+	 * attribute "family"</li>
 	 * </ul>
 	 * 
 	 * @param list
 	 * @return
 	 */
 	private String getSomeName(List<Element> list) {
-		for(Element e : list) {
+		for (Element e : list) {
 			List<Element> displayers = e.getChildren("displayForm", NS_MODS);
-			if(!displayers.isEmpty()) {
+			if (!displayers.isEmpty()) {
 				return displayers.get(0).getTextNormalize();
 			}
-			for(Element f : e.getChildren("namePart", NS_MODS)) {
-				if("family".equals(f.getAttributeValue("type"))) {
+			for (Element f : e.getChildren("namePart", NS_MODS)) {
+				if ("family".equals(f.getAttributeValue("type"))) {
 					return f.getTextNormalize();
 				}
 			}
@@ -208,7 +208,7 @@ class DescriptiveDataBuilder {
 		}
 		List<Element> recordInfos = mods.getChildren("recordInfo", NS_MODS);
 		Predicate<Element> sourceExists = e -> Objects.nonNull(e.getAttributeValue("source"));
-		for(Element recordInfo : recordInfos) {
+		for (Element recordInfo : recordInfos) {
 			List<Element> identifiers = recordInfo.getChildren("recordIdentifier", NS_MODS);
 			Optional<Element> optUrn = identifiers.stream().filter(sourceExists).findFirst();
 			if (optUrn.isPresent()) {
@@ -258,8 +258,8 @@ class DescriptiveDataBuilder {
 		Element mods = getPrimaryMods();
 		if (mods != null) {
 			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
-			Optional<Element> optPubl = mods.getChildren("originInfo", NS_MODS).stream()
-					.filter(publicationEvent).findFirst();
+			Optional<Element> optPubl = mods.getChildren("originInfo", NS_MODS).stream().filter(publicationEvent)
+					.findFirst();
 			if (optPubl.isPresent()) {
 				Element publ = optPubl.get();
 				Element issued = publ.getChild("dateIssued", NS_MODS);
@@ -281,84 +281,73 @@ class DescriptiveDataBuilder {
 	}
 
 	private Element getPrimaryMods() throws DigitalDerivansException {
-		if (mets != null) {
-			String dmdId = getDescriptiveMetadataIdentifierOfInterest();
-			DmdSec dmd = mets.getDmdSecById(dmdId);
-			if (dmd != null) {
-				return dmd.getMdWrap().getMetadata();
-			} else {
-				// hierarchical multivolume works from kitodo or semantics
-				String firstDmdId = getLinkFromFirstVolume();
-				if(firstDmdId == null) {
-					return null;
+		if (primaryMods != null) {
+			return this.primaryMods;
+		} else {
+			if (mets != null) {
+				String dmdId = getDescriptiveMetadataIdentifierOfInterest();
+				DmdSec primaryDMD = mets.getDmdSecById(dmdId);
+				if (primaryDMD == null) {
+					throw new DigitalDerivansException("can't identify primary MODS section");
 				}
-				dmd = mets.getDmdSecById(firstDmdId);
-				if(dmd != null) {
-					return dmd.getMdWrap().getMetadata();
-				}
+				Iterable<Element> iter = primaryDMD.asElement().getDescendants(new ModsFilter());
+				this.primaryMods = iter.iterator().next();;
 			}
+			return this.primaryMods;
 		}
-		throw new DigitalDerivansException("can't identify primary MODS section");
 	}
-	
+
 	/**
 	 * 
-	 * Resolve identifier for descriptive section backwards
-	 * start from Phys top container for MAX-Filegroup, and if 
-	 * defaults to "physroot", over the struct map link for 
-	 * "physroot" to the logical struct's DMDID-attribute 
-	 * (VLS-like)
-	 * OR
-	 * count strctMap-linkings from logical to physical, 
-	 * pick the DMDID of the one with the most from-links 
-	 * which will likely be the main element (of "Af", "AF")
-	 * (Kitodo-like)
+	 * Resolve identifier for descriptive section backwards start from Phys top
+	 * container for MAX-Filegroup, and if defaults to "physroot", over the struct
+	 * map link for "physroot" to the logical struct's DMDID-attribute (VLS-like) OR
+	 * count strctMap-linkings from logical to physical, pick the DMDID of the one
+	 * with the most from-links which will likely be the main element (of "Af",
+	 * "AF") (Kitodo-like)
+	 * 
+	 * TODO review mets-model
+	 * conversions necessary since mets-model doesn't read
+	 * properly all Element's Attributes like "DMDID"
 	 * 
 	 * @return
 	 */
 	private String getDescriptiveMetadataIdentifierOfInterest() {
-		LogicalStructMap logMap = (LogicalStructMap)mets.getStructMap("LOGICAL");
-		LogicalDiv logDiv = logMap.getDivContainer();
-		List<SmLink> smLinks = mets.getStructLink().getSmLinkByTo("physroot");
-		if(! smLinks.isEmpty()) {
-			String fromID = smLinks.get(0).getFrom();
-			return inspectLogStruct(logDiv, fromID);
-		} else {
-			List<SmLink> links = mets.getStructLink().getSmLinks();
-			// map SmLinks to their @from-count
-			Map<String, Integer> mapToN = links.stream()
-					.collect(groupingBy(SmLink::getFrom, summingInt(n -> 1)));
-			// get identifier of SmLink with MAX counts
-			var optMaxLink = mapToN.entrySet().stream()
-					.max(Comparator.comparingInt(Entry::getValue));
-			String idLinks = UNKNOWN;
-			if (optMaxLink.isPresent()) {
-				var maxMapping = optMaxLink.get(); 
-				idLinks = maxMapping.getKey();
-			}
-			return inspectLogStruct(logDiv, idLinks);
-		}
-	}
-	
-	private static String inspectLogStruct(LogicalDiv logDiv, String fromID) {
-		if (logDiv.getId().equals(fromID)) {
-			return logDiv.getDmdId();
-		}
-		for (LogicalDiv logSubDiv : logDiv.getDescendants()) {
-			if (logSubDiv != null && fromID.equals(logSubDiv.getId())) {
-				return logSubDiv.getDmdId();
+		// get most probably link from structMapping section
+		String logId = getLogicalLinkFromStructMapping();
+		
+		// get logical divisions as raw elements (see above)
+		List<Element> logSubcontainers = handler.requestLogicalSubcontainers();
+		
+		for (Element e: logSubcontainers) {
+			if (e.getAttributeValue("ID").equals(logId)) {
+				return e.getAttributeValue("DMDID");
 			}
 		}
 		return null;
 	}
 	
-	private String getLinkFromFirstVolume() {
-		return this.handler.requestDMDSubDivIDs();
+	private String getLogicalLinkFromStructMapping() {
+		List<SmLink> smLinksToPhysRoot = mets.getStructLink().getSmLinkByTo("physroot");
+		if (!smLinksToPhysRoot.isEmpty()) {
+			return smLinksToPhysRoot.get(0).getFrom();
+		} else {
+			List<SmLink> links = mets.getStructLink().getSmLinks();
+			// map SmLinks to their @from-count
+			Map<String, Integer> mapToN = links.stream().collect(groupingBy(SmLink::getFrom, summingInt(n -> 1)));
+			// get identifier of SmLink with MAX counts
+			var optMaxLink = mapToN.entrySet().stream().max(Comparator.comparingInt(Entry::getValue));
+			if (optMaxLink.isPresent()) {
+				var maxMapping = optMaxLink.get();
+				return maxMapping.getKey();
+			}
+		}
+		return null;
 	}
 
 	public void setHandler(MetadataHandler handler) {
 		this.handler = handler;
-		
+
 	}
 }
 

@@ -36,4 +36,22 @@ class TestMetadataStoreKitodo2MVW {
 		assertEquals("Waldau, Georg Ernst", dd140257772.getPerson());
 		assertEquals("n.a.", dd140257772.getTitle());
 	}
+	
+	@Test
+	void testKitodo2MultivolumeMetadata030745780() throws DigitalDerivansException {
+		// arrange
+		IMetadataStore mds = new MetadataStore(TestResource.K2_Af_030745780.get());
+		
+		// act
+		DescriptiveData dd = mds.getDescriptiveData();
+		
+		// assert
+		assertEquals("030745780", dd.getIdentifier());
+		assertEquals("Schleiermacher, Friedrich", dd.getPerson());
+		assertEquals("Sein Werden", dd.getTitle());
+		
+		// inspect structure
+		var struct = mds.getStructure();
+		assertEquals("Schleiermacher als Mensch", struct.getLabel());
+	}
 }

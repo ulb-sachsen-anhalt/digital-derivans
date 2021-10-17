@@ -40,7 +40,10 @@ public enum TestResource {
 	K2_Aa_143074601(Path.of("./src/test/resources/mets/kitodo2/143074601.xml")),
 	K2_Aa_147573602(Path.of("./src/test/resources/mets/kitodo2/147573602.xml")),
 	K2_Aa_319696111(Path.of("./src/test/resources/mets/kitodo2/319696111.xml")),
-	K2_Af_140257772(Path.of("./src/test/resources/mets/kitodo2/140257772/140257772.xml"))
+	K2_Af_140257772(Path.of("./src/test/resources/mets/kitodo2/140257772/140257772.xml")),
+	K2_Af_030745780(Path.of("./src/test/resources/mets/kitodo2/030745772/030745780.xml")),
+	K2_Af_029024749(Path.of("./src/test/resources/mets/kitodo2/029024684/029024749.xml")),
+	K2_Ac_029024684(Path.of("./src/test/resources/mets/kitodo2/029024684/029024684.xml")),
 	;
 	
 	private Path path;

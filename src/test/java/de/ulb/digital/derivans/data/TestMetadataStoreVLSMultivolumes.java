@@ -246,5 +246,10 @@ class TestMetadataStoreVLSMultivolumes {
 		assertEquals(7, grandChildren.get(4).getPage());
 	}
 	
-	
+	@Test
+	void testIntermediateVD17State() throws DigitalDerivansException {
+		var mds = new MetadataStore(TestResource.VD17_AF_11250807.get());
+		var dd = mds.getDescriptiveData();
+		var strct = mds.getStructure();
+	}
 }
