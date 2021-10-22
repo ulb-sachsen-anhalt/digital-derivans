@@ -28,6 +28,8 @@ public class DefaultConfiguration {
 	public static final Integer DEFAULT_FONT_SIZE = 8;
 	
 	public static final Integer DEFAULT_POOLSIZE = 2;
+
+	public static final Integer DEFAULT_MAXIMAL = 14400; // limited by itextpdf  
 	
 	public static final Path DEFAULT_FOOTER_INPUT_SUB_PATH = Path.of("MAX");
 	
