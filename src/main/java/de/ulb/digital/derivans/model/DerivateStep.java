@@ -38,6 +38,7 @@ public class DerivateStep {
 		this.quality = DefaultConfiguration.DEFAULT_QUALITY;
 		this.poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 		this.derivateType = DerivateType.JPG;
+		this.maximal = DefaultConfiguration.DEFAULT_MAXIMAL; 
 	}
 
 	public String getOutputType() {
