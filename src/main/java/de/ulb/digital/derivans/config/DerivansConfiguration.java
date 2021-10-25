@@ -171,7 +171,7 @@ public class DerivansConfiguration {
 		return this.prefixes;
 	}
 	
-	private void evaluate(INIConfiguration conf) {
+	private void evaluate(INIConfiguration conf) throws DigitalDerivansException {
 
 		// read global configuration
 		if (conf.containsKey("default_quality")) {
