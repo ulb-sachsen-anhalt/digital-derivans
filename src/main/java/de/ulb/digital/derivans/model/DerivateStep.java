@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.model;
 
 import java.nio.file.Path;
 
+import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 
 /**
@@ -85,7 +86,11 @@ public class DerivateStep {
 		return maximal;
 	}
 
-	public void setMaximal(Integer maximal) {
+	public void setMaximal(Integer maximal) throws DigitalDerivansException {
+		int max=DefaultConfiguration.DEFAULT_MAXIMAL;
+		if (maximal > max) {
+			throw new DigitalDerivansException("maximal too large: " + max);
+		}
 		this.maximal = maximal;
 	}
 
