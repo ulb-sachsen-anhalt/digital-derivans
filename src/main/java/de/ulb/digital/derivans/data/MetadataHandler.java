@@ -44,8 +44,11 @@ public class MetadataHandler {
 	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 	public static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
 
-	private DateTimeFormatter dtFormatter = new DateTimeFormatterBuilder().appendPattern("YYYY-MM-DD")
-			.appendLiteral('T').appendPattern("HH:mm:SS").toFormatter();
+	public static DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder()
+			.appendPattern("YYYY-MM-dd")
+			.appendLiteral('T')
+			.appendPattern("HH:mm:SS")
+			.toFormatter();
 
 	private Path pathFile;
 
@@ -89,7 +92,7 @@ public class MetadataHandler {
 		Element agentName = new Element("name", NS_METS);
 		agentName.setText(this.getLabel());
 		Element agentNote = new Element("note", NS_METS);
-		String ts = LocalDateTime.now().format(dtFormatter);
+		String ts = LocalDateTime.now().format(MD_DT_FORMAT);
 		String agentNoteText = "PDF FileGroup for " + fileId + " created at " + ts;
 		agentNote.setText(agentNoteText);
 		agent.addContent(List.of(agentName, agentNote));

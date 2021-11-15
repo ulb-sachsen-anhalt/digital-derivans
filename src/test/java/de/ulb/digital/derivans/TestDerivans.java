@@ -8,25 +8,33 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
+import javax.xml.XMLConstants;
 
+import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
+import org.jdom2.filter.ElementFilter;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.util.IteratorIterable;
 import org.jdom2.xpath.XPathBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
@@ -35,6 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
+import de.ulb.digital.derivans.data.MetadataStore;
 
 /**
  * 
@@ -90,7 +99,7 @@ public class TestDerivans {
 		Element firstChild = parent.getChildren().get(0);
 		assertNotNull(firstChild.getAttribute("FILEID"));
 		assertEquals("PDF_191092622", firstChild.getAttribute("FILEID").getValue());
-		
+
 		Path bundle2 = pathTarget.resolve("BUNDLE_THUMBNAIL__");
 		assertTrue(Files.exists(bundle2));
 		List<Path> b2ps = Files.list(bundle2).sorted().collect(Collectors.toList());
@@ -110,7 +119,8 @@ public class TestDerivans {
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathInput(pathTarget.resolve("737429.xml"));
+		Path metadataPath = pathTarget.resolve("737429.xml");
+		dp.setPathInput(metadataPath);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		derivans.create();
@@ -118,6 +128,30 @@ public class TestDerivans {
 		// assert
 		Path pdfWritten = pathTarget.resolve("191092622.pdf");
 		assertTrue(Files.exists(pdfWritten));
+
+		// check metadata
+		SAXBuilder builder = new SAXBuilder();
+		// please sonarqube "Disable XML external entity (XXE) processing"
+		builder.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+		Document document = builder.build(new FileInputStream(metadataPath.toString()));
+		List<Content> cs = document.getContent();
+		Element r = (Element) cs.get(0);
+		IteratorIterable<Element> es = r.getDescendants(new ElementFilter("agent"));
+		for (Element e : es) {
+			List<Element> kids = e.getChildren("note", MetadataStore.NS_METS);
+			if (!kids.isEmpty()) {
+				for (Element kid : kids) {
+					if (kid.getText().startsWith("PDF FileGroup")) {
+						DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+								.appendPattern("YYYY-MM-dd")
+								.toFormatter();
+						String theDateTime = LocalDateTime.now().format(dtf);
+						String entry = kid.getTextNormalize();
+						assertTrue(entry.contains(theDateTime));
+					}
+				}
+			}
+		}
 	}
 
 	@Test
@@ -137,7 +171,6 @@ public class TestDerivans {
 		Path pdfWritten = pathTarget.resolve("191092622.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
-
 
 	@Test
 	@Order(3)
@@ -189,7 +222,7 @@ public class TestDerivans {
 		Path pdfWritten = pathTarget.resolve("191092622.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
-	
+
 	@Test
 	@Order(5)
 	void testDerivateWithFulltext(@TempDir Path tempDir) throws Exception {
@@ -200,9 +233,10 @@ public class TestDerivans {
 		Files.createDirectories(pathImageMax);
 		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
 		copyTree(sourceImageDir, pathImageMax);
-		
+
 		// create artificial testimages
-		// List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d", i)).collect(Collectors.toList());
+		// List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d",
+		// i)).collect(Collectors.toList());
 		// generateJpgsFromList(pathImageMax, 2164, 2448, ids);
 
 		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
@@ -215,7 +249,7 @@ public class TestDerivans {
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(targetMets);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
-		
+
 		// apply some scaling, too
 		int maximal = 2339; // A4 200 DPI ok
 //		int maximal = 1754; // A4 150 DPI tw, print vanishes over top up to "Sero ..."
@@ -230,7 +264,7 @@ public class TestDerivans {
 		Path pdfWritten = pathTarget.resolve("148811035.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
-	
+
 	@Test
 	@Order(3)
 	void testDerivatesOnlyWithPathZD(@TempDir Path tempDir) throws Exception {
@@ -293,7 +327,7 @@ public class TestDerivans {
 		Path imagePath = pathTarget.resolve("MAX");
 		generateJpgsFromList(imagePath, 15367, 3737, List.of("737434", "737436", "737437", "737438"));
 		return pathTarget;
-	}	
+	}
 
 	public static void generateJpgs(Path imageDir, int width, int height, int number) throws IOException {
 		if (Files.exists(imageDir)) {
@@ -303,7 +337,7 @@ public class TestDerivans {
 		for (int i = 1; i <= number; i++) {
 			String imagePath = String.format("%04d.jpg", i);
 			Path jpgFile = imageDir.resolve(imagePath);
-			writeImage(jpgFile, width, height,  BufferedImage.TYPE_3BYTE_BGR, "JPG");
+			writeImage(jpgFile, width, height, BufferedImage.TYPE_3BYTE_BGR, "JPG");
 		}
 	}
 
