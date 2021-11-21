@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -260,9 +261,22 @@ class TestMetadataStoreVLSMultivolumes {
 		assertEquals("Vorderdeckel", strct.getSubstructures().get(0).getSubstructures().get(0).getLabel());
 	}
 	
+	/**
+	 * 
+	 * Since this test alters the provided METS/MODS, it is required to be executed on a temp copy
+	 * 
+	 * @param tempDir
+	 * @throws DigitalDerivansException
+	 * @throws IOException
+	 */
 	@Test
-	void testIntermediateVD17PDFInsertion() throws DigitalDerivansException {
-		var mds = new MetadataStore(TestResource.VD17_AF_11250807.get());
+	void testIntermediateVD17PDFInsertion(@TempDir Path tempDir) throws DigitalDerivansException, IOException {
+		// arrange
+		Path sourceMETS = TestResource.VD17_AF_11250807.get();
+		Path targetMETS = tempDir.resolve("11250807.xml");
+		Files.copy(sourceMETS, targetMETS);
+		
+		var mds = new MetadataStore(targetMETS);
 		
 		// arrange
 		Element primMods = mds.getMetadataHandler().getPrimaryMods();
