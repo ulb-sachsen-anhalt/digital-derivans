@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
+import org.jdom2.Element;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -257,5 +258,17 @@ class TestMetadataStoreVLSMultivolumes {
 		assertEquals("Cursus Philosophici Disputatio ...", strct.getLabel());
 		assertEquals("De Compositione Syllogismi", strct.getSubstructures().get(0).getLabel());
 		assertEquals("Vorderdeckel", strct.getSubstructures().get(0).getSubstructures().get(0).getLabel());
+	}
+	
+	@Test
+	void testIntermediateVD17PDFInsertion() throws DigitalDerivansException {
+		var mds = new MetadataStore(TestResource.VD17_AF_11250807.get());
+		
+		// arrange
+		Element primMods = mds.getMetadataHandler().getPrimaryMods();
+		assertEquals(20, primMods.getChildren().size());
+		
+		// act + assert
+		assertTrue(mds.enrichPDF("PDF_11250807"));
 	}
 }

@@ -3,22 +3,17 @@ package de.ulb.digital.derivans.data;
 import static de.ulb.digital.derivans.data.MetadataStore.NS_MODS;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Predicate;
-import static java.util.stream.Collectors.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.mets.model.Mets;
-import org.mycore.mets.model.sections.DmdSec;
-import org.mycore.mets.model.struct.SmLink;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DescriptiveData;
@@ -44,11 +39,9 @@ class DescriptiveDataBuilder {
 
 	private String accessCondition = MetadataStore.UNKNOWN;
 
-	private Mets mets;
-
-	private Element primaryMods;
-
 	private MetadataHandler handler;
+	
+	private Mets mets;
 
 	private static final Logger LOGGER = LogManager.getLogger(DescriptiveDataBuilder.class);
 
@@ -68,6 +61,7 @@ class DescriptiveDataBuilder {
 	public DescriptiveDataBuilder(Mets mets) {
 		this.mets = mets;
 	}
+
 
 	DescriptiveDataBuilder urn() throws DigitalDerivansException {
 		this.urn = getURN();
@@ -112,7 +106,7 @@ class DescriptiveDataBuilder {
 	}
 
 	String getPerson() throws DigitalDerivansException {
-		Element mods = getPrimaryMods();
+		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			List<Element> nameSubtrees = mods.getChildren("name", NS_MODS);
 
@@ -202,7 +196,7 @@ class DescriptiveDataBuilder {
 	 * @return
 	 */
 	private String loadIdentifier() throws DigitalDerivansException {
-		Element mods = getPrimaryMods();
+		Element mods = handler.getPrimaryMods();
 		if (mods == null) {
 			return null;
 		}
@@ -219,7 +213,7 @@ class DescriptiveDataBuilder {
 	}
 
 	String getTitle() throws DigitalDerivansException {
-		Element mods = getPrimaryMods();
+		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			Element titleInfo = mods.getChild("titleInfo", NS_MODS);
 			if (titleInfo != null) {
@@ -239,7 +233,7 @@ class DescriptiveDataBuilder {
 	}
 
 	String getURN() throws DigitalDerivansException {
-		Element mods = getPrimaryMods();
+		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			List<Element> identifiers = mods.getChildren("identifier", NS_MODS);
 			Predicate<Element> typeUrn = e -> e.getAttribute("type").getValue().equals("urn");
@@ -252,7 +246,7 @@ class DescriptiveDataBuilder {
 	}
 
 	String getAccessCondition() throws DigitalDerivansException {
-		Element mods = getPrimaryMods();
+		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			Element cond = mods.getChild("accessCondition", NS_MODS);
 			if (cond != null) {
@@ -263,7 +257,7 @@ class DescriptiveDataBuilder {
 	}
 
 	String getYear() throws DigitalDerivansException {
-		Element mods = getPrimaryMods();
+		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
 			Optional<Element> optPubl = mods.getChildren("originInfo", NS_MODS).stream().filter(publicationEvent)
@@ -286,83 +280,6 @@ class DescriptiveDataBuilder {
 			}
 		}
 		return MetadataStore.UNKNOWN;
-	}
-
-	private Element getPrimaryMods() throws DigitalDerivansException {
-		if (primaryMods != null) {
-			return this.primaryMods;
-		} else {
-			if (mets != null) {
-				String dmdId = getDescriptiveMetadataIdentifierOfInterest();
-				DmdSec primaryDMD = mets.getDmdSecById(dmdId);
-				if (primaryDMD == null) {
-					throw new DigitalDerivansException("can't identify primary MODS section");
-				}
-				Iterable<Element> iter = primaryDMD.asElement().getDescendants(new ModsFilter());
-				this.primaryMods = iter.iterator().next();;
-			}
-			return this.primaryMods;
-		}
-	}
-
-	/**
-	 * 
-	 * Resolve identifier for descriptive section backwards.
-	 * Starting from Physical Top-Level container of MAX filegroup,
-	 * pick the most reasonable link and use this to identify the
-	 * proper logical structure.
-	 * 
-	 * TODO review mets-model
-	 * conversions necessary since mets-model doesn't read
-	 * properly all Element's Attributes like "DMDID"
-	 * 
-	 * @return
-	 */
-	private String getDescriptiveMetadataIdentifierOfInterest() {
-		// get most probably link from structMapping section
-		String logId = getLogicalLinkFromStructMapping();
-		
-		// get logical divisions as raw elements (see above)
-		List<Element> logSubcontainers = handler.requestLogicalSubcontainers();
-		
-		for (Element e: logSubcontainers) {
-			if (e.getAttributeValue("ID").equals(logId)) {
-				return e.getAttributeValue("DMDID");
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * 
-	 * If the structMap links contain a mapping to "physroot", 
-	 * then this is considered to link the logical struct's
-	 * corresponding to the main logical structure (VLS-like)
-	 * OR
-	 * count strctMap-links from logical to physical, and identify the 
-	 * one containing most links / as many links as there are physical
-	 * containers (Kitodo2-like)
-	 * 
-	 * In both cases, follow the link's origin to the logical map. 
-	 * 
-	 * @return
-	 */
-	private String getLogicalLinkFromStructMapping() {
-		List<SmLink> smLinksToPhysRoot = mets.getStructLink().getSmLinkByTo("physroot");
-		if (!smLinksToPhysRoot.isEmpty()) {
-			return smLinksToPhysRoot.get(0).getFrom();
-		} else {
-			List<SmLink> links = mets.getStructLink().getSmLinks();
-			// map SmLinks to their @from-count
-			Map<String, Integer> mapToN = links.stream().collect(groupingBy(SmLink::getFrom, summingInt(n -> 1)));
-			// get identifier of SmLink with MAX counts
-			var optMaxLink = mapToN.entrySet().stream().max(Comparator.comparingInt(Entry::getValue));
-			if (optMaxLink.isPresent()) {
-				var maxMapping = optMaxLink.get();
-				return maxMapping.getKey();
-			}
-		}
-		return null;
 	}
 
 	public void setHandler(MetadataHandler handler) {

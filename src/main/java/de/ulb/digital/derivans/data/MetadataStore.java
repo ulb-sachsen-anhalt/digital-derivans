@@ -1,6 +1,5 @@
 package de.ulb.digital.derivans.data;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.mycore.mets.model.Mets;
 import org.mycore.mets.model.files.FLocat;
@@ -74,17 +72,8 @@ public class MetadataStore implements IMetadataStore {
 	 */
 	public MetadataStore(Path filePath) throws DigitalDerivansException {
 		this.handler = new MetadataHandler(filePath);
-		this.load();
+		this.mets = handler.getMets();
 		LOGGER.info("created new metadatastore from '{}'", filePath);
-	}
-
-	private void load() throws DigitalDerivansException {
-		try {
-			mets = handler.read();
-		} catch (IOException | JDOMException e) {
-			LOGGER.error(e);
-			throw new DigitalDerivansException(e);
-		}
 	}
 
 	@Override
@@ -130,6 +119,10 @@ public class MetadataStore implements IMetadataStore {
 		return pages;
 	}
 
+	public MetadataHandler getMetadataHandler() {
+		return this.handler;
+	}
+	
 	/**
 	 * 
 	 * Enrich Information about physical images that represent pages
@@ -228,7 +221,8 @@ public class MetadataStore implements IMetadataStore {
 			LOGGER.info("enrich derivate with href '{}' as '{}' in '{}'", identifier, mimeType, fileGroup);
 			String fileId = integrateFileGroup(fileGroup, identifier, mimeType);
 			String note = this.handler.enrichAgent(fileId);
-			integrateFprt("PDF_" + identifier);
+			Fptr fpts = new Fptr("PDF_" + identifier);
+			this.handler.addTo(fpts.asElement(), "LOGICAL", true);
 			this.handler.write();
 			LOGGER.info("integrated pdf fileId '{}' in '{}'", fileId, this.handler.getPath());
 			LOGGER.info("integrated mets:agent {}", note);
@@ -248,15 +242,10 @@ public class MetadataStore implements IMetadataStore {
 		return fileId;
 	}
 
-	private void integrateFprt(String fileHref) {
-		Fptr fpts = new Fptr(fileHref);
-		this.handler.addTo(fpts.asElement(), "LOGICAL", true);
-	}
-
 	@Override
 	public DescriptiveData getDescriptiveData() {
 		if (descriptiveData == null) {
-			DescriptiveDataBuilder builder = new DescriptiveDataBuilder(this.mets);
+			DescriptiveDataBuilder builder = new DescriptiveDataBuilder(this.handler.getMets());
 			builder.setHandler(this.handler);
 			try {
 				descriptiveData = builder.person().access().identifier().title().urn().year().build();

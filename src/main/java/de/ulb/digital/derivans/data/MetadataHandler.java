@@ -1,5 +1,8 @@
 package de.ulb.digital.derivans.data;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +16,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Map.Entry;
 
 import javax.xml.XMLConstants;
 
@@ -29,8 +35,11 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.util.IteratorIterable;
 import org.mycore.mets.model.Mets;
+import org.mycore.mets.model.sections.DmdSec;
+import org.mycore.mets.model.struct.SmLink;
 
 import de.ulb.digital.derivans.Derivans;
+import de.ulb.digital.derivans.DigitalDerivansException;
 
 /**
  * 
@@ -44,21 +53,32 @@ public class MetadataHandler {
 	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 	public static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
 
-	public static DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder()
-			.appendPattern("YYYY-MM-dd")
-			.appendLiteral('T')
-			.appendPattern("HH:mm:SS")
-			.toFormatter();
+	public static DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder().appendPattern("YYYY-MM-dd")
+			.appendLiteral('T').appendPattern("HH:mm:SS").toFormatter();
 
 	private Path pathFile;
 
 	private Document document;
 
+	private Mets mets;
+
+	private Element primaryMods;
+
 	public MetadataHandler(Path pathFile) {
 		this.pathFile = pathFile;
+		try {
+			this.mets = read();
+			this.primaryMods = setPrimaryMods();
+		} catch (JDOMException | IOException | DigitalDerivansException e) {
+			new DigitalDerivansException(e);
+		}
 	}
 
-	public Mets read() throws JDOMException, IOException {
+	public Mets getMets() {
+		return this.mets;
+	}
+
+	private Mets read() throws JDOMException, IOException {
 		File f = new File(this.pathFile.toString());
 		SAXBuilder builder = new SAXBuilder();
 		// please sonarqube "Disable XML external entity (XXE) processing"
@@ -109,6 +129,11 @@ public class MetadataHandler {
 	public String getLabel() {
 		return readRevisionProperties().orElse(Derivans.LABEL);
 	}
+
+	
+	public Element getPrimaryMods() {
+		return this.primaryMods;
+	}
 	
 	private Optional<String> readRevisionProperties() {
 		String fileName = "derivans-git.properties";
@@ -126,7 +151,7 @@ public class MetadataHandler {
 			String[] parts = contents.split(":");
 			if (parts.length > 1) {
 				String version = parts[1].replace('"', ' ').strip();
-				return Optional.of(Derivans.LABEL + " V" + version); 
+				return Optional.of(Derivans.LABEL + " V" + version);
 			}
 		} catch (IOException e) {
 			Derivans.LOGGER.warn("cannot read {}", fileName);
@@ -160,7 +185,6 @@ public class MetadataHandler {
 		Element hdrSection = new Element("metsHdr", NS_METS);
 		hdrSection.setAttribute("CREATEDATE", Instant.now().toString());
 		this.document.addContent(hdrSection);
-
 		return hdrSection;
 	}
 
@@ -179,33 +203,27 @@ public class MetadataHandler {
 	 * @param first
 	 */
 	public void addTo(Element asElement, String typeValue, boolean reorder) {
-		var elements = document.getContent(new ElementFilter());
-		var optElement = elements.stream()
-				.map(Element::getChildren)
-				.flatMap(List::stream)
-				.filter(el -> el.getAttribute("TYPE") != null)
-				.filter(el -> el.getAttribute("TYPE").getValue().equals(typeValue))
-				.findFirst();
-		
-		if(optElement.isPresent()) {
-			Element element = optElement.get();
-			Element container = element.getChild("div", NS_METS);
-			
-			// create new list with element as first entry
-			container.addContent(asElement);
-			
-			// ATTENTION: the specific goal to re-order is inversion 
-			// to ensure mets:fptr is *before* any subsequent mets:divs 
-			if(reorder) {
-				container.sortChildren((el1, el2) -> Math.negateExact(el1.getName().compareToIgnoreCase(el2.getName())));
+		var elements = document.getDescendants(new MetsDivFilter());
+		String id = primaryMods.getParentElement().getParentElement().getParentElement().getAttributeValue("ID");
+		Element logDiv = null;
+		for (Element e : elements) {
+			if (id.equals(e.getAttributeValue("DMDID")))
+				logDiv = e;
+		}
+		if (logDiv != null) {
+			logDiv.addContent(asElement);
+			// ATTENTION: the specific goal to re-order is inversion
+			// to ensure mets:fptr is *before* any subsequent mets:divs
+			if (reorder) {
+				logDiv.sortChildren((el1, el2) -> Math.negateExact(el1.getName().compareToIgnoreCase(el2.getName())));
 			}
 		}
 	}
-	
+
 	/**
 	 * 
-	 * Catch logical sub-containers with attribute DMDID ->
-	 * must have a descriptive MODS section
+	 * Catch logical sub-containers with attribute DMDID -> must have a descriptive
+	 * MODS section
 	 * 
 	 * @param typeValue
 	 * @return
@@ -222,12 +240,74 @@ public class MetadataHandler {
 
 	private Element extractStructLogicalRoot() {
 		var elements = document.getContent(new ElementFilter());
-		return elements.stream()
-				.map(Element::getChildren)
-				.flatMap(List::stream)
-				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE")))
-				.findFirst()
-				.get();
+		return elements.stream().map(Element::getChildren).flatMap(List::stream)
+				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE"))).findFirst().get();
+	}
+
+	private Element setPrimaryMods() throws DigitalDerivansException {
+		String dmdId = getDescriptiveMetadataIdentifierOfInterest();
+		DmdSec primaryDMD = mets.getDmdSecById(dmdId);
+		if (primaryDMD == null) {
+			throw new DigitalDerivansException("can't identify primary MODS section");
+		}
+		Iterable<Element> iter = primaryDMD.asElement().getDescendants(new ModsFilter());
+		return iter.iterator().next();
+	}
+
+	/**
+	 * 
+	 * Resolve identifier for descriptive section backwards. Starting from Physical
+	 * Top-Level container of MAX filegroup, pick the most reasonable link and use
+	 * this to identify the proper logical structure.
+	 * 
+	 * TODO review mets-model conversions necessary since mets-model doesn't read
+	 * properly all Element's Attributes like "DMDID"
+	 * 
+	 * @return
+	 */
+	private String getDescriptiveMetadataIdentifierOfInterest() {
+		// get most probably link from structMapping section
+		String logId = getLogicalLinkFromStructMapping();
+
+		// get logical divisions as raw elements (see above)
+		List<Element> logSubcontainers = this.requestLogicalSubcontainers();
+
+		for (Element e : logSubcontainers) {
+			if (e.getAttributeValue("ID").equals(logId)) {
+				return e.getAttributeValue("DMDID");
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * If the structMap links contain a mapping to "physroot", then this is
+	 * considered to link the logical struct's corresponding to the main logical
+	 * structure (VLS-like) OR count strctMap-links from logical to physical, and
+	 * identify the one containing most links / as many links as there are physical
+	 * containers (Kitodo2-like)
+	 * 
+	 * In both cases, follow the link's origin to the logical map.
+	 * 
+	 * @return
+	 */
+	private String getLogicalLinkFromStructMapping() {
+		List<SmLink> smLinksToPhysRoot = mets.getStructLink().getSmLinkByTo("physroot");
+		if (!smLinksToPhysRoot.isEmpty()) {
+			return smLinksToPhysRoot.get(0).getFrom();
+		} else {
+			List<SmLink> links = mets.getStructLink().getSmLinks();
+			// map SmLinks to their @from-count
+			Map<String, Integer> mapToN = links.stream().collect(groupingBy(SmLink::getFrom, summingInt(n -> 1)));
+			// get identifier of SmLink with MAX counts
+			var optMaxLink = mapToN.entrySet().stream().max(Comparator.comparingInt(Entry::getValue));
+			if (optMaxLink.isPresent()) {
+				var maxMapping = optMaxLink.get();
+				return maxMapping.getKey();
+			}
+		}
+		return null;
 	}
 }
 
@@ -239,12 +319,12 @@ public class MetadataHandler {
  *
  */
 class LogSubContainers extends ElementFilter {
-	
+
 	String name = "div";
 	Namespace namespace = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	public Element filter(Object content) {
 		if (content instanceof Element) {
@@ -262,7 +342,7 @@ class LogSubContainers extends ElementFilter {
 		}
 		return null;
 	}
-	
+
 }
 
 /**
@@ -273,9 +353,9 @@ class LogSubContainers extends ElementFilter {
  *
  */
 class ModsFilter extends ElementFilter {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	public Element filter(Object content) {
 		if (content instanceof Element) {
@@ -286,5 +366,22 @@ class ModsFilter extends ElementFilter {
 		}
 		return null;
 	}
-	
+
+}
+
+class MetsDivFilter extends ElementFilter {
+
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public Element filter(Object content) {
+		if (content instanceof Element) {
+			Element el = (Element) content;
+			if ("div".equals(el.getName())) {
+				return el;
+			}
+		}
+		return null;
+	}
+
 }
