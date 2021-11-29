@@ -15,7 +15,7 @@ public enum Type {
 	
 	ALTO_V3("alto3", "http://www.loc.gov/standards/alto/ns-v3#"),
 	
-	PAGE_2019("page2019", ""),
+	PAGE_2019("pc2019", "http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15"),
 	
 	UNKNOWN("","")
 	;

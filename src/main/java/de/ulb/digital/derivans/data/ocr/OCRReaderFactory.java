@@ -23,6 +23,7 @@ public class OCRReaderFactory {
 	static {
 		readers.add(new ALTOReader(Type.ALTO_V4));
 		readers.add(new ALTOReader(Type.ALTO_V3));
+		readers.add(new PAGEReader(Type.PAGE_2019));
 	}
 	
 	private OCRReaderFactory() {}
@@ -43,11 +44,15 @@ public class OCRReaderFactory {
 	}
 
 	private static Type mapToType(String prelude) {
-		if(prelude.indexOf("<alto ") > -1) {
-			if(prelude.indexOf("alto/ns-v4") > -1) {
+		if(prelude.contains("<alto ")) {
+			if(prelude.contains("alto/ns-v4")) {
 				return Type.ALTO_V4;
-			} else if (prelude.indexOf("alto/ns-v3") > -1) {
+			} else if (prelude.contains("alto/ns-v3")) {
 				return Type.ALTO_V3;
+			}
+		} else if(prelude.contains("PAGE")) {
+			if (prelude.contains("2019-07-15")) {
+				return Type.PAGE_2019;
 			}
 		}
 		return Type.UNKNOWN;

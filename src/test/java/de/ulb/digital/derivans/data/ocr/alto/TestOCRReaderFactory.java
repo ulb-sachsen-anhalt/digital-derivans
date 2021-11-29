@@ -54,6 +54,18 @@ public class TestOCRReaderFactory {
 		OCRReader reader = OCRReaderFactory.from(input);
 		
 		// assert
-		assertEquals(reader.getType(), Type.ALTO_V3);
+		assertEquals(Type.ALTO_V3, reader.getType());
+	}
+	
+	@Test
+	void testResolvePAGE2019FromODEM() throws Exception {
+		// arrange
+		Path input = Path.of("src/test/resources/page/16258167.xml");
+		
+		// act
+		OCRReader reader = OCRReaderFactory.from(input);
+		
+		// assert
+		assertEquals(Type.PAGE_2019, reader.getType());
 	}
 }
