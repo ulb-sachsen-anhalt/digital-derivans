@@ -191,7 +191,6 @@ public class Derivans {
 				LOGGER.info(msg2);
 			}
 			
-//			boolean isSuccess = derivateer.create();
 			LOGGER.info("finished derivate step '{}': '{}'", derivateer.getClass().getSimpleName(), true);
 		}
 
