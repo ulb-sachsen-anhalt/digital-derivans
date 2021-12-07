@@ -87,22 +87,15 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 			if (footer.getBufferedImage() != null) {
 				BufferedImage footerBuffer = footer.getBufferedImage();
 				int currentImageWidth = originalImage.getWidth();
-
-				// only scale footer image if ratio is larger than defined threshold
 				float ratio = (float) currentImageWidth / (float) footerBuffer.getWidth();
-				if (Math.abs(1.0 - ratio) > MAXIMAL_RATIO_DEVIATION) {
-					footerBuffer = imageProcessor.scale(footerBuffer, ratio);
-					LOGGER.trace("scale footer {}x{} (ratio: {}) for: {}", 
-							footerBuffer.getWidth(), footerBuffer.getHeight(), ratio, page.getImagePath());
-				}
-				
+				footerBuffer = imageProcessor.scale(footerBuffer, ratio);
+				LOGGER.trace("scale footer {}x{} (ratio: {}) for: {}", 
+						footerBuffer.getWidth(), footerBuffer.getHeight(), ratio, page.getImagePath());
 				BufferedImage textBuffer = addTextLayer2Footer(footerBuffer, footer);
 				BufferedImage image = imageProcessor.append(originalImage, textBuffer);
-			
 				float compressionRatio = ((float) quality) / 100.0f;
 				imageProcessor.writeJPGWithQuality(image, target, compressionRatio);
 				page.setFooterHeight(footerBuffer.getHeight());
-				
 				// keep track of granularity if 
 				// and only if optional granular urn present
 				if(optUrn.isPresent()) {

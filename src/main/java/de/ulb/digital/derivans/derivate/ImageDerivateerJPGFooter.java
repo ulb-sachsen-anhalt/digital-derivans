@@ -32,8 +32,6 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 
 	protected static final Integer DEFAULT_FOOTER_WIDTH = 2400;
 
-	protected static final Float MAXIMAL_RATIO_DEVIATION = 0.001f;
-
 	/**
 	 * Error marker, if a large number of subsequent down scales make the footer
 	 * disappear after all
@@ -114,22 +112,17 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 			if (this.maximal != null) {
 				image = handleMaximalDimension(image);
 			}
-
 			int currentW = image.getWidth();
 			BufferedImage currentFooter = imageProcessor.clone(footerBuffer);
-
-			// only scale footer image if ratio is larger than defined threshold
 			float ratio = (float) currentW / (float) currentFooter.getWidth();
-			if (Math.abs(1.0 - ratio) > MAXIMAL_RATIO_DEVIATION) {
-				currentFooter = imageProcessor.scale(currentFooter, ratio);
-				String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(),
-						currentFooter.getHeight(), ratio, source);
-				LOGGER.trace(msg);
-				if (currentFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
-					String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
-					LOGGER.error(msg2);
-					throw new DigitalDerivansException(msg2);
-				}
+			currentFooter = imageProcessor.scale(currentFooter, ratio);
+			String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(),
+					currentFooter.getHeight(), ratio, source);
+			LOGGER.trace(msg);
+			if (currentFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
+				String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
+				LOGGER.error(msg2);
+				throw new DigitalDerivansException(msg2);
 			}
 			BufferedImage bi = addTextLayer2Footer(currentFooter, footer);
 			image = imageProcessor.append(image, bi);
