@@ -32,7 +32,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 
 	protected static final Integer DEFAULT_FOOTER_WIDTH = 2400;
 
-	protected static final Float MAXIMAL_RATIO_DEVIATION = 0.02f;
+	protected static final Float MAXIMAL_RATIO_DEVIATION = 0.001f;
 
 	/**
 	 * Error marker, if a large number of subsequent down scales make the footer
