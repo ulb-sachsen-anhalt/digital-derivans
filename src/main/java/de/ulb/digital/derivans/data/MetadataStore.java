@@ -138,7 +138,7 @@ public class MetadataStore implements IMetadataStore {
 	private void enrichImageData(PhysicalSubDiv physSubDiv, DigitalPage page, FilePointerMatch match) {
 		String fileRefSegment = match.reference;
 		// sanitize file endings that are missing in METS links for valid local access
-		if (!fileRefSegment.endsWith(".jpg")) {
+		if (!fileRefSegment.endsWith(".jpg") && !fileRefSegment.endsWith(".tif")) {
 			fileRefSegment += ".jpg";
 		}
 		page.setImagePath(Path.of(fileRefSegment));
