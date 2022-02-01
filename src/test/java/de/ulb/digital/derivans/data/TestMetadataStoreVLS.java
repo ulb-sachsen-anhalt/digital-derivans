@@ -137,12 +137,8 @@ class TestMetadataStoreVLS {
 
 	@Test
 	void testStructureOf5175671() throws DigitalDerivansException {
-		try {
-			dd5175671.getTitle();
-		} catch (Exception e) {
-		  // must throw NullPointerException
-		  assertTrue(true);
-		}
+		String title = dd5175671.getTitle();
+		assertEquals(title, "n.a.");
 	}	
 	
 	
