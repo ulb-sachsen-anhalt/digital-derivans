@@ -108,7 +108,7 @@ public class DerivansConfiguration {
 
 	private void initConfigurationFromFile() throws DigitalDerivansException {
 		if (!this.pathConfigFile.toString().endsWith(".ini")) {
-			LOGGER.warn("consider to change '{}' file ext to '.ini'");
+			LOGGER.warn("consider to change '{}' file ext to '.ini'", this.pathConfigFile);
 		}
 		INIConfiguration conf = new INIConfiguration();
 		parse(conf);
