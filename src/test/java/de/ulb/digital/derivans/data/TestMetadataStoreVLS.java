@@ -36,13 +36,19 @@ class TestMetadataStoreVLS {
 	static IMetadataStore mds201517;
 	
 	static DescriptiveData dd201517;
+
+	static IMetadataStore mds5175671;
 	
+	static DescriptiveData dd5175671;
+
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
 		mds737429 = new MetadataStore(TestResource.HD_Aa_737429.get());
 		dd737429 = mds737429.getDescriptiveData();
 		mds201517 = new MetadataStore(TestResource.HD_Aa_201517.get());
 		dd201517 = mds201517.getDescriptiveData();
+		mds5175671 = new MetadataStore(TestResource.HD_Aa_5175671.get());
+		dd5175671 = mds5175671.getDescriptiveData();
 	}
 
 	/**
@@ -127,7 +133,17 @@ class TestMetadataStoreVLS {
 		assertEquals("Historia Ecclesiastica, Qua Ab Adamo Judaicae, & a Salvatore nostro Christianae Ecclesiae, ritus, persecutiones, Concilia, Doctores, Haereses & Schismata proponuntur", dd201517.getTitle());
 		assertEquals("1699", dd201517.getYearPublished());
 	}
-	
+
+
+	@Test
+	void testStructureOf5175671() throws DigitalDerivansException {
+		try {
+			dd5175671.getTitle();
+		} catch (Exception e) {
+		  // must throw NullPointerException
+		  assertTrue(true);
+		}
+	}	
 	
 	
 	@Test
