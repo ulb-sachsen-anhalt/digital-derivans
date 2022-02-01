@@ -21,7 +21,12 @@ public enum TestResource {
 	 * rather small digital object (4 pages only)
 	 */
 	HD_Aa_737429(Path.of("src/test/resources/mets/vls/hd-Aa-737429.mets.xml")),
-	
+
+	/**
+	 * contains titleInfo but child node title is missing 
+	 */
+	HD_Aa_5175671(Path.of("src/test/resources/mets/vls/5175671.mets.xml")),
+
 	/**
 	 * contains logical links to non-existing physical structures 
 	 */
