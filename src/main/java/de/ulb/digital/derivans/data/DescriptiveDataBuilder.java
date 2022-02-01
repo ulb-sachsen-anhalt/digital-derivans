@@ -63,12 +63,12 @@ class DescriptiveDataBuilder {
 	}
 
 
-	DescriptiveDataBuilder urn() throws DigitalDerivansException {
+	DescriptiveDataBuilder urn() {
 		this.urn = getURN();
 		return this;
 	}
 
-	DescriptiveDataBuilder person() throws DigitalDerivansException {
+	DescriptiveDataBuilder person() {
 		this.person = getPerson();
 		return this;
 	}
@@ -78,17 +78,17 @@ class DescriptiveDataBuilder {
 		return this;
 	}
 
-	DescriptiveDataBuilder title() throws DigitalDerivansException {
+	DescriptiveDataBuilder title() {
 		this.title = getTitle();
 		return this;
 	}
 
-	DescriptiveDataBuilder access() throws DigitalDerivansException {
+	DescriptiveDataBuilder access() {
 		accessCondition = getAccessCondition();
 		return this;
 	}
 
-	DescriptiveDataBuilder year() throws DigitalDerivansException {
+	DescriptiveDataBuilder year() {
 		year = getYear();
 		return this;
 	}
@@ -105,7 +105,7 @@ class DescriptiveDataBuilder {
 		return dd;
 	}
 
-	String getPerson() throws DigitalDerivansException {
+	String getPerson() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			List<Element> nameSubtrees = mods.getChildren("name", NS_MODS);
@@ -212,7 +212,7 @@ class DescriptiveDataBuilder {
 		throw new DigitalDerivansException("found no valid recordIdentifier");
 	}
 
-	String getTitle() throws DigitalDerivansException {
+	String getTitle() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			Element titleInfo = mods.getChild("titleInfo", NS_MODS);
@@ -236,7 +236,7 @@ class DescriptiveDataBuilder {
 		return MetadataStore.UNKNOWN;
 	}
 
-	String getURN() throws DigitalDerivansException {
+	String getURN() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			List<Element> identifiers = mods.getChildren("identifier", NS_MODS);
@@ -249,7 +249,7 @@ class DescriptiveDataBuilder {
 		return MetadataStore.UNKNOWN;
 	}
 
-	String getAccessCondition() throws DigitalDerivansException {
+	String getAccessCondition() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			Element cond = mods.getChild("accessCondition", NS_MODS);
@@ -260,7 +260,7 @@ class DescriptiveDataBuilder {
 		return MetadataStore.UNKNOWN;
 	}
 
-	String getYear() throws DigitalDerivansException {
+	String getYear() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
