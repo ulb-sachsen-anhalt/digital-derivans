@@ -220,11 +220,11 @@ class DescriptiveDataBuilder {
 				Element titleText = titleInfo.getChild("title", NS_MODS);
 				if (titleText != null) {
 					return titleText.getTextNormalize();
-				} else {
-					String msg = "Invalid MODS: missing title in titleInfo";
-					LOGGER.error(msg);
-					throw new DigitalDerivansException(msg);
 				}
+				Element subtitleText = mods.getChild("subTitle", NS_MODS);	
+				if (subtitleText != null) {	
+					return subtitleText.getTextNormalize();
+				}	
 			} else {
 				// if exists a relatedItem ...
 				if(mods.getChild("relatedItem", NS_MODS) != null) {
