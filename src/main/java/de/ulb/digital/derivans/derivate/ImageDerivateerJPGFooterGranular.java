@@ -63,10 +63,10 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	}
 	
 	private void renderFooterGranular(DigitalPage page) {
-		String source = page.getImagePath().toString();
+		Path sourcePath = page.getImagePath();
 		this.resolver.setImagePath(page, this);
 		String target = page.getImagePath().toString();
-		LOGGER.debug("read '{}' write '{}'", source, target);
+		LOGGER.debug("read '{}' write '{}'", sourcePath, target);
 
 		// keep track of granularity
 		String urn = "";
@@ -81,7 +81,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 		BufferedImage bi = imageProcessor.clone(this.footerBuffer);
 		DigitalFooter footer = new DigitalFooter(this.footer.getText().get(0), urn, bi);
 		try {
-			byte[] bytes = Files.readAllBytes(Path.of(source));
+			byte[] bytes = Files.readAllBytes(sourcePath);
 			BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(bytes));
 			if (this.maximal != null) {
 				originalImage = handleMaximalDimension(originalImage);
@@ -100,7 +100,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 				float qualityRatio = ((float) quality) / 100.0f;
 				
 				// handle IIOMetadata
-				ImageInputStream iis = ImageIO.createImageInputStream(page.getImagePath().toFile());
+				ImageInputStream iis = ImageIO.createImageInputStream(sourcePath.toFile());
 				Iterator<ImageReader> readerator = ImageIO.getImageReaders(iis);
 				IIOMetadata metadata = null;
 				if (readerator.hasNext()) {

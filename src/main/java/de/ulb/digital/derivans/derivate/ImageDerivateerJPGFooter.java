@@ -106,12 +106,12 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 
 	private String renderFooter(DigitalPage page) {
 		// resolve paths for source and target
-		String source = page.getImagePath().toString();
+		Path sourcePath = page.getImagePath();
 		this.resolver.setImagePath(page, this);
 		String target = page.getImagePath().toString();
 
 		try {
-			byte[] bytes = Files.readAllBytes(Path.of(source));
+			byte[] bytes = Files.readAllBytes(sourcePath);
 			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 			if (this.maximal != null) {
 				image = handleMaximalDimension(image);
@@ -121,7 +121,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 			float ratio = (float) currentW / (float) currentFooter.getWidth();
 			currentFooter = imageProcessor.scale(currentFooter, ratio);
 			String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(),
-					currentFooter.getHeight(), ratio, source);
+					currentFooter.getHeight(), ratio, sourcePath);
 			LOGGER.trace(msg);
 			if (currentFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
 				String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
@@ -133,7 +133,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 			float qualityRatio = ((float) quality) / 100.0f;
 			
 			// handle IIOMetadata
-			ImageInputStream iis = ImageIO.createImageInputStream(page.getImagePath().toFile());
+			ImageInputStream iis = ImageIO.createImageInputStream(sourcePath.toFile());
 			Iterator<ImageReader> readerator = ImageIO.getImageReaders(iis);
 			IIOMetadata metadata = null;
 			if (readerator.hasNext()) {
@@ -146,7 +146,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 			imageProcessor.writeJPGWithQualityAndMetadata(image, target, qualityRatio, metadata);
 			page.setFooterHeight(currentFooter.getHeight());
 		} catch (IOException | DigitalDerivansException e) {
-			LOGGER.error("pathIn: {}, footer: {} => {}", source, footer, e.getMessage());
+			LOGGER.error("pathIn: {}, footer: {} => {}", sourcePath, footer, e.getMessage());
 		}
 
 		return target;

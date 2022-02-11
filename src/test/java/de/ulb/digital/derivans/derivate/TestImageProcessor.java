@@ -73,7 +73,7 @@ class TestImageProcessor {
 		assertEquals("1", firstGrandchild.getAttributes().getNamedItem("resUnits").getNodeValue());
 	}
 
-	private Optional<IIOMetadata> getMetadataFromImagePath(Path sourcePath) {
+	Optional<IIOMetadata> getMetadataFromImagePath(Path sourcePath) {
 		try {
 			File file = sourcePath.toFile();
 			ImageInputStream iis = ImageIO.createImageInputStream(file);
@@ -89,7 +89,7 @@ class TestImageProcessor {
 		return Optional.empty();
 	}
 
-	private void displayMetadata(IIOMetadata metadata) {
+	void displayMetadata(IIOMetadata metadata) {
 		try {
 			String[] names = metadata.getMetadataFormatNames();
 			int length = names.length;

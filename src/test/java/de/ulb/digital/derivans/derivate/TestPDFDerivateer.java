@@ -140,10 +140,11 @@ public class TestPDFDerivateer {
 		// assert
 		assertEquals(10, pagesInfo.size());
 		assertEquals(1, pagesInfo.get(0).getNumber());
-		assertEquals(625, pagesInfo.get(0).getDimension().width);
-		assertEquals(600, pagesInfo.get(0).getDimension().height);
-		assertEquals(500, pagesInfo.get(5).getDimension().width);
-		assertEquals(700, pagesInfo.get(5).getDimension().height);
+		// adjusted because differences between images and document dimensions
+		assertEquals(150, pagesInfo.get(0).getDimension().width);  // was: 650
+		assertEquals(144, pagesInfo.get(0).getDimension().height); // was: 600
+		assertEquals(120, pagesInfo.get(5).getDimension().width);  // was: 500
+		assertEquals(168, pagesInfo.get(5).getDimension().height); // was: 700
 	}
 
 	@Test

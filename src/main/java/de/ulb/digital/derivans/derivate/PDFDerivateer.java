@@ -65,6 +65,10 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private String pdfConformanceLevel;
 
+	public static final float ITEXT_ASSUMES_DPI = 72.0f;
+
+	private float dpiLikeScale = ITEXT_ASSUMES_DPI / 300.0f;
+
 	public PDFDerivateer(DerivansData input, DerivansData output, DigitalStructureTree tree,
 			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel) {
 		super(input, output);
@@ -105,8 +109,9 @@ public class PDFDerivateer extends BaseDerivateer {
 			for (DigitalPage page : pages) {
 				String imagePath = page.getImagePath().toString();
 				Image image = Image.getInstance(imagePath);
-				float imageHeight = image.getHeight();
-				float imageWidth = image.getWidth();
+				image.scaleAbsolute(image.getWidth() * this.dpiLikeScale, image.getHeight() * this.dpiLikeScale);
+				float imageHeight = image.getScaledHeight();
+				float imageWidth = image.getScaledWidth();
 				// re-set page document dimension for *each* page since
 				if (document.setPageSize(new Rectangle(imageWidth, imageHeight))) {
 					LOGGER.debug("re-set document pageSize {}x{}", imageWidth, imageHeight);
@@ -127,6 +132,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 		String imagePath = page.getImagePath().toString();
 		Image image = Image.getInstance(imagePath);
+		image.scaleAbsolute(image.getWidth() * this.dpiLikeScale, image.getHeight() * this.dpiLikeScale);
 		
 		// push image data as base graphic content
 		PdfContentByte over = writer.getDirectContent();
@@ -136,9 +142,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		// push ocr if any
 		Optional<OCRData> optOcr = page.getOcrData();
 		if (optOcr.isPresent()) {
-
 			OCRData ocrData = optOcr.get();
-
 			// get to know current image dimensions
 			// most likely to differ due subsequent scaling derivation steps
 			// height has also changed if additional footer has been applied to image
@@ -153,7 +157,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			}
 			// need to scale?
 			// page height corresponds to original image height
-			float currentImageHeight = image.getHeight();
+			float currentImageHeight = image.getScaledHeight();
 			float ratio = currentImageHeight / pageHeight;
 			if (Math.abs(1.0 - ratio) > 0.01) {
 				LOGGER.trace("scale ocr data for '{}' by '{}'", page.getImagePath(), ratio);
@@ -294,10 +298,11 @@ public class PDFDerivateer extends BaseDerivateer {
 		Image image = null;
 		try {
 			image = Image.getInstance(digitalPages.get(0).getImagePath().toString());
+			image.scaleAbsolute(image.getWidth() * this.dpiLikeScale, image.getHeight() * this.dpiLikeScale);
 		} catch (BadElementException | IOException e) {
 			throw new DigitalDerivansException(e);
 		}
-		Rectangle firstPageSize = new Rectangle(0, 0, image.getWidth(), image.getHeight());
+		Rectangle firstPageSize = new Rectangle(0, 0, image.getScaledWidth(), image.getScaledHeight());
 		Document document = new Document(firstPageSize, 0f, 0f, 0f, 0f);
 
 		boolean hasPagesAdded = false;
