@@ -53,9 +53,12 @@ public enum TestResource {
 	/**
 	 * Kitodo 3
 	 */
-	K3_ZD2_1021634069(Path.of("src/test/resources/mets/kitodo3/zd2-1021634069-18680621/1021634069-18680621.xml"));
+	K3_ZD2_1021634069(Path.of("src/test/resources/mets/kitodo3/zd2-1021634069-18680621/1021634069-18680621.xml")),
 
-	
+	/**
+	 * Image Processing
+	 */
+	IMG_JPG_148811035_MAX_1(Path.of("src/test/resources/alto/148811035/MAX/00000001.jpg")),
 	;
 	
 	private Path path;

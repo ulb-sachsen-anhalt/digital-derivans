@@ -3,8 +3,12 @@ package de.ulb.digital.derivans.derivate;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.stream.ImageInputStream;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
@@ -57,7 +61,16 @@ public class ImageDerivateerJPG extends ImageDerivateer {
 			}
 			float qualityRatio = ((float) quality) / 100.0f;
 			LOGGER.trace("write {} ({})", target, qualityRatio);
-			imageProcessor.writeJPGWithQuality(buffer, target, qualityRatio);
+			ImageInputStream iis = ImageIO.createImageInputStream(pathIn.toFile());
+			Iterator<ImageReader> readerator = ImageIO.getImageReaders(iis);
+			IIOMetadata metadata = null;
+			if (readerator.hasNext()) {
+				ImageReader readerOne = readerator.next();
+				readerOne.setInput(iis);
+				metadata = readerOne.getImageMetadata(0);
+				LOGGER.debug("found existing IIOMetadata {}", metadata);
+			}
+			imageProcessor.writeJPGWithQualityAndMetadata(buffer, target, qualityRatio, metadata);
 			buffer.flush();
 		} catch (IOException e) {
 			LOGGER.error(e);

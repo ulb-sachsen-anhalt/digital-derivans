@@ -10,9 +10,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.stream.ImageInputStream;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
@@ -127,7 +131,19 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 			BufferedImage bi = addTextLayer2Footer(currentFooter, footer);
 			image = imageProcessor.append(image, bi);
 			float qualityRatio = ((float) quality) / 100.0f;
-			imageProcessor.writeJPGWithQuality(image, target, qualityRatio);
+			
+			// handle IIOMetadata
+			ImageInputStream iis = ImageIO.createImageInputStream(page.getImagePath().toFile());
+			Iterator<ImageReader> readerator = ImageIO.getImageReaders(iis);
+			IIOMetadata metadata = null;
+			if (readerator.hasNext()) {
+				ImageReader readerOne = readerator.next();
+				readerOne.setInput(iis);
+				metadata = readerOne.getImageMetadata(0);
+				LOGGER.debug("found existing IIOMetadata {}", metadata);
+			}
+
+			imageProcessor.writeJPGWithQualityAndMetadata(image, target, qualityRatio, metadata);
 			page.setFooterHeight(currentFooter.getHeight());
 		} catch (IOException | DigitalDerivansException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", source, footer, e.getMessage());

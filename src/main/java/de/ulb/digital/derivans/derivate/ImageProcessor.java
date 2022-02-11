@@ -10,6 +10,7 @@ import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.FileImageOutputStream;
 
@@ -51,6 +52,7 @@ class ImageProcessor {
 		return dimg;
 	}
 
+	@Deprecated
 	boolean writeJPGWithQuality(BufferedImage image, String pathOut, float quality) throws IOException {
 		JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
 		jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
@@ -62,4 +64,17 @@ class ImageProcessor {
 		fios.close();
 		return true;
 	}
+	
+	boolean writeJPGWithQualityAndMetadata(BufferedImage image, String pathOut, float quality, IIOMetadata metadata) throws IOException {
+		JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
+		jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+		jpegParams.setCompressionQuality(quality);
+		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+		FileImageOutputStream fios = new FileImageOutputStream(new File(pathOut));
+		writer.setOutput(fios);
+		writer.write(null, new IIOImage(image, null, metadata), jpegParams);
+		fios.close();
+		return true;
+	}
+
 }
