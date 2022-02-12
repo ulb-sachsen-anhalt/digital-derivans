@@ -19,9 +19,10 @@ import org.apache.logging.log4j.core.LoggerContext;
 
 import de.ulb.digital.derivans.DerivansParameter;
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.model.CommonConfiguration;
+//import de.ulb.digital.derivans.model.CommonConfiguration;
 import de.ulb.digital.derivans.model.DerivateStep;
 import de.ulb.digital.derivans.model.DerivateType;
+import de.ulb.digital.derivans.model.PDFMetaInformation;
 
 /**
  * 
@@ -46,7 +47,8 @@ public class DerivansConfiguration {
 
 	private List<DerivateStep> derivateSteps;
 	
-	private CommonConfiguration commonConfiguration;
+//	private CommonConfiguration commonConfiguration;
+	private PDFMetaInformation pdfMeta;
 	
 	private List<String> prefixes;
 
@@ -60,7 +62,7 @@ public class DerivansConfiguration {
 	public DerivansConfiguration(DerivansParameter params) throws DigitalDerivansException {
 		this.quality = DefaultConfiguration.DEFAULT_QUALITY;
 		this.prefixes = new ArrayList<>();
-		this.commonConfiguration = new CommonConfiguration();
+		this.pdfMeta = new PDFMetaInformation();
 		if (params.getQuality() != null) {
 			this.quality = params.getQuality();
 		}
@@ -155,8 +157,8 @@ public class DerivansConfiguration {
 		return derivateSteps;
 	}
 	
-	public CommonConfiguration getCommon() {
-		 return this.commonConfiguration;
+	public PDFMetaInformation getPdfMetainformation() {
+		 return this.pdfMeta;
 	}
 	
 	/**
@@ -298,21 +300,28 @@ public class DerivansConfiguration {
 			String keyMetadataCreator = derivateSection + ".metadata_creator";
 			Optional<String> optCreator = extractValue(conf, keyMetadataCreator, String.class);
 			if(optCreator.isPresent()) {
-				this.commonConfiguration.setCreator(optCreator);
+				this.pdfMeta.setCreator(optCreator);
 			}
 			
 			// metadata keyword pdf
 			String keyMetadataKeyword = derivateSection + ".metadata_keywords";
 			Optional<String> optKeywords = extractValue(conf, keyMetadataKeyword, String.class);
 			if(optKeywords.isPresent()) {
-				this.commonConfiguration.setKeywords(optKeywords);
+				this.pdfMeta.setKeywords(optKeywords);
 			}
 						
 			// metadata licence 
 			String keyMetadataLicense = derivateSection + ".metadata_license";
 			Optional<String> optLicense = extractValue(conf, keyMetadataLicense, String.class);
 			if(optLicense.isPresent()) {
-				this.commonConfiguration.setLicense(optLicense);
+				this.pdfMeta.setLicense(optLicense);
+			}
+			
+			// pdf image dpi for scaling image data 
+			String keyPdfImageDPI = derivateSection + ".image_dpi";
+			Optional<String> optImageDpi = extractValue(conf, keyPdfImageDPI, String.class);
+			if(optImageDpi.isPresent()) {
+				this.pdfMeta.setImageDpi(Integer.valueOf(optImageDpi.get()));
 			}
 
 			this.derivateSteps.add(step);
@@ -320,7 +329,6 @@ public class DerivansConfiguration {
 			derivateSection = String.format("derivate_%02d", nSection);
 			section = conf.childConfigurationsAt(derivateSection);
 		}
-
 	}
 
 	private static <T> Optional<T> extractValue(INIConfiguration conf, String key, Class<T> clazz) {

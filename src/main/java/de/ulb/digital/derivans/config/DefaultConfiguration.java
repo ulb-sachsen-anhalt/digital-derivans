@@ -18,6 +18,8 @@ public class DefaultConfiguration {
 	// PDF_A_1A, PDF_A_1B, PDF_A_2A, PDF_A_2B 
 	// PDF_A_2U, PDF_A_3A, PDF_A_3B, PDF_A_3U
 	public static final String PDFA_CONFORMANCE_LEVEL = "PDF_A_1B";
+	
+	public static final int PDF_IMAGE_DPI = 300;
 
 	public static final String DEFAULT_FONT = "./src/test/resources/ttf/FreeMonoBold.ttf";
 

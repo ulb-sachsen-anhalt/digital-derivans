@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 
 import org.jdom2.Element;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,17 +31,17 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
 class TestMetadataStoreVLSMultivolumes {
 
 	static IMetadataStore mds19788;
-	
+
 	static DescriptiveData dd19788;
-	
+
 	static IMetadataStore mds11250807;
-	
+
 	static DescriptiveData dd11250807;
-	
+
 	static IMetadataStore mds9427337;
-	
+
 	static DescriptiveData dd9427337;
-	
+
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
 		mds19788 = new MetadataStore(TestResource.VD17_Af_19788.get());
@@ -55,8 +54,6 @@ class TestMetadataStoreVLSMultivolumes {
 
 	@Test
 	void testDescriptiveDataVD17Volume() throws DigitalDerivansException {
-		// PDF creator from configuration, not from METS/MODS
-		assertTrue(dd19788.getCreator().isEmpty());
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
 		assertEquals("005209242", dd19788.getIdentifier());
 		// mods:titleInfo/mods:title
@@ -78,7 +75,7 @@ class TestMetadataStoreVLSMultivolumes {
 
 	/**
 	 * 
-	 * Some MVW F-Stage from menadoc with logical structure "section" / "section" 
+	 * Some MVW F-Stage from menadoc with logical structure "section" / "section"
 	 * 
 	 * @throws DigitalDerivansException
 	 */
@@ -91,7 +88,6 @@ class TestMetadataStoreVLSMultivolumes {
 		DescriptiveData dd = mds.getDescriptiveData();
 
 		// assert
-		assertTrue(dd.getCreator().isEmpty());
 		assertEquals("385228910", dd.getIdentifier());
 		assertEquals("Band", dd.getTitle());
 		assertEquals("urn:nbn:de:gbv:3:5-8691", dd.getUrn());
@@ -135,7 +131,7 @@ class TestMetadataStoreVLSMultivolumes {
 		assertEquals(1, children.size());
 		assertEquals("Disputatio Ethica Prima De Summo Bono Practico Quod Sit Et Quid Sit", children.get(0).getLabel());
 		assertEquals(1, children.get(0).getPage());
-		
+
 		// level 3 = F-Stage struct
 		List<DigitalStructureTree> grandchilds = children.get(0).getSubstructures();
 		assertEquals("Titelblatt", grandchilds.get(0).getLabel());
@@ -144,26 +140,23 @@ class TestMetadataStoreVLSMultivolumes {
 		assertEquals(2, grandchilds.get(1).getPage());
 	}
 
-	
 	@Test
 	void testDescriptiveData11250807() throws DigitalDerivansException {
 		assertEquals("urn:nbn:de:gbv:3:1-699854", dd11250807.getUrn());
 		assertEquals("005836395", dd11250807.getIdentifier());
-		assertEquals(Optional.empty(), dd11250807.getCreator());
 		assertEquals("Martini, Jakob", dd11250807.getPerson());
 		assertEquals("De Compositione Syllogismi", dd11250807.getTitle());
 		assertEquals("1616", dd11250807.getYearPublished());
 	}
-	
 
 	@Test
 	void testStructure11250807() throws DigitalDerivansException {
 		DigitalStructureTree dst = mds11250807.getStructure();
-		
+
 		// level 1 = C-Stage
 		assertEquals("Cursus Philosophici Disputatio ...", dst.getLabel());
 		assertEquals(1, dst.getPage());
-		
+
 		// level 2 = F-Stage
 		List<DigitalStructureTree> children = dst.getSubstructures();
 		assertEquals(1, children.size());
@@ -210,13 +203,14 @@ class TestMetadataStoreVLSMultivolumes {
 	@Test
 	void testDescriptiveDataOf9427337() throws DigitalDerivansException {
 		assertEquals("urn:nbn:de:gbv:3:1-635986", dd9427337.getUrn());
-		assertEquals(Optional.empty(), dd9427337.getCreator());
 		assertEquals("Steuart, James", dd9427337.getPerson());
 		assertEquals("1771", dd9427337.getYearPublished());
-		assertEquals("Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen", dd9427337.getTitle());
+		assertEquals(
+				"Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen",
+				dd9427337.getTitle());
 		assertEquals("211999628", dd9427337.getIdentifier());
 	}
-	
+
 	/**
 	 * 
 	 * Check structure for common VD18 MVW F-Stage
@@ -228,14 +222,18 @@ class TestMetadataStoreVLSMultivolumes {
 		DigitalStructureTree dst = mds9427337.getStructure();
 		assertNotNull(dst);
 
-		assertEquals("Sir James Stewarts, Baronets, Untersuchung der Grund-Säze von der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen", dst.getLabel());
+		assertEquals(
+				"Sir James Stewarts, Baronets, Untersuchung der Grund-Säze von der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen",
+				dst.getLabel());
 		assertEquals(1, dst.getPage());
 		assertTrue(dst.hasSubstructures());
 
 		// level 1 - F-Stage
 		List<DigitalStructureTree> children = dst.getSubstructures();
 		assertEquals(1, children.size());
-		assertEquals("Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen", children.get(0).getLabel());
+		assertEquals(
+				"Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen",
+				children.get(0).getLabel());
 		assertEquals(1, children.get(0).getPage());
 
 		// level 1+2 - F-Stage
@@ -244,26 +242,28 @@ class TestMetadataStoreVLSMultivolumes {
 		var grandChildren = children.get(0).getSubstructures();
 		assertEquals("Exlibris", grandChildren.get(1).getLabel());
 		assertEquals(2, grandChildren.get(1).getPage());
-		assertEquals("Untersuchung der Grundsäze der Staats-Wirthschaft Drittes Buch von Geld und Münze.", grandChildren.get(4).getLabel());
+		assertEquals("Untersuchung der Grundsäze der Staats-Wirthschaft Drittes Buch von Geld und Münze.",
+				grandChildren.get(4).getLabel());
 		assertEquals(7, grandChildren.get(4).getPage());
 	}
-	
+
 	@Test
 	void testIntermediateVD17State() throws DigitalDerivansException {
 		var mds = new MetadataStore(TestResource.VD17_AF_11250807.get());
 		var dd = mds.getDescriptiveData();
 		var strct = mds.getStructure();
-		
+
 		// assert
 		assertEquals("De Compositione Syllogismi", dd.getTitle());
 		assertEquals("Cursus Philosophici Disputatio ...", strct.getLabel());
 		assertEquals("De Compositione Syllogismi", strct.getSubstructures().get(0).getLabel());
 		assertEquals("Vorderdeckel", strct.getSubstructures().get(0).getSubstructures().get(0).getLabel());
 	}
-	
+
 	/**
 	 * 
-	 * Since this test alters the provided METS/MODS, it is required to be executed on a temp copy
+	 * Since this test alters the provided METS/MODS, it is required to be executed
+	 * on a temp copy
 	 * 
 	 * @param tempDir
 	 * @throws DigitalDerivansException
@@ -275,13 +275,13 @@ class TestMetadataStoreVLSMultivolumes {
 		Path sourceMETS = TestResource.VD17_AF_11250807.get();
 		Path targetMETS = tempDir.resolve("11250807.xml");
 		Files.copy(sourceMETS, targetMETS);
-		
+
 		var mds = new MetadataStore(targetMETS);
-		
+
 		// arrange
 		Element primMods = mds.getMetadataHandler().getPrimaryMods();
 		assertEquals(20, primMods.getChildren().size());
-		
+
 		// act + assert
 		assertTrue(mds.enrichPDF("PDF_11250807"));
 	}

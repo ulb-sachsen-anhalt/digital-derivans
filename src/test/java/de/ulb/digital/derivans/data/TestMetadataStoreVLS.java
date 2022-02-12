@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -30,15 +29,15 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
 class TestMetadataStoreVLS {
 
 	static IMetadataStore mds737429;
-	
+
 	static DescriptiveData dd737429;
-	
+
 	static IMetadataStore mds201517;
-	
+
 	static DescriptiveData dd201517;
 
 	static IMetadataStore mds5175671;
-	
+
 	static DescriptiveData dd5175671;
 
 	@BeforeAll
@@ -61,8 +60,6 @@ class TestMetadataStoreVLS {
 	 */
 	@Test
 	void testDescriptiveDataHDmonography() throws DigitalDerivansException {
-		// PDF creator from configuration, not from METS/MODS
-		assertTrue(dd737429.getCreator().isEmpty());
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
 		assertEquals("191092622", dd737429.getIdentifier());
 		// mods:titleInfo/mods:title
@@ -81,8 +78,6 @@ class TestMetadataStoreVLS {
 		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl
 		assertEquals("Officina Langenhemia", dd737429.getPerson());
 	}
-
-	
 
 	@Test
 	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {
@@ -123,25 +118,23 @@ class TestMetadataStoreVLS {
 		assertEquals(2, children.get(1).getPage());
 	}
 
-	
 	@Test
 	void testDescriptiveDataOf201517() throws DigitalDerivansException {
 		assertEquals("urn:nbn:de:gbv:3:3-6252", dd201517.getUrn());
 		assertEquals("535610149", dd201517.getIdentifier());
-		assertEquals(Optional.empty(), dd201517.getCreator());
 		assertEquals("Micraelius, Johann", dd201517.getPerson());
-		assertEquals("Historia Ecclesiastica, Qua Ab Adamo Judaicae, & a Salvatore nostro Christianae Ecclesiae, ritus, persecutiones, Concilia, Doctores, Haereses & Schismata proponuntur", dd201517.getTitle());
+		assertEquals(
+				"Historia Ecclesiastica, Qua Ab Adamo Judaicae, & a Salvatore nostro Christianae Ecclesiae, ritus, persecutiones, Concilia, Doctores, Haereses & Schismata proponuntur",
+				dd201517.getTitle());
 		assertEquals("1699", dd201517.getYearPublished());
 	}
-
 
 	@Test
 	void testStructureOf5175671() throws DigitalDerivansException {
 		String title = dd5175671.getTitle();
 		assertEquals(title, "n.a.");
-	}	
-	
-	
+	}
+
 	@Test
 	void testStructureOf201517() throws DigitalDerivansException {
 		DigitalStructureTree dst = mds201517.getStructure();
@@ -225,7 +218,7 @@ class TestMetadataStoreVLS {
 			}
 			assertTrue(subTree.getPage() > 0);
 		}
-		
+
 		// assert even some more
 		assertEquals("1740", dd.getYearPublished());
 		assertEquals("Prault, Pierre", dd.getPerson());

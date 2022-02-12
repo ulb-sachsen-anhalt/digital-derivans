@@ -73,8 +73,6 @@ class TestMetadataStoreKitodo2 {
 	 */
 	@Test
 	void testDescriptiveDataFromKitodo2() throws DigitalDerivansException {
-		// PDF creator from configuration, not from METS/MODS
-		assertTrue(dd147573602.getCreator().isEmpty());
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
 		assertEquals("147573602", dd147573602.getIdentifier());
 		// mods:titleInfo/mods:title

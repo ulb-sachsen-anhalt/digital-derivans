@@ -34,7 +34,6 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
@@ -63,20 +62,15 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private AtomicInteger nPagesWithOCR = new AtomicInteger();
 
-	private String pdfConformanceLevel;
+	private PDFMetaInformation pdfMeta;
+	
+//	private String pdfConformanceLevel;
 
 	public static final float ITEXT_ASSUMES_DPI = 72.0f;
+	
+	private int dpi;
 
-	private float dpiLikeScale = ITEXT_ASSUMES_DPI / 300.0f;
-
-	public PDFDerivateer(DerivansData input, DerivansData output, DigitalStructureTree tree,
-			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel) {
-		super(input, output);
-		this.structure = tree;
-		this.description = descriptiveData;
-		this.digitalPages = pages;
-		this.pdfConformanceLevel = conformanceLevel;
-	}
+	private float dpiScale = 1.0f;
 
 	/**
 	 * 
@@ -87,15 +81,15 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param descriptiveData
 	 * @param pages
 	 */
-	public PDFDerivateer(BaseDerivateer basic, Path outputPath, DigitalStructureTree tree,
-			DescriptiveData descriptiveData, List<DigitalPage> pages, String conformanceLevel) {
+	public PDFDerivateer(BaseDerivateer basic, DigitalStructureTree tree,
+			DescriptiveData descriptiveData, List<DigitalPage> pages, 
+			PDFMetaInformation metaInfo) {
 		super(basic.getInput(), basic.getOutput());
-		// necessary to set specific filename in output dir
-		this.getOutput().setPath(outputPath);
 		this.structure = tree;
-		this.description = descriptiveData;
+//		this.description = descriptiveData;
 		this.digitalPages = pages;
-		this.pdfConformanceLevel = conformanceLevel;
+		this.pdfMeta = metaInfo;
+		this.setDpi(metaInfo.getImageDpi());
 	}
 
 	private int addPages(Document document, PdfWriter writer, List<DigitalPage> pages) throws DigitalDerivansException {
@@ -109,7 +103,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			for (DigitalPage page : pages) {
 				String imagePath = page.getImagePath().toString();
 				Image image = Image.getInstance(imagePath);
-				image.scaleAbsolute(image.getWidth() * this.dpiLikeScale, image.getHeight() * this.dpiLikeScale);
+				image.scaleAbsolute(image.getWidth() * this.dpiScale, image.getHeight() * this.dpiScale);
 				float imageHeight = image.getScaledHeight();
 				float imageWidth = image.getScaledWidth();
 				// re-set page document dimension for *each* page since
@@ -132,7 +126,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 		String imagePath = page.getImagePath().toString();
 		Image image = Image.getInstance(imagePath);
-		image.scaleAbsolute(image.getWidth() * this.dpiLikeScale, image.getHeight() * this.dpiLikeScale);
+		image.scaleAbsolute(image.getWidth() * this.dpiScale, image.getHeight() * this.dpiScale);
 		
 		// push image data as base graphic content
 		PdfContentByte over = writer.getDirectContent();
@@ -298,7 +292,11 @@ public class PDFDerivateer extends BaseDerivateer {
 		Image image = null;
 		try {
 			image = Image.getInstance(digitalPages.get(0).getImagePath().toString());
-			image.scaleAbsolute(image.getWidth() * this.dpiLikeScale, image.getHeight() * this.dpiLikeScale);
+			if (this.dpi == 0) {
+				LOGGER.debug("read xDPI {} from first image {}", image.getDpiX(), digitalPages.get(0).getImagePath());
+				this.setDpi(image.getDpiX());
+			}
+			image.scaleAbsolute(image.getWidth() * this.dpiScale, image.getHeight() * this.dpiScale);
 		} catch (BadElementException | IOException e) {
 			throw new DigitalDerivansException(e);
 		}
@@ -308,40 +306,44 @@ public class PDFDerivateer extends BaseDerivateer {
 		boolean hasPagesAdded = false;
 		boolean hasOutlineAdded = false;
 		Path pathToPDF = this.output.getPath();
+		// if output path points to a directory, use it's name for PDF-file
+		if (Files.isDirectory(pathToPDF)) {
+			pathToPDF = pathToPDF.resolve(pathToPDF.getFileName() + ".pdf");
+		}
 
 		PdfWriter writer = null;
 		try (FileOutputStream fos = new FileOutputStream(pathToPDF.toFile())) {
 
-			if (pdfConformanceLevel != null) {
-				PdfAConformanceLevel pdfaLevel = PdfAConformanceLevel.valueOf(pdfConformanceLevel);
+			if (this.pdfMeta.getConformanceLevel() != null) {
+				PdfAConformanceLevel pdfaLevel = PdfAConformanceLevel.valueOf(this.pdfMeta.getConformanceLevel());
 				writer = PdfAWriter.getInstance(document, fos, pdfaLevel);
 			} else {
 				writer = PdfWriter.getInstance(document, fos);
 			}
 
 			// metadata must be added afterwards creation of pdfWriter
-			document.addTitle(this.description.getTitle());
-			document.addAuthor(this.description.getPerson());
-			Optional<String> optCreator = this.description.getCreator();
+			document.addTitle(this.pdfMeta.getTitle());
+			document.addAuthor(this.pdfMeta.getAuthor());
+			Optional<String> optCreator = this.pdfMeta.getCreator();
 			if (optCreator.isPresent()) {
 				document.addCreator(optCreator.get());
 			}
-			Optional<String> optKeywords = this.description.getKeywords();
+			Optional<String> optKeywords = this.pdfMeta.getKeywords();
 			if (optKeywords.isPresent()) {
 				document.addKeywords(optKeywords.get());
 			}
 			// custom metadata entry -> com.itextpdf.text.Header
-			Optional<String> optLicense = this.description.getLicense();
+			Optional<String> optLicense = this.pdfMeta.getLicense();
 			if (optLicense.isPresent()) {
 				document.add(new Header("Access condition", optLicense.get()));
 			}
-			document.add(new Header("Published", this.description.getYearPublished()));
+			document.add(new Header("Published", this.pdfMeta.getPublicationYear()));
 
 			writer.createXmpMetadata();
 			document.open();
 
 			// add profile if pdf-a required
-			if (pdfConformanceLevel != null) {
+			if (this.pdfMeta.getConformanceLevel() != null) {
 				String iccPath = "icc/sRGB_CS_profile.icm";
 				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPath);
 				ICC_Profile icc = ICC_Profile.getInstance(is);
@@ -371,6 +373,16 @@ public class PDFDerivateer extends BaseDerivateer {
 		LOGGER.info("created pdf '{}' with {} pages (outline:{})", pathToPDF, document.getPageNumber(),
 				hasOutlineAdded);
 		return result ? 1 : 0;
+	}
+
+	private void setDpi(int dpi) {
+		if (dpi > 0 && dpi <= 600) {
+			LOGGER.info("no dpi set, use {}", dpi);
+			this.dpi = dpi;
+			this.dpiScale = ITEXT_ASSUMES_DPI / (float)dpi;
+		} else {
+			LOGGER.error("tried to set invalid dpi: '{}' (must be in range 1 - 600)", dpi);
+		}
 	}
 
 	public AtomicInteger getNPagesWithOCR() {

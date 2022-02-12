@@ -2,7 +2,6 @@ package de.ulb.digital.derivans.derivate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -84,9 +83,14 @@ public class TestPDFDerivateer {
 		DescriptiveData dd = new DescriptiveData();
 		dd.setYearPublished("2020");
 
+		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
-		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
-				pages, null);
+		BaseDerivateer base = new BaseDerivateer(input, output);
+		int pdfImageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
+		PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		pdfMeta.setImageDpi(pdfImageDpi);
+		pdfMeta.mergeWithConfigurationData(dd);
+		IDerivateer handler = new PDFDerivateer(base, get(), null, pages, pdfMeta);
 		int result = handler.create();
 
 		PDFInspector inspector = new PDFInspector(outPath);
@@ -98,7 +102,7 @@ public class TestPDFDerivateer {
 		assertEquals("n.a.", pdfMetaInformation.getTitle());
 		assertEquals("n.a.", pdfMetaInformation.getAuthor());
 		// no default creator information exists
-		assertNull(pdfMetaInformation.getCreator());
+		assertTrue(pdfMetaInformation.getCreator().isEmpty());
 	}
 	
 	@Test
@@ -128,10 +132,12 @@ public class TestPDFDerivateer {
 		// act
 		String pdfName = String.format("pdf-image-%04d.pdf", n_pages);
 		Path outPath = tempDir.resolve(pdfName);
-		DescriptiveData dd = new DescriptiveData();
+		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
-		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, tree, dd,
-				pages, null);
+		BaseDerivateer base = new BaseDerivateer(input, output);
+		PDFMetaInformation pdfMeta= new PDFMetaInformation();
+		pdfMeta.setImageDpi(300);
+		IDerivateer handler = new PDFDerivateer(base, tree, null, pages, pdfMeta);
 		handler.create();
 
 		PDFInspector inspector = new PDFInspector(outPath);
@@ -173,9 +179,14 @@ public class TestPDFDerivateer {
 		DescriptiveData dd = new DescriptiveData();
 		dd.setYearPublished("2020");
 
+		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
-		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
-				pages, level);
+		BaseDerivateer base = new BaseDerivateer(input, output);
+		PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		pdfMeta.setConformanceLevel(level);
+		pdfMeta.setImageDpi(300);
+		pdfMeta.mergeWithConfigurationData(dd);
+		IDerivateer handler = new PDFDerivateer(base, get(), dd, pages, pdfMeta);
 
 		int result = handler.create();
 
@@ -188,7 +199,7 @@ public class TestPDFDerivateer {
 		assertEquals("n.a.", pdfMetaInformation.getTitle());
 		assertEquals("n.a.", pdfMetaInformation.getAuthor());
 		// no default creator information exists
-		assertNull(pdfMetaInformation.getCreator());
+		assertTrue(pdfMetaInformation.getCreator().isEmpty());
 	}
 
 	@Test
@@ -250,9 +261,14 @@ public class TestPDFDerivateer {
 		DescriptiveData dd = new DescriptiveData();
 		dd.setYearPublished("2020");
 
+		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
-		IDerivateer handler = new PDFDerivateer(new DerivansData(pathImages, DerivateType.JPG), output, get(), dd,
-				pages, level);
+		BaseDerivateer base = new BaseDerivateer(input, output);
+		PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		pdfMeta.setConformanceLevel(level);
+		pdfMeta.setImageDpi(144);
+		pdfMeta.mergeWithConfigurationData(dd);
+		IDerivateer handler = new PDFDerivateer(base, get(), dd, pages, pdfMeta);
 
 		int result = handler.create();
 
@@ -265,7 +281,7 @@ public class TestPDFDerivateer {
 		assertEquals("n.a.", pdfMetaInformation.getTitle());
 		assertEquals("n.a.", pdfMetaInformation.getAuthor());
 		// no default creator information exists
-		assertNull(pdfMetaInformation.getCreator());
+		assertTrue(pdfMetaInformation.getCreator().isEmpty());
 	}
 
 	@Test
@@ -324,12 +340,13 @@ public class TestPDFDerivateer {
 		step.setInputPath(pathImageMax);
 		DescriptiveData dd = new DescriptiveData();
 		DigitalStructureTree structure = new DigitalStructureTree();
-		Path pdfPath = resolver.calculatePDFPath(dd, step);
 		List<DigitalPage> pages = resolver.resolveFromStep(step);
 		resolver.enrichOCRFromFilesystem(pages);
+		PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		pdfMeta.mergeWithConfigurationData(dd);
 		
 		// go
-		PDFDerivateer handler = new PDFDerivateer(base, pdfPath, structure, dd, pages, null);
+		PDFDerivateer handler = new PDFDerivateer(base, structure, dd, pages, pdfMeta);
 
 		// act
 		int result = handler.create();

@@ -34,6 +34,8 @@ public class DerivateStep {
 
 	private DerivateType derivateType;
 	
+	private int imageDpi;
+	
 	public DerivateStep() {
 		this.outputType = DefaultConfiguration.DEFAULT_OUTPUT_TYPE;
 		this.quality = DefaultConfiguration.DEFAULT_QUALITY;
@@ -139,5 +141,13 @@ public class DerivateStep {
 			builder.append(outputType);
 		builder.append('}');
 		return builder.toString();
+	}
+
+	public void setImageDpi(int dpi) {
+		this.imageDpi = dpi;
+	}
+	
+	public int getImageDpi() {
+		return this.imageDpi;
 	}
 }

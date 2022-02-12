@@ -1,26 +1,52 @@
 package de.ulb.digital.derivans.model;
 
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
+import org.w3c.dom.Document;
+
+import de.ulb.digital.derivans.data.MetadataStore;
+
+/**
+ * 
+ * Carry any PDF-related Metadata
+ * 
+ * @author hartwig
+ *
+ */
 public class PDFMetaInformation {
 
-	private String author;
-	private String creator;
-	private String title;
+	private String author = MetadataStore.UNKNOWN;;
+	private String title = MetadataStore.UNKNOWN;;
+	private String publicationYear = MetadataStore.UNKNOWN;;
 	private Map<String, String> metadata;
-	private org.w3c.dom.Document xmpMetadata;
+	private Document xmpMetadata;
+	private Optional<String> optCreator = Optional.empty();
+	private Optional<String> optLicense = Optional.empty();
+	private Optional<String> optKeywords = Optional.empty();
+	private String conformanceLevel;
+	private int imageDpi;
 
-	public String getCreator() {
-		return creator;
+	public String getConformanceLevel() {
+		return conformanceLevel;
 	}
 
-	public void setCreator(String creator) {
-		this.creator = creator;
+	public void setConformanceLevel(String conformanceLevel) {
+		this.conformanceLevel = conformanceLevel;
 	}
 
-	public PDFMetaInformation(String author, String title, Map<String, String> metadata,
-			org.w3c.dom.Document xmpMetadata) {
+	public int getImageDpi() {
+		return imageDpi;
+	}
+
+	public void setImageDpi(int imageDpi) {
+		this.imageDpi = imageDpi;
+	}
+
+	public PDFMetaInformation() {
+	}
+	
+	public PDFMetaInformation(String author, String title, Map<String, String> metadata, Document xmpMetadata) {
 		this.author = author;
 		this.title = title;
 		this.metadata = metadata;
@@ -74,27 +100,9 @@ public class PDFMetaInformation {
 		return this;
 	}
 
-	public PDFMetaInformation xmpMetadata(org.w3c.dom.Document xmpMetadata) {
+	public PDFMetaInformation xmpMetadata(Document xmpMetadata) {
 		this.xmpMetadata = xmpMetadata;
 		return this;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof PDFMetaInformation)) {
-			return false;
-		}
-		PDFMetaInformation pDFInformation = (PDFMetaInformation) o;
-		return Objects.equals(author, pDFInformation.author) && Objects.equals(title, pDFInformation.title)
-				&& Objects.equals(metadata, pDFInformation.metadata)
-				&& Objects.equals(xmpMetadata, pDFInformation.xmpMetadata);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(title);
 	}
 
 	@Override
@@ -103,4 +111,53 @@ public class PDFMetaInformation {
 				+ "'" + ", xmpMetadata='" + getXmpMetadata() + "'" + "}";
 	}
 
+	public Optional<String> getCreator() {
+		return this.optCreator;
+	}
+
+	public Optional<String> getKeywords() {
+		return this.optKeywords;
+	}
+
+	public Optional<String> getLicense() {
+		return this.optLicense;
+	}
+
+	public void setCreator(Optional<String> optCreator) {
+		this.optCreator = optCreator;
+	}
+
+	public void setLicense(Optional<String> optLicence) {
+		this.optLicense = optLicence;
+	}
+
+	public void setKeywords(Optional<String> optKeywords) {
+		this.optKeywords = optKeywords;
+	}
+
+	public String getPublicationYear() {
+		return publicationYear;
+	}
+
+	public void setPublicationYear(String publicationYear) {
+		this.publicationYear = publicationYear;
+	}
+	
+	/**
+	 * 
+	 * Enrich information from configuration in workflow.
+	 * 
+	 * Attention: overrides license from Metadata (if any present)
+	 * 
+	 * @param dd
+	 */
+	public void mergeWithConfigurationData(DescriptiveData dd) {
+		Optional<String> optMetaLicense = dd.getLicense();
+		if (optMetaLicense.isPresent() && this.getLicense().isEmpty()) {
+			this.setLicense(optMetaLicense);
+		}
+		this.setAuthor(dd.getPerson());
+		this.setTitle(dd.getTitle());
+		this.setPublicationYear(dd.getYearPublished());
+	}
 }

@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -73,7 +74,9 @@ public class PDFInspector {
 
 		PDFMetaInformation pmi = new PDFMetaInformation(author, title, metadata, xmpMetadata);
 		String creator = metadata.get("Creator");
-		pmi.setCreator(creator);
+		if(creator != null) {
+			pmi.setCreator(Optional.of(creator));
+		}
 
 		return pmi;
 	}

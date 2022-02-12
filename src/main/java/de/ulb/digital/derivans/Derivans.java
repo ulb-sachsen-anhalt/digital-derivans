@@ -23,7 +23,7 @@ import de.ulb.digital.derivans.derivate.ImageDerivateerJPGFooter;
 import de.ulb.digital.derivans.derivate.ImageDerivateerJPGFooterGranular;
 import de.ulb.digital.derivans.derivate.ImageDerivateerJPG;
 import de.ulb.digital.derivans.derivate.PDFDerivateer;
-import de.ulb.digital.derivans.model.CommonConfiguration;
+//import de.ulb.digital.derivans.model.CommonConfiguration;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateStep;
 import de.ulb.digital.derivans.model.DerivateType;
@@ -31,6 +31,7 @@ import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.PDFMetaInformation;
 
 /**
  * 
@@ -55,7 +56,7 @@ public class Derivans {
 	
 	private Optional<Path> optPDFPath = Optional.empty();
 
-	private CommonConfiguration commonConfiguration;
+	private PDFMetaInformation pdfMeta;
 	
 	private DerivansPathResolver resolver;
 
@@ -81,7 +82,7 @@ public class Derivans {
 		this.resolver.setNamePrefixes(conf.getPrefixes());
 
 		// common configuration
-		this.commonConfiguration = conf.getCommon();
+		this.pdfMeta = conf.getPdfMetainformation();
 
 		// handle Derivate Steps
 		var confSteps = conf.getDerivateSteps();
@@ -150,14 +151,21 @@ public class Derivans {
 				derivateers.add(d);
 
 			} else if (type == DerivateType.PDF) {
-
-				// merge configuration and metadata
-				enrichConfigurationData(descriptiveData);
-
 				// calculate final PDF path for post processing of metadata
 				Path pdfPath = resolver.calculatePDFPath(descriptiveData, step);
+				base.getOutput().setPath(pdfPath);
 				String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
-				derivateers.add(new PDFDerivateer(base, pdfPath, structure, descriptiveData, pages, pdfALevel));
+				int pdfImageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
+				PDFMetaInformation pdfMeta = new PDFMetaInformation();
+				pdfMeta.setConformanceLevel(pdfALevel);
+				pdfMeta.setImageDpi(pdfImageDpi);
+				pdfMeta.setCreator(this.pdfMeta.getCreator());
+				pdfMeta.setKeywords(this.pdfMeta.getKeywords());
+				
+				// merge configuration and metadata
+				pdfMeta.mergeWithConfigurationData(descriptiveData);
+				
+				derivateers.add(new PDFDerivateer(base, structure, descriptiveData, pages, pdfMeta));
 				optPDFPath = Optional.of(pdfPath);
 			}
 		}
@@ -213,26 +221,24 @@ public class Derivans {
 	}
 
 
-	/**
-	 * 
-	 * Enrich information from configuration in workflow.
-	 * 
-	 * Attention: overrides license from Metadata (if any present)
-	 * 
-	 * @param dd
-	 */
-	private void enrichConfigurationData(DescriptiveData dd) {
-		Optional<String> optConfLicense = commonConfiguration.getLicense();
-		if (optConfLicense.isPresent()) {
-			Optional<String> optMetaLicense = dd.getLicense();
-			if (optMetaLicense.isPresent()) {
-				LOGGER.warn("replace '{}'(METS) with '{}'", optMetaLicense.get(), optConfLicense.get());
-			}
-			dd.setLicense(optConfLicense);
-		}
-		dd.setCreator(commonConfiguration.getCreator());
-		dd.setKeywords(commonConfiguration.getKeywords());
-	}
+//	/**
+//	 * 
+//	 * Enrich information from configuration in workflow.
+//	 * 
+//	 * Attention: overrides license from Metadata (if any present)
+//	 * 
+//	 * @param dd
+//	 */
+//	public void mergeWithConfigurationData(DescriptiveData dd, PDFMetaInformation pdfMeta) {
+//		Optional<String> optMetaLicense = dd.getLicense();
+//		if (optMetaLicense.isPresent() && pdfMeta.getLicense().isEmpty()) {
+//			pdfMeta.setLicense(optMetaLicense);
+//			LOGGER.info("use '{}' (METS) as licence", optMetaLicense.get());
+//		}
+//		pdfMeta.setAuthor(dd.getPerson());
+//		pdfMeta.setTitle(dd.getTitle());
+//		pdfMeta.setPublicationYear(dd.getYearPublished());
+//	}
 
 	private IDerivateer transformToJPG(BaseDerivateer base, DerivateStep step, List<DigitalPage> pages) {
 		Integer quality = step.getQuality();
