@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.w3c.dom.Document;
 
+import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.data.MetadataStore;
 
 /**
@@ -16,16 +17,16 @@ import de.ulb.digital.derivans.data.MetadataStore;
  */
 public class PDFMetaInformation {
 
-	private String author = MetadataStore.UNKNOWN;;
-	private String title = MetadataStore.UNKNOWN;;
-	private String publicationYear = MetadataStore.UNKNOWN;;
+	private String author = MetadataStore.UNKNOWN;
+	private String title = MetadataStore.UNKNOWN;
+	private String publicationYear = MetadataStore.UNKNOWN;
 	private Map<String, String> metadata;
 	private Document xmpMetadata;
 	private Optional<String> optCreator = Optional.empty();
 	private Optional<String> optLicense = Optional.empty();
 	private Optional<String> optKeywords = Optional.empty();
-	private String conformanceLevel;
-	private int imageDpi;
+	private String conformanceLevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
+	private int imageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
 
 	public String getConformanceLevel() {
 		return conformanceLevel;
@@ -151,7 +152,7 @@ public class PDFMetaInformation {
 	 * 
 	 * @param dd
 	 */
-	public void mergeWithConfigurationData(DescriptiveData dd) {
+	public void mergeDescriptiveData(DescriptiveData dd) {
 		Optional<String> optMetaLicense = dd.getLicense();
 		if (optMetaLicense.isPresent() && this.getLicense().isEmpty()) {
 			this.setLicense(optMetaLicense);

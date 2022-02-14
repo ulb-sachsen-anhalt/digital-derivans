@@ -132,7 +132,7 @@ class TestMetadataStoreVLS {
 	@Test
 	void testStructureOf5175671() throws DigitalDerivansException {
 		String title = dd5175671.getTitle();
-		assertEquals(title, "n.a.");
+		assertEquals("n.a.", title);
 	}
 
 	@Test

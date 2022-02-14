@@ -38,6 +38,8 @@ import de.ulb.digital.derivans.config.DefaultConfiguration;
  */
 class ImageProcessor {
 
+	public static final String JAVAX_IMAGEIO_JPEG = "javax_imageio_jpeg_image_1.0";
+
 	/**
 	 * Percentage image quality
 	 */
@@ -78,12 +80,17 @@ class ImageProcessor {
 		return this.qualityRatio;
 	}
 
-	BufferedImage append(BufferedImage orig, BufferedImage footer) {
-		int newHeight = orig.getHeight() + footer.getHeight();
-		BufferedImage newImage = new BufferedImage(orig.getWidth(), newHeight, BufferedImage.TYPE_3BYTE_BGR);
+	BufferedImage append(BufferedImage bufferedImage, BufferedImage footer) {
+		int bType = bufferedImage.getType();
+		if (bType == 0) {
+			bType = bufferedImage.getColorModel().getColorSpace().getType();
+		}
+
+		int newHeight = bufferedImage.getHeight() + footer.getHeight();
+		BufferedImage newImage = new BufferedImage(bufferedImage.getWidth(), newHeight, bType);
 		Graphics2D g2d = newImage.createGraphics();
-		g2d.drawImage(orig, 0, 0, null);
-		g2d.drawImage(footer, 0, orig.getHeight(), null);
+		g2d.drawImage(bufferedImage, 0, 0, null);
+		g2d.drawImage(footer, 0, bufferedImage.getHeight(), null);
 		g2d.dispose();
 		return newImage;
 	}
@@ -100,30 +107,42 @@ class ImageProcessor {
 		int newW = (int) (ratio * original.getWidth());
 		int newH = (int) (ratio * original.getHeight());
 		Image tmp = original.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_3BYTE_BGR);
+		BufferedImage dimg = new BufferedImage(newW, newH, original.getType());
 		Graphics2D g2d = dimg.createGraphics();
 		g2d.drawImage(tmp, 0, 0, null);
 		g2d.dispose();
 		return dimg;
 	}
 
+	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, IIOMetadata metadata) throws IOException {
+		buffer = handleMaximalDimension(buffer);
 
-	boolean writeJPGWithQualityAndMetadata(BufferedImage image, Path pathOut, IIOMetadata metadata) throws IOException {
+		// determine BufferedImage.type
+		//  5 = 8-bit RGB color components, corresponding to Windows-style BGR color model
+		// 10 = unsigned byte grayscale image, non-indexed (CS_GRY)
+		int bType = buffer.getType();
+		if (bType == 0) {
+			bType = buffer.getColorModel().getColorSpace().getType();
+		}
+		ImageTypeSpecifier imageType = ImageTypeSpecifier.createFromBufferedImageType(bType);
+		
+		// determine JPG write parameters
 		JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
 		jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 		jpegParams.setCompressionQuality(this.getQuality());
+		jpegParams.setDestinationType(imageType);
 		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
 		FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());
 		writer.setOutput(fios);
-		writer.write(null, new IIOImage(image, null, metadata), jpegParams);
+		writer.write(null, new IIOImage(buffer, null, metadata), jpegParams);
 		fios.close();
 		return true;
 	}
 
 	public boolean writeJPG(Path pathIn, Path pathOut) throws IOException, DigitalDerivansException {
 		BufferedImage buffer = ImageIO.read(pathIn.toFile());
-		if (this.maximal > 0) {
-			buffer = handleMaximalDimension(buffer);
+		if (buffer == null) {
+			throw new DigitalDerivansException("Invalid image data " + pathIn+"!");
 		}
 		IIOMetadata metadata = this.previousMetadata(pathIn);
 		this.writeJPGWithQualityAndMetadata(buffer, pathOut, metadata);
@@ -142,14 +161,19 @@ class ImageProcessor {
 			String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
 			throw new DigitalDerivansException(msg2);
 		}
+		int addHeight = scaledFooter.getHeight();
+
+		// append footer buffer at bottom
 		BufferedImage totalBuffer = this.append(buffer, scaledFooter);
-		buffer = handleMaximalDimension(buffer);
+		
 		IIOMetadata metadata = previousMetadata(pathIn);
 		this.writeJPGWithQualityAndMetadata(totalBuffer, pathOut, metadata);
-		int newHeight = totalBuffer.getHeight();
 		buffer.flush();
+		scaledFooter.flush();
 		totalBuffer.flush();
-		return newHeight;
+
+		// return new heigt (with footer added)
+		return addHeight;
 	}
 
 	private IIOMetadata previousMetadata(Path pathIn) throws IOException, DigitalDerivansException {
@@ -159,14 +183,14 @@ class ImageProcessor {
 		if (readerator.hasNext()) {
 			ImageReader readerOne = readerator.next();
 			readerOne.setInput(iis);
-			String imageFormatName = readerOne.getFormatName();
-			if (imageFormatName.equals("tif")) {
-				ImageWriter imageWriter = ImageIO.getImageWritersBySuffix("jpeg").next();
-				ImageWriteParam defaultParams = imageWriter.getDefaultWriteParam();
-				ImageTypeSpecifier imgType = readerOne.getImageTypes(0).next();
-				metadata = imageWriter.getDefaultImageMetadata(imgType, defaultParams);
-				IIOMetadata oldMetadata = readerOne.getImageMetadata(0);
-				this.enrichFrom(metadata, oldMetadata);
+			String previousFormat = readerOne.getFormatName();
+			ImageWriter imageWriter = ImageIO.getImageWritersBySuffix("jpg").next();
+			ImageWriteParam defaultParams = imageWriter.getDefaultWriteParam();
+			ImageTypeSpecifier imgType = readerOne.getImageTypes(0).next();
+			metadata = imageWriter.getDefaultImageMetadata(imgType, defaultParams);
+			IIOMetadata oldMetadata = readerOne.getImageMetadata(0);
+			if (previousFormat.equalsIgnoreCase("tif")) {
+				this.enrichFromTIF(metadata, oldMetadata);
 			} else {
 				metadata = readerOne.getImageMetadata(0);
 			}
@@ -182,25 +206,22 @@ class ImageProcessor {
 	 * 
 	 * Important TIFF EXIF data take into account
 	 * 
-	 * <TIFFIFD ...
-	 * <TIFFField number="282" name="XResolution">
-	 * <TIFFRationals>
-	 * <TIFFRational value="300/1"/>
-	 * </TIFFRationals>
+	 * <TIFFIFD ... 
+	 * <TIFFField number="282" name="XResolution"> 
+	 * <TIFFRationals><TIFFRational value="300/1"/></TIFFRationals>
 	 * </TIFFField>
 	 * <TIFFField number="283" name="YResolution">
-	 * <TIFFRationals>
-	 * <TIFFRational value="300/1"/>
-	 * </TIFFRationals>
+	 * <TIFFRationals><TIFFRational value="300/1"/> 
+	 * </TIFFRationals> 
 	 * </TIFFField>
 	 * 
 	 * @param origin
 	 * @return
 	 */
-	void enrichFrom(IIOMetadata target, IIOMetadata source) throws DigitalDerivansException {
+	void enrichFromTIF(IIOMetadata target, IIOMetadata source) throws DigitalDerivansException {
 
 		// prepare target
-		Element tree = (Element) target.getAsTree("javax_imageio_jpeg_image_1.0");
+		Element tree = (Element) target.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
 		Element jfif = (Element) tree.getElementsByTagName("app0JFIF").item(0);
 
 		// inspect source
@@ -224,7 +245,7 @@ class ImageProcessor {
 			}
 		}
 		try {
-			target.mergeTree("javax_imageio_jpeg_image_1.0", tree);
+			target.setFromTree(ImageProcessor.JAVAX_IMAGEIO_JPEG, tree);
 		} catch (IIOInvalidTreeException e) {
 			throw new DigitalDerivansException(e);
 		}
@@ -261,4 +282,39 @@ class ImageProcessor {
 		return Optional.empty();
 	}
 
+	void displayMetadata(Node node, int level) {
+		// print open tag of element
+		indent(level);
+		System.out.print("<" + node.getNodeName());
+		NamedNodeMap map = node.getAttributes();
+		if (map != null) {
+			// print attribute values
+			int length = map.getLength();
+			for (int i = 0; i < length; i++) {
+				Node attr = map.item(i);
+				System.out.print(" " + attr.getNodeName() + "=\"" + attr.getNodeValue() + "\"");
+			}
+		}
+		Node child = node.getFirstChild();
+		if (child == null) {
+			// no children, so close element and return
+			System.out.println("/>");
+			return;
+		}
+		// children, so close current tag
+		System.out.println(">");
+		while (child != null) {
+			// print children recursively
+			displayMetadata(child, level + 1);
+			child = child.getNextSibling();
+		}
+		// print close tag of element
+		indent(level);
+		System.out.println("</" + node.getNodeName() + ">");
+	}
+
+	void indent(int level) {
+		for (int i = 0; i < level; i++)
+			System.out.print("\t");
+	}
 }

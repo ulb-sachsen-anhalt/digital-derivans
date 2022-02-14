@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.derivate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.io.TempDir;
 import com.itextpdf.text.pdf.BaseFont;
 
 import de.ulb.digital.derivans.DerivansPathResolver;
+import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestDerivans;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DerivansData;
@@ -89,8 +91,8 @@ public class TestPDFDerivateer {
 		int pdfImageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
 		PDFMetaInformation pdfMeta = new PDFMetaInformation();
 		pdfMeta.setImageDpi(pdfImageDpi);
-		pdfMeta.mergeWithConfigurationData(dd);
-		IDerivateer handler = new PDFDerivateer(base, get(), null, pages, pdfMeta);
+		pdfMeta.mergeDescriptiveData(dd);
+		IDerivateer handler = new PDFDerivateer(base, get(), pages, pdfMeta);
 		int result = handler.create();
 
 		PDFInspector inspector = new PDFInspector(outPath);
@@ -137,7 +139,7 @@ public class TestPDFDerivateer {
 		BaseDerivateer base = new BaseDerivateer(input, output);
 		PDFMetaInformation pdfMeta= new PDFMetaInformation();
 		pdfMeta.setImageDpi(300);
-		IDerivateer handler = new PDFDerivateer(base, tree, null, pages, pdfMeta);
+		IDerivateer handler = new PDFDerivateer(base, tree, pages, pdfMeta);
 		handler.create();
 
 		PDFInspector inspector = new PDFInspector(outPath);
@@ -185,8 +187,8 @@ public class TestPDFDerivateer {
 		PDFMetaInformation pdfMeta = new PDFMetaInformation();
 		pdfMeta.setConformanceLevel(level);
 		pdfMeta.setImageDpi(300);
-		pdfMeta.mergeWithConfigurationData(dd);
-		IDerivateer handler = new PDFDerivateer(base, get(), dd, pages, pdfMeta);
+		pdfMeta.mergeDescriptiveData(dd);
+		IDerivateer handler = new PDFDerivateer(base, get(), pages, pdfMeta);
 
 		int result = handler.create();
 
@@ -267,8 +269,8 @@ public class TestPDFDerivateer {
 		PDFMetaInformation pdfMeta = new PDFMetaInformation();
 		pdfMeta.setConformanceLevel(level);
 		pdfMeta.setImageDpi(144);
-		pdfMeta.mergeWithConfigurationData(dd);
-		IDerivateer handler = new PDFDerivateer(base, get(), dd, pages, pdfMeta);
+		pdfMeta.mergeDescriptiveData(dd);
+		IDerivateer handler = new PDFDerivateer(base, get(), pages, pdfMeta);
 
 		int result = handler.create();
 
@@ -343,10 +345,10 @@ public class TestPDFDerivateer {
 		List<DigitalPage> pages = resolver.resolveFromStep(step);
 		resolver.enrichOCRFromFilesystem(pages);
 		PDFMetaInformation pdfMeta = new PDFMetaInformation();
-		pdfMeta.mergeWithConfigurationData(dd);
+		pdfMeta.mergeDescriptiveData(dd);
 		
 		// go
-		PDFDerivateer handler = new PDFDerivateer(base, structure, dd, pages, pdfMeta);
+		PDFDerivateer handler = new PDFDerivateer(base, structure, pages, pdfMeta);
 
 		// act
 		int result = handler.create();
@@ -405,5 +407,28 @@ public class TestPDFDerivateer {
 		assertFalse(Character.isAlphabetic(backslash.toCharArray()[0]));
 		float size = PDFDerivateer.calculateFontSize(font, backslash, 45, 11);
 		assertTrue(size > 3.0);
+	}
+
+
+	@Test
+	void testInvalidImageDPI() throws Exception {
+
+		// arrange mwe
+		DerivansData input = new DerivansData(Path.of("."), DerivateType.JPG);
+		DerivansData output = new DerivansData(Path.of("."), DerivateType.PDF);
+		BaseDerivateer base = new BaseDerivateer(input, output);
+		DescriptiveData dd = new DescriptiveData();
+		DigitalStructureTree structure = new DigitalStructureTree();
+		PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		pdfMeta.mergeDescriptiveData(dd);
+		pdfMeta.setImageDpi(1);
+		
+		// act
+		var thrown = assertThrows(DigitalDerivansException.class, () -> {
+			new PDFDerivateer(base, structure, new ArrayList<>(), pdfMeta);
+		});
+		
+		assertTrue(thrown.getMessage().contains("invalid dpi: '1'"));
+
 	}
 }

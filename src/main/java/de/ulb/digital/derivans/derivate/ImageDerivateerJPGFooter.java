@@ -97,8 +97,8 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 
 		try {
 			BufferedImage currentFooter = imageProcessor.clone(footerBuffer);
-			BufferedImage footerBuffer = addTextLayer2Footer(currentFooter, footer);
-			int newHeight = imageProcessor.writeJPGwithFooter(sourcePath, targetPath, footerBuffer);
+			BufferedImage textFooterBuffer = addTextLayer2Footer(currentFooter, footer);
+			int newHeight = imageProcessor.writeJPGwithFooter(sourcePath, targetPath, textFooterBuffer);
 			page.setFooterHeight(newHeight);
 		} catch (IOException | DigitalDerivansException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", sourcePath, footer, e.getMessage());

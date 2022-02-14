@@ -34,7 +34,6 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
@@ -78,11 +77,9 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param pages
 	 */
 	public PDFDerivateer(BaseDerivateer basic, DigitalStructureTree tree,
-			DescriptiveData descriptiveData, List<DigitalPage> pages, 
-			PDFMetaInformation metaInfo) {
+			List<DigitalPage> pages, PDFMetaInformation metaInfo) throws DigitalDerivansException {
 		super(basic.getInput(), basic.getOutput());
 		this.structure = tree;
-//		this.description = descriptiveData;
 		this.digitalPages = pages;
 		this.pdfMeta = metaInfo;
 		this.setDpi(metaInfo.getImageDpi());
@@ -123,6 +120,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		String imagePath = page.getImagePath().toString();
 		Image image = Image.getInstance(imagePath);
 		image.scaleAbsolute(image.getWidth() * this.dpiScale, image.getHeight() * this.dpiScale);
+		LOGGER.info("addPage rescale: {}x{}", image.getScaledWidth(), image.getScaledHeight());
 		
 		// push image data as base graphic content
 		PdfContentByte over = writer.getDirectContent();
@@ -141,9 +139,9 @@ public class PDFDerivateer extends BaseDerivateer {
 			Optional<Integer> optFooterHeight = page.getFooterHeight();
 			if (optFooterHeight.isPresent()) {
 				footerHeight = optFooterHeight.get();
-				pageHeight += footerHeight;
 				LOGGER.debug("add footerHeight '{}' to original pageHeight '{}' from OCR-time", footerHeight,
-						pageHeight);
+				pageHeight);
+				pageHeight += footerHeight;
 			}
 			// need to scale?
 			// page height corresponds to original image height
@@ -292,7 +290,10 @@ public class PDFDerivateer extends BaseDerivateer {
 				LOGGER.debug("read xDPI {} from first image {}", image.getDpiX(), digitalPages.get(0).getImagePath());
 				this.setDpi(image.getDpiX());
 			}
+			LOGGER.info("PDF scale {}, dpi: {} (orig.: {}x{})", this.dpiScale, this.dpi, image.getWidth(), image.getHeight());
+			LOGGER.info("Firstpage: {}x{})", image.getWidth(), image.getHeight());			
 			image.scaleAbsolute(image.getWidth() * this.dpiScale, image.getHeight() * this.dpiScale);
+			LOGGER.info("Firstpage scaled: {}x{})", image.getScaledWidth(), image.getScaledHeight());			
 		} catch (BadElementException | IOException e) {
 			throw new DigitalDerivansException(e);
 		}
@@ -371,13 +372,15 @@ public class PDFDerivateer extends BaseDerivateer {
 		return result ? 1 : 0;
 	}
 
-	private void setDpi(int dpi) {
-		if (dpi > 0 && dpi <= 600) {
+	private void setDpi(int dpi) throws DigitalDerivansException {
+		if (dpi > ITEXT_ASSUMES_DPI && dpi <= 600) {
 			LOGGER.info("no dpi set, use {}", dpi);
 			this.dpi = dpi;
-			this.dpiScale = ITEXT_ASSUMES_DPI / (float)dpi;
+			this.dpiScale = ITEXT_ASSUMES_DPI / dpi;
 		} else {
-			LOGGER.error("tried to set invalid dpi: '{}' (must be in range 1 - 600)", dpi);
+			String msg = String.format("tried to set invalid dpi: '%s' (must be in range 72 - 600)", dpi);
+			LOGGER.error(msg);
+			throw new DigitalDerivansException(msg);
 		}
 	}
 

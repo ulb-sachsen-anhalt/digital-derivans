@@ -23,7 +23,6 @@ import de.ulb.digital.derivans.derivate.ImageDerivateerJPGFooter;
 import de.ulb.digital.derivans.derivate.ImageDerivateerJPGFooterGranular;
 import de.ulb.digital.derivans.derivate.ImageDerivateerJPG;
 import de.ulb.digital.derivans.derivate.PDFDerivateer;
-//import de.ulb.digital.derivans.model.CommonConfiguration;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateStep;
 import de.ulb.digital.derivans.model.DerivateType;
@@ -81,7 +80,7 @@ public class Derivans {
 		this.resolver = new DerivansPathResolver(this.processDir);
 		this.resolver.setNamePrefixes(conf.getPrefixes());
 
-		// common configuration
+		// get common configuration
 		this.pdfMeta = conf.getPdfMetainformation();
 
 		// handle Derivate Steps
@@ -155,17 +154,10 @@ public class Derivans {
 				Path pdfPath = resolver.calculatePDFPath(descriptiveData, step);
 				base.getOutput().setPath(pdfPath);
 				String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
-				int pdfImageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
-				PDFMetaInformation pdfMeta = new PDFMetaInformation();
 				pdfMeta.setConformanceLevel(pdfALevel);
-				pdfMeta.setImageDpi(pdfImageDpi);
-				pdfMeta.setCreator(this.pdfMeta.getCreator());
-				pdfMeta.setKeywords(this.pdfMeta.getKeywords());
-				
 				// merge configuration and metadata
-				pdfMeta.mergeWithConfigurationData(descriptiveData);
-				
-				derivateers.add(new PDFDerivateer(base, structure, descriptiveData, pages, pdfMeta));
+				pdfMeta.mergeDescriptiveData(descriptiveData);
+				derivateers.add(new PDFDerivateer(base, structure, pages, pdfMeta));
 				optPDFPath = Optional.of(pdfPath);
 			}
 		}
@@ -202,7 +194,7 @@ public class Derivans {
 			LOGGER.info("finished derivate step '{}': '{}'", derivateer.getClass().getSimpleName(), true);
 		}
 
-		// post processing: enrich PDF in metadata if both exist
+		// post processing: enrich PDF metadata if exist
 		if (optPDFPath.isPresent() && metadataStore.isPresent()) {
 			Path pdfPath = optPDFPath.get();
 			if (Files.exists(pdfPath)) {
@@ -220,25 +212,6 @@ public class Derivans {
 		LOGGER.info("finished generating '{}' derivates at '{}'", derivateers.size(), processDir);
 	}
 
-
-//	/**
-//	 * 
-//	 * Enrich information from configuration in workflow.
-//	 * 
-//	 * Attention: overrides license from Metadata (if any present)
-//	 * 
-//	 * @param dd
-//	 */
-//	public void mergeWithConfigurationData(DescriptiveData dd, PDFMetaInformation pdfMeta) {
-//		Optional<String> optMetaLicense = dd.getLicense();
-//		if (optMetaLicense.isPresent() && pdfMeta.getLicense().isEmpty()) {
-//			pdfMeta.setLicense(optMetaLicense);
-//			LOGGER.info("use '{}' (METS) as licence", optMetaLicense.get());
-//		}
-//		pdfMeta.setAuthor(dd.getPerson());
-//		pdfMeta.setTitle(dd.getTitle());
-//		pdfMeta.setPublicationYear(dd.getYearPublished());
-//	}
 
 	private IDerivateer transformToJPG(BaseDerivateer base, DerivateStep step, List<DigitalPage> pages) {
 		Integer quality = step.getQuality();

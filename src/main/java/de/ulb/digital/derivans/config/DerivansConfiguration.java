@@ -19,7 +19,6 @@ import org.apache.logging.log4j.core.LoggerContext;
 
 import de.ulb.digital.derivans.DerivansParameter;
 import de.ulb.digital.derivans.DigitalDerivansException;
-//import de.ulb.digital.derivans.model.CommonConfiguration;
 import de.ulb.digital.derivans.model.DerivateStep;
 import de.ulb.digital.derivans.model.DerivateType;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
@@ -47,7 +46,6 @@ public class DerivansConfiguration {
 
 	private List<DerivateStep> derivateSteps;
 	
-//	private CommonConfiguration commonConfiguration;
 	private PDFMetaInformation pdfMeta;
 	
 	private List<String> prefixes;
