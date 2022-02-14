@@ -41,27 +41,7 @@ class DescriptiveDataBuilder {
 
 	private MetadataHandler handler;
 	
-	private Mets mets;
-
 	private static final Logger LOGGER = LogManager.getLogger(DescriptiveDataBuilder.class);
-
-	/**
-	 * Constructor if not METS/MODS available
-	 */
-	public DescriptiveDataBuilder() {
-		this(null);
-	}
-
-	/**
-	 * 
-	 * Constructor with METS/MODS Model
-	 * 
-	 * @param mets
-	 */
-	public DescriptiveDataBuilder(Mets mets) {
-		this.mets = mets;
-	}
-
 
 	DescriptiveDataBuilder urn() {
 		this.urn = getURN();

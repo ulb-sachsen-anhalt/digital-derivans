@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.ulb</groupId>
 	<artifactId>digital-derivans</artifactId>
-	<version>1.4.4</version>
+	<version>1.5.0-SNAPSHOT</version>
 
 	<organization>
 		<name>Universität- und Landesbibliothek Sachsen-Anhalt</name>
@@ -39,7 +39,7 @@
 		<mets-model.version>2.1-SNAPSHOT</mets-model.version>
 		<itextpdf.version>5.5.13.1</itextpdf.version>
 		<jaxen.version>1.2.0</jaxen.version>
-		<log4j2.version>2.14.0</log4j2.version>
+		<log4j2.version>2.17.1</log4j2.version>
 		<args4j.version>2.33</args4j.version>
 		<configuration2.version>2.7</configuration2.version>
 	</properties>

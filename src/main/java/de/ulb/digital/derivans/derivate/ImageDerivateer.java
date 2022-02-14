@@ -82,6 +82,7 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	public void setMaximal(Integer maximal) {
 		this.maximal = maximal;
+		this.imageProcessor.setMaximal(maximal);
 	}
 
 	protected boolean runWithPool(Runnable runnable) throws DigitalDerivansException {

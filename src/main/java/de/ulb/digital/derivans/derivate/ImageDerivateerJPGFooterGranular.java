@@ -1,18 +1,10 @@
 package de.ulb.digital.derivans.derivate;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.stream.ImageInputStream;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
@@ -63,62 +55,31 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	}
 	
 	private void renderFooterGranular(DigitalPage page) {
-		Path sourcePath = page.getImagePath();
+		Path pathIn = page.getImagePath();
 		this.resolver.setImagePath(page, this);
-		String target = page.getImagePath().toString();
-		LOGGER.debug("read '{}' write '{}'", sourcePath, target);
+		Path pathOut = page.getImagePath();
+		LOGGER.trace("read '{}' write '{}'", pathIn, pathOut);
 
-		// keep track of granularity
-		String urn = "";
-		var optUrn = page.getIdentifier();
-		if (optUrn.isPresent()) {
-			urn = optUrn.get();
-		} else {
-			LOGGER.warn("No granular URN for {}!", page);
-		}
-		
-		// do actual rendering
-		BufferedImage bi = imageProcessor.clone(this.footerBuffer);
-		DigitalFooter footer = new DigitalFooter(this.footer.getText().get(0), urn, bi);
 		try {
-			byte[] bytes = Files.readAllBytes(sourcePath);
-			BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(bytes));
-			if (this.maximal != null) {
-				originalImage = handleMaximalDimension(originalImage);
+			// keep track of granularity
+			String urn = "";
+			var optUrn = page.getIdentifier();
+			if (optUrn.isPresent()) {
+				urn = optUrn.get();
+			} else {
+				throw new DigitalDerivansException("No granular URN: " + page.getImagePath()+ "!");
 			}
 			
-			// forward actual footer handling
-			if (footer.getBufferedImage() != null) {
-				BufferedImage footerBuffer = footer.getBufferedImage();
-				int currentImageWidth = originalImage.getWidth();
-				float ratio = (float) currentImageWidth / (float) footerBuffer.getWidth();
-				footerBuffer = imageProcessor.scale(footerBuffer, ratio);
-				LOGGER.trace("scale footer {}x{} (ratio: {}) for: {}", 
-						footerBuffer.getWidth(), footerBuffer.getHeight(), ratio, page.getImagePath());
-				BufferedImage textBuffer = addTextLayer2Footer(footerBuffer, footer);
-				BufferedImage image = imageProcessor.append(originalImage, textBuffer);
-				float qualityRatio = ((float) quality) / 100.0f;
-				
-				// handle IIOMetadata
-				ImageInputStream iis = ImageIO.createImageInputStream(sourcePath.toFile());
-				Iterator<ImageReader> readerator = ImageIO.getImageReaders(iis);
-				IIOMetadata metadata = null;
-				if (readerator.hasNext()) {
-					ImageReader readerOne = readerator.next();
-					readerOne.setInput(iis);
-					metadata = readerOne.getImageMetadata(0);
-					LOGGER.debug("found existing IIOMetadata {}", metadata);
-				}
-
-				imageProcessor.writeJPGWithQualityAndMetadata(image, target, qualityRatio, metadata);
-				page.setFooterHeight(footerBuffer.getHeight());
-				// keep track of granularity if 
-				// and only if optional granular urn present
-				if(optUrn.isPresent()) {
-					nGranulars.getAndIncrement();
-				}
-			}
-		} catch (IOException e) {
+			// do actual rendering
+			BufferedImage bi = imageProcessor.clone(this.footerBuffer);
+			DigitalFooter footer = new DigitalFooter(this.footer.getText().get(0), urn, bi);
+			BufferedImage footerBuffer = footer.getBufferedImage();
+			BufferedImage textBuffer = addTextLayer2Footer(footerBuffer, footer);
+			int newHeight = imageProcessor.writeJPGwithFooter(pathIn, pathOut, textBuffer);
+			page.setFooterHeight(newHeight);
+			// keep track of rendered granular URNs with respect to concurrency
+			nGranulars.getAndIncrement();
+		} catch (IOException | DigitalDerivansException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", page.getImagePath(), footer, e.getMessage());
 		}
 	}

@@ -245,7 +245,7 @@ public class MetadataStore implements IMetadataStore {
 	@Override
 	public DescriptiveData getDescriptiveData() {
 		if (descriptiveData == null) {
-			DescriptiveDataBuilder builder = new DescriptiveDataBuilder(this.handler.getMets());
+			DescriptiveDataBuilder builder = new DescriptiveDataBuilder();
 			builder.setHandler(this.handler);
 			try {
 				descriptiveData = builder.person().access().identifier().title().urn().year().build();

@@ -58,14 +58,10 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private DigitalStructureTree structure;
 
-	private DescriptiveData description;
-
 	private AtomicInteger nPagesWithOCR = new AtomicInteger();
 
 	private PDFMetaInformation pdfMeta;
 	
-//	private String pdfConformanceLevel;
-
 	public static final float ITEXT_ASSUMES_DPI = 72.0f;
 	
 	private int dpi;

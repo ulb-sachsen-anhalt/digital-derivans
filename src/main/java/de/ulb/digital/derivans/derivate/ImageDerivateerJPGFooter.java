@@ -6,17 +6,9 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.stream.ImageInputStream;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
@@ -35,12 +27,6 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	protected static final Integer DEFAULT_FOOTER_HEIGHT = 120;
 
 	protected static final Integer DEFAULT_FOOTER_WIDTH = 2400;
-
-	/**
-	 * Error marker, if a large number of subsequent down scales make the footer
-	 * disappear after all
-	 */
-	protected static final Integer EXPECTED_MINIMAL_HEIGHT = 25;
 
 	protected DigitalFooter footer;
 
@@ -105,51 +91,20 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	}
 
 	private String renderFooter(DigitalPage page) {
-		// resolve paths for source and target
 		Path sourcePath = page.getImagePath();
 		this.resolver.setImagePath(page, this);
-		String target = page.getImagePath().toString();
+		Path targetPath = page.getImagePath();
 
 		try {
-			byte[] bytes = Files.readAllBytes(sourcePath);
-			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
-			if (this.maximal != null) {
-				image = handleMaximalDimension(image);
-			}
-			int currentW = image.getWidth();
 			BufferedImage currentFooter = imageProcessor.clone(footerBuffer);
-			float ratio = (float) currentW / (float) currentFooter.getWidth();
-			currentFooter = imageProcessor.scale(currentFooter, ratio);
-			String msg = String.format("scale footer %dx%d (ratio: %.3f) for %s", currentFooter.getWidth(),
-					currentFooter.getHeight(), ratio, sourcePath);
-			LOGGER.trace(msg);
-			if (currentFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
-				String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
-				LOGGER.error(msg2);
-				throw new DigitalDerivansException(msg2);
-			}
-			BufferedImage bi = addTextLayer2Footer(currentFooter, footer);
-			image = imageProcessor.append(image, bi);
-			float qualityRatio = ((float) quality) / 100.0f;
-			
-			// handle IIOMetadata
-			ImageInputStream iis = ImageIO.createImageInputStream(sourcePath.toFile());
-			Iterator<ImageReader> readerator = ImageIO.getImageReaders(iis);
-			IIOMetadata metadata = null;
-			if (readerator.hasNext()) {
-				ImageReader readerOne = readerator.next();
-				readerOne.setInput(iis);
-				metadata = readerOne.getImageMetadata(0);
-				LOGGER.debug("found existing IIOMetadata {}", metadata);
-			}
-
-			imageProcessor.writeJPGWithQualityAndMetadata(image, target, qualityRatio, metadata);
-			page.setFooterHeight(currentFooter.getHeight());
+			BufferedImage footerBuffer = addTextLayer2Footer(currentFooter, footer);
+			int newHeight = imageProcessor.writeJPGwithFooter(sourcePath, targetPath, footerBuffer);
+			page.setFooterHeight(newHeight);
 		} catch (IOException | DigitalDerivansException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", sourcePath, footer, e.getMessage());
 		}
 
-		return target;
+		return targetPath.toString();
 	}
 
 	protected BufferedImage addTextLayer2Footer(BufferedImage bufferedImage, DigitalFooter footR) {
@@ -158,7 +113,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 		int nLines = lines.size();
 		int heightPerLine = totalHeight / nLines;
 		int fontSize = (int) (heightPerLine * .5);
-		LOGGER.debug("textlayer total:{}/ line:{}/ fontsize:{} ({})", totalHeight, heightPerLine, fontSize, footR);
+		LOGGER.trace("textlayer total:{}/ line:{}/ fontsize:{} ({})", totalHeight, heightPerLine, fontSize, footR);
 		Graphics2D g2d = bufferedImage.createGraphics();
 		g2d.setColor(Color.WHITE);
 		

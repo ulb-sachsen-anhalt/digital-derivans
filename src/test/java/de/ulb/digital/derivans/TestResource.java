@@ -59,6 +59,9 @@ public enum TestResource {
 	 * Image Processing
 	 */
 	IMG_JPG_148811035_MAX_1(Path.of("src/test/resources/alto/148811035/MAX/00000001.jpg")),
+	IMG_TIF_MENA_1(Path.of("src/test/resources/tif/00000010x128.tif")),
+	IMG_TIF_ZD1_GREY(Path.of("src/test/resources/tif/1681877805_J_0125_0001x128.tif")),
+	IMG_TIF_ZD1_RGB(Path.of("src/test/resources/tif/1681875195_J_0001_0008x128.tif")),
 	;
 	
 	private Path path;
