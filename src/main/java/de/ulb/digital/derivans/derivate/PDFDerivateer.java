@@ -185,6 +185,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			String text = token.getText();
 			java.awt.Rectangle b = token.getBox();
 			Rectangle box = toItextBox(token.getBox());
+			//float boxHeight = box.getHeight();
 			float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
 			if (fontSize < 1.0) {
 				LOGGER.warn("attenzione - font to small: '{}' for text '{}' - resist to render", fontSize, text);
@@ -196,10 +197,20 @@ public class PDFDerivateer extends BaseDerivateer {
 			// font seems to be rendered not from baseline but from v with shall be
 			// v = y - fontSize
 			float v = y - fontSize/2;
-			LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);
+			LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);		
+//			int descent = (int)font.getDescentPoint(text, fontSize);
+//			int ascent = (int)font.getAscentPoint(text, fontSize);
+//			int textHeight = Math.abs(descent) + ascent;
+//			float transY = descent;
+//			
+//			if (textHeight < boxHeight) {
+//				transY = descent - (boxHeight - (float)textHeight) / 2.0f; 
+//			}
 			cb.beginText();
+			//cb.setTextMatrix(x, pageHeight - box.getBottom() - transY);
 			cb.setFontAndSize(font, fontSize);
 			cb.showTextAligned(Element.ALIGN_LEFT, text, x, v, 0);
+			//cb.showText(text);
 			cb.endText();
 		}
 	}
@@ -378,8 +389,8 @@ public class PDFDerivateer extends BaseDerivateer {
 	}
 
 	private void setDpi(int dpi) throws DigitalDerivansException {
-		if (dpi > ITEXT_ASSUMES_DPI && dpi <= 600) {
-			LOGGER.info("no dpi set, use {}", dpi);
+		if (dpi >= ITEXT_ASSUMES_DPI && dpi <= 600) {
+			LOGGER.info("set dpi for image scaling {}", dpi);
 			this.dpi = dpi;
 			this.dpiScale = ITEXT_ASSUMES_DPI / dpi;
 		} else {
