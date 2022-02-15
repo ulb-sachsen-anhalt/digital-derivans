@@ -54,7 +54,7 @@ class ImageProcessor {
 	 * Error marker, if a large number of subsequent down scales make the footer
 	 * disappear after all
 	 */
-	public static final Integer EXPECTED_MINIMAL_HEIGHT = 25;
+	public static final Integer EXPECTED_MINIMAL_HEIGHT = 10;
 
 	public ImageProcessor() {
 	}
@@ -157,8 +157,10 @@ class ImageProcessor {
 		BufferedImage buffer = ImageIO.read(pathIn.toFile());
 		float ratio = (float) buffer.getWidth() / (float) footerBuffer.getWidth();
 		BufferedImage scaledFooter = this.scale(footerBuffer, ratio);
-		if (scaledFooter.getHeight() < EXPECTED_MINIMAL_HEIGHT) {
-			String msg2 = String.format("scale problem: heigth dropped beneath '%d'", footerBuffer.getHeight());
+		int scaledHeigth = scaledFooter.getHeight();
+		if (scaledHeigth < EXPECTED_MINIMAL_HEIGHT) {
+			String msg2 = String.format("problem: footer h '%d' dropped beneath '%d' (scale: '%.2f')", 
+			scaledHeigth, EXPECTED_MINIMAL_HEIGHT, ratio);
 			throw new DigitalDerivansException(msg2);
 		}
 		int addHeight = scaledFooter.getHeight();
