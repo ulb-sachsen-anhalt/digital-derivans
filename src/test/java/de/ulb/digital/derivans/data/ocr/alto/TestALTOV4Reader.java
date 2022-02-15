@@ -96,6 +96,33 @@ public class TestALTOV4Reader {
 		assertEquals(8, line001.getBounds().height);
 		assertEquals(25, line635.getBounds().height);
 	}
+	
+	@Test
+	void testALTOV3fromZD1() throws Exception {
+
+		// arrange
+		Path input = Path.of("src/test/resources/alto/1667522809_J_0025_0001/1667522809_J_0025_0001.xml");
+		ALTOReader reader = new ALTOReader(Type.ALTO_V3);
+		var actual = reader.get(input);
+		int originalPageHeigt = actual.getPageHeight();
+		assertEquals(10808, originalPageHeigt);
+		OCRData.Textline line001 = actual.getTextlines().get(0);
+		int originalHeightLine001 = line001.getBounds().height;
+		assertEquals(95, originalHeightLine001);
+		OCRData.Textline lastLine = actual.getTextlines().get(319);
+		assertEquals(94, lastLine.getBounds().height);
+
+		// act
+		int maximal = 4678;
+		float ratio = (float) maximal / (float) actual.getPageHeight();
+		actual.scale(ratio);
+
+		// assert
+		assertEquals(maximal, actual.getPageHeight());
+		assertNotEquals(originalPageHeigt, actual.getPageHeight());
+		assertEquals(41, line001.getBounds().height);
+		assertEquals(40, lastLine.getBounds().height);
+	}
 
 	@Test
 	void testALTOfromVLS320808() throws Exception {

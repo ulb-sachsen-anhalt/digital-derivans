@@ -38,6 +38,7 @@ import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
 import de.ulb.digital.derivans.model.ocr.OCRData;
+import de.ulb.digital.derivans.model.ocr.OCRData.Text;
 import de.ulb.digital.derivans.model.ocr.OCRData.Textline;
 
 /**
@@ -179,24 +180,28 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param line
 	 */
 	private static void renderLine(BaseFont font, int pageHeight, PdfContentByte cb, Textline line) {
-		String text = line.getText();
-		Rectangle box = toItextBox(line.getBounds());
-		float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
-		if (fontSize < 1.0) {
-			LOGGER.warn("attenzione - font to small: '{}' for text '{}' - resist to render", fontSize, line);
-			return;
+		List<Text> tokens = line.getTokens();
+		for (var token : tokens) {
+			String text = token.getText();
+			java.awt.Rectangle b = token.getBox();
+			Rectangle box = toItextBox(token.getBox());
+			float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
+			if (fontSize < 1.0) {
+				LOGGER.warn("attenzione - font to small: '{}' for text '{}' - resist to render", fontSize, text);
+				return;
+			}
+			float x = box.getLeft();
+			float y = pageHeight - box.getBottom();
+			// looks like we need to go down a bit because
+			// font seems to be rendered not from baseline but from v with shall be
+			// v = y - fontSize
+			float v = y - fontSize/2;
+			LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);
+			cb.beginText();
+			cb.setFontAndSize(font, fontSize);
+			cb.showTextAligned(Element.ALIGN_LEFT, text, x, v, 0);
+			cb.endText();
 		}
-		float x = box.getLeft();
-		float y = pageHeight - box.getBottom();
-		// looks like we need to go down a bit because
-		// font seems to be rendered not from baseline but from v with shall be
-		// v = y - fontSize
-		float v = y - fontSize;
-		LOGGER.trace("put '{}' at {}x{} (fontsize:{})", text, x, v, fontSize);
-		cb.beginText();
-		cb.setFontAndSize(font, fontSize);
-		cb.showTextAligned(Element.ALIGN_LEFT, text, x, v, 0);
-		cb.endText();
 	}
 
 	/**
@@ -215,7 +220,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		float fontSizeX = sw / 1000.0f * height;
 		Chunk chunk = new Chunk(text, new Font(font, fontSizeX));
 		while (chunk.getWidthPoint() > width) {
-			fontSizeX -= 3f;
+			fontSizeX -= .5f;
 			chunk = new Chunk(text, new Font(font, fontSizeX));
 		}
 		return fontSizeX;
