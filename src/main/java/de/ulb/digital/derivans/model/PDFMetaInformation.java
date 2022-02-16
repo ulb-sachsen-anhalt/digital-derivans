@@ -27,6 +27,7 @@ public class PDFMetaInformation {
 	private Optional<String> optKeywords = Optional.empty();
 	private String conformanceLevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
 	private int imageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
+	private Boolean debugRender = Boolean.FALSE;
 
 	public String getConformanceLevel() {
 		return conformanceLevel;
@@ -144,6 +145,14 @@ public class PDFMetaInformation {
 		this.publicationYear = publicationYear;
 	}
 	
+	public Boolean getDebugRender() {
+		return debugRender;
+	}
+
+	public void setDebugRender(Boolean debugRender) {
+		this.debugRender = debugRender;
+	}
+
 	/**
 	 * 
 	 * Enrich information from configuration in workflow.

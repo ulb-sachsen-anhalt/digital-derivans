@@ -61,11 +61,12 @@ public class DerivansConfiguration {
 		this.quality = DefaultConfiguration.DEFAULT_QUALITY;
 		this.prefixes = new ArrayList<>();
 		this.pdfMeta = new PDFMetaInformation();
-		if (params.getQuality() != null) {
-			this.quality = params.getQuality();
-		}
+		this.pdfMeta.setDebugRender(params.getDebugRender());
 		if (params.getPathInput() == null) {
 			throw new DigitalDerivansException("invalid data path 'null'");
+		}
+		if (! Files.exists(params.getPathInput())) {
+			throw new DigitalDerivansException("invalid data path '"+ params.getPathInput()+"'");
 		}
 
 		// sanitize: path must be absolute for PDF generation afterwards
@@ -379,6 +380,4 @@ public class DerivansConfiguration {
 		createPdf.setOutputPath(this.pathDir);
 		this.derivateSteps.add(createPdf);
 	}
-
-
 }

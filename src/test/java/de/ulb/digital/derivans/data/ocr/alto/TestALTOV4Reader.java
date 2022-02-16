@@ -79,10 +79,10 @@ public class TestALTOV4Reader {
 		int originalPageHeigt = actual.getPageHeight();
 		assertEquals(10536, originalPageHeigt);
 		OCRData.Textline line001 = actual.getTextlines().get(0);
-		int originalHeightLine001 = line001.getBounds().height;
+		int originalHeightLine001 = line001.getBox().height;
 		assertEquals(17, originalHeightLine001);
 		OCRData.Textline line635 = actual.getTextlines().get(634);
-		int originalHeightLine646 = line635.getBounds().height;
+		int originalHeightLine646 = line635.getBox().height;
 		assertEquals(57, originalHeightLine646);
 
 		// act
@@ -93,8 +93,8 @@ public class TestALTOV4Reader {
 		// assert
 		assertEquals(maximal, actual.getPageHeight());
 		assertNotEquals(originalPageHeigt, actual.getPageHeight());
-		assertEquals(8, line001.getBounds().height);
-		assertEquals(25, line635.getBounds().height);
+		assertEquals(8, line001.getBox().height);
+		assertEquals(25, line635.getBox().height);
 	}
 	
 	@Test
@@ -107,10 +107,10 @@ public class TestALTOV4Reader {
 		int originalPageHeigt = actual.getPageHeight();
 		assertEquals(10808, originalPageHeigt);
 		OCRData.Textline line001 = actual.getTextlines().get(0);
-		int originalHeightLine001 = line001.getBounds().height;
+		int originalHeightLine001 = line001.getBox().height;
 		assertEquals(95, originalHeightLine001);
 		OCRData.Textline lastLine = actual.getTextlines().get(319);
-		assertEquals(94, lastLine.getBounds().height);
+		assertEquals(94, lastLine.getBox().height);
 
 		// act
 		int maximal = 4678;
@@ -120,8 +120,8 @@ public class TestALTOV4Reader {
 		// assert
 		assertEquals(maximal, actual.getPageHeight());
 		assertNotEquals(originalPageHeigt, actual.getPageHeight());
-		assertEquals(41, line001.getBounds().height);
-		assertEquals(40, lastLine.getBounds().height);
+		assertEquals(41, line001.getBox().height);
+		assertEquals(40, lastLine.getBox().height);
 	}
 
 	@Test

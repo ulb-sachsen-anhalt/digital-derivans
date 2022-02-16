@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,7 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.itextpdf.awt.geom.Point2D;
 import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -38,6 +41,7 @@ import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
 import de.ulb.digital.derivans.model.ocr.OCRData;
+import de.ulb.digital.derivans.model.ocr.OCRToken;
 import de.ulb.digital.derivans.model.ocr.OCRData.Text;
 import de.ulb.digital.derivans.model.ocr.OCRData.Textline;
 
@@ -61,12 +65,14 @@ public class PDFDerivateer extends BaseDerivateer {
 	private AtomicInteger nPagesWithOCR = new AtomicInteger();
 
 	private PDFMetaInformation pdfMeta;
-	
+
 	public static final float ITEXT_ASSUMES_DPI = 72.0f;
-	
+
 	private int dpi;
 
 	private float dpiScale = 1.0f;
+
+	private boolean debugRender;
 
 	/**
 	 * 
@@ -77,13 +83,31 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param descriptiveData
 	 * @param pages
 	 */
-	public PDFDerivateer(BaseDerivateer basic, DigitalStructureTree tree,
-			List<DigitalPage> pages, PDFMetaInformation metaInfo) throws DigitalDerivansException {
+	public PDFDerivateer(BaseDerivateer basic, DigitalStructureTree tree, List<DigitalPage> pages,
+			PDFMetaInformation metaInfo) throws DigitalDerivansException {
 		super(basic.getInput(), basic.getOutput());
 		this.structure = tree;
 		this.digitalPages = pages;
 		this.pdfMeta = metaInfo;
 		this.setDpi(metaInfo.getImageDpi());
+		this.debugRender = metaInfo.getDebugRender();
+		LOGGER.info("debugRender: {}", this.debugRender);
+	}
+
+	private void setDpi(int dpi) throws DigitalDerivansException {
+		if (dpi >= ITEXT_ASSUMES_DPI && dpi <= 600) {
+			LOGGER.info("set dpi for image scaling {}", dpi);
+			this.dpi = dpi;
+			this.dpiScale = ITEXT_ASSUMES_DPI / dpi;
+		} else {
+			String msg = String.format("tried to set invalid dpi: '%s' (must be in range 72 - 600)", dpi);
+			LOGGER.error(msg);
+			throw new DigitalDerivansException(msg);
+		}
+	}
+
+	public AtomicInteger getNPagesWithOCR() {
+		return nPagesWithOCR;
 	}
 
 	private int addPages(Document document, PdfWriter writer, List<DigitalPage> pages) throws DigitalDerivansException {
@@ -114,7 +138,6 @@ public class PDFDerivateer extends BaseDerivateer {
 
 		return pagesAdded;
 	}
-	
 
 	private void addPage(PdfWriter writer, BaseFont font, DigitalPage page) throws IOException, DocumentException {
 
@@ -122,7 +145,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		Image image = Image.getInstance(imagePath);
 		image.scaleAbsolute(image.getWidth() * this.dpiScale, image.getHeight() * this.dpiScale);
 		LOGGER.info("addPage rescale: {}x{}", image.getScaledWidth(), image.getScaledHeight());
-		
+
 		// push image data as base graphic content
 		PdfContentByte over = writer.getDirectContent();
 		image.setAbsolutePosition(0f, 0f);
@@ -141,7 +164,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			if (optFooterHeight.isPresent()) {
 				footerHeight = optFooterHeight.get();
 				LOGGER.debug("add footerHeight '{}' to original pageHeight '{}' from OCR-time", footerHeight,
-				pageHeight);
+						pageHeight);
 				pageHeight += footerHeight;
 			}
 			// need to scale?
@@ -152,19 +175,24 @@ public class PDFDerivateer extends BaseDerivateer {
 				LOGGER.trace("scale ocr data for '{}' by '{}'", page.getImagePath(), ratio);
 				ocrData.scale(ratio);
 			}
-
 			// place optional text *behind* image
 			PdfContentByte cb = writer.getDirectContentUnder();
+			// optional: if layer shall be visible, show words too on top
+			if (this.debugRender == true) {
+				cb = writer.getDirectContent();
+			}
 			cb.saveState();
 			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
 			for (OCRData.Textline line : ocrLines) {
-				renderLine(font, (int) currentImageHeight, cb, line);
+				renderText(font, (int) currentImageHeight, cb, line);
 			}
 			cb.restoreState();
-
+			// optional: render ocr data outlines for debugging visualization
+			if (this.debugRender) {
+				this.renderOutlines(writer, ocrLines, currentImageHeight);
+			}
 			// increment number of ocr-ed pages for each PDF
 			nPagesWithOCR.getAndIncrement();
-
 		} else {
 			LOGGER.info("no ocr data present for '{}'", page.getImagePath());
 		}
@@ -179,38 +207,30 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param cb
 	 * @param line
 	 */
-	private static void renderLine(BaseFont font, int pageHeight, PdfContentByte cb, Textline line) {
+	private void renderText(BaseFont font, int pageHeight, PdfContentByte cb, Textline line) {
 		List<Text> tokens = line.getTokens();
-		for (var token : tokens) {
-			String text = token.getText();
-			java.awt.Rectangle b = token.getBox();
-			Rectangle box = toItextBox(token.getBox());
-			//float boxHeight = box.getHeight();
+		for (var word : tokens) {
+			String text = word.getText();
+			java.awt.Rectangle b = word.getBox();
+			Rectangle box = toItextBox(word.getBox());
 			float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
-			if (fontSize < 1.0) {
-				LOGGER.warn("attenzione - font to small: '{}' for text '{}' - resist to render", fontSize, text);
+			if (fontSize < .75f) {
+				LOGGER.warn("attenzione - font to small: '{}'(min:{}) for text '{}' - resist to render", fontSize, .75, text);
 				return;
 			}
 			float x = box.getLeft();
 			float y = pageHeight - box.getBottom();
 			// looks like we need to go down a bit because
-			// font seems to be rendered not from baseline but from v with shall be
-			// v = y - fontSize
-			float v = y - fontSize/2;
-			LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);		
-//			int descent = (int)font.getDescentPoint(text, fontSize);
-//			int ascent = (int)font.getAscentPoint(text, fontSize);
-//			int textHeight = Math.abs(descent) + ascent;
-//			float transY = descent;
-//			
-//			if (textHeight < boxHeight) {
-//				transY = descent - (boxHeight - (float)textHeight) / 2.0f; 
-//			}
+			// font seems to be rendered not from baseline, therefore introduce v
+			// v = y - fontSize * x, with X is were the magic starts: x=1 too low, x=0.5 too
+			// high
+			float v = y - (fontSize * .75f);
+			if (this.debugRender) {
+				LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);
+			}
 			cb.beginText();
-			//cb.setTextMatrix(x, pageHeight - box.getBottom() - transY);
 			cb.setFontAndSize(font, fontSize);
-			cb.showTextAligned(Element.ALIGN_LEFT, text, x, v, 0);
-			//cb.showText(text);
+			cb.showTextAligned(Element.ALIGN_BOTTOM, text, x, v, 0);
 			cb.endText();
 		}
 	}
@@ -253,6 +273,50 @@ public class PDFDerivateer extends BaseDerivateer {
 			}
 		}
 		return true;
+	}
+
+	private void renderOutlines(PdfWriter writer, List<OCRData.Textline> ocrLines, float theHeight) {
+		BaseColor c1 = new BaseColor(.12f, 0.0f, .5f, .6f); // dark blue
+		BaseColor c2 = new BaseColor(.5f, 0.0f, .12f, .6f);
+		PdfContentByte cb2 = writer.getDirectContent();
+		cb2.saveState();
+		for (OCRData.Textline line : ocrLines) {
+			for (OCRData.Text txt : line.getTokens()) {
+				drawOutline(txt, cb2, theHeight, c2, .25f);
+			}
+			drawOutline(line, cb2, theHeight, c1, .5f);
+		}
+		cb2.restoreState();
+	}
+
+	private void drawOutline(OCRToken tkn, PdfContentByte cb, float pageHeight, BaseColor c, float lineWidth) {
+		List<Point2D.Float> points = asPoints(tkn.getBox());
+
+		cb.setColorStroke(c);
+		cb.setLineWidth(lineWidth);
+		LOGGER.info("draw outline for {}({}) with {} ({})", tkn, points, c, lineWidth);
+
+		// move to end, then draw the lines
+		Point2D.Float pLast = points.get(points.size() - 1);
+		cb.moveTo(pLast.x, pageHeight - pLast.y);
+		for (int i = 0; i < points.size(); i++) {
+			Point2D.Float p = points.get(i);
+			cb.lineTo(p.x, pageHeight - p.y);
+		}
+		cb.stroke();
+	}
+
+	static List<Point2D.Float> asPoints(java.awt.Rectangle rect) {
+		List<Point2D.Float> points = new ArrayList<>();
+		float minX = (float) rect.getMinX();
+		float minY = (float) rect.getMinY();
+		float maxX = (float) rect.getMaxX();
+		float maxY = (float) rect.getMaxY();
+		points.add(new Point2D.Float(minX, minY));
+		points.add(new Point2D.Float(maxX, minY));
+		points.add(new Point2D.Float(maxX, maxY));
+		points.add(new Point2D.Float(minX, maxY));
+		return points;
 	}
 
 	static void traverseStructure(PdfWriter pdfWriter, PdfOutline rootOutline, DigitalStructureTree structure) {
@@ -306,10 +370,11 @@ public class PDFDerivateer extends BaseDerivateer {
 				LOGGER.debug("read xDPI {} from first image {}", image.getDpiX(), digitalPages.get(0).getImagePath());
 				this.setDpi(image.getDpiX());
 			}
-			LOGGER.info("PDF scale {}, dpi: {} (orig.: {}x{})", this.dpiScale, this.dpi, image.getWidth(), image.getHeight());
-			LOGGER.info("Firstpage: {}x{})", image.getWidth(), image.getHeight());			
+			LOGGER.info("PDF scale {}, dpi: {} (orig.: {}x{})", this.dpiScale, this.dpi, image.getWidth(),
+					image.getHeight());
+			LOGGER.info("Firstpage: {}x{})", image.getWidth(), image.getHeight());
 			image.scaleAbsolute(image.getWidth() * this.dpiScale, image.getHeight() * this.dpiScale);
-			LOGGER.info("Firstpage scaled: {}x{})", image.getScaledWidth(), image.getScaledHeight());			
+			LOGGER.info("Firstpage scaled: {}x{})", image.getScaledWidth(), image.getScaledHeight());
 		} catch (BadElementException | IOException e) {
 			throw new DigitalDerivansException(e);
 		}
@@ -326,8 +391,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 		PdfWriter writer = null;
 		try (FileOutputStream fos = new FileOutputStream(pathToPDF.toFile())) {
-
-			if (this.pdfMeta.getConformanceLevel() != null) {
+			if (this.pdfMeta.getConformanceLevel() != null && !this.debugRender) {
 				PdfAConformanceLevel pdfaLevel = PdfAConformanceLevel.valueOf(this.pdfMeta.getConformanceLevel());
 				writer = PdfAWriter.getInstance(document, fos, pdfaLevel);
 			} else {
@@ -354,9 +418,9 @@ public class PDFDerivateer extends BaseDerivateer {
 
 			writer.createXmpMetadata();
 			document.open();
-
 			// add profile if pdf-a required
-			if (this.pdfMeta.getConformanceLevel() != null) {
+			// not possible in debug mode
+			if (this.pdfMeta.getConformanceLevel() != null && !this.debugRender) {
 				String iccPath = "icc/sRGB_CS_profile.icm";
 				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPath);
 				ICC_Profile icc = ICC_Profile.getInstance(is);
@@ -387,21 +451,4 @@ public class PDFDerivateer extends BaseDerivateer {
 				hasOutlineAdded);
 		return result ? 1 : 0;
 	}
-
-	private void setDpi(int dpi) throws DigitalDerivansException {
-		if (dpi >= ITEXT_ASSUMES_DPI && dpi <= 600) {
-			LOGGER.info("set dpi for image scaling {}", dpi);
-			this.dpi = dpi;
-			this.dpiScale = ITEXT_ASSUMES_DPI / dpi;
-		} else {
-			String msg = String.format("tried to set invalid dpi: '%s' (must be in range 72 - 600)", dpi);
-			LOGGER.error(msg);
-			throw new DigitalDerivansException(msg);
-		}
-	}
-
-	public AtomicInteger getNPagesWithOCR() {
-		return nPagesWithOCR;
-	}
-
 }

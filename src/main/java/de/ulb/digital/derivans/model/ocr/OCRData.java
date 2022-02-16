@@ -66,7 +66,7 @@ public class OCRData {
 	 * @author u.hartwig
 	 *
 	 */
-	public static class Textline {
+	public static class Textline implements OCRToken {
 		private List<Text> texts;
 		private String actualText;
 		private Area area;
@@ -94,7 +94,7 @@ public class OCRData {
 			return this.area;
 		}
 		
-		public Rectangle getBounds() {
+		public Rectangle getBox() {
 			return this.area.getBounds();
 		}
 		
@@ -102,6 +102,10 @@ public class OCRData {
 			return new ArrayList<>(this.texts);
 		}
 		
+		public String getLabel() {
+			return "TextLine";
+		}
+
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
@@ -121,7 +125,7 @@ public class OCRData {
 	 * @author u.hartwig
 	 *
 	 */
-	public static class Text {
+	public static class Text implements OCRToken {
 		private String actualText;
 		private Rectangle rect;
 
@@ -144,6 +148,10 @@ public class OCRData {
 		
 		public boolean hasPrintableChars() {
 			return (this.actualText != null) && (!this.actualText.isBlank());
+		}
+
+		public String getLabel() {
+			return "Text";
 		}
 
 		@Override

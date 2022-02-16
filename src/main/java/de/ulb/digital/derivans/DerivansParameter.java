@@ -7,8 +7,6 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.ParserProperties;
 
-import de.ulb.digital.derivans.config.DefaultConfiguration;
-
 /**
  * 
  * Application Parameters
@@ -25,8 +23,8 @@ public class DerivansParameter {
 			"--config-path" }, required = false, usage = "Path to configuration file (default:'./config/derivans.ini')\nIf not present, guess configurations.")
 	private Path pathConfig;
 
-	@Option(name = "-q", aliases = { "--jpg-quality" }, required = false, usage = "JPG Derivates Compression (default: 80)")
-	private Integer quality;
+	@Option(name = "-d", aliases = { "--debug-render" }, required = false, usage = "Render PDF-Layers; Usefull only if OCR-Data present (default: false)")
+	private Boolean debugRender;
 
 	/**
 	 * 
@@ -65,13 +63,10 @@ public class DerivansParameter {
 		return this.pathConfig;
 	}
 
-	public Integer getQuality() throws DigitalDerivansException {
-		if (quality == null) {
-			quality = DefaultConfiguration.DEFAULT_QUALITY;
+	public Boolean getDebugRender() throws DigitalDerivansException {
+		if (debugRender == null) {
+			debugRender = Boolean.FALSE;
 		}
-		if (quality < 1 || quality > 99) {
-			throw new DigitalDerivansException("Invalid quality '" + quality + "'");
-		}
-		return quality;
+		return debugRender;
 	}
 }
