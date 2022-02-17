@@ -77,7 +77,7 @@ class TestImageDerivateerJPGFooter {
 
 		DerivansPathResolver resolver = new DerivansPathResolver();
 		// empty list at construction time is okay since we re-set the pages immediately
-		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, 95, footer, new ArrayList<>());
+		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, footer, new ArrayList<>(), 95);
 		derivateer.setDigitalPages(resolver.resolveFromPath(sourcePath));
 
 		// act
@@ -116,7 +116,7 @@ class TestImageDerivateerJPGFooter {
 		DigitalFooter footer = new DigitalFooter("ULB", urn, target);
 		DerivansPathResolver resolver = new DerivansPathResolver();
 		// empty list at construction time is okay since we re-set the pages immediately
-		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, 95, footer, new ArrayList<>());
+		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, footer, new ArrayList<>(), 95);
 		derivateer.setDigitalPages(resolver.resolveFromPath(imagePath));
 
 		// act
@@ -163,7 +163,7 @@ class TestImageDerivateerJPGFooter {
 		DigitalFooter footer = new DigitalFooter("ULB", urn, target);
 		DerivansPathResolver resolver = new DerivansPathResolver();
 		// empty list at construction time is okay since we re-set the pages immediately
-		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, 95, footer, new ArrayList<>());
+		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, footer, new ArrayList<>(), 95);
 		derivateer.setDigitalPages(resolver.resolveFromPath(targetPath1));
 
 		// act

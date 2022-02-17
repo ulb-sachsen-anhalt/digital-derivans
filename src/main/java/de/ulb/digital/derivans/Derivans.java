@@ -145,7 +145,7 @@ public class Derivans {
 				ImageDerivateerJPGFooter d = transformToJPGFooter(base, step, pages);
 				boolean containsGranularUrns = inspect(pages);
 				if (containsGranularUrns) {
-					d = new ImageDerivateerJPGFooterGranular(d);
+					d = new ImageDerivateerJPGFooterGranular(d, step.getQuality());
 				}
 				derivateers.add(d);
 

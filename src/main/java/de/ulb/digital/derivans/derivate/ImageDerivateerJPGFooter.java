@@ -38,10 +38,17 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	
 	private Font footerFont;
 
-	public ImageDerivateerJPGFooter(DerivansData input, DerivansData output, Integer quality, DigitalFooter footer, List<DigitalPage> pages) {
+	public ImageDerivateerJPGFooter(DerivansData input, DerivansData output, DigitalFooter footer, List<DigitalPage> pages, Integer quality) {
 		super(input, output, quality);
 		this.footer = footer;
 		this.digitalPages = pages;
+		this.init();
+	}
+	
+	public ImageDerivateerJPGFooter(ImageDerivateerJPGFooter jpgFooter, int quality) {
+		super(jpgFooter.getInput(), jpgFooter.getOutput(), quality);
+		this.footer = jpgFooter.getDigitalFooter();
+		this.digitalPages = jpgFooter.getDigitalPages();
 		this.init();
 	}
 

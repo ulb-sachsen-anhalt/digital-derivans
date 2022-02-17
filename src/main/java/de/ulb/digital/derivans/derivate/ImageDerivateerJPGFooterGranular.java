@@ -34,7 +34,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 */
 	public ImageDerivateerJPGFooterGranular(DerivansData input, DerivansData output, Integer quality,
 			DigitalFooter footer, List<DigitalPage> pages) {
-		super(input, output, quality, footer, pages);
+		super(input, output, footer, pages, quality);
 		this.digitalPages = pages;
 	}
 	
@@ -44,8 +44,8 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 * 
 	 * @param d
 	 */
-	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d) {
-		super(d.getInput(), d.getOutput(), d.getQuality(), d.getDigitalFooter(), d.digitalPages);
+	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d, int quality) {
+		super(d, quality);
 		this.digitalPages = d.getDigitalPages();
 		this.poolSize = d.getPoolSize();
 	}

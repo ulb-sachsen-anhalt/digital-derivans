@@ -26,14 +26,14 @@ public class ImageDerivateerJPG extends ImageDerivateer {
 	 */
 	public ImageDerivateerJPG(DerivansData input, DerivansData output, Integer quality) {
 		super(input, output);
-		this.quality = quality;
+		this.imageProcessor.setQuality(quality);
 	}
 
 	public ImageDerivateerJPG(BaseDerivateer base, Integer quality) {
 		super(base.getInput(), base.getOutput());
 		this.digitalPages = base.getDigitalPages();
-		this.quality = quality;
 		this.resolver = base.getResolver();
+		this.imageProcessor.setQuality(quality);
 	}
 
 	private String render(DigitalPage page) {

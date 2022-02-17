@@ -29,7 +29,7 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	protected Boolean insertIntoMets;
 
-	protected Integer quality;
+//	protected Integer quality;
 
 	protected final Path inputDir;
 
@@ -46,16 +46,17 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 	protected ImageDerivateer(DerivansData input, DerivansData output) {
 		super(input, output);
 		this.insertIntoMets = false;
-		this.quality = DEFAULT_QUALITY;
+//		this.quality = DEFAULT_QUALITY;
 		this.poolSize = DEFAULT_POOLSIZE;
 		this.inputDir = input.getPath();
 		this.outputDir = output.getPath();
 		this.imageProcessor = new ImageProcessor();
+//		this.imageProcessor.setQuality(this.quality);
 	}
 
-	public Integer getQuality() {
-		return this.quality;
-	}
+//	public Integer getQuality() {
+//		return this.quality;
+//	}
 
 	public void setImageProcessor(ImageProcessor processor) {
 		this.imageProcessor = processor;
@@ -114,8 +115,8 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 			}
 		}
 
-		String msg = String.format("process '%02d' images in %s with quality %02d in %02d threads",
-				this.digitalPages.size(), inputDir, this.getQuality(), this.poolSize);
+		String msg = String.format("process '%02d' images in %s with quality %.2f in %02d threads",
+				this.digitalPages.size(), inputDir, this.imageProcessor.getQuality(), this.poolSize);
 		LOGGER.info(msg);
 
 		// forward to actual image creation implementation
