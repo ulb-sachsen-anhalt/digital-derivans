@@ -38,6 +38,7 @@ public enum TestResource {
 	VD17_AF_11250807(Path.of("src/test/resources/mets/vls/vd17-AF-11250807.ulb.xml")),
 	
 	VD18_Af_9427337(Path.of("src/test/resources/mets/vls/vd18-Af-9427337.ulb.xml")),
+	VD18_Aa_9989442(Path.of("src/test/resources/mets/vls/vd18-9989442.ulb.xml")),
 			
 	/**
 	 * Kitodo 2

@@ -64,13 +64,13 @@ public class MetadataHandler {
 
 	private Element primaryMods;
 
-	public MetadataHandler(Path pathFile) {
+	public MetadataHandler(Path pathFile) throws DigitalDerivansException {
 		this.pathFile = pathFile;
 		try {
 			this.mets = read();
 			this.primaryMods = setPrimaryMods();
-		} catch (JDOMException | IOException | DigitalDerivansException e) {
-			new DigitalDerivansException(e);
+		} catch (JDOMException | IOException | IllegalArgumentException | DigitalDerivansException e) {
+			throw new DigitalDerivansException(e);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class MetadataHandler {
 		return this.mets;
 	}
 
-	private Mets read() throws JDOMException, IOException {
+	private Mets read() throws JDOMException, IOException, IllegalArgumentException {
 		File f = new File(this.pathFile.toString());
 		SAXBuilder builder = new SAXBuilder();
 		// please sonarqube "Disable XML external entity (XXE) processing"

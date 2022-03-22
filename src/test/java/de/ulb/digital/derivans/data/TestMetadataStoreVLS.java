@@ -3,6 +3,7 @@ package de.ulb.digital.derivans.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
@@ -224,4 +225,22 @@ class TestMetadataStoreVLS {
 		assertEquals("Prault, Pierre", dd.getPerson());
 	}
 
+	/**
+	 * 
+	 * Ensure: invalid XML which confuses the Parser yields 
+	 * proper Exception for Diagnostics 
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testInvalidXMLFromMigration() throws Exception {
+		
+		// act
+		Exception exc = assertThrows(DigitalDerivansException.class, () -> {
+			new MetadataStore(TestResource.VD18_Aa_9989442.get());
+		});
+		
+		// assert
+		assertEquals("java.lang.IllegalArgumentException: The given document is not a valid mets document", exc.getMessage());
+	}
 }
