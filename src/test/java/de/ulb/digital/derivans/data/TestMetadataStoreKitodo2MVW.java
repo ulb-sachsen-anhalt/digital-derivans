@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -45,8 +46,18 @@ class TestMetadataStoreKitodo2MVW {
 		assertEquals("Vorderdeckel", dst.getSubstructures().get(0).getSubstructures().get(0).getLabel());
 	}
 	
+	/**
+	 * 
+	 * This Record is assumed to fail at least for DDB-Validation
+	 * Because one of it's logical sections, with ID "LOG_0216",
+	 * is not linked to any physical structure.
+	 *
+	 * Obviously forgotten, but must be corrected anyway.
+	 * 
+	 * @throws DigitalDerivansException
+	 */
 	@Test
-	void testKitodo2MultivolumeMetadata030745780() throws DigitalDerivansException {
+	void testKitodo2InvalidLegacyFStage030745780() throws DigitalDerivansException {
 		// arrange
 		IMetadataStore mds = new MetadataStore(TestResource.K2_Af_030745780.get());
 		
@@ -58,10 +69,11 @@ class TestMetadataStoreKitodo2MVW {
 		assertEquals("Schleiermacher, Friedrich", dd.getPerson());
 		assertEquals("Sein Werden", dd.getTitle());
 		
-		// inspect structure
-		var dst = mds.getStructure();
-		assertEquals("Schleiermacher als Mensch", dst.getLabel());
-		assertEquals("Sein Werden", dst.getSubstructures().get(0).getLabel());
-		assertEquals("Vorderdeckel", dst.getSubstructures().get(0).getSubstructures().get(0).getLabel());
+		// inspect structure, which a bit messy at the end
+		var actualExc = assertThrows(DigitalDerivansException.class, 
+			() -> mds.getStructure());
+
+		// assert
+		assertEquals("No physical struct linked from 'LOG_0216@section(207. [An Charlotte Pistorius.])'!", actualExc.getMessage());
 	}
 }

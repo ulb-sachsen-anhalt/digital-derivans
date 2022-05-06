@@ -1,13 +1,12 @@
 package de.ulb.digital.derivans.data;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.mets.model.Mets;
-import org.mycore.mets.model.files.File;
-import org.mycore.mets.model.files.FileGrp;
-import org.mycore.mets.model.struct.Fptr;
 import org.mycore.mets.model.struct.LogicalDiv;
 import org.mycore.mets.model.struct.LogicalStructMap;
 import org.mycore.mets.model.struct.PhysicalSubDiv;
@@ -29,16 +28,38 @@ class StructureMapper {
 
 	private static final Logger LOGGER = LogManager.getLogger(StructureMapper.class);
 
+	// special case, where the complete physical section is
+	// linked to the top-most logical entity
+	public static final String STRUCT_PHYSICAL_ROOT = "physroot";
+
+	// mark missing data
+	public static final String UNSET = "n.a.";
+
 	private Mets mets;
 
 	private String title;
 
-	// remember latest working link in case of dummy physical-references
-	private String latestWorkingphysId;
+	private boolean renderPlainLeafes;
 
 	public StructureMapper(Mets mets, String title) {
+		this(mets, title, true);
+	}
+
+	/**
+	 * 
+	 * Create Instance
+	 * 
+	 * Set renderPlainLeafes = false to disable rendering 
+	 * of plain page elements of a print.
+	 * 
+	 * @param mets
+	 * @param title
+	 * @param renderPlainLeafes
+	 */
+	public StructureMapper(Mets mets, String title, boolean renderPlainLeafes) {
 		this.mets = mets;
 		this.title = title;
+		this.renderPlainLeafes = renderPlainLeafes;
 	}
 
 	public DigitalStructureTree build() throws DigitalDerivansException {
@@ -50,7 +71,7 @@ class StructureMapper {
 				throw new DigitalDerivansException(msg);
 			}
 			LogicalDiv logDiv = lsm.getDivContainer();
-			DigitalStructureTree structureRoot = new DigitalStructureTree();
+			DigitalStructureTree theRoot = new DigitalStructureTree();
 			String label = logDiv.getLabel();
 			if (label == null) {
 				label = logDiv.getOrderLabel();
@@ -58,21 +79,23 @@ class StructureMapper {
 					label = this.title;
 				}
 			}
-			structureRoot.setLabel(label);
-			structureRoot.setPage(1);
-			for (LogicalDiv logicalChild : logDiv.getChildren()) {
+			theRoot.setLabel(label);
+			theRoot.setPage(1);
+			var typedKids = logDiv.getChildren().stream().filter(div -> div.getType() != null).collect(Collectors.toList());
+			for (LogicalDiv logicalChild : typedKids) {
 				// hack around bug: not only div children are respected
+				// to avoid empty entries from TextNodes
 				if (logicalChild.getType() != null) {
 					DigitalStructureTree subTree = new DigitalStructureTree();
-					structureRoot.addSubStructure(subTree);
+					theRoot.addSubStructure(subTree);
 					extendStructure(subTree, logicalChild);
 				}
 			}
 
 			// review
-			clearStructure(structureRoot);
+			clearStructure(theRoot);
 
-			return structureRoot;
+			return theRoot;
 		} else {
 			LOGGER.warn("no mets avaiable");
 		}
@@ -99,10 +122,25 @@ class StructureMapper {
 		}
 	}
 
-	void extendStructure(DigitalStructureTree currentNode, LogicalDiv currentLogicalDiv) {
+	void extendStructure(DigitalStructureTree currentNode, LogicalDiv currentLogicalDiv) 
+		throws DigitalDerivansException {
+
+		// set required data for current node
 		currentNode.setLabel(getLabel(currentLogicalDiv));
-		int pageInSequence = mapLogicalDivToPhysicalSequence(currentLogicalDiv);
-		currentNode.setPage(pageInSequence);
+		MapLeafs mapedLeafs = mapLogicalDivToPhysicalSequence(currentLogicalDiv);
+		currentNode.setPage(mapedLeafs.order);
+
+		// handle current leafs (= just pages)
+		// if any exists and if this is required
+		if (this.renderPlainLeafes) {
+			for(var leaf : mapedLeafs.leafs) {
+				String leafLabel = StructureMapper.getLabel(leaf);
+				var leafStruct = new DigitalStructureTree(leaf.getOrder(), leafLabel);
+				currentNode.addSubStructure(leafStruct);
+			}
+		}
+
+		// iterate further down the structure tree
 		if (currentLogicalDiv.getChildren() != null) {
 			for (LogicalDiv child : currentLogicalDiv.getChildren()) {
 				DigitalStructureTree subTree = new DigitalStructureTree();
@@ -112,13 +150,44 @@ class StructureMapper {
 		}
 	}
 
-	private String getLabel(LogicalDiv logical) {
+	/**
+	 * 
+	 * Guess name/label from logical container
+	 * 
+	 * @param logical
+	 * @return
+	 */
+	private static String getLabel(LogicalDiv logical) {
 		String label = logical.getLabel();
-		if (label == null || "".equals(label.strip())) {
-			String logicalType = logical.getType();
-			return mapLogicalType(logicalType);
+		if (label != null && ! label.isBlank()) {
+			return label;
 		}
-		return label;
+		String orderLabel = logical.getOrderLabel();
+		if (orderLabel != null && ! orderLabel.isBlank()) {
+			return orderLabel;
+		}
+		String logicalType = logical.getType();
+		return mapLogicalType(logicalType);
+	}
+
+	/**
+	 * 
+	 * Guess name/label for single page from 
+	 * physical section
+	 * 
+	 * @param logical
+	 * @return
+	 */
+	private static String getLabel(PhysicalSubDiv physical) throws DigitalDerivansException {
+		String label = physical.getLabel();
+		if (label != null && ! label.isBlank()) {
+			return label;
+		}
+		String orderLabel = physical.getOrderLabel();
+		if (orderLabel != null && ! orderLabel.isBlank()) {
+			return orderLabel;
+		}
+		throw new DigitalDerivansException("No valid labelling for page '"+physical.getId()+"'");
 	}
 
 	/**
@@ -129,62 +198,65 @@ class StructureMapper {
 	 * @param ld
 	 * @return pageNumber (default: 1)
 	 */
-	private int mapLogicalDivToPhysicalSequence(LogicalDiv ld) {
+	private MapLeafs mapLogicalDivToPhysicalSequence(LogicalDiv ld) throws DigitalDerivansException {
 		String logId = ld.getId();
-		String label = getLabel(ld);
 		StructLink structLink = mets.getStructLink();
 		List<SmLink> smLinksTo = structLink.getSmLinkByFrom(logId);
-		if (smLinksTo != null && !smLinksTo.isEmpty()) {
-			String physId = smLinksTo.get(0).getTo();
-			PhysicalSubDiv physDiv = mapLatestValidContainer(physId, label);
-			if (physDiv != null) {
-				List<Fptr> fptrs = physDiv.getChildren();
-				String fileId = fptrs.get(0).getFileId();
-				// inspect ALL FileGrps, not only "MAX"
-				for (FileGrp fileGrp : mets.getFileSec().getFileGroups()) {
-					for (int i = 0; i < fileGrp.getFileList().size(); i++) {
-						File current = fileGrp.getFileList().get(i);
-						if (current.getId().equals(fileId)) {
-							int index = i + 1;
-							LOGGER.trace("mapped '{}' => logId '{}' ({})", index, logId, label);
-							return index;
-						}
-					}
+		if (!smLinksTo.isEmpty()) {
+
+			// according to latest (2022-05-05) requirements
+			// iterate over *_all_* physical containers linked 
+			// from this logical container
+			try {
+
+				// try to get the link to the target physical section
+				String physId = smLinksTo.get(0).getTo();
+
+				// handle the special semantics root container
+				// this is mapped immediately to page "1"
+				if (physId.equalsIgnoreCase(STRUCT_PHYSICAL_ROOT)) {
+					var rootLeaf = new MapLeafs();
+					rootLeaf.order = 1;
+					return rootLeaf;
 				}
+			
+				// request valid link from logical to physical container
+				PhysicalSubDiv physDiv = mets.getPhysicalStructMap().getDivContainer().get(physId);
+				if (physDiv == null) {
+					throw new DigitalDerivansException("Invalid physical struct '"+physId+"'!");
+				}
+				Integer order = physDiv.getOrder();
+				if (order == null) {
+					throw new DigitalDerivansException("no order for "+logId);
+				}
+				var mapLeafs = new MapLeafs();
+				mapLeafs.order = order;
+
+				// collect links for every page otherwise
+				// but *ONLY* if this is not one of the top-most containers!
+				// this is Kitodo2 related, where there is no such thing 
+				// as a simple "physRoot" linking but each physical page is also linked
+				// to the monograph/F-stage, too
+				if (! isTopLogicalContainer(ld)) {
+					mapLeafs.leafs = smLinksTo.stream()
+					.map(smLink -> mets.getPhysicalStructMap().getDivContainer().get(smLink.getTo()))
+					.collect(Collectors.toList());
+				}
+
+				return mapLeafs;
+			} catch (DigitalDerivansException e) {
+				throw new DigitalDerivansException("LogId '"+logId+"' : "+e.getMessage());
 			}
 		}
-
-		LOGGER.warn("No phys struct maps logical struct '{}' - default to '1'!", logId);
-		return 1;
+		LOGGER.warn("No phys struct maps logical struct '{}' - default to 'null'!", logId);
+		String logStr = String.format("%s@%s(%s)", logId, ld.getType(), ld.getLabel());
+		throw new DigitalDerivansException("No physical struct linked from '"+logStr+"'!");
 	}
 
-	/**
-	 * 
-	 * Try to map a valid physical structure that is linked from some logical
-	 * structure. Handle problems with processes that allow multiple logical
-	 * elements on a single physical page. For these cases, we keep track of the
-	 * latest valid link that will be re-used this time.
-	 * 
-	 * @param physId
-	 * @param label
-	 * @return physicalSubDiv or null
-	 */
-	private PhysicalSubDiv mapLatestValidContainer(String physId, String label) {
-		PhysicalSubDiv physDiv = mets.getPhysicalStructMap().getDivContainer().get(physId);
-		if (physDiv == null) {
-			LOGGER.warn("Invalid physical Target '{}' for '{}'", physId, label);
-			if (latestWorkingphysId != null) {
-				LOGGER.warn("re-use latestWorkingPhysId {} for label '{}'", latestWorkingphysId, label);
-				physDiv = mets.getPhysicalStructMap().getDivContainer().get(latestWorkingphysId);
-				if (physDiv == null) {
-					LOGGER.error("no way to handle '{}' - skip structure!", label);
-					return null;
-				}
-			}
-		} else {
-			latestWorkingphysId = physId;
-		}
-		return physDiv;
+	private static boolean isTopLogicalContainer(LogicalDiv logDiv) {
+		String theType = logDiv.getType();
+		var tops = List.of("volume", "monograph");
+		return tops.stream().anyMatch(t -> t.equals(theType));
 	}
 
 	/**
@@ -194,7 +266,7 @@ class StructureMapper {
 	 * @param logicalType
 	 * @return
 	 */
-	private String mapLogicalType(String logicalType) {
+	private static String mapLogicalType(String logicalType) {
 		switch (logicalType) {
 		case "cover_front":
 			return "Vorderdeckel";
@@ -240,8 +312,21 @@ class StructureMapper {
 		case "volume":
 			return "Band";
 		default:
-			LOGGER.warn("no mapping for logical type: '{}'", logicalType);
-			return "n.a.";
+			LOGGER.error("no mapping for logical type: '{}'", logicalType);
+			return null;
 		}
+	}
+}
+
+/**
+ * Internal Data Container Clazz
+ */
+class MapLeafs {
+	Integer order = 1;
+	List<PhysicalSubDiv> leafs = new ArrayList<>();
+
+	@Override
+	public String toString() {
+		return String.format("p%04d (%d leafs)", order, leafs.size());
 	}
 }

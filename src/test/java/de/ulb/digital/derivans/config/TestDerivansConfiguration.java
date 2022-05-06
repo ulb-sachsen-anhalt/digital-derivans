@@ -28,7 +28,7 @@ public class TestDerivansConfiguration {
 		Path targetMetsDir = tempDir.resolve("226134857");
 		Files.createDirectory(targetMetsDir);
 		Path metsModsTarget = targetMetsDir.resolve("226134857.xml");
-		Files.copy(TestResource.HD_Aa_226134857.get(), metsModsTarget);
+		Files.copy(TestResource.HD_Aa_226134857_LEGACY.get(), metsModsTarget);
 		Path conf = Path.of("src/test/resources/config/derivans.ini");
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(conf);

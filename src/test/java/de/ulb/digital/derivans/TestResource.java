@@ -30,7 +30,7 @@ public enum TestResource {
 	/**
 	 * contains logical links to non-existing physical structures 
 	 */
-	HD_Aa_226134857(Path.of("src/test/resources/mets/vls/hd-Aa-226134857.prep.xml")),
+	HD_Aa_226134857_LEGACY(Path.of("src/test/resources/mets/vls/hd-Aa-226134857.prep.xml")),
 	
 	MENA_Af_1237560(Path.of("src/test/resources/mets/vls/mena-Af-1237560.ulb.xml")),
 	
@@ -64,6 +64,14 @@ public enum TestResource {
 	IMG_TIF_ZD1_GREY(Path.of("src/test/resources/images/1681877805_J_0125_0001x128.tif")),
 	IMG_TIF_ZD1_RGB(Path.of("src/test/resources/images/1681875195_J_0001_0008x128.tif")),
 	IMG_JPG_ZD2_GREY(Path.of("src/test/resources/images/1667522809_J_0025_0001x128.jpg")),
+
+	/**
+	 * opendata 
+	 * both METS belong together, they describe the same digital object
+	 */
+	SHARE_IT_VD18_MIG(Path.of("src/test/resources/mets/share_it/1981185920_79009.xml")),
+	VD18_Aa_VD18_MIG(Path.of("src/test/resources/mets/vls/vd18-Aa-16372279.mets.xml")),
+
 	;
 	
 	private Path path;
