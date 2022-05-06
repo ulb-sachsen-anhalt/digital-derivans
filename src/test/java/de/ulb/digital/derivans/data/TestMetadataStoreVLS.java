@@ -156,14 +156,14 @@ class TestMetadataStoreVLS {
 		// level 1+2
 		assertEquals("Liber Primus,", children.get(5).getLabel());
 		assertTrue(children.get(5).hasSubstructures());
-		assertEquals(2, children.get(5).getSubstructures().size());
+		assertEquals(207, children.get(5).getSubstructures().size());
 
 		// level 1+2+3
 		assertEquals(
 				"Continuatio Historiae Ecclesiasticae Iohannis Micraelii, Secunda Hac Editione Emendata & plurimis locis aucta à Daniele Hartnaccio, Pomerano.",
 				children.get(9).getLabel());
-		assertEquals(4, children.get(9).getSubstructures().size());
-		assertEquals(11, children.get(9).getSubstructures().get(1).getSubstructures().size());
+		assertEquals(1246, children.get(9).getSubstructures().size());
+		assertEquals(0, children.get(9).getSubstructures().get(1).getSubstructures().size());
 	}
 
 	/**
@@ -193,9 +193,11 @@ class TestMetadataStoreVLS {
 
 	/**
 	 * 
-	 * Example of invalid Test Data - contains links to non-existing physical
-	 * structures and therefore cannot generate proper Mappings for this part of
-	 * Document Structure
+	 * Example of invalid legacy METS Data - 
+	 * It contains links to non-existing physical sructures 
+	 * and therefore cannot generate proper Page Mappings.
+	 * 
+	 * DATA LIKE THIS MUST BE CORRECT FOREHAND!
 	 * 
 	 * @throws Exception
 	 */
@@ -203,26 +205,14 @@ class TestMetadataStoreVLS {
 	void testInvalidStructure226134857() throws Exception {
 
 		// arrange
-		IMetadataStore mds = new MetadataStore(TestResource.HD_Aa_226134857.get());
+		IMetadataStore mds = new MetadataStore(TestResource.HD_Aa_226134857_LEGACY.get());
 
 		// act
-		DigitalStructureTree tree = mds.getStructure();
-		DescriptiveData dd = mds.getDescriptiveData();
-
-		// assert
-		for (DigitalStructureTree subTree : tree.getSubstructures()) {
-			if (subTree.hasSubstructures()) {
-				for (DigitalStructureTree subSubTree : subTree.getSubstructures()) {
-					assertFalse(subSubTree.hasSubstructures());
-					assertTrue(subSubTree.getPage() > 0);
-				}
-			}
-			assertTrue(subTree.getPage() > 0);
-		}
-
-		// assert even some more
-		assertEquals("1740", dd.getYearPublished());
-		assertEquals("Prault, Pierre", dd.getPerson());
+		var actualExc = assertThrows(DigitalDerivansException.class, 
+			() -> mds.getStructure());
+		
+		//
+		assertEquals("LogId 'log2404939' : Invalid physical struct 'phys2404942'!", actualExc.getMessage());
 	}
 
 	/**
@@ -242,5 +232,38 @@ class TestMetadataStoreVLS {
 		
 		// assert
 		assertEquals("java.lang.IllegalArgumentException: The given document is not a valid mets document", exc.getMessage());
+	}
+
+	@Test
+	void testStructureForPageLabels() throws Exception {
+
+		// arrange
+		IMetadataStore mds = new MetadataStore(TestResource.VD18_Aa_VD18_MIG.get());
+
+		// act
+		DigitalStructureTree tree = mds.getStructure();
+
+		// assert
+		assertEquals("Dissertatio Inavgvralis Ivridica De Avxiliatoribvs Fvrvm Oder: Von Diebs-Helffern", tree.getLabel());
+		var lvlOneStructs = tree.getSubstructures();
+		assertEquals(5, lvlOneStructs.size());
+		var lvlOneStructOne = lvlOneStructs.get(0);
+		assertEquals("Vorderdeckel", lvlOneStructOne.getLabel());
+
+		// according to legacy PDF ouline, expect 4 (four) 
+		// pages actually belonging to logical section "cover_front":
+		// leaf 1 : "[Seite 3]"
+		// leaf 2 : "[Seite 4]"
+		// leaf 3 : "[Leerseite]"
+		// leaf 4 : "[Leerseite]"
+		assertEquals(4, lvlOneStructOne.getSubstructures().size());
+		assertEquals("[Seite 3]", lvlOneStructOne.getSubstructures().get(0).getLabel());
+		assertEquals(1, lvlOneStructOne.getSubstructures().get(0).getPage());
+		assertEquals("[Seite 4]", lvlOneStructOne.getSubstructures().get(1).getLabel());
+		assertEquals(2, lvlOneStructOne.getSubstructures().get(1).getPage());
+		assertEquals("[Leerseite]", lvlOneStructOne.getSubstructures().get(2).getLabel());
+		assertEquals(3, lvlOneStructOne.getSubstructures().get(2).getPage());
+		assertEquals("[Leerseite]", lvlOneStructOne.getSubstructures().get(3).getLabel());
+		assertEquals(4, lvlOneStructOne.getSubstructures().get(3).getPage());
 	}
 }
