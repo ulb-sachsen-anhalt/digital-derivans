@@ -47,6 +47,10 @@ public class DefaultConfiguration {
 	public static final String DEFAULT_FOOTER_LABEL = "Mass Digitalization";
 
 	public static final String DEFAULT_CONFIG_FILE = "derivans.ini";
+
+	public static final String DEFAULT_RENDER_LEVEL = "line";
+
+	public static final String DEFAULT_RENDER_VISIBILTY = "invisible";
 	
 	private DefaultConfiguration() {
 	}

@@ -28,6 +28,8 @@ public class PDFMetaInformation {
 	private String conformanceLevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
 	private int imageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
 	private Boolean debugRender = Boolean.FALSE;
+	private String renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
+	private String renderModus = DefaultConfiguration.DEFAULT_RENDER_VISIBILTY;
 
 	public String getConformanceLevel() {
 		return conformanceLevel;
@@ -151,6 +153,22 @@ public class PDFMetaInformation {
 
 	public void setDebugRender(Boolean debugRender) {
 		this.debugRender = debugRender;
+	}
+
+	public String getRenderLevel() {
+		return this.renderLevel;
+	}
+	
+	public void setRenderLevel(String level) {
+		this.renderLevel = level;
+	}
+
+	public String getRenderModus() {
+		return this.renderModus;
+	}
+	
+	public void setRenderModus(String modus) {
+		this.renderModus = modus;
 	}
 
 	/**

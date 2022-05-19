@@ -37,13 +37,12 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 import de.ulb.digital.derivans.model.ocr.OCRToken;
-import de.ulb.digital.derivans.model.ocr.OCRData.Text;
-import de.ulb.digital.derivans.model.ocr.OCRData.Textline;
 
 /**
  * 
@@ -74,6 +73,10 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private boolean debugRender;
 
+	private String renderLevel;
+
+	private String renderModus;
+
 	/**
 	 * 
 	 * Create new instance on top of {@link BaseDerivateer}
@@ -91,6 +94,8 @@ public class PDFDerivateer extends BaseDerivateer {
 		this.pdfMeta = metaInfo;
 		this.setDpi(metaInfo.getImageDpi());
 		this.debugRender = metaInfo.getDebugRender();
+		this.renderLevel = metaInfo.getRenderLevel();
+		this.renderModus = metaInfo.getRenderModus();
 		LOGGER.info("debugRender: {}", this.debugRender);
 	}
 
@@ -184,8 +189,15 @@ public class PDFDerivateer extends BaseDerivateer {
 			cb.saveState();
 			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
 			for (OCRData.Textline line : ocrLines) {
-				renderText(font, (int) currentImageHeight, cb, line);
-			}
+				if (this.renderLevel.equalsIgnoreCase(DefaultConfiguration.DEFAULT_RENDER_LEVEL)) {
+					render(font, (int) currentImageHeight, cb, line);
+				} else if (this.renderLevel.equalsIgnoreCase("word")) {
+					List<OCRData.Text> tokens = line.getTokens();
+					for (var word : tokens) {
+						render(font, (int) currentImageHeight, cb, word);
+					}
+				}
+			} 
 			cb.restoreState();
 			// optional: render ocr data outlines for debugging visualization
 			if (this.debugRender) {
@@ -200,39 +212,41 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	/**
 	 * 
-	 * Render a single row of textual tokens, if a valid fontSize can be calculated
+	 * Render single textual tokens, if a valid fontSize can be calculated,
+	 * which acutally means a line or a word token
 	 * 
 	 * @param font
 	 * @param pageHeight
 	 * @param cb
 	 * @param line
 	 */
-	private void renderText(BaseFont font, int pageHeight, PdfContentByte cb, Textline line) {
-		List<Text> tokens = line.getTokens();
-		for (var word : tokens) {
-			String text = word.getText();
-			java.awt.Rectangle b = word.getBox();
-			Rectangle box = toItextBox(word.getBox());
-			float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
-			if (fontSize < .75f) {
-				LOGGER.warn("attenzione - font to small: '{}'(min:{}) for text '{}' - resist to render", fontSize, .75, text);
-				return;
-			}
-			float x = box.getLeft();
-			float y = pageHeight - box.getBottom();
-			// looks like we need to go down a bit because
-			// font seems to be rendered not from baseline, therefore introduce v
-			// v = y - fontSize * x, with X is were the magic starts: x=1 too low, x=0.5 too
-			// high
-			float v = y - (fontSize * .75f);
-			if (this.debugRender) {
-				LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);
-			}
-			cb.beginText();
-			cb.setFontAndSize(font, fontSize);
-			cb.showTextAligned(Element.ALIGN_BOTTOM, text, x, v, 0);
-			cb.endText();
+	private void render(BaseFont font, int pageHeight, PdfContentByte cb, OCRToken token) {
+		String text = token.getText();
+		java.awt.Rectangle b = token.getBox();
+		Rectangle box = toItextBox(token.getBox());
+		float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
+		if (fontSize < .75f) {
+			LOGGER.warn("font too small: '{}'(min:{}) for text '{}' - resist to render", fontSize, .75, text);
+			return;
 		}
+		float x = box.getLeft();
+		float y = pageHeight - box.getBottom();
+		// looks like we need to go down a bit because
+		// font seems to be rendered not from baseline, therefore introduce v
+		// v = y - fontSize * x, with X is were the magic starts: x=1 too low, x=0.5 too
+		// high
+		float v = y - (fontSize * .75f);
+		if (this.debugRender) {
+			LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);
+		}
+		// propably hide text layer font
+		if(this.renderModus.equalsIgnoreCase("invisible")) {
+			cb.setTextRenderingMode(PdfContentByte.TEXT_RENDER_MODE_INVISIBLE);
+		}
+		cb.beginText();
+		cb.setFontAndSize(font, fontSize);
+		cb.showTextAligned(Element.ALIGN_BOTTOM, text, x, v, 0);
+		cb.endText();
 	}
 
 	/**
