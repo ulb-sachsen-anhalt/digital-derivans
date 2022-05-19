@@ -227,7 +227,14 @@ public class TestDerivans {
 	@Order(5)
 	void testDerivateWithFulltext(@TempDir Path tempDir) throws Exception {
 
-		// arrange
+		// arrange migration configuration with extended derivates
+		Path configSourceDir = Path.of("src/test/resources/config");
+		Path configTargetDir = tempDir.resolve("config");
+		if (Files.exists(configTargetDir)) {
+			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			Files.delete(configTargetDir);
+		}
+		copyTree(configSourceDir, configTargetDir);
 		Path pathTarget = tempDir.resolve("148811035");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
@@ -248,6 +255,7 @@ public class TestDerivans {
 
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(targetMets);
+		dp.setPathConfig(configTargetDir.resolve("derivans.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 
 		// apply some scaling, too

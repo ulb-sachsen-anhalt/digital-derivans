@@ -159,6 +159,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		// push ocr if any
 		Optional<OCRData> optOcr = page.getOcrData();
 		if (optOcr.isPresent()) {
+			LOGGER.debug("handle optional ocr for {}", page.getImagePath());
 			OCRData ocrData = optOcr.get();
 			// get to know current image dimensions
 			// most likely to differ due subsequent scaling derivation steps
@@ -181,13 +182,20 @@ public class PDFDerivateer extends BaseDerivateer {
 				ocrData.scale(ratio);
 			}
 			// place optional text *behind* image
-			PdfContentByte cb = writer.getDirectContentUnder();
+			PdfContentByte cb = writer.getDirectContent();
 			// optional: if layer shall be visible, show words too on top
-			if (this.debugRender == true) {
+			if (this.debugRender) {
 				cb = writer.getDirectContent();
 			}
 			cb.saveState();
 			List<OCRData.Textline> ocrLines = ocrData.getTextlines();
+			// communicate once
+			if (this.renderLevel.equalsIgnoreCase(DefaultConfiguration.DEFAULT_RENDER_LEVEL)) {
+				LOGGER.trace("render text at line-level");
+			} else if(this.renderLevel.equalsIgnoreCase("word")) {
+				LOGGER.trace("render text at word-level");
+			}
+			// actual rendering about to start
 			for (OCRData.Textline line : ocrLines) {
 				if (this.renderLevel.equalsIgnoreCase(DefaultConfiguration.DEFAULT_RENDER_LEVEL)) {
 					render(font, (int) currentImageHeight, cb, line);

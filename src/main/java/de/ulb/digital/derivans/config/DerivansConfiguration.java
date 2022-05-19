@@ -323,6 +323,22 @@ public class DerivansConfiguration {
 				this.pdfMeta.setImageDpi(Integer.valueOf(optImageDpi.get()));
 			}
 
+			// on which level optional text to render: per word, per line ... ?
+			String keyPdfRenderLvl = derivateSection + ".render_text_level";
+			Optional<String> optRenderLvl = extractValue(conf, keyPdfRenderLvl, String.class);
+			if(optRenderLvl.isPresent()) {
+				LOGGER.debug("set render text level '{}'", optRenderLvl.get());
+				this.pdfMeta.setRenderLevel(optRenderLvl.get());
+			}
+
+			// on which level optional text to render: per word, per line ... ?
+			String keyPdfRenderVis = derivateSection + ".render_text_visibility";
+			Optional<String> optRenderVis = extractValue(conf, keyPdfRenderVis, String.class);
+			if(optRenderVis.isPresent()) {
+				LOGGER.debug("set render text visibility '{}'", optRenderVis.get());
+				this.pdfMeta.setRenderModus(optRenderVis.get());
+			}
+
 			this.derivateSteps.add(step);
 			nSection++;
 			derivateSection = String.format("derivate_%02d", nSection);
