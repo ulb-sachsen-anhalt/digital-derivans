@@ -36,20 +36,7 @@ Digital Derivans is a Java project build with [Apache Maven](https://github.com/
 * OpenJDK 11+
 * Maven 3.6+
 * git 2.12+
-
-* install required ref of `mets-model` library
-
-  ```shell
-  git clone --branch ulb/master https://github.com/ulb-sachsen-anhalt/mets-model.git && cd mets-model
-  
-  # additional export required for enhanced build chains
-  #export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
-
-  # install mets-model library to local MAVEN repository
-  mvn clean install && cd ..
-  ```
-
-* pack application
+* build application
 
   ```shell
   mvn clean package
