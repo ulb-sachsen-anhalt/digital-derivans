@@ -363,25 +363,12 @@ public class DerivansConfiguration {
 		}
 	}
 
+	/**
+	 * Default Steps supposed to work out-of-the-box, even without any METS-data at hand.
+	 */
 	private void provideDefaultSteps() {
-		DerivateStep renderFooter = new DerivateStep();
-		renderFooter.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_FOOTER_INPUT_SUB_PATH));
-		renderFooter.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
-		renderFooter.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_FOOTER_OUTPUT_SUB_PATH));
-		renderFooter.setQuality(DefaultConfiguration.DEFAULT_QUALITY_FOOTER);
-		renderFooter.setFooterLabel(DefaultConfiguration.DEFAULT_FOOTER_LABEL);
-		renderFooter.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
-		renderFooter.setDerivateType(DerivateType.JPG_FOOTER);
-		if (Files.exists(DefaultConfiguration.DEFAULT_FOOTER_TEMPLATE_PATH)) {
-			LOGGER.info("set footer template '{}'", DefaultConfiguration.DEFAULT_FOOTER_TEMPLATE_PATH);
-			renderFooter.setPathTemplate(DefaultConfiguration.DEFAULT_FOOTER_TEMPLATE_PATH);
-		} else {
-			LOGGER.warn("no footer template at '{}'", DefaultConfiguration.DEFAULT_FOOTER_TEMPLATE_PATH);
-		}
-		this.derivateSteps.add(renderFooter);
-
 		DerivateStep createMins = new DerivateStep();
-		createMins.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_FOOTER_OUTPUT_SUB_PATH));
+		createMins.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_INPUT_SUB_PATH));
 		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
 		createMins.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_SUB_PATH));
 		createMins.setQuality(DefaultConfiguration.DEFAULT_QUALITY);

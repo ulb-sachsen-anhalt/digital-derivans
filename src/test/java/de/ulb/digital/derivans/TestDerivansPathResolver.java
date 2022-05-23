@@ -37,7 +37,7 @@ public class TestDerivansPathResolver {
 
 		// act
 		List<DerivateStep> steps = derivans.steps;
-		assertEquals(DerivateType.JPG_FOOTER, steps.get(0).getDerivateType());
+		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
 		List<DigitalPage> actuals = resolver.resolveFromStep(steps.get(0));
 		
 		// assert
