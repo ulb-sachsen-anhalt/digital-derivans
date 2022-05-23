@@ -59,7 +59,7 @@ public class TestDerivans {
 	void testConfig(@TempDir Path tempDir) throws Exception {
 
 		// arrange metadata and images
-		Path pathTarget = arrangeMetaddatenAndImagesFor737429(tempDir);
+		Path pathTarget = arrangeMetsAndImagesFor737429(tempDir);
 
 		// arrange configuration
 		// migration configuration with extended derivates
@@ -115,7 +115,7 @@ public class TestDerivans {
 	@Order(2)
 	void testDerivatesFrom737429Defaults(@TempDir Path tempDir) throws Exception {
 
-		Path pathTarget = arrangeMetaddatenAndImagesFor737429(tempDir);
+		Path pathTarget = arrangeMetsAndImagesFor737429(tempDir);
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
@@ -155,24 +155,6 @@ public class TestDerivans {
 	}
 
 	@Test
-	@Order(2)
-	void testDerivatesFrom737429Oversize(@TempDir Path tempDir) throws Exception {
-
-		Path pathTarget = arrangeMetaddatenAndImagesFor737429Oversize(tempDir);
-
-		// act
-		DerivansParameter dp = new DerivansParameter();
-		dp.setPathInput(pathTarget.resolve("737429.xml"));
-		DerivansConfiguration dc = new DerivansConfiguration(dp);
-		Derivans derivans = new Derivans(dc);
-		derivans.create();
-
-		// assert
-		Path pdfWritten = pathTarget.resolve("191092622.pdf");
-		assertTrue(Files.exists(pdfWritten));
-	}
-
-	@Test
 	@Order(3)
 	void testDerivatesOnlyWithPath(@TempDir Path tempDir) throws Exception {
 
@@ -204,8 +186,6 @@ public class TestDerivans {
 		Files.createDirectories(pathImageMax);
 		generateJpgsFromList(pathImageMax, 1240, 1754, List.of("737434", "737436", "737437", "737438"));
 
-//		Path sourceMets = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
-//		assertTrue(Files.exists(sourceMets));
 		Path targetMets = pathTarget.resolve(Path.of("737429.mets.xml"));
 		Files.copy(TestResource.HD_Aa_737429.get(), targetMets);
 
@@ -274,7 +254,7 @@ public class TestDerivans {
 	}
 
 	@Test
-	@Order(3)
+	@Order(6)
 	void testDerivatesOnlyWithPathZD(@TempDir Path tempDir) throws Exception {
 
 		// arrange
@@ -308,32 +288,17 @@ public class TestDerivans {
 		assertTrue(Files.exists(pdfWritten));
 	}
 
-	public static Path arrangeMetaddatenAndImagesFor737429(Path tempDir) throws IOException {
+	public static Path arrangeMetsAndImagesFor737429(Path tempDir) throws IOException {
 		Path pathTarget = tempDir.resolve("737429");
 		if (Files.exists(pathTarget)) {
 			Files.walk(pathTarget).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(pathTarget);
 		}
 		Files.createDirectory(pathTarget);
-//		Path mets = Path.of("src/test/resources/metadata/vls/737429.mets.xml");
 		Path metsTarget = pathTarget.resolve("737429.xml");
 		Files.copy(TestResource.HD_Aa_737429.get(), metsTarget);
 		Path imagePath = pathTarget.resolve("MAX");
 		generateJpgsFromList(imagePath, 2367, 3737, List.of("737434", "737436", "737437", "737438"));
-		return pathTarget;
-	}
-
-	public static Path arrangeMetaddatenAndImagesFor737429Oversize(Path tempDir) throws IOException {
-		Path pathTarget = tempDir.resolve("737429");
-		if (Files.exists(pathTarget)) {
-			Files.walk(pathTarget).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-			Files.delete(pathTarget);
-		}
-		Files.createDirectory(pathTarget);
-		Path metsTarget = pathTarget.resolve("737429.xml");
-		Files.copy(TestResource.HD_Aa_737429.get(), metsTarget);
-		Path imagePath = pathTarget.resolve("MAX");
-		generateJpgsFromList(imagePath, 15367, 3737, List.of("737434", "737436", "737437", "737438"));
 		return pathTarget;
 	}
 

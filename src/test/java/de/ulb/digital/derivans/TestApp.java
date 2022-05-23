@@ -19,7 +19,7 @@ class TestApp {
 	void testAppOdeFallbackConfiguration(@TempDir Path tempDir) throws Exception {
 
 		// arrange metadata and images
-		Path pathTarget = TestDerivans.arrangeMetaddatenAndImagesFor737429(tempDir);
+		Path pathTarget = TestDerivans.arrangeMetsAndImagesFor737429(tempDir);
 
 		// act
 		String[] args = { pathTarget.resolve("737429.xml").toString() };
@@ -34,7 +34,7 @@ class TestApp {
 	void testAppOdeWithConfigurationFile(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		Path pathTarget = TestDerivans.arrangeMetaddatenAndImagesFor737429(tempDir);
+		Path pathTarget = TestDerivans.arrangeMetsAndImagesFor737429(tempDir);
 		
 		Path configDir = Path.of("src/test/resources/config");
 		Path configTempDir = tempDir.resolve("config");
