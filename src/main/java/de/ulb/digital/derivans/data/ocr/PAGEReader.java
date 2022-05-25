@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.data.ocr;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.Polygon;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -96,26 +97,14 @@ public class PAGEReader implements OCRReader {
 				.getChild("Unicode", getType().toNS())
 				.getTextTrim();
 		String[] coordPoints = word.getChild("Coords", getType().toNS()).getAttributeValue("points").split(" ");
-		List<java.awt.Point> points = new ArrayList<>();
+		Polygon polygon = new Polygon();
 		for (String coordPair : coordPoints) {
 			String[] tokens = coordPair.split(",");
 			Integer x = Integer.valueOf(tokens[0]);
 			Integer y = Integer.valueOf(tokens[1]);
-			java.awt.Point p = new java.awt.Point(x, y);
-			points.add(p);
+			polygon.addPoint(x, y);
 		}
-		java.awt.Polygon polygon = new java.awt.Polygon();
-		for (java.awt.Point p : points) {
-			polygon.addPoint(p.x, p.y);
-		}
-		java.awt.Rectangle rect = polygon.getBounds();
-		// String[] topLeft = coordPoints[0].split(",");
-		// String[] btmRight = coordPoints[2].split(",");
-		// int topLeftX = Integer.parseInt(topLeft[0]);
-		// int topLeftY = Integer.parseInt(topLeft[1]);
-		// int width = Integer.parseInt(btmRight[0]) - topLeftX ;
-		// int height = Integer.parseInt(btmRight[1]) - topLeftY;
-		// Rectangle rect = new Rectangle(topLeftX, topLeftY, width, height);
+		Rectangle rect = polygon.getBounds();
 		return new OCRData.Text(content, rect);
 	}
 
