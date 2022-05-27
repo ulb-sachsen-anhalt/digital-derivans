@@ -26,11 +26,11 @@ public class TestPage2019Reader {
 	@Test
 	void testPAGE2019fromOCRD() throws Exception {
 		// arrange
-		Path vlInhouse737434 = Path.of("./src/test/resources/page/16258167.xml");
+		Path page2019 = Path.of("./src/test/resources/page/16258167.xml");
 		PAGEReader reader = new PAGEReader(Type.PAGE_2019);
 
 		// act
-		var actual = reader.get(vlInhouse737434);
+		var actual = reader.get(page2019);
 
 		// assert
 		assertNotNull(actual);
@@ -44,4 +44,33 @@ public class TestPage2019Reader {
 		assertEquals(new Rectangle(362, 1764, 1126, 63), line15Shape.getBounds());
 	}
 
+
+	/**
+	 * 
+	 * Ensure handling of PAGE with OCR data just on Textline Level
+	 * 
+	 * Please note, although it works, results differ from granular data
+	 * and might contain some more rubbish output which would be stripped
+	 * otherwise
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testPAGEWithOnlyTextlines() throws Exception {
+		// arrange
+		Path pagewihoutWords = Path.of("./src/test/resources/page/16258167_no_words.xml");
+		PAGEReader reader = new PAGEReader(Type.PAGE_2019);
+
+		// act
+		var actual = reader.get(pagewihoutWords);
+
+		// assert
+		assertEquals(10, actual.getTextlines().size());
+		OCRData.Textline loi = actual.getTextlines().get(3);
+		assertEquals("[1337.0x81.0]So Guth als Blut für Ihn zu geben! ===", loi.toString());
+		assertEquals("So Guth als Blut für Ihn zu geben! ===", loi.getText());
+		// geometric data
+		var line15Shape = loi.getArea();
+		assertEquals(new Rectangle(342, 1751, 1337, 81), line15Shape.getBounds());
+	}
 }

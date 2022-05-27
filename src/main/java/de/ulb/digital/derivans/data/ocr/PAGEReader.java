@@ -77,6 +77,14 @@ public class PAGEReader implements OCRReader {
 						.map(this::toText).filter(OCRData.Text::hasPrintableChars).collect(Collectors.toList());
 				OCRData.Textline line = new OCRData.Textline(texts);
 				ocrLines.add(line);
+			} else {
+				String transcription = el.getChild("TextEquiv", getType().toNS()).getChild("Unicode", getType().toNS()).getTextTrim();
+				if (VALID_TEXT.test(transcription)) {
+					var ocrData = this.toText(el);
+					if (ocrData.hasPrintableChars()) {
+						ocrLines.add(new OCRData.Textline(List.of(ocrData)));
+					}
+				}
 			}
 		}
 		return ocrLines;
@@ -91,12 +99,12 @@ public class PAGEReader implements OCRReader {
 		return elements;
 	}
 
-	OCRData.Text toText(Element word) {
-		String content = word
+	OCRData.Text toText(Element textElement) {
+		String content = textElement
 				.getChild("TextEquiv", getType().toNS())
 				.getChild("Unicode", getType().toNS())
 				.getTextTrim();
-		String[] coordPoints = word.getChild("Coords", getType().toNS()).getAttributeValue("points").split(" ");
+		String[] coordPoints = textElement.getChild("Coords", getType().toNS()).getAttributeValue("points").split(" ");
 		Polygon polygon = new Polygon();
 		for (String coordPair : coordPoints) {
 			String[] tokens = coordPair.split(",");
