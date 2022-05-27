@@ -2,7 +2,7 @@
 
 ![JDK11 Maven3](https://github.com/ulb-sachsen-anhalt/digital-derivans/workflows/Java%20CI%20with%20Maven/badge.svg) 
 
-Derive new digitals from existing ones.
+A tool that merges image files and OCR data to produce searchable pdf files with hidden text and optional footer.
 
 Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling, classical [iText5](https://github.com/itext/itextpdf) to create PDF, [Apache log4j2](https://github.com/apache/logging-log4j2) for logging and a workflow inspired by [OCR-D/Core](https://github.com/OCR-D/core) METS-driven-Workflows.
 
@@ -16,7 +16,7 @@ Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handli
 
 Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max sizes. For details see [configuration section](#Configuration).
 
-If METS/MODS-information is avaiable, the following will be utilized:
+If METS/MODS-information is available, the following will be utilized:
 
 * `mods:recordInfo/mods:recordIdentifier` to name the resulting PDF-file
 * for PDF-outline attribute `mets:div[@ORDER]` for the file containers is strictly respected as defined in the METS physical structMap
@@ -38,15 +38,51 @@ Digital Derivans is a Java project build with [Apache Maven](https://github.com/
 * git 2.12+
 * build application
 
+### Pull and compile
+
+Clone the repository
+
+```shell
+git clone git@github.com:ulb-sachsen-anhalt/digital-derivans.git
+
+cd digital-derivans
+```
+
+Now build the java binary using Maven:
+
   ```shell
   mvn clean package
   ```
 
-  This will create a shaded JAR ("FAT-JAR") which can be passed to the actual target system. _Please note, that an recent OpenJDK is required to run the Application._
+  This will create a shaded JAR ("FAT-JAR", by default `./target/digital-derivans-1.6.0.jar`) which can be passed to the actual target system. _Please note that a recent OpenJDK is required to run the Application._
 
 ## Usage
 
-Call via Cmdline: `java -jar <application-jarfile>.jar <path-to-data>`
+The tool expects a project folder containing at least a `MAX` and `FULLTEXT` directory for image files and ocr-files respectively.
+The default name of the generated pdf is derived from the project folder name.
+*(Attention: If you call the programme from with the project folder, the resulting pdf will be called `..pdf`)*
+
+A sample folder structure:
+
+```bash
+test/
+├── FULLTEXT
+│   ├── 0002.xml
+│   ├── 0021.xml
+│   ├── 0332.xml
+├── MAX
+│   ├── 0002.tif
+│   ├── 0021.tif
+│   ├── 0332.tif
+```
+
+Running 
+
+```bash
+java -jar <PATH>./target/digital-derivans-1.6.0.jar test/`
+```
+
+will produce a pdf `test.pdf` in the `test/` directory.
 
 ## Configuration
 
