@@ -248,7 +248,15 @@ class StructureMapper {
 				throw new DigitalDerivansException("LogId '"+logId+"' : "+e.getMessage());
 			}
 		}
-		LOGGER.warn("No phys struct maps logical struct '{}' - default to 'null'!", logId);
+		LOGGER.warn("No phys struct maps logical struct '{}'!", logId);
+		// maybe type is newspaper related
+		String logicalType = ld.getType();
+		if ("year".equalsIgnoreCase(logicalType)) {
+			LOGGER.info("Deal with type '{}', therefore map to page '1'.", logicalType);
+			var rootLeaf = new MapLeafs();
+			rootLeaf.order = 1;
+			return rootLeaf;
+		}
 		String logStr = String.format("%s@%s(%s)", logId, ld.getType(), ld.getLabel());
 		throw new DigitalDerivansException("No physical struct linked from '"+logStr+"'!");
 	}
