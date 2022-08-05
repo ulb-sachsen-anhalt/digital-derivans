@@ -1,7 +1,7 @@
 package de.ulb.digital.derivans.derivate;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -103,13 +103,25 @@ class ImageProcessor {
 		return b;
 	}
 
+	/**
+	 * 
+	 * Please note:
+	 * 	Don't use Image.getScaledInstance!
+	 * 
+	 * {@link https://stackoverflow.com/questions/20083554/bufferedimage-getscaledinstance-changes-brightness-of-picture}
+	 * {@link https://community.oracle.com/docs/DOC-983611}
+	 * 
+	 * @param original
+	 * @param ratio
+	 * @return scaled ImageBuffer
+	 */
 	BufferedImage scale(BufferedImage original, float ratio) {
 		int newW = (int) (ratio * original.getWidth());
 		int newH = (int) (ratio * original.getHeight());
-		Image tmp = original.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
 		BufferedImage dimg = new BufferedImage(newW, newH, original.getType());
 		Graphics2D g2d = dimg.createGraphics();
-		g2d.drawImage(tmp, 0, 0, null);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g2d.drawImage(original, 0, 0, newW, newH, null);
 		g2d.dispose();
 		return dimg;
 	}
@@ -284,39 +296,4 @@ class ImageProcessor {
 		return Optional.empty();
 	}
 
-	void displayMetadata(Node node, int level) {
-		// print open tag of element
-		indent(level);
-		System.out.print("<" + node.getNodeName());
-		NamedNodeMap map = node.getAttributes();
-		if (map != null) {
-			// print attribute values
-			int length = map.getLength();
-			for (int i = 0; i < length; i++) {
-				Node attr = map.item(i);
-				System.out.print(" " + attr.getNodeName() + "=\"" + attr.getNodeValue() + "\"");
-			}
-		}
-		Node child = node.getFirstChild();
-		if (child == null) {
-			// no children, so close element and return
-			System.out.println("/>");
-			return;
-		}
-		// children, so close current tag
-		System.out.println(">");
-		while (child != null) {
-			// print children recursively
-			displayMetadata(child, level + 1);
-			child = child.getNextSibling();
-		}
-		// print close tag of element
-		indent(level);
-		System.out.println("</" + node.getNodeName() + ">");
-	}
-
-	void indent(int level) {
-		for (int i = 0; i < level; i++)
-			System.out.print("\t");
-	}
 }
