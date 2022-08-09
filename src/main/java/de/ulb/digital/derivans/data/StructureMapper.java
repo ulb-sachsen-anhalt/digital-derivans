@@ -319,6 +319,22 @@ class StructureMapper {
 		// important if volume misses "LABEL"
 		case "volume":
 			return "Band";
+		case "musical_notation":
+			return "Musiknotation";
+		case "periodical":
+			return "Periodica";
+		case "newspaper":
+			return "Zeitung";
+		case "year":
+			return "Jahr";
+		case "month":
+			return "Monat";
+		case "day":
+			return "Tag";
+		case "additional":
+			return "Beilage";
+		case "issue":
+			return "Ausgabe";
 		default:
 			LOGGER.error("no mapping for logical type: '{}'", logicalType);
 			return null;
