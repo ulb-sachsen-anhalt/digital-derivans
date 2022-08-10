@@ -1,7 +1,12 @@
 package de.ulb.digital.derivans.data;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -88,12 +93,16 @@ class StructureMapper {
 				if (logicalChild.getType() != null) {
 					DigitalStructureTree subTree = new DigitalStructureTree();
 					theRoot.addSubStructure(subTree);
+					subTree.setParentStructure(theRoot);
 					extendStructure(subTree, logicalChild);
 				}
 			}
 
-			// review
-			clearStructure(theRoot);
+			// review invalid page links
+			clearInvalidPageLinks(theRoot);
+
+			// review redundant page links
+			clearRedundantPageLinks(theRoot);
 
 			return theRoot;
 		} else {
@@ -108,19 +117,85 @@ class StructureMapper {
 	 * Handle possible invalid links from logicalContainers to physicalSequences for
 	 * all descendant structure nodes recursively
 	 * 
+	 * Invalid links are pointing to a Page marked with -1.
+	 * 
 	 * @param tree
 	 */
-	private void clearStructure(DigitalStructureTree tree) {
+	private void clearInvalidPageLinks(DigitalStructureTree tree) {
 		if (tree.hasSubstructures()) {
 			for (DigitalStructureTree subTree : tree.getSubstructures()) {
 				if (subTree.getPage() == -1) {
 					boolean isRemoved = tree.removeSubStructure(subTree);
 					LOGGER.warn("Droped invalid subStructure '{}':{}", subTree, isRemoved);
 				}
-				clearStructure(subTree);
+				clearInvalidPageLinks(subTree);
 			}
 		}
 	}
+
+
+	int clearRedundantPageLinks(DigitalStructureTree root) {
+		// nothing to foster, go back
+		if(!root.hasSubstructures()) {
+			return 0;
+		}
+
+		// collect all sub-nodes in a stack
+		List<DigitalStructureTree> allNodes = this.getSubstructures(root, new ArrayList<>());
+
+		// map structures to linked pages
+		Map<String, List<DigitalStructureTree>> structureMap = new HashMap<>();
+		for(var plainNode : allNodes) {
+			String structStr = plainNode.toString();
+			structureMap.computeIfPresent(structStr, (k, v) -> { 
+				v.add(plainNode);
+				return v;
+			});
+			structureMap.computeIfAbsent(structStr, k -> { 
+				var l = new ArrayList<DigitalStructureTree>(); 
+				l.add(plainNode); 
+				return l;
+			});
+		}
+		// filter structures which are linked more than once
+		var multiLinked = structureMap.entrySet().stream()
+			.filter(e -> e.getValue().size() > 1)
+			.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+		
+		if(multiLinked.size() > 0) {
+			LOGGER.warn("Detected '{}' multi linked structures", multiLinked.size());
+		}
+
+		// inspect each multiple linked node
+		int dropped = 0;
+		for (var multiList : multiLinked.values()) {
+			// determine longest path -> this is the most valid link
+			int maxDepth = multiList.stream().map(e -> e.getParents().size()).max(Comparator.comparing(Integer::valueOf)).orElse(0);
+			// assume every shorter path is a faulty linked
+			// parent structure link to be removed
+			for(int i=0; i<multiList.size(); i++) {
+				int currDepth = multiList.get(i).getParents().size();
+				if(currDepth > 0 && currDepth < maxDepth) {
+					var parent = multiList.get(i).getParentStructure();
+					parent.removeSubStructure(multiList.get(i));
+					dropped++;
+				}
+			}
+		}
+		return dropped;
+	}
+
+	private List<DigitalStructureTree> getSubstructures(DigitalStructureTree current, List<DigitalStructureTree> target) {
+		if (current.hasSubstructures()) {
+			for(var subStruct : current.getSubstructures()) {
+				this.getSubstructures(subStruct, target);
+			}
+		} else {
+			target.add(current);
+		}
+		return target;
+	}
+
 
 	void extendStructure(DigitalStructureTree currentNode, LogicalDiv currentLogicalDiv) 
 		throws DigitalDerivansException {
@@ -136,6 +211,7 @@ class StructureMapper {
 			for(var leaf : mapedLeafs.leafs) {
 				String leafLabel = StructureMapper.getLabel(leaf);
 				var leafStruct = new DigitalStructureTree(leaf.getOrder(), leafLabel);
+				leafStruct.setParentStructure(currentNode);
 				currentNode.addSubStructure(leafStruct);
 			}
 		}
@@ -145,6 +221,7 @@ class StructureMapper {
 			for (LogicalDiv child : currentLogicalDiv.getChildren()) {
 				DigitalStructureTree subTree = new DigitalStructureTree();
 				currentNode.addSubStructure(subTree);
+				subTree.setParentStructure(currentNode);
 				extendStructure(subTree, child);
 			}
 		}

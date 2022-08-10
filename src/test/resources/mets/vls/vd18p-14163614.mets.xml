@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:vl="http://visuallibrary.net/vl" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="7" LABEL="Zeitschriften des 18. Jahrhunderts">
+  <mets:metsHdr CREATEDATE="2022-07-14T08:25:31">
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>vls/2203</mets:name>
+      <mets:note>legacy vlid: oai:digitale.bibliothek.uni-halle.de/vd18p:14163614</mets:note>
+      <mets:note>legacy date: 2021-06-28T18:45:45Z</mets:note>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="INSTANCE">
+      <mets:name>ulbhalvd</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="REPOSITORY">
+      <mets:name>digitale.bibliothek.uni-halle.de</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="BUILDER">
+      <mets:name>vd</mets:name>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="md14151901">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:titleInfo>
+            <mods:title>Pirnaischer Chronicken und Historien Calender</mods:title>
+            <mods:subTitle>auf das Jahr ..</mods:subTitle>
+          </mods:titleInfo>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Pirna</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Nißchen</mods:publisher>
+            <mods:dateIssued>1765 ; mehr nicht digitalisiert</mods:dateIssued>
+            <mods:dateIssued encoding="w3cdtf" point="start">1765</mods:dateIssued>
+            <mods:dateIssued encoding="w3cdtf" point="end">1765</mods:dateIssued>
+            <mods:dateIssued>1765</mods:dateIssued>
+            <mods:issuance>continuing</mods:issuance>
+          </mods:originInfo>
+          <mods:originInfo>
+            <mods:place>
+              <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:dateIssued encoding="w3cdtf" point="start">2017</mods:dateIssued>
+            <mods:dateIssued encoding="w3cdtf" point="end">2017</mods:dateIssued>
+            <mods:edition>[Electronic ed.]</mods:edition>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+          </mods:language>
+          <mods:note type="date/sequential designation">1765 ; mehr nicht digitalisiert</mods:note>
+          <mods:note>Reproduktion</mods:note>
+          <mods:identifier type="vd18">90553675</mods:identifier>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-787701</mods:identifier>
+          <mods:identifier type="zdb">2910858-5</mods:identifier>
+          <mods:location>
+            <mods:url displayLabel="Resolving-System">https://nbn-resolving.org/urn:nbn:de:gbv:3:1-787701</mods:url>
+          </mods:location>
+          <mods:location>
+            <mods:url displayLabel="Digitalisierung" note="Kostenfrei zugänglich ohne Registrierung">http://digitale.bibliothek.uni-halle.de/urn/urn:nbn:de:gbv:3:1-787701</mods:url>
+          </mods:location>
+          <mods:extension>
+            <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
+              <zvdd:titleWord>Chroniken- Historien-Calender Historienkalender Kalender</zvdd:titleWord>
+            </zvdd:zvddWrap>
+            <vlz:externalType xmlns:vlz="http://visuallibrary.net/vlz/1.0/" recordSyntax="pica" code="Ob"/>
+            <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">09-11-17</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">19-07-21</mods:recordChangeDate>
+            <mods:recordIdentifier source="ulbhalvd18p">1003433553</mods:recordIdentifier>
+            <mods:descriptionStandard>rda</mods:descriptionStandard>
+          </mods:recordInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="md14163614">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:part order="1">
+            <mods:detail type="volume">
+              <mods:caption>1765</mods:caption>
+              <mods:number/>
+            </mods:detail>
+            <mods:date encoding="w3cdtf">1765</mods:date>
+          </mods:part>
+          <mods:extension>
+            <vl:sourceinfo dname="ulbhalvd18p" caption="1765" type="volume" id="14163614" dtype="retro"/>
+          </mods:extension>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-855618</mods:identifier>
+          <mods:recordInfo>
+            <mods:recordIdentifier source="local">ulbhalvd:14163614</mods:recordIdentifier>
+          </mods:recordInfo>
+          <mods:relatedItem type="host">
+            <mods:titleInfo>
+              <mods:title>Pirnaischer Chronicken und Historien Calender</mods:title>
+              <mods:subTitle>auf das Jahr ..</mods:subTitle>
+            </mods:titleInfo>
+            <mods:typeOfResource>text</mods:typeOfResource>
+            <mods:originInfo eventType="publication">
+              <mods:place>
+                <mods:placeTerm type="text">Pirna</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Nißchen</mods:publisher>
+              <mods:dateIssued>1765 ; mehr nicht digitalisiert</mods:dateIssued>
+              <mods:dateIssued encoding="w3cdtf" point="start">1765</mods:dateIssued>
+              <mods:dateIssued encoding="w3cdtf" point="end">1765</mods:dateIssued>
+              <mods:dateIssued>1765</mods:dateIssued>
+              <mods:issuance>continuing</mods:issuance>
+            </mods:originInfo>
+            <mods:originInfo>
+              <mods:place>
+                <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+              <mods:dateIssued encoding="w3cdtf" point="start">2017</mods:dateIssued>
+              <mods:dateIssued encoding="w3cdtf" point="end">2017</mods:dateIssued>
+              <mods:edition>[Electronic ed.]</mods:edition>
+            </mods:originInfo>
+            <mods:language>
+              <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+            </mods:language>
+            <mods:note type="date/sequential designation">1765 ; mehr nicht digitalisiert</mods:note>
+            <mods:note>Reproduktion</mods:note>
+            <mods:identifier type="vd18">90553675</mods:identifier>
+            <mods:identifier type="urn">urn:nbn:de:gbv:3:1-787701</mods:identifier>
+            <mods:identifier type="zdb">2910858-5</mods:identifier>
+            <mods:location>
+              <mods:url displayLabel="Resolving-System">https://nbn-resolving.org/urn:nbn:de:gbv:3:1-787701</mods:url>
+            </mods:location>
+            <mods:location>
+              <mods:url displayLabel="Digitalisierung" note="Kostenfrei zugänglich ohne Registrierung">http://digitale.bibliothek.uni-halle.de/urn/urn:nbn:de:gbv:3:1-787701</mods:url>
+            </mods:location>
+            <mods:extension>
+              <zvdd:zvddWrap xmlns:zvdd="http://zvdd.gdz-cms.de/">
+                <zvdd:titleWord>Chroniken- Historien-Calender Historienkalender Kalender</zvdd:titleWord>
+              </zvdd:zvddWrap>
+              <vlz:externalType xmlns:vlz="http://visuallibrary.net/vlz/1.0/" recordSyntax="pica" code="Ob"/>
+              <vlz:info xmlns:vlz="http://visuallibrary.net/vlz/1.0/" version="2"/>
+            </mods:extension>
+            <mods:recordInfo>
+              <mods:recordCreationDate encoding="marc">09-11-17</mods:recordCreationDate>
+              <mods:recordChangeDate encoding="marc">19-07-21</mods:recordChangeDate>
+              <mods:recordIdentifier source="ulbhalvd18p">1003433553</mods:recordIdentifier>
+              <mods:descriptionStandard>rda</mods:descriptionStandard>
+            </mods:recordInfo>
+            <mods:extension>
+              <vl:id>14151901</vl:id>
+              <vl:odid>7</vl:odid>
+              <vl:datatype>1</vl:datatype>
+              <vl:type>24</vl:type>
+              <vl:state>1</vl:state>
+            </mods:extension>
+          </mods:relatedItem>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd14163614">
+    <mets:rightsMD ID="rights14163614">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>http://digitale.bibliothek.uni-halle.de//domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Halle, Saale : Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov14163614">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=ulbhalvd%3A14163614</dv:reference>
+            <dv:presentation>http://digitale.bibliothek.uni-halle.de/id/14163614</dv:presentation>
+            <dv:iiif>http://digitale.bibliothek.uni-halle.de/i3f/v20/14163614/manifest</dv:iiif>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:amdSec ID="amd14151901">
+    <mets:rightsMD ID="rights14151901">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:ownerLogo>http://digitale.bibliothek.uni-halle.de//domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Halle, Saale : Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov14151901">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/">
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=1003433553</dv:reference>
+            <dv:presentation>http://digitale.bibliothek.uni-halle.de/id/14151901</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="DOWNLOAD">
+      <mets:file MIMETYPE="application/pdf" CHECKSUM="4bfe7b95c6f7ac1352b56fdadac41b6c503ba04f" CREATED="2017-11-13T11:17:21.828100Z" CHECKSUMTYPE="SHA-1" SIZE="8901694" ID="PDF_14151901">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/pdf/14151901" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/pdf" CHECKSUM="8e3847aa12214ca9cc5230e50dcd865c2175c698" CREATED="2017-11-13T17:21:20.304500Z" CHECKSUMTYPE="SHA-1" SIZE="8923245" ID="PDF_14163614">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/pdf/14163614" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/pdf" CHECKSUM="e5463acb820b40f6a70c6b419656abaa12caf163" CREATED="2021-07-01T17:37:24.742200Z" CHECKSUMTYPE="SHA-1" SIZE="303344" ID="PDF_14163488">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/pdf/14163488" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/pdf" CHECKSUM="25cfaf348852c1fd463cca294ae139069f2fe15f" CREATED="2021-07-01T17:37:41.831000Z" CHECKSUMTYPE="SHA-1" SIZE="471387" ID="PDF_14163491">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/pdf/14163491" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/pdf" CHECKSUM="f22ed2a4387eaa27c12119431a889a065a402f5e" CREATED="2021-07-01T17:38:00.647800Z" CHECKSUMTYPE="SHA-1" SIZE="338862" ID="PDF_14163494">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/pdf/14163494" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/pdf" CHECKSUM="bb7b82bb591ddac59a2460fed9f05ac8ea1fbb66" CREATED="2021-07-01T17:56:44.142000Z" CHECKSUMTYPE="SHA-1" SIZE="6290177" ID="PDF_14163656">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/pdf/14163656" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/pdf" CHECKSUM="a61fc641b4260849313fabcea1943e8a0affaa36" CREATED="2021-07-02T08:05:22.873500Z" CHECKSUMTYPE="SHA-1" SIZE="1626463" ID="PDF_14163533">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/pdf/14163533" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/pdf" CHECKSUM="6c2612cbe115e2f73091b25ec7c2ec6aab6c0836" CREATED="2021-07-01T17:44:28.484000Z" CHECKSUMTYPE="SHA-1" SIZE="315948" ID="PDF_14163546">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/pdf/14163546" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="TEASER">
+      <mets:file MIMETYPE="image/jpeg" CREATED="2017-11-10T21:00:49.766600Z" ID="IMG_TEASER_14163489">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/304/14163489" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="DEFAULT">
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163489">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163489" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163490">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163490" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163492">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163492" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163493">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163493" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163495">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163495" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163497">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163497" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163498">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163498" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163500">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163500" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163501">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163501" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163503">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163503" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163504">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163504" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163506">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163506" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163507">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163507" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163509">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163509" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163510">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163510" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163512">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163512" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163513">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163513" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163515">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163515" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163516">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163516" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163518">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163518" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163519">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163519" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163521">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163521" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163522">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163522" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163524">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163524" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163525">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163525" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163527">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163527" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163528">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163528" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163529">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163529" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163530">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163530" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163532">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163532" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163534">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163534" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163536">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163536" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163538">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163538" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163540">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163540" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163543">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163543" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163545">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163545" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163547">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163547" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_DEFAULT_14163548">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/1000/14163548" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="THUMBS">
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163489">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163489" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163490">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163490" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163492">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163492" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163493">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163493" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163495">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163495" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163497">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163497" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163498">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163498" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163500">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163500" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163501">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163501" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163503">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163503" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163504">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163504" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163506">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163506" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163507">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163507" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163509">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163509" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163510">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163510" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163512">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163512" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163513">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163513" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163515">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163515" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163516">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163516" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163518">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163518" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163519">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163519" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163521">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163521" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163522">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163522" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163524">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163524" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163525">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163525" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163527">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163527" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163528">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163528" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163529">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163529" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163530">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163530" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163532">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163532" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163534">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163534" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163536">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163536" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163538">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163538" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163540">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163540" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163543">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163543" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163545">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163545" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163547">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163547" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_THUMBS_14163548">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/128/14163548" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="MIN">
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163489">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163489" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163490">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163490" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163492">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163492" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163493">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163493" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163495">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163495" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163497">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163497" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163498">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163498" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163500">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163500" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163501">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163501" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163503">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163503" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163504">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163504" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163506">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163506" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163507">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163507" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163509">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163509" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163510">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163510" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163512">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163512" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163513">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163513" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163515">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163515" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163516">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163516" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163518">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163518" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163519">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163519" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163521">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163521" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163522">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163522" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163524">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163524" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163525">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163525" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163527">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163527" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163528">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163528" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163529">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163529" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163530">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163530" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163532">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163532" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163534">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163534" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163536">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163536" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163538">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163538" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163540">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163540" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163543">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163543" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163545">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163545" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163547">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163547" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MIN_14163548">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/600/14163548" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="MAX">
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163489">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163489" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163490">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163490" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163492">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163492" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163493">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163493" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163495">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163495" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163497">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163497" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163498">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163498" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163500">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163500" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163501">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163501" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163503">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163503" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163504">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163504" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163506">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163506" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163507">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163507" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163509">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163509" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163510">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163510" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163512">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163512" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163513">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163513" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163515">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163515" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163516">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163516" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163518">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163518" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163519">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163519" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163521">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163521" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163522">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163522" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163524">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163524" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163525">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163525" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163527">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163527" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163528">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163528" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163529">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163529" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163530">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163530" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163532">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163532" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163534">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163534" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163536">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163536" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163538">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163538" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163540">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163540" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163543">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163543" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163545">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163545" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163547">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163547" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_14163548">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/14163548" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys14163489" TYPE="page" LABEL="[Seite 3]" ORDER="1">
+        <mets:fptr FILEID="IMG_DEFAULT_14163489"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163489"/>
+        <mets:fptr FILEID="IMG_MIN_14163489"/>
+        <mets:fptr FILEID="IMG_MAX_14163489"/>
+      </mets:div>
+      <mets:div ID="phys14163490" TYPE="page" LABEL="[Seite 4]" ORDER="2">
+        <mets:fptr FILEID="IMG_DEFAULT_14163490"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163490"/>
+        <mets:fptr FILEID="IMG_MIN_14163490"/>
+        <mets:fptr FILEID="IMG_MAX_14163490"/>
+      </mets:div>
+      <mets:div ID="phys14163492" TYPE="page" LABEL="[Seite 5]" ORDER="3">
+        <mets:fptr FILEID="IMG_DEFAULT_14163492"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163492"/>
+        <mets:fptr FILEID="IMG_MIN_14163492"/>
+        <mets:fptr FILEID="IMG_MAX_14163492"/>
+      </mets:div>
+      <mets:div ID="phys14163493" TYPE="page" LABEL="[Leerseite]" ORDER="4">
+        <mets:fptr FILEID="IMG_DEFAULT_14163493"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163493"/>
+        <mets:fptr FILEID="IMG_MIN_14163493"/>
+        <mets:fptr FILEID="IMG_MAX_14163493"/>
+      </mets:div>
+      <mets:div ID="phys14163495" TYPE="page" LABEL="[Seite 7]" ORDER="5">
+        <mets:fptr FILEID="IMG_DEFAULT_14163495"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163495"/>
+        <mets:fptr FILEID="IMG_MIN_14163495"/>
+        <mets:fptr FILEID="IMG_MAX_14163495"/>
+      </mets:div>
+      <mets:div ID="phys14163497" TYPE="page" LABEL="[Seite 8]" ORDER="6">
+        <mets:fptr FILEID="IMG_DEFAULT_14163497"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163497"/>
+        <mets:fptr FILEID="IMG_MIN_14163497"/>
+        <mets:fptr FILEID="IMG_MAX_14163497"/>
+      </mets:div>
+      <mets:div ID="phys14163498" TYPE="page" LABEL="[Tabelle]" ORDER="7">
+        <mets:fptr FILEID="IMG_DEFAULT_14163498"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163498"/>
+        <mets:fptr FILEID="IMG_MIN_14163498"/>
+        <mets:fptr FILEID="IMG_MAX_14163498"/>
+      </mets:div>
+      <mets:div ID="phys14163500" TYPE="page" LABEL="[Seite 10]" ORDER="8">
+        <mets:fptr FILEID="IMG_DEFAULT_14163500"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163500"/>
+        <mets:fptr FILEID="IMG_MIN_14163500"/>
+        <mets:fptr FILEID="IMG_MAX_14163500"/>
+      </mets:div>
+      <mets:div ID="phys14163501" TYPE="page" LABEL="[Tabelle]" ORDER="9">
+        <mets:fptr FILEID="IMG_DEFAULT_14163501"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163501"/>
+        <mets:fptr FILEID="IMG_MIN_14163501"/>
+        <mets:fptr FILEID="IMG_MAX_14163501"/>
+      </mets:div>
+      <mets:div ID="phys14163503" TYPE="page" LABEL="[Seite 12]" ORDER="10">
+        <mets:fptr FILEID="IMG_DEFAULT_14163503"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163503"/>
+        <mets:fptr FILEID="IMG_MIN_14163503"/>
+        <mets:fptr FILEID="IMG_MAX_14163503"/>
+      </mets:div>
+      <mets:div ID="phys14163504" TYPE="page" LABEL="[Tabelle]" ORDER="11">
+        <mets:fptr FILEID="IMG_DEFAULT_14163504"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163504"/>
+        <mets:fptr FILEID="IMG_MIN_14163504"/>
+        <mets:fptr FILEID="IMG_MAX_14163504"/>
+      </mets:div>
+      <mets:div ID="phys14163506" TYPE="page" LABEL="[Seite 14]" ORDER="12">
+        <mets:fptr FILEID="IMG_DEFAULT_14163506"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163506"/>
+        <mets:fptr FILEID="IMG_MIN_14163506"/>
+        <mets:fptr FILEID="IMG_MAX_14163506"/>
+      </mets:div>
+      <mets:div ID="phys14163507" TYPE="page" LABEL="[Tabelle]" ORDER="13">
+        <mets:fptr FILEID="IMG_DEFAULT_14163507"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163507"/>
+        <mets:fptr FILEID="IMG_MIN_14163507"/>
+        <mets:fptr FILEID="IMG_MAX_14163507"/>
+      </mets:div>
+      <mets:div ID="phys14163509" TYPE="page" LABEL="[Seite 16]" ORDER="14">
+        <mets:fptr FILEID="IMG_DEFAULT_14163509"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163509"/>
+        <mets:fptr FILEID="IMG_MIN_14163509"/>
+        <mets:fptr FILEID="IMG_MAX_14163509"/>
+      </mets:div>
+      <mets:div ID="phys14163510" TYPE="page" LABEL="[Tabelle]" ORDER="15">
+        <mets:fptr FILEID="IMG_DEFAULT_14163510"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163510"/>
+        <mets:fptr FILEID="IMG_MIN_14163510"/>
+        <mets:fptr FILEID="IMG_MAX_14163510"/>
+      </mets:div>
+      <mets:div ID="phys14163512" TYPE="page" LABEL="[Seite 18]" ORDER="16">
+        <mets:fptr FILEID="IMG_DEFAULT_14163512"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163512"/>
+        <mets:fptr FILEID="IMG_MIN_14163512"/>
+        <mets:fptr FILEID="IMG_MAX_14163512"/>
+      </mets:div>
+      <mets:div ID="phys14163513" TYPE="page" LABEL="[Tabelle]" ORDER="17">
+        <mets:fptr FILEID="IMG_DEFAULT_14163513"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163513"/>
+        <mets:fptr FILEID="IMG_MIN_14163513"/>
+        <mets:fptr FILEID="IMG_MAX_14163513"/>
+      </mets:div>
+      <mets:div ID="phys14163515" TYPE="page" LABEL="[Seite 20]" ORDER="18">
+        <mets:fptr FILEID="IMG_DEFAULT_14163515"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163515"/>
+        <mets:fptr FILEID="IMG_MIN_14163515"/>
+        <mets:fptr FILEID="IMG_MAX_14163515"/>
+      </mets:div>
+      <mets:div ID="phys14163516" TYPE="page" LABEL="[Tabelle]" ORDER="19">
+        <mets:fptr FILEID="IMG_DEFAULT_14163516"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163516"/>
+        <mets:fptr FILEID="IMG_MIN_14163516"/>
+        <mets:fptr FILEID="IMG_MAX_14163516"/>
+      </mets:div>
+      <mets:div ID="phys14163518" TYPE="page" LABEL="[Seite 22]" ORDER="20">
+        <mets:fptr FILEID="IMG_DEFAULT_14163518"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163518"/>
+        <mets:fptr FILEID="IMG_MIN_14163518"/>
+        <mets:fptr FILEID="IMG_MAX_14163518"/>
+      </mets:div>
+      <mets:div ID="phys14163519" TYPE="page" LABEL="[Tabelle]" ORDER="21">
+        <mets:fptr FILEID="IMG_DEFAULT_14163519"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163519"/>
+        <mets:fptr FILEID="IMG_MIN_14163519"/>
+        <mets:fptr FILEID="IMG_MAX_14163519"/>
+      </mets:div>
+      <mets:div ID="phys14163521" TYPE="page" LABEL="[Seite 24]" ORDER="22">
+        <mets:fptr FILEID="IMG_DEFAULT_14163521"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163521"/>
+        <mets:fptr FILEID="IMG_MIN_14163521"/>
+        <mets:fptr FILEID="IMG_MAX_14163521"/>
+      </mets:div>
+      <mets:div ID="phys14163522" TYPE="page" LABEL="[Tabelle]" ORDER="23">
+        <mets:fptr FILEID="IMG_DEFAULT_14163522"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163522"/>
+        <mets:fptr FILEID="IMG_MIN_14163522"/>
+        <mets:fptr FILEID="IMG_MAX_14163522"/>
+      </mets:div>
+      <mets:div ID="phys14163524" TYPE="page" LABEL="[Seite 26]" ORDER="24">
+        <mets:fptr FILEID="IMG_DEFAULT_14163524"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163524"/>
+        <mets:fptr FILEID="IMG_MIN_14163524"/>
+        <mets:fptr FILEID="IMG_MAX_14163524"/>
+      </mets:div>
+      <mets:div ID="phys14163525" TYPE="page" LABEL="[Tabelle]" ORDER="25">
+        <mets:fptr FILEID="IMG_DEFAULT_14163525"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163525"/>
+        <mets:fptr FILEID="IMG_MIN_14163525"/>
+        <mets:fptr FILEID="IMG_MAX_14163525"/>
+      </mets:div>
+      <mets:div ID="phys14163527" TYPE="page" LABEL="[Seite 28]" ORDER="26">
+        <mets:fptr FILEID="IMG_DEFAULT_14163527"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163527"/>
+        <mets:fptr FILEID="IMG_MIN_14163527"/>
+        <mets:fptr FILEID="IMG_MAX_14163527"/>
+      </mets:div>
+      <mets:div ID="phys14163528" TYPE="page" LABEL="[Tabelle]" ORDER="27">
+        <mets:fptr FILEID="IMG_DEFAULT_14163528"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163528"/>
+        <mets:fptr FILEID="IMG_MIN_14163528"/>
+        <mets:fptr FILEID="IMG_MAX_14163528"/>
+      </mets:div>
+      <mets:div ID="phys14163529" TYPE="page" LABEL="[Seite 30]" ORDER="28">
+        <mets:fptr FILEID="IMG_DEFAULT_14163529"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163529"/>
+        <mets:fptr FILEID="IMG_MIN_14163529"/>
+        <mets:fptr FILEID="IMG_MAX_14163529"/>
+      </mets:div>
+      <mets:div ID="phys14163530" TYPE="page" LABEL="[Tabelle]" ORDER="29">
+        <mets:fptr FILEID="IMG_DEFAULT_14163530"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163530"/>
+        <mets:fptr FILEID="IMG_MIN_14163530"/>
+        <mets:fptr FILEID="IMG_MAX_14163530"/>
+      </mets:div>
+      <mets:div ID="phys14163532" TYPE="page" LABEL="[Seite 32]" ORDER="30">
+        <mets:fptr FILEID="IMG_DEFAULT_14163532"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163532"/>
+        <mets:fptr FILEID="IMG_MIN_14163532"/>
+        <mets:fptr FILEID="IMG_MAX_14163532"/>
+      </mets:div>
+      <mets:div ID="phys14163534" TYPE="page" LABEL="[Seite 33]" ORDER="31">
+        <mets:fptr FILEID="IMG_DEFAULT_14163534"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163534"/>
+        <mets:fptr FILEID="IMG_MIN_14163534"/>
+        <mets:fptr FILEID="IMG_MAX_14163534"/>
+      </mets:div>
+      <mets:div ID="phys14163536" TYPE="page" LABEL="[Seite 34]" ORDER="32">
+        <mets:fptr FILEID="IMG_DEFAULT_14163536"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163536"/>
+        <mets:fptr FILEID="IMG_MIN_14163536"/>
+        <mets:fptr FILEID="IMG_MAX_14163536"/>
+      </mets:div>
+      <mets:div ID="phys14163538" TYPE="page" LABEL="[Seite 35]" ORDER="33">
+        <mets:fptr FILEID="IMG_DEFAULT_14163538"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163538"/>
+        <mets:fptr FILEID="IMG_MIN_14163538"/>
+        <mets:fptr FILEID="IMG_MAX_14163538"/>
+      </mets:div>
+      <mets:div ID="phys14163540" TYPE="page" LABEL="[Seite 36]" ORDER="34">
+        <mets:fptr FILEID="IMG_DEFAULT_14163540"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163540"/>
+        <mets:fptr FILEID="IMG_MIN_14163540"/>
+        <mets:fptr FILEID="IMG_MAX_14163540"/>
+      </mets:div>
+      <mets:div ID="phys14163543" TYPE="page" LABEL="[Tabelle]" ORDER="35">
+        <mets:fptr FILEID="IMG_DEFAULT_14163543"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163543"/>
+        <mets:fptr FILEID="IMG_MIN_14163543"/>
+        <mets:fptr FILEID="IMG_MAX_14163543"/>
+      </mets:div>
+      <mets:div ID="phys14163545" TYPE="page" LABEL="[Tabelle]" ORDER="36">
+        <mets:fptr FILEID="IMG_DEFAULT_14163545"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163545"/>
+        <mets:fptr FILEID="IMG_MIN_14163545"/>
+        <mets:fptr FILEID="IMG_MAX_14163545"/>
+      </mets:div>
+      <mets:div ID="phys14163547" TYPE="page" LABEL="[Seite 39]" ORDER="37">
+        <mets:fptr FILEID="IMG_DEFAULT_14163547"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163547"/>
+        <mets:fptr FILEID="IMG_MIN_14163547"/>
+        <mets:fptr FILEID="IMG_MAX_14163547"/>
+      </mets:div>
+      <mets:div ID="phys14163548" TYPE="page" LABEL="[Seite 40]" ORDER="38">
+        <mets:fptr FILEID="IMG_DEFAULT_14163548"/>
+        <mets:fptr FILEID="IMG_THUMBS_14163548"/>
+        <mets:fptr FILEID="IMG_MIN_14163548"/>
+        <mets:fptr FILEID="IMG_MAX_14163548"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="log14151901" DMDID="md14151901" ADMID="amd14151901" TYPE="periodical" LABEL="Pirnaischer Chronicken und Historien Calender" ORDER="1">
+      <mets:mptr LOCTYPE="URL" xlink:href="http://digitale.bibliothek.uni-halle.de/oai/?verb=GetRecord&amp;metadataPrefix=mets&amp;identifier=14151901"/>
+      <mets:fptr FILEID="PDF_14151901"/>
+      <mets:fptr FILEID="IMG_TEASER_14163489"/>
+      <mets:div ID="log14163614" DMDID="md14163614" ADMID="amd14163614" TYPE="volume" LABEL="1765" ORDER="1" CONTENTIDS="urn:nbn:de:gbv:3:1-855618">
+        <mets:fptr FILEID="PDF_14163614"/>
+        <mets:fptr FILEID="IMG_TEASER_14163489"/>
+        <mets:div ID="log14163488" TYPE="cover_front" ORDER="1">
+          <mets:fptr FILEID="PDF_14163488"/>
+        </mets:div>
+        <mets:div ID="log14163491" TYPE="title_page" ORDER="2">
+          <mets:fptr FILEID="PDF_14163491"/>
+        </mets:div>
+        <mets:div ID="log14163494" TYPE="section" LABEL="In diesem Jahr zehlet man nach der Geburt Jesu Christi 1765." ORDER="3">
+          <mets:fptr FILEID="PDF_14163494"/>
+        </mets:div>
+        <mets:div ID="log14163656" TYPE="section" LABEL="[Calender]" ORDER="4">
+          <mets:fptr FILEID="PDF_14163656"/>
+          <mets:div ID="log14163496" TYPE="section" LABEL="Januarius 1765." ORDER="1"/>
+          <mets:div ID="log14163499" TYPE="section" LABEL="Februarius 1765." ORDER="2"/>
+          <mets:div ID="log14163502" TYPE="section" LABEL="Martius 1765." ORDER="3"/>
+          <mets:div ID="log14163505" TYPE="section" LABEL="Aprilis 1765." ORDER="4"/>
+          <mets:div ID="log14163508" TYPE="section" LABEL="Majus 1765." ORDER="5"/>
+          <mets:div ID="log14163511" TYPE="section" LABEL="Junius 1765." ORDER="6"/>
+          <mets:div ID="log14163514" TYPE="section" LABEL="Julius 1765." ORDER="7"/>
+          <mets:div ID="log14163517" TYPE="section" LABEL="Augustus 1765." ORDER="8"/>
+          <mets:div ID="log14163520" TYPE="section" LABEL="September 1765." ORDER="9"/>
+          <mets:div ID="log14163523" TYPE="section" LABEL="October 1765." ORDER="10"/>
+          <mets:div ID="log14163526" TYPE="section" LABEL="November 1765." ORDER="11"/>
+          <mets:div ID="log14163615" TYPE="section" LABEL="December 1765." ORDER="12"/>
+        </mets:div>
+        <mets:div ID="log14163533" TYPE="section" LABEL="Calender-Anhang Auf das Jahr nach der Geburt Jesu Christi 1765." ORDER="5">
+          <mets:fptr FILEID="PDF_14163533"/>
+          <mets:div ID="log14163622" TYPE="section" LABEL="Von denen vier Jahres-Zeiten." ORDER="1">
+            <mets:div ID="log14163617" TYPE="chapter" LABEL="Das erste Capitel. Von dem traurigen Winter." ORDER="1"/>
+            <mets:div ID="log14163618" TYPE="chapter" LABEL="Das andere Capitel. Von dem lebhaften Frühling." ORDER="2"/>
+            <mets:div ID="log14163620" TYPE="chapter" LABEL="Das dritte Capitel. Von dem erfreulichen Sommer." ORDER="3"/>
+            <mets:div ID="log14163626" TYPE="chapter" LABEL="Das vierdte Capitel. Von dem fruchtbaren Herbst." ORDER="4"/>
+            <mets:div ID="log14163627" TYPE="chapter" LABEL="Das fünfte Capitel. Von den Sonn- und Mondes-Finsternissen." ORDER="5"/>
+          </mets:div>
+          <mets:div ID="log14163535" TYPE="section" LABEL="Kurze Nachricht vom Purgiren." ORDER="2"/>
+          <mets:div ID="log14163635" TYPE="section" LABEL="Vom Aderlassen." ORDER="3"/>
+          <mets:div ID="log14163636" TYPE="section" LABEL="Von Schröpfen und Schwitzen." ORDER="4"/>
+          <mets:div ID="log14163638" TYPE="section" LABEL="Von der Bewegung und Mäßigkeit im Essen und Trinken." ORDER="5"/>
+          <mets:div ID="log14163539" TYPE="section" LABEL="Nachrichten aus dem hunderjährigen Calender." ORDER="6"/>
+          <mets:div ID="log14163544" TYPE="section" LABEL="Woher die Finsternissen entstehen." ORDER="7"/>
+        </mets:div>
+        <mets:div ID="log14163546" TYPE="cover_back" ORDER="6">
+          <mets:fptr FILEID="PDF_14163546"/>
+        </mets:div>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="log14163614" xlink:to="physroot"/>
+    <mets:smLink xlink:from="log14163488" xlink:to="phys14163489"/>
+    <mets:smLink xlink:from="log14163488" xlink:to="phys14163490"/>
+    <mets:smLink xlink:from="log14163491" xlink:to="phys14163492"/>
+    <mets:smLink xlink:from="log14163491" xlink:to="phys14163493"/>
+    <mets:smLink xlink:from="log14163494" xlink:to="phys14163495"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163497"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163498"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163500"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163501"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163503"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163504"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163506"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163507"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163509"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163510"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163512"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163513"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163515"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163516"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163518"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163519"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163521"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163522"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163524"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163525"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163527"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163528"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163529"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163530"/>
+    <mets:smLink xlink:from="log14163656" xlink:to="phys14163532"/>
+    <mets:smLink xlink:from="log14163496" xlink:to="phys14163497"/>
+    <mets:smLink xlink:from="log14163496" xlink:to="phys14163498"/>
+    <mets:smLink xlink:from="log14163499" xlink:to="phys14163500"/>
+    <mets:smLink xlink:from="log14163499" xlink:to="phys14163501"/>
+    <mets:smLink xlink:from="log14163502" xlink:to="phys14163503"/>
+    <mets:smLink xlink:from="log14163502" xlink:to="phys14163504"/>
+    <mets:smLink xlink:from="log14163505" xlink:to="phys14163506"/>
+    <mets:smLink xlink:from="log14163505" xlink:to="phys14163507"/>
+    <mets:smLink xlink:from="log14163508" xlink:to="phys14163509"/>
+    <mets:smLink xlink:from="log14163508" xlink:to="phys14163510"/>
+    <mets:smLink xlink:from="log14163511" xlink:to="phys14163512"/>
+    <mets:smLink xlink:from="log14163511" xlink:to="phys14163513"/>
+    <mets:smLink xlink:from="log14163514" xlink:to="phys14163515"/>
+    <mets:smLink xlink:from="log14163514" xlink:to="phys14163516"/>
+    <mets:smLink xlink:from="log14163517" xlink:to="phys14163518"/>
+    <mets:smLink xlink:from="log14163517" xlink:to="phys14163519"/>
+    <mets:smLink xlink:from="log14163520" xlink:to="phys14163521"/>
+    <mets:smLink xlink:from="log14163520" xlink:to="phys14163522"/>
+    <mets:smLink xlink:from="log14163523" xlink:to="phys14163524"/>
+    <mets:smLink xlink:from="log14163523" xlink:to="phys14163525"/>
+    <mets:smLink xlink:from="log14163526" xlink:to="phys14163527"/>
+    <mets:smLink xlink:from="log14163526" xlink:to="phys14163528"/>
+    <mets:smLink xlink:from="log14163615" xlink:to="phys14163529"/>
+    <mets:smLink xlink:from="log14163615" xlink:to="phys14163530"/>
+    <mets:smLink xlink:from="log14163615" xlink:to="phys14163532"/>
+    <mets:smLink xlink:from="log14163533" xlink:to="phys14163534"/>
+    <mets:smLink xlink:from="log14163533" xlink:to="phys14163536"/>
+    <mets:smLink xlink:from="log14163533" xlink:to="phys14163538"/>
+    <mets:smLink xlink:from="log14163533" xlink:to="phys14163540"/>
+    <mets:smLink xlink:from="log14163533" xlink:to="phys14163543"/>
+    <mets:smLink xlink:from="log14163533" xlink:to="phys14163545"/>
+    <mets:smLink xlink:from="log14163622" xlink:to="phys14163534"/>
+    <mets:smLink xlink:from="log14163622" xlink:to="phys14163536"/>
+    <mets:smLink xlink:from="log14163617" xlink:to="phys14163534"/>
+    <mets:smLink xlink:from="log14163618" xlink:to="phys14163534"/>
+    <mets:smLink xlink:from="log14163620" xlink:to="phys14163534"/>
+    <mets:smLink xlink:from="log14163626" xlink:to="phys14163536"/>
+    <mets:smLink xlink:from="log14163627" xlink:to="phys14163536"/>
+    <mets:smLink xlink:from="log14163535" xlink:to="phys14163536"/>
+    <mets:smLink xlink:from="log14163635" xlink:to="phys14163538"/>
+    <mets:smLink xlink:from="log14163636" xlink:to="phys14163538"/>
+    <mets:smLink xlink:from="log14163638" xlink:to="phys14163538"/>
+    <mets:smLink xlink:from="log14163539" xlink:to="phys14163540"/>
+    <mets:smLink xlink:from="log14163539" xlink:to="phys14163543"/>
+    <mets:smLink xlink:from="log14163544" xlink:to="phys14163545"/>
+    <mets:smLink xlink:from="log14163546" xlink:to="phys14163547"/>
+    <mets:smLink xlink:from="log14163546" xlink:to="phys14163548"/>
+  </mets:structLink>
+</mets:mets>

@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class DigitalStructureTree {
 	private int page = 0;
 	private String label;
 	private List<DigitalStructureTree> subs = new LinkedList<>();
+	private DigitalStructureTree parent;
 
 	public DigitalStructureTree() {
 	}
@@ -43,6 +45,40 @@ public class DigitalStructureTree {
 
 	public void setPage(int page) {
 		this.page = page;
+	}
+
+	public void setParentStructure(DigitalStructureTree parent) {
+		this.parent = parent;
+	}
+
+	public DigitalStructureTree getParentStructure() {
+		return this.parent;
+	}
+
+	public boolean hasParentStructure() {
+		return this.parent != null;
+	}
+
+	/**
+	 * 
+	 * Traverse up-tree and store a reference
+	 * to every parent found along the side
+	 * 
+	 * Handy for iterate in case of investigating
+	 * duplicate links from parent structures
+	 * 
+	 * @return
+	 */
+	public List<DigitalStructureTree> getParents() {
+		List<DigitalStructureTree> parents = new ArrayList<>();
+		if(this.hasParentStructure()) {
+			var currParent = this.getParentStructure();
+			while(currParent != null) {
+				parents.add(currParent);
+				currParent = currParent.getParentStructure();
+			}
+		}
+		return parents;
 	}
 
 	public boolean hasSubstructures() {
@@ -100,7 +136,7 @@ public class DigitalStructureTree {
 		} else if (!label.equals(other.label)) {
 			return false;
 		} else {
-			return page != other.page;
+			return page == other.page;
 		}
 
 		return true;

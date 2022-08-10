@@ -39,6 +39,11 @@ public enum TestResource {
 	
 	VD18_Af_9427337(Path.of("src/test/resources/mets/vls/vd18-Af-9427337.ulb.xml")),
 	VD18_Aa_9989442(Path.of("src/test/resources/mets/vls/vd18-9989442.ulb.xml")),
+
+	/**
+	 * contains duplicated logical structure
+	 */
+	VD18P_14163614(Path.of("src/test/resources/mets/vls/vd18p-14163614.mets.xml")),
 			
 	/**
 	 * Kitodo 2

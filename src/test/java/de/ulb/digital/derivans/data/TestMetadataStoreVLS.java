@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -155,14 +156,19 @@ class TestMetadataStoreVLS {
 		// level 1+2
 		assertEquals("Liber Primus,", children.get(5).getLabel());
 		assertTrue(children.get(5).hasSubstructures());
-		assertEquals(207, children.get(5).getSubstructures().size());
+		// dropped from formerly "207"(!)
+		// to just "2" because removal of duplicate
+		// structure links
+		assertEquals(2, children.get(5).getSubstructures().size());
 
 		// level 1+2+3
 		assertEquals(
 				"Continuatio Historiae Ecclesiasticae Iohannis Micraelii, Secunda Hac Editione Emendata & plurimis locis aucta à Daniele Hartnaccio, Pomerano.",
 				children.get(9).getLabel());
-		assertEquals(1246, children.get(9).getSubstructures().size());
-		assertEquals(0, children.get(9).getSubstructures().get(1).getSubstructures().size());
+		// changed due removal of structure link duplicates
+		// from "1246"(!) to just "5"
+		assertEquals(5, children.get(9).getSubstructures().size());
+		assertEquals(1, children.get(9).getSubstructures().get(1).getSubstructures().size());
 	}
 
 	/**
@@ -264,5 +270,49 @@ class TestMetadataStoreVLS {
 		assertEquals(3, lvlOneStructOne.getSubstructures().get(2).getPage());
 		assertEquals("[Leerseite]", lvlOneStructOne.getSubstructures().get(3).getLabel());
 		assertEquals(4, lvlOneStructOne.getSubstructures().get(3).getPage());
+	}
+
+
+	// vd18p-14163614.mets.xml
+	/**
+	 * 
+	 * Handle duplicated structures
+	 * 
+	 * In our testdata, there are multiple duplicate links,
+	 * i.e. phys14163497 is linked from log14163656 (top-section, wrong)
+	 *		and also from log14163496 (sub-ssection, okay) 
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testStructureDuplicatesDropped() throws Exception {
+
+		// arrange
+		IMetadataStore mds = new MetadataStore(TestResource.VD18P_14163614.get());
+
+		// act
+		DigitalStructureTree tree = mds.getStructure();
+
+		// assert
+		assertEquals("Pirnaischer Chronicken und Historien Calender", tree.getLabel());
+		var volOne = tree.getSubstructures();
+		assertEquals(1, volOne.size());
+		var lvlOneStructOne = volOne.get(0);
+		assertEquals("1765", lvlOneStructOne.getLabel());
+
+		// original problem as following
+		// section with LABEL=[Calender] and ORDER=4 is linked 
+		// as log14163656 about 25x, but it's children are also linked
+		// therefore the linked pages appear several times
+		// in the structure tree, and finally in the PDF
+		var structCalendar = lvlOneStructOne.getSubstructures().get(3);
+		assertEquals("[Calender]", structCalendar.getLabel());
+		assertEquals(6, structCalendar.getPage());
+		// here was wrong of old with 37 links 
+		// 12 *real* children structure,
+		// plus 25 direct links to physical containers 
+		// WHICH ACTUALLY ALREADY LINK THESE IMAGES
+		assertNotEquals(37, structCalendar.getSubstructures().size());
+		assertEquals(12, structCalendar.getSubstructures().size());
 	}
 }
