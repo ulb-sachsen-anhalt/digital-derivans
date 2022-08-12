@@ -167,6 +167,9 @@ class ImageProcessor {
 
 		// prepare footer buffer
 		BufferedImage buffer = ImageIO.read(pathIn.toFile());
+		if (buffer == null) {
+			throw new DigitalDerivansException("Invalid image data " + pathIn+"!");
+		}
 		float ratio = (float) buffer.getWidth() / (float) footerBuffer.getWidth();
 		BufferedImage scaledFooter = this.scale(footerBuffer, ratio);
 		int scaledHeigth = scaledFooter.getHeight();
