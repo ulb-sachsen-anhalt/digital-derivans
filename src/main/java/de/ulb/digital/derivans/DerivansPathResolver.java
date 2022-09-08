@@ -131,7 +131,7 @@ public class DerivansPathResolver {
 		try (Stream<Path> files = Files.list(ocrPath)) {
 			ocrFiles = files.collect(Collectors.toList());
 		} catch (IOException e) {
-			LOGGER.error(e);
+			LOGGER.error("fail read {}:{}", ocrPath, e.getMessage());
 			return pages;
 		}
 		
@@ -150,7 +150,7 @@ public class DerivansPathResolver {
 						OCRData data = OCRReaderFactory.from(ocrFile).get(ocrFile);
 						page.setOcrData(data);
 					} catch (DigitalDerivansException e) {
-						LOGGER.error(e);
+						LOGGER.error("fail read {}:{}", ocrFile, e);
 					}
 				}
 			}
@@ -164,7 +164,7 @@ public class DerivansPathResolver {
 			List<Path> paths = getFilePaths(inputPath, imageFilter);
 			return paths.stream().map(DigitalPage::new).collect(Collectors.toList());
 		} catch (IOException e) {
-			LOGGER.error(e);
+			LOGGER.error("fail resolve {}:{}", inputPath, e.getMessage());
 			return new ArrayList<>();
 		}
 	}

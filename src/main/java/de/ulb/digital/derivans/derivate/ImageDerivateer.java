@@ -29,8 +29,6 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	protected Boolean insertIntoMets;
 
-//	protected Integer quality;
-
 	protected final Path inputDir;
 
 	protected final Path outputDir;
@@ -46,17 +44,11 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 	protected ImageDerivateer(DerivansData input, DerivansData output) {
 		super(input, output);
 		this.insertIntoMets = false;
-//		this.quality = DEFAULT_QUALITY;
 		this.poolSize = DEFAULT_POOLSIZE;
 		this.inputDir = input.getPath();
 		this.outputDir = output.getPath();
 		this.imageProcessor = new ImageProcessor();
-//		this.imageProcessor.setQuality(this.quality);
 	}
-
-//	public Integer getQuality() {
-//		return this.quality;
-//	}
 
 	public void setImageProcessor(ImageProcessor processor) {
 		this.imageProcessor = processor;

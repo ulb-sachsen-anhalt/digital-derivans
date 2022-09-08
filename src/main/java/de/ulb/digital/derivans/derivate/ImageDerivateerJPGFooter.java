@@ -74,7 +74,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 		try {
 			this.footerFont = this.fontHandler.forGraphics(this.footerFontFile);
 		} catch (DigitalDerivansException e) {
-			LOGGER.error(e);
+			LOGGER.error("fail font for {}:{}", this.footerFontFile, e.getMessage());
 		}
 	}
 	

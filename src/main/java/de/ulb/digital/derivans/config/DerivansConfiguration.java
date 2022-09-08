@@ -133,7 +133,7 @@ public class DerivansConfiguration {
 	 */
 	public void setPathFile(Path metsFile) throws DigitalDerivansException {
 		if (!Files.exists(metsFile) && !(Files.isRegularFile(metsFile, LinkOption.NOFOLLOW_LINKS))) {
-			String msg = "Invalid METS/MODS: '{" + metsFile + "}'";
+			String msg = String.format("Invalid METS/MODS: '{%s}'", metsFile);
 			LOGGER.error(msg);
 			throw new DigitalDerivansException(msg);
 		}
