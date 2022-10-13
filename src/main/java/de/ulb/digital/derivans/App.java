@@ -33,11 +33,11 @@ public class App {
 		if (pathConfig != null) {
 			dp.setPathConfig(pathConfig);
 		}
-		DerivansConfiguration conf = new DerivansConfiguration(dp);
-		Derivans derivans = new Derivans(conf);
-
-		// start handling
+		
+		// evaluate configuration and start derivans
 		try {
+			DerivansConfiguration conf = new DerivansConfiguration(dp);
+			Derivans derivans = new Derivans(conf);
 			derivans.create();
 		} catch (DigitalDerivansException e) {
 			Derivans.LOGGER.error(e.getLocalizedMessage());
