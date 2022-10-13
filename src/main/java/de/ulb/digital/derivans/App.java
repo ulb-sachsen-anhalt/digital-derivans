@@ -35,7 +35,14 @@ public class App {
 		}
 		DerivansConfiguration conf = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(conf);
-		derivans.create();
-	}
 
+		// start handling
+		try {
+			derivans.create();
+		} catch (DigitalDerivansException e) {
+			Derivans.LOGGER.error(e.getLocalizedMessage());
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
 }

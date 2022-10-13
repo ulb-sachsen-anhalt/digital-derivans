@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -34,5 +35,25 @@ public class TestMetadataStoreShareIt {
         var level1structs = strucTree.getSubstructures();
 		assertEquals(5, level1structs.size());
 
+    }
+
+
+	/**
+	 * 
+	 * Decide how to handle invalid logical links
+	 * => Throw Exception
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testStructureMissingLinkFromLogicalSection() throws DigitalDerivansException {
+		// arrange
+		IMetadataStore mds = new MetadataStore(TestResource.SHARE_IT_VD18_43053.get());
+
+        // act
+		var actualExc = assertThrows(DigitalDerivansException.class, () -> mds.getStructure());
+
+		// assert
+		assertEquals("No physical struct linked from 'log1646693@section(Abschnitt)'!", actualExc.getMessage());
     }
 }
