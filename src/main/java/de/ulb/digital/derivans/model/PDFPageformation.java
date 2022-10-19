@@ -1,8 +1,6 @@
 package de.ulb.digital.derivans.model;
 
 import java.awt.Dimension;
-//import java.util.List;
-//import java.util.Optional;
 
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfReader;
@@ -19,9 +17,6 @@ public class PDFPageformation {
 	private Dimension dimension;
 	private int number;
 
-	// TODO
-//	private Optional<List<String>> ocrData;
-	
 	public PDFPageformation(PdfReader reader, int number) {
 		this.number = number;
 		Rectangle r = reader.getPageSize(this.number);
