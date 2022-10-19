@@ -117,7 +117,6 @@ public class Agent implements IMetsElement {
      * 
      * @see org.mycore.mets.model.IMetsElement#asElement()
      */
-    @SuppressWarnings("exports")
     @Override
     public Element asElement() {
         Element agent = new Element("agent", IMetsElement.METS);

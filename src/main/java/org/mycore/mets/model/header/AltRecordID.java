@@ -44,7 +44,6 @@ public class AltRecordID implements IMetsElement {
      * 
      * @see org.mycore.mets.model.IMetsElement#asElement()
      */
-    @SuppressWarnings("exports")
     @Override
     public Element asElement() {
         Element altRecord = new Element("altRecordID", IMetsElement.METS);

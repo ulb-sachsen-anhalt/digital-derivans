@@ -37,7 +37,6 @@ public class Name implements IMetsElement {
      * 
      * @see org.mycore.mets.model.IMetsElement#asElement()
      */
-    @SuppressWarnings("exports")
     @Override
     public Element asElement() {
         Element name = new Element("name", IMetsElement.METS);

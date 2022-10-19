@@ -49,7 +49,6 @@ public class MetsHdr implements IMetsElement {
         this.altRecordIds = new ArrayList<>();
     }
 
-    @SuppressWarnings("exports")
     @Override
     public Element asElement() {
         Element metsHdr = new Element("metsHdr", IMetsElement.METS);
