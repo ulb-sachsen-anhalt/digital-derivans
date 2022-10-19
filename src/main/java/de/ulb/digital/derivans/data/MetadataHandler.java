@@ -53,8 +53,10 @@ public class MetadataHandler {
 	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 	public static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
 
-	public static DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder().appendPattern("YYYY-MM-dd")
+	public static final DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder().appendPattern("YYYY-MM-dd")
 			.appendLiteral('T').appendPattern("HH:mm:SS").toFormatter();
+
+	static final String DMD_ID = "DMDID";
 
 	private Path pathFile;
 
@@ -207,7 +209,7 @@ public class MetadataHandler {
 		String id = primaryMods.getParentElement().getParentElement().getParentElement().getAttributeValue("ID");
 		Element logDiv = null;
 		for (Element e : elements) {
-			if (id.equals(e.getAttributeValue("DMDID")))
+			if (id.equals(e.getAttributeValue(DMD_ID)))
 				logDiv = e;
 		}
 		if (logDiv != null) {
@@ -274,7 +276,7 @@ public class MetadataHandler {
 
 		for (Element e : logSubcontainers) {
 			if (e.getAttributeValue("ID").equals(logId)) {
-				return e.getAttributeValue("DMDID");
+				return e.getAttributeValue(DMD_ID);
 			}
 		}
 		return null;
@@ -335,7 +337,7 @@ class LogSubContainers extends ElementFilter {
 			if (!namespace.equals(el.getNamespace())) {
 				return null;
 			}
-			boolean hasDMDID = el.getAttribute("DMDID") != null;
+			boolean hasDMDID = el.getAttribute(MetadataHandler.DMD_ID) != null;
 			if (hasDMDID) {
 				return el;
 			}
