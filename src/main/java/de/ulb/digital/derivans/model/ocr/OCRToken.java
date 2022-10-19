@@ -1,7 +1,6 @@
 package de.ulb.digital.derivans.model.ocr;
 
 import java.awt.Rectangle;
-import java.awt.geom.Path2D.Float;
 
 /**
  * Mark character tokens with planar representation
