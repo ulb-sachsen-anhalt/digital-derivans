@@ -16,6 +16,7 @@ import de.ulb.digital.derivans.config.DerivansConfiguration;
  */
 public class App {
 
+	@java.lang.SuppressWarnings("java:S106") 
 	public static void main(String[] args) throws Exception {
 		DerivansParameter dp = new DerivansParameter();
 		CmdLineParser parser = new CmdLineParser(dp, dp.getProperties());
@@ -26,6 +27,7 @@ public class App {
 			pathConfig = dp.getPathConfig();
 		} catch (CmdLineException | DigitalDerivansException exc) {
 			Derivans.LOGGER.error(exc.getLocalizedMessage());
+			// sonarlint hint disabled by method annotation above
 			parser.printUsage(System.out);
 			System.exit(-1);
 		}
