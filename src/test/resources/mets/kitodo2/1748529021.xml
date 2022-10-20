@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/mods.xsd http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd http://www.loc.gov/mix/v10 http://www.loc.gov/standards/mix/mix10/mix10.xsd"
+    xmlns:mets="http://www.loc.gov/METS/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <mets:metsHdr CREATEDATE="2022-10-18T12:01:14">
+        <mets:agent OTHERTYPE="SOFTWARE" ROLE="CREATOR" TYPE="OTHER">
+            <mets:name>Kitodo - kitodo-ugh-2.1.4-SNAPSHOT-v1.11.1-108-g2b516b3 - 03−January−2021</mets:name>
+            <mets:note>Kitodo</mets:note>
+        </mets:agent>
+    </mets:metsHdr>
+    <mets:dmdSec ID="DMDLOG_0000">
+        <mets:mdWrap MDTYPE="MODS">
+            <mets:xmlData>
+                <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+                    <mods:identifier type="urn">urn:nbn:de:gbv:3:3-1192015415-1748529021-15</mods:identifier>
+                    <mods:recordInfo>
+                        <mods:recordIdentifier source="gvk-ppn">1748529021</mods:recordIdentifier>
+                        <mods:descriptionStandard>rda</mods:descriptionStandard>
+                        <mods:recordCreationDate encoding="marc">17-02-21</mods:recordCreationDate>
+                        <mods:recordChangeDate encoding="marc">08-07-21</mods:recordChangeDate>
+                    </mods:recordInfo>
+                    <mods:titleInfo>
+                        <mods:title>[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Morbio 1 (10)]</mods:title>
+                    </mods:titleInfo>
+                    <mods:relatedItem type="series">
+                        <mods:titleInfo>
+                            <mods:title>Urkunden aus der Sammlung Morbio der Universitäts- und Landesbibliothek Sachsen-Anhalt Halle</mods:title>
+                        </mods:titleInfo>
+                    </mods:relatedItem>
+                    <mods:note type="source note">Handschrift DE-3, GND 2024680-8, Signatur: Morbio 1 (10)</mods:note>
+                    <mods:note type="source note">Die Illustrationen sind: Notarszeichen, Handzeichen in Unterfertigungen</mods:note>
+                    <mods:note type="source note">Überlieferungsart: orginal</mods:note>
+                    <mods:note type="source note">Beschreibstoff: Pergament</mods:note>
+                    <mods:note type="source note">Erhaltungszustand: gut, einige Flecken am Rand, v. a. im oberen Teil</mods:note>
+                    <mods:note type="content">Handschrift</mods:note>
+                    <mods:note type="content">Urkunde</mods:note>
+                    <mods:name authority="gnd" authorityURI="http://d-nb.info/gnd/" type="personal" valueURI="http://d-nb.info/gnd/1235422445">
+                        <mods:namePart type="given">Petrus</mods:namePart>
+                        <mods:role>
+                            <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+                        </mods:role>
+                        <mods:displayForm>Petrus</mods:displayForm>
+                        <mods:namePart type="date">ca. 11. Jahrhundert</mods:namePart>
+                    </mods:name>
+                    <mods:name authority="gnd" authorityURI="http://d-nb.info/gnd/" type="personal" valueURI="http://d-nb.info/gnd/1234925680">
+                        <mods:namePart type="given">Ubaldus</mods:namePart>
+                        <mods:namePart type="termsOfAddress">Cremona, Bischof</mods:namePart>
+                        <mods:role>
+                            <mods:roleTerm authority="marcrelator" type="code">rcp</mods:roleTerm>
+                        </mods:role>
+                        <mods:displayForm>Ubaldus &lt;Cremona, Bischof&gt;</mods:displayForm>
+                        <mods:namePart type="date">????-1067</mods:namePart>
+                    </mods:name>
+                    <mods:name authority="gnd" authorityURI="http://d-nb.info/gnd/" type="personal" valueURI="http://d-nb.info/gnd/1235417913">
+                        <mods:namePart type="given">Lampertus</mods:namePart>
+                        <mods:role>
+                            <mods:roleTerm authority="marcrelator" type="code">oth</mods:roleTerm>
+                        </mods:role>
+                        <mods:displayForm>Lampertus</mods:displayForm>
+                        <mods:namePart type="date">ca. 11. Jahrhundert</mods:namePart>
+                    </mods:name>
+                    <mods:language>
+                        <mods:languageTerm authority="iso639-2b" type="code">lat</mods:languageTerm>
+                    </mods:language>
+                    <mods:originInfo eventType="publication">
+                        <mods:dateIssued encoding="iso8601" keyDate="yes">1044</mods:dateIssued>
+                        <mods:place>
+                            <mods:placeTerm type="text" valueURI="http://d-nb.info/gnd/4010700-0">Cremona</mods:placeTerm>
+                        </mods:place>
+                    </mods:originInfo>
+                    <mods:physicalDescription>
+                        <mods:extent>1 ungezähltes Blatt; 66 x 28 cm</mods:extent>
+                    </mods:physicalDescription>
+                    <mods:subject>
+                        <mods:topic>Sonstige weltliche Aussteller</mods:topic>
+                    </mods:subject>
+                    <mods:subject>
+                        <mods:topic>Notarsurkunde</mods:topic>
+                    </mods:subject>
+                    <mods:subject authority="gnd">
+                        <mods:topic valueURI="http://d-nb.info/gnd/4062132-7">Urkunde</mods:topic>
+                    </mods:subject>
+                    <mods:extension>
+                        <ulb:externalType recordSyntax="pica"
+                            xmlns:ulb="https://bibliothek.uni-halle.de">Hau</ulb:externalType>
+                        <ulb:contentType xmlns:ulb="https://bibliothek.uni-halle.de">
+                            <ulb:text>Text</ulb:text>
+                            <ulb:code>txt</ulb:code>
+                        </ulb:contentType>
+                        <ulb:booksize xmlns:ulb="https://bibliothek.uni-halle.de">3605px BooksizeL</ulb:booksize>
+                        <ulb:collection xmlns:ulb="https://bibliothek.uni-halle.de">1981185920/37525</ulb:collection>
+                    </mods:extension>
+                    <mods:originInfo eventType="digitization">
+                        <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+                        <mods:place>
+                            <mods:placeTerm type="text">Halle (Saale)</mods:placeTerm>
+                        </mods:place>
+                        <mods:edition>[Electronic ed.]</mods:edition>
+                        <mods:dateCaptured encoding="iso8601">2022</mods:dateCaptured>
+                    </mods:originInfo>
+                    <mods:location>
+                        <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
+                        <mods:shelfLocator>Morbio 1 (10)</mods:shelfLocator>
+                    </mods:location>
+                    <mods:abstract>Petrus, Sohn des verstorbenen Bonifrus aus Cremona, schenkt Ubaldus, Bischof von Cremona, Güter in loco Basilicana und wird im Gegenzug mit anderen Gütern investiert</mods:abstract>
+                    <mods:classification authority="ddc">090</mods:classification>
+                    <mods:accessCondition type="use and reproduction" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</mods:accessCondition>
+                </mods:mods>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:dmdSec ID="DMDPHYS_0000">
+        <mets:mdWrap MDTYPE="MODS">
+            <mets:xmlData>
+                <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+                    <mods:location>
+                        <mods:shelfLocator>HS Morbio 1 (10)</mods:shelfLocator>
+                    </mods:location>
+                </mods:mods>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:amdSec ID="AMD">
+        <mets:rightsMD ID="RIGHTS">
+            <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVRIGHTS">
+                <mets:xmlData>
+                    <dv:rights xmlns:dv="http://dfg-viewer.de/">
+                        <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+                        <dv:ownerLogo>Share_it</dv:ownerLogo>
+                        <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+                        <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+                    </dv:rights>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+        <mets:digiprovMD ID="DIGIPROV">
+            <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS">
+                <mets:xmlData>
+                    <dv:links xmlns:dv="http://dfg-viewer.de/">
+                        <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=1748529021</dv:reference>
+                        <dv:presentation>Share_it</dv:presentation>
+                    </dv:links>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:digiprovMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp USE="MAX">
+            <mets:file ID="FILE_0001_MAX" MIMETYPE="image/jpeg">
+                <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000001.jpg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"/>
+            </mets:file>
+            <mets:file ID="FILE_0002_MAX" MIMETYPE="image/jpeg">
+                <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000002.jpg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"/>
+            </mets:file>
+            <mets:file ID="FILE_0003_MAX" MIMETYPE="image/jpeg">
+                <mets:FLocat LOCTYPE="URL" xlink:href="http://ktopre.bibliothek.uni-halle.de/content//jpgs/max/00000003.jpg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"/>
+            </mets:file>
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap TYPE="LOGICAL">
+        <mets:div ADMID="AMD" DMDID="DMDLOG_0000" ID="LOG_0000" LABEL="[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Morbio 1 (10)]" ORDERLABEL="[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Morbio 1 (10)]" TYPE="manuscript">
+            <mets:div ID="LOG_0001" TYPE="section"/>
+        </mets:div>
+    </mets:structMap>
+    <mets:structMap TYPE="PHYSICAL">
+        <mets:div DMDID="DMDPHYS_0000" ID="PHYS_0000" TYPE="physSequence">
+            <mets:div ID="PHYS_0001" ORDER="1" ORDERLABEL="[Blatt 1r]" TYPE="page">
+                <mets:fptr FILEID="FILE_0001_MAX"/>
+            </mets:div>
+            <mets:div ID="PHYS_0002" ORDER="2" ORDERLABEL="[Blatt 1v]" TYPE="page">
+                <mets:fptr FILEID="FILE_0002_MAX"/>
+            </mets:div>
+            <mets:div ID="PHYS_0003" ORDER="3" ORDERLABEL="[Colorchecker]" TYPE="page">
+                <mets:fptr FILEID="FILE_0003_MAX"/>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+    <mets:structLink>
+        <mets:smLink xlink:to="PHYS_0001" xlink:from="LOG_0000"
+            xmlns:xlink="http://www.w3.org/1999/xlink"/>
+        <mets:smLink xlink:to="PHYS_0002" xlink:from="LOG_0000"
+            xmlns:xlink="http://www.w3.org/1999/xlink"/>
+        <mets:smLink xlink:to="PHYS_0003" xlink:from="LOG_0000"
+            xmlns:xlink="http://www.w3.org/1999/xlink"/>
+        <mets:smLink xlink:to="PHYS_0001" xlink:from="LOG_0001"
+            xmlns:xlink="http://www.w3.org/1999/xlink"/>
+        <mets:smLink xlink:to="PHYS_0002" xlink:from="LOG_0001"
+            xmlns:xlink="http://www.w3.org/1999/xlink"/>
+        <mets:smLink xlink:to="PHYS_0003" xlink:from="LOG_0001"
+            xmlns:xlink="http://www.w3.org/1999/xlink"/>
+    </mets:structLink>
+</mets:mets>

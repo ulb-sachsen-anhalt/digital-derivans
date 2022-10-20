@@ -55,6 +55,8 @@ public enum TestResource {
 	K2_Af_030745780(Path.of("./src/test/resources/mets/kitodo2/030745772/030745780.xml")),
 	K2_Af_029024749(Path.of("./src/test/resources/mets/kitodo2/029024684/029024749.xml")),
 	K2_Ac_029024684(Path.of("./src/test/resources/mets/kitodo2/029024684/029024684.xml")),
+	// Morbio historical charter
+	K2_Hau_1748529021(Path.of("./src/test/resources/mets/kitodo2/1748529021.xml")),
 	
 	/**
 	 * Kitodo 3

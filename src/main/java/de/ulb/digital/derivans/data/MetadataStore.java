@@ -222,7 +222,7 @@ public class MetadataStore implements IMetadataStore {
 			String fileId = integrateFileGroup(fileGroup, identifier, mimeType);
 			String note = this.handler.enrichAgent(fileId);
 			Fptr fpts = new Fptr("PDF_" + identifier);
-			this.handler.addTo(fpts.asElement(), "LOGICAL", true);
+			this.handler.addTo(fpts.asElement(), true);
 			this.handler.write();
 			LOGGER.info("integrated pdf fileId '{}' in '{}'", fileId, this.handler.getPath());
 			LOGGER.info("integrated mets:agent {}", note);

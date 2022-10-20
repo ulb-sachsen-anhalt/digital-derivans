@@ -20,6 +20,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.Map.Entry;
 
 import javax.xml.XMLConstants;
@@ -43,20 +45,30 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 
 /**
  * 
- * Handle Metadata on Path-and DOM-Level
+ * Handle Metadata for derivates generation on Path-and DOM-Level
  * 
  * @author hartwig
  *
  */
 public class MetadataHandler {
 
+	private static final String METS_STRUCTMAP_TYPE_LOGICAL = "LOGICAL";
+	static final String METS_STRUCTMAP_TYPE = "TYPE";
 	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 	public static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
 
-	public static final DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder().appendPattern("YYYY-MM-dd")
-			.appendLiteral('T').appendPattern("HH:mm:SS").toFormatter();
+	public static final DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder()
+			.appendPattern("YYYY-MM-dd")
+			.appendLiteral('T')
+			.appendPattern("HH:mm:SS")
+			.toFormatter();
 
 	static final String DMD_ID = "DMDID";
+	static final String METS_CONTAINER = "div";
+	static final String METS_CONTAINER_ID = "ID";
+	static final String METS_CONTAINER_PHYS_ROOT = "physroot";
+	static final String KITDODO2_DEFAULT_FIRST_CHILD_ID = "LOG_0001";
+	static final String KITDODO2_DEFAULT_PARENT_ID = "LOG_0000";
 
 	private Path pathFile;
 
@@ -108,7 +120,7 @@ public class MetadataHandler {
 
 	private Element createAgentSection(String fileId) {
 		Element agent = new Element("agent", NS_METS);
-		agent.setAttribute("TYPE", "OTHER");
+		agent.setAttribute(METS_STRUCTMAP_TYPE, "OTHER");
 		agent.setAttribute("ROLE", "OTHER");
 		agent.setAttribute("OTHERTYPE", "SOFTWARE");
 		Element agentName = new Element("name", NS_METS);
@@ -204,9 +216,9 @@ public class MetadataHandler {
 	 * @param typeValue
 	 * @param first
 	 */
-	public void addTo(Element asElement, String typeValue, boolean reorder) {
-		var elements = document.getDescendants(new MetsDivFilter());
-		String id = primaryMods.getParentElement().getParentElement().getParentElement().getAttributeValue("ID");
+	public void addTo(Element asElement, boolean reorder) {
+		IteratorIterable<Element> elements = document.getDescendants(new MetsDivFilter());
+		String id = primaryMods.getParentElement().getParentElement().getParentElement().getAttributeValue(METS_CONTAINER_ID);
 		Element logDiv = null;
 		for (Element e : elements) {
 			if (id.equals(e.getAttributeValue(DMD_ID)))
@@ -224,26 +236,33 @@ public class MetadataHandler {
 
 	/**
 	 * 
-	 * Catch logical sub-containers with attribute DMDID -> must have a descriptive
-	 * MODS section
+	 * Catch logical sub-containers.
 	 * 
-	 * @param typeValue
+	 * Containers with attribute DMDID must have 
+	 * a descriptive MODS section.
+	 * 
+	 * @param includeAllSubcontainers additionally 
+	 * 		include ancestors with only ID attribute
+	 * 		(i.e., without custom descriptive metadata) 
 	 * @return
 	 */
-	public List<Element> requestLogicalSubcontainers() {
-		Element logRoot = extractStructLogicalRoot();
-		IteratorIterable<Element> iter = logRoot.getDescendants(new LogSubContainers());
-		List<Element> subConainers = new ArrayList<>();
+	public List<Element> requestSubcontainers(boolean includeAllSubcontainers) {
+		Element logRoot = extractLogicalRoot();
+		IteratorIterable<Element> iter = logRoot.getDescendants(new LogSubContainers(includeAllSubcontainers));
+		List<Element> subContainers = new ArrayList<>();
 		for (Element el : iter) {
-			subConainers.add(el);
+			subContainers.add(el);
 		}
-		return subConainers;
+		return subContainers;
 	}
 
-	private Element extractStructLogicalRoot() {
+	private Element extractLogicalRoot() {
 		var elements = document.getContent(new ElementFilter());
-		return elements.stream().map(Element::getChildren).flatMap(List::stream)
-				.filter(el -> "LOGICAL".equals(el.getAttributeValue("TYPE"))).findFirst().get();
+		return elements.stream()
+				.map(Element::getChildren)
+				.flatMap(List::stream)
+				.filter(el -> METS_STRUCTMAP_TYPE_LOGICAL.equals(el.getAttributeValue(METS_STRUCTMAP_TYPE)))
+				.findFirst().orElseThrow();
 	}
 
 	private Element setPrimaryMods() throws DigitalDerivansException {
@@ -266,50 +285,100 @@ public class MetadataHandler {
 	 * properly all Element's Attributes like "DMDID"
 	 * 
 	 * @return
+	 * @throws DigitalDerivansException 
 	 */
-	private String getDescriptiveMetadataIdentifierOfInterest() {
+	private String getDescriptiveMetadataIdentifierOfInterest() throws DigitalDerivansException {
 		// get most probably link from structMapping section
-		String logId = getLogicalLinkFromStructMapping();
+		String logId = getLogicalRootByPhysicalReferences();
 
 		// get logical divisions as raw elements (see above)
-		List<Element> logSubcontainers = this.requestLogicalSubcontainers();
-
+		List<Element> logSubcontainers = this.requestSubcontainers(false);
 		for (Element e : logSubcontainers) {
-			if (e.getAttributeValue("ID").equals(logId)) {
+			if (e.getAttributeValue(METS_CONTAINER_ID).equals(logId)) {
 				return e.getAttributeValue(DMD_ID);
 			}
 		}
-		return null;
+		throw new DigitalDerivansException("Can't determine DMD identifier for "+ this.getPath());
 	}
 
 	/**
 	 * 
-	 * If the structMap links contain a mapping to "physroot", then this is
-	 * considered to link the logical struct's corresponding to the main logical
-	 * structure (VLS-like) OR count strctMap-links from logical to physical, and
-	 * identify the one containing most links / as many links as there are physical
-	 * containers (Kitodo2-like)
+	 * Identify the logical root element of any METS/MODS print work.
+	 * 
+	 * Comes into different flavors:
+	 * 
+	 * <ul>
+	 * 	<li>If the links in the structMapping refer straight to a 
+	 * 		"physroot" element, it's considered to be this print's 
+	 * 		logical root element, i.e. a monography/volume/issue. 
+	 * 		This is like VLS/semantics are doing.</li>
+	 * 	<li>Kitodo2 contains an additional linking from each physical 
+	 * 		container to the logical root element. To find it, count all 
+	 * 		links from logical to physical and get the one with most links.</li>
+	 * 	<li>There's a reasonable exception for Kitodo2, when there's only
+	 * 		one logical child in the print, i.e. a print with only
+	 * 		a single section/chapter (a chart, a map, ...). 
+	 * 		In this case, the logical root and it's only child will 
+	 * 		have the same number of references to the physical pages. 
+	 * 		Therefore, it's required to determine, which of the two 
+	 * 		elements is actually the parent of the other.
+	 * 		This element will be the logical root element.</li>
+	 * 	</ul>
 	 * 
 	 * In both cases, follow the link's origin to the logical map.
 	 * 
 	 * @return
+	 * @throws DigitalDerivansException 
 	 */
-	private String getLogicalLinkFromStructMapping() {
-		List<SmLink> smLinksToPhysRoot = mets.getStructLink().getSmLinkByTo("physroot");
+	private String getLogicalRootByPhysicalReferences() throws DigitalDerivansException {
+		List<SmLink> smLinksToPhysRoot = mets.getStructLink().getSmLinkByTo(METS_CONTAINER_PHYS_ROOT);
 		if (!smLinksToPhysRoot.isEmpty()) {
 			return smLinksToPhysRoot.get(0).getFrom();
 		} else {
 			List<SmLink> links = mets.getStructLink().getSmLinks();
 			// map SmLinks to their @from-count
-			Map<String, Integer> mapToN = links.stream().collect(groupingBy(SmLink::getFrom, summingInt(n -> 1)));
+			Map<String, Integer> mapToN = links.stream()
+				.collect(groupingBy(SmLink::getFrom, summingInt(n -> 1)));
 			// get identifier of SmLink with MAX counts
 			var optMaxLink = mapToN.entrySet().stream().max(Comparator.comparingInt(Entry::getValue));
 			if (optMaxLink.isPresent()) {
 				var maxMapping = optMaxLink.get();
-				return maxMapping.getKey();
+				// when dealing with small logical structs of 
+				// only 1 child container this value needs to be 
+				// inspected further because it can't be trusted
+				if (mapToN.size() == 2) {
+					return this.determine_parent_id(new IDPair(mapToN.keySet()));
+				} else {
+					return maxMapping.getKey();
+				}
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * 
+	 * Determine which of the elements referenced by the
+	 * provided IDs is a direct child of the other one.
+	 * 
+	 * @param pair Pair consisting of two ID attribute values
+	 * @return parent ID
+	 * @throws DigitalDerivansException
+	 */
+	private String determine_parent_id(IDPair pair) throws DigitalDerivansException {
+		var currentId = pair.id1;
+		List<Element> logSubcontainers = this.requestSubcontainers(true);
+		var currentElement = logSubcontainers.stream()
+			.filter(e -> currentId.equals(e.getAttributeValue(METS_CONTAINER_ID)))
+			.findFirst().orElseThrow();
+		var currentChildIds = currentElement.getChildren(METS_CONTAINER, NS_METS)
+			.stream().map(c -> c.getAttributeValue(METS_CONTAINER_ID)).collect(Collectors.toList());
+		if (currentChildIds.isEmpty()) {
+			return pair.id2;
+		} else if (currentChildIds.contains(pair.id2)) {
+			return pair.id1;
+		}
+		throw new DigitalDerivansException("Can't determine parent element for sure from "+ pair);
 	}
 }
 
@@ -320,31 +389,50 @@ public class MetadataHandler {
  * @author u.hartwig
  *
  */
+@SuppressWarnings("serial")
 class LogSubContainers extends ElementFilter {
 
-	String name = "div";
-	Namespace namespace = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
+	boolean includeIds;
 
-	private static final long serialVersionUID = 1L;
-
+	/**
+	 * Default constructor
+	 */
+	public LogSubContainers() {
+	}
+	
+	/**
+	 * 
+	 * Construct a different filter which includes also
+	 * _all_ elements that have an {@link MetadataHandler.ID} 
+	 * attribute set.
+	 * 
+	 * Be aware: 
+	 * This will return literally _any_ logical container element.
+	 * 
+	 * @param includeAllIds
+	 */
+	public LogSubContainers(boolean includeAllIds) {
+		this.includeIds = includeAllIds;
+	}
+	
 	@Override
 	public Element filter(Object content) {
 		if (content instanceof Element) {
 			Element el = (Element) content;
-			if (!name.equals(el.getName())) {
+			if (!MetadataHandler.METS_CONTAINER.equals(el.getName())) {
 				return null;
 			}
-			if (!namespace.equals(el.getNamespace())) {
+			if (!MetadataHandler.NS_METS.equals(el.getNamespace())) {
 				return null;
 			}
 			boolean hasDMDID = el.getAttribute(MetadataHandler.DMD_ID) != null;
-			if (hasDMDID) {
+			boolean hasID = el.getAttribute(MetadataHandler.METS_CONTAINER_ID) != null;
+			if (hasDMDID || hasID) {
 				return el;
 			}
 		}
 		return null;
 	}
-
 }
 
 /**
@@ -354,9 +442,8 @@ class LogSubContainers extends ElementFilter {
  * @author u.hartwig
  *
  */
+@SuppressWarnings("serial")
 class ModsFilter extends ElementFilter {
-
-	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Element filter(Object content) {
@@ -371,15 +458,14 @@ class ModsFilter extends ElementFilter {
 
 }
 
+@SuppressWarnings("serial")
 class MetsDivFilter extends ElementFilter {
-
-	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Element filter(Object content) {
 		if (content instanceof Element) {
 			Element el = (Element) content;
-			if ("div".equals(el.getName())) {
+			if (MetadataHandler.METS_CONTAINER.equals(el.getName())) {
 				return el;
 			}
 		}
@@ -387,3 +473,26 @@ class MetsDivFilter extends ElementFilter {
 	}
 
 }
+
+/**
+ * 
+ * Little Helper to express the relation parent-child
+ * 
+ * @author hartwig
+ *
+ */
+class IDPair {
+	String id1;
+	String id2;
+	IDPair(Set<String> ids){
+		var arr = ids.toArray(new String[2]);
+		this.id1 = arr[0];
+		this.id2 = arr[1];
+	}
+	
+	@Override
+	public String toString() {
+		return id1+","+id2;
+	}
+}
+

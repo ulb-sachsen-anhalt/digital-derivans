@@ -87,5 +87,26 @@ class TestMetadataStoreKitodo2 {
 		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
 		assertEquals("1718", dd147573602.getYearPublished());
 	}
+
+	/**
+	 * 
+	 * BUGFIX
+	 * 
+	 * see: https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/35 
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testMetadataWithSingleSectionOnlyFromKitodo2() throws DigitalDerivansException {
+
+		// arrange
+		var mds = new MetadataStore(TestResource.K2_Hau_1748529021.get());
+
+		// act
+		var dd = mds.getDescriptiveData();
+
+		// assert
+		assertEquals("1044", dd.getYearPublished());
+	}
 	
 }
