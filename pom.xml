@@ -41,7 +41,7 @@
 		<jaxen.version>1.2.0</jaxen.version>
 		<log4j2.version>2.17.1</log4j2.version>
 		<args4j.version>2.33</args4j.version>
-		<configuration2.version>2.7</configuration2.version>
+		<configuration2.version>2.8.0</configuration2.version>
 	</properties>
 
 	<dependencies>
