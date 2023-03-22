@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -109,4 +110,22 @@ class TestMetadataStoreKitodo2 {
 		assertEquals("1044", dd.getYearPublished());
 	}
 	
+
+	/**
+	 * 
+	 * BUGFIX
+	 * 
+	 * see:
+	 * 
+	 */
+	@Test
+	void testEnsureIdentifierPPNMatches() throws DigitalDerivansException {
+		// arrange
+		var mds1186819316 = new MetadataStore(TestResource.K2_Aa_1186819316.get());
+
+		// act
+		var dd1186819316 = mds1186819316.getDescriptiveData();
+		assertNotNull(dd143074601);
+		assertEquals("1186819316", dd1186819316.getIdentifier());
+	}
 }

@@ -66,6 +66,7 @@ public class MetadataHandler {
 	static final String DMD_ID = "DMDID";
 	static final String METS_CONTAINER = "div";
 	static final String METS_CONTAINER_ID = "ID";
+	static final String METS_TYPE = "TYPE";
 	static final String METS_CONTAINER_PHYS_ROOT = "physroot";
 	static final String KITDODO2_DEFAULT_FIRST_CHILD_ID = "LOG_0001";
 	static final String KITDODO2_DEFAULT_PARENT_ID = "LOG_0000";
@@ -265,8 +266,16 @@ public class MetadataHandler {
 				.findFirst().orElseThrow();
 	}
 
+	/**
+	* Resolve identifier for descriptive section. 
+	* 
+	* <ol>
+	* 	<li>1st, look for simple cases like mongraphs or volumes</li>
+	* 	<li>2nd, inspect the structural Linkings</li>
+	* </ol>
+	*/
 	private Element setPrimaryMods() throws DigitalDerivansException {
-		String dmdId = getDescriptiveMetadataIdentifierOfInterest();
+		String dmdId = getSimple().orElse(calculatePrimeModsIdentifier());
 		DmdSec primaryDMD = mets.getDmdSecById(dmdId);
 		if (primaryDMD == null) {
 			throw new DigitalDerivansException("can't identify primary MODS section");
@@ -277,21 +286,19 @@ public class MetadataHandler {
 
 	/**
 	 * 
-	 * Resolve identifier for descriptive section backwards. Starting from Physical
-	 * Top-Level container of MAX filegroup, pick the most reasonable link and use
-	 * this to identify the proper logical structure.
+	 * Starting from Physical Top-Level container
+	 * pick the most reasonable link and use
+	 * this to identify the proper logical type.
 	 * 
-	 * TODO review mets-model conversions necessary since mets-model doesn't read
+	 * CAUTION
+	 * Review of mets-model parsing necessary since it doesn't read
 	 * properly all Element's Attributes like "DMDID"
 	 * 
 	 * @return
 	 * @throws DigitalDerivansException 
 	 */
-	private String getDescriptiveMetadataIdentifierOfInterest() throws DigitalDerivansException {
-		// get most probably link from structMapping section
-		String logId = getLogicalRootByPhysicalReferences();
-
-		// get logical divisions as raw elements (see above)
+	private String calculatePrimeModsIdentifier() throws DigitalDerivansException {
+		String logId = getContainerIDWithMostLinkings();
 		List<Element> logSubcontainers = this.requestSubcontainers(false);
 		for (Element e : logSubcontainers) {
 			if (e.getAttributeValue(METS_CONTAINER_ID).equals(logId)) {
@@ -299,6 +306,17 @@ public class MetadataHandler {
 			}
 		}
 		throw new DigitalDerivansException("Can't determine DMD identifier for "+ this.getPath());
+	}
+
+	private Optional<String> getSimple() {
+		var optElement = this.mets.getLogicalStructMap().asElement().getContent(new TypeFilter()).stream().findFirst();
+		if (optElement.isPresent()) {
+			var el = optElement.get();
+			if (el.getAttribute(DMD_ID) != null) {
+				return Optional.of(el.getAttributeValue(DMD_ID));
+			}
+		}
+		return Optional.empty();
 	}
 
 	/**
@@ -314,7 +332,9 @@ public class MetadataHandler {
 	 * 		This is like VLS/semantics are doing.</li>
 	 * 	<li>Kitodo2 contains an additional linking from each physical 
 	 * 		container to the logical root element. To find it, count all 
-	 * 		links from logical to physical and get the one with most links.</li>
+	 * 		links from logical to physical and get the one with most links.
+	 * 		_PLEASE NOTE_:
+	 * 		Doesn't hold for K2 MENADOC digis!</li>
 	 * 	<li>There's a reasonable exception for Kitodo2, when there's only
 	 * 		one logical child in the print, i.e. a print with only
 	 * 		a single section/chapter (a chart, a map, ...). 
@@ -330,7 +350,7 @@ public class MetadataHandler {
 	 * @return
 	 * @throws DigitalDerivansException 
 	 */
-	private String getLogicalRootByPhysicalReferences() throws DigitalDerivansException {
+	private String getContainerIDWithMostLinkings() throws DigitalDerivansException {
 		List<SmLink> smLinksToPhysRoot = mets.getStructLink().getSmLinkByTo(METS_CONTAINER_PHYS_ROOT);
 		if (!smLinksToPhysRoot.isEmpty()) {
 			return smLinksToPhysRoot.get(0).getFrom();
@@ -451,6 +471,44 @@ class ModsFilter extends ElementFilter {
 			Element el = (Element) content;
 			if ("mods".equals(el.getName())) {
 				return el;
+			}
+		}
+		return null;
+	}
+
+}
+
+
+/**
+ * 
+ * Get mets:div Containers with types
+ * like 'monography', 'volume', ... , etc
+ * 
+ * @author u.hartwig
+ *
+ */
+@SuppressWarnings("serial")
+class TypeFilter extends ElementFilter {
+
+	static final String[] TYPES = {
+		StructureDFGViewer.MONOGRAPH.getLabel(),
+		StructureDFGViewer.VOLUME.getLabel(),
+		StructureDFGViewer.MANUSCRIPT.getLabel(),
+		StructureDFGViewer.ISSUE.getLabel(),
+		StructureDFGViewer.ADDITIONAL.getLabel(),
+		StructureDFGViewer.ATLAS.getLabel(),
+		StructureDFGViewer.MAP.getLabel(),
+	};
+
+	@Override
+	public Element filter(Object content) {
+		if (content instanceof Element) {
+			Element el = (Element) content;
+			String elType = el.getAttributeValue(MetadataHandler.METS_TYPE);
+			for (String t : TYPES) {
+				if (t.equals(elType)) {
+					return el;
+				}
 			}
 		}
 		return null;

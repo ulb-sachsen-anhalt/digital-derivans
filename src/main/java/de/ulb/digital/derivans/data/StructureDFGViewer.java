@@ -123,4 +123,8 @@ public enum StructureDFGViewer {
 		}
 		return Optional.empty();
 	}
+
+	public String getLabel() {
+		return this.label;
+	}
 }
