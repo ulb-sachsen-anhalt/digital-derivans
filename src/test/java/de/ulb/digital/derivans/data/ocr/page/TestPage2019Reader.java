@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data.ocr.alto;
+package de.ulb.digital.derivans.data.ocr.page;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
