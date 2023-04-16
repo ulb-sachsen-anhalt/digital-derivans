@@ -130,6 +130,7 @@ public class DerivansPathResolver {
 		List<Path> ocrFiles = new ArrayList<>();
 		try (Stream<Path> files = Files.list(ocrPath)) {
 			ocrFiles = files.collect(Collectors.toList());
+			LOGGER.info("found {} local ocr files in sub dir '{}'", ocrFiles.size(), ocrPath);
 		} catch (IOException e) {
 			LOGGER.error("fail read {}:{}", ocrPath, e.getMessage());
 			return pages;
