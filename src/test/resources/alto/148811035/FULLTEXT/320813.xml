@@ -166,7 +166,7 @@
             <String CONTENT="XIL" HEIGHT="45" HPOS="1167" ID="region0001_line0008_word0000" VPOS="699" WIDTH="98"/>
           </TextLine>
         </TextBlock>
-        <TextBlock HEIGHT="425" HPOS="537" ID="region0002" IDNEXT="region0003" VPOS="716" WIDTH="1429">
+        <TextBlock HEIGHT="425" HPOS="537" ID="region0002" VPOS="716" WIDTH="1429">
           <TextLine HEIGHT="90" HPOS="553" ID="region0002_line0000" VPOS="717" WIDTH="1412">
             <String CONTENT="Man" HEIGHT="46" HPOS="637" ID="region0002_line0000_word0000" VPOS="732" WIDTH="111"/>
             <SP/>
@@ -310,7 +310,7 @@
           </TextLine>
         </TextBlock>
         <TextBlock HEIGHT="322" HPOS="1312" ID="region0005" IDNEXT="region0006" VPOS="1724" WIDTH="366"/>
-        <TextBlock HEIGHT="79" HPOS="1193" ID="region0006" IDNEXT="region0007" VPOS="1806" WIDTH="130">
+        <TextBlock HEIGHT="79" HPOS="1193" ID="region0006" VPOS="1806" WIDTH="130">
           <TextLine HEIGHT="79" HPOS="1193" ID="region0006_line" VPOS="1806" WIDTH="130">
             <String CONTENT="m" HEIGHT="27" HPOS="1213" ID="region0006_line_word0000" VPOS="1830" WIDTH="110"/>
           </TextLine>
