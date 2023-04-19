@@ -40,6 +40,8 @@ class ImageProcessor {
 
 	public static final String JAVAX_IMAGEIO_JPEG = "javax_imageio_jpeg_image_1.0";
 
+	public static final String JAVAX_IMAGEIO_TIFF = "javax_imageio_tiff_image_1.0";
+
 	/**
 	 * Percentage image quality
 	 */
@@ -140,9 +142,13 @@ class ImageProcessor {
 		
 		// determine JPG write parameters
 		JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
+		jpegParams.setProgressiveMode(ImageWriteParam.MODE_DEFAULT);
+		jpegParams.setOptimizeHuffmanTables(true);
 		jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 		jpegParams.setCompressionQuality(this.getQuality());
 		jpegParams.setDestinationType(imageType);
+		
+		// write image buffer
 		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
 		FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());
 		writer.setOutput(fios);
@@ -156,7 +162,7 @@ class ImageProcessor {
 		if (buffer == null) {
 			throw new DigitalDerivansException("Invalid image data " + pathIn+"!");
 		}
-		IIOMetadata metadata = this.previousMetadata(pathIn);
+		IIOMetadata metadata = this.getPreviousMetadata(pathIn);
 		this.writeJPGWithQualityAndMetadata(buffer, pathOut, metadata);
 		buffer.flush();
 		return true;
@@ -183,7 +189,7 @@ class ImageProcessor {
 		// append footer buffer at bottom
 		BufferedImage totalBuffer = this.append(buffer, scaledFooter);
 		
-		IIOMetadata metadata = previousMetadata(pathIn);
+		IIOMetadata metadata = getPreviousMetadata(pathIn);
 		this.writeJPGWithQualityAndMetadata(totalBuffer, pathOut, metadata);
 		buffer.flush();
 		scaledFooter.flush();
@@ -193,26 +199,29 @@ class ImageProcessor {
 		return addHeight;
 	}
 
-	private IIOMetadata previousMetadata(Path pathIn) throws IOException, DigitalDerivansException {
-		IIOMetadata metadata = null;
+	private IIOMetadata getPreviousMetadata(Path pathIn) throws IOException, DigitalDerivansException {
+		IIOMetadata targetMetadata = null;
 		ImageInputStream iis = ImageIO.createImageInputStream(pathIn.toFile());
 		Iterator<ImageReader> readerator = ImageIO.getImageReaders(iis);
 		if (readerator.hasNext()) {
-			ImageReader readerOne = readerator.next();
-			readerOne.setInput(iis);
-			String previousFormat = readerOne.getFormatName();
-			ImageWriter imageWriter = ImageIO.getImageWritersBySuffix("jpg").next();
-			ImageWriteParam defaultParams = imageWriter.getDefaultWriteParam();
-			ImageTypeSpecifier imgType = readerOne.getImageTypes(0).next();
-			metadata = imageWriter.getDefaultImageMetadata(imgType, defaultParams);
-			IIOMetadata oldMetadata = readerOne.getImageMetadata(0);
+			ImageReader inputReader = readerator.next();
+			inputReader.setInput(iis);
+			ImageTypeSpecifier imgType = inputReader.getImageTypes(0).next();
+			ImageWriter jpgWriter = ImageIO.getImageWritersBySuffix("jpg").next();
+			ImageWriteParam defaultParams = jpgWriter.getDefaultWriteParam();
+			targetMetadata = jpgWriter.getDefaultImageMetadata(imgType, defaultParams);
+			String previousFormat = inputReader.getFormatName();
 			if (previousFormat.equalsIgnoreCase("tif")) {
-				this.enrichFromTIF(metadata, oldMetadata);
+				IIOMetadata oldMetadata = inputReader.getImageMetadata(0);
+				this.enrichFromSource(targetMetadata, oldMetadata, ImageProcessor.JAVAX_IMAGEIO_TIFF);
 			} else {
-				metadata = readerOne.getImageMetadata(0);
+				targetMetadata = inputReader.getImageMetadata(0);
+			}
+			if (targetMetadata == null) {
+				throw new DigitalDerivansException("Unable to gather image Metadata for '"+pathIn+"'!");
 			}
 		}
-		return metadata;
+		return targetMetadata;
 	}
 
 	/**
@@ -221,9 +230,15 @@ class ImageProcessor {
 	 * 
 	 * Please not, that it's assumed: DPI X = DPI Y
 	 * 
-	 * Important TIFF EXIF data take into account
+	 * Important EXIF data take into account 
+	 * <ul>
+	 * 	<li>XResolution</li>
+	 * 	<li>YResolution</li>
+	 * 	<li>resUnits</li>
+	 * </ul>
+	 *  
+	 * Example TIFF Image Metadata:
 	 * 
-	 * <TIFFIFD ... 
 	 * <TIFFField number="282" name="XResolution"> 
 	 * <TIFFRationals><TIFFRational value="300/1"/></TIFFRationals>
 	 * </TIFFField>
@@ -235,17 +250,17 @@ class ImageProcessor {
 	 * @param origin
 	 * @return
 	 */
-	void enrichFromTIF(IIOMetadata target, IIOMetadata source) throws DigitalDerivansException {
+	void enrichFromSource(IIOMetadata target, IIOMetadata source, String formatName) throws DigitalDerivansException {
 
 		// prepare target
-		Element tree = (Element) target.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
-		Element jfif = (Element) tree.getElementsByTagName("app0JFIF").item(0);
+		Element targetTree = (Element) target.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
+		Element jfif = (Element) targetTree.getElementsByTagName("app0JFIF").item(0);
 
 		// inspect source
-		Node originRoot = source.getAsTree("javax_imageio_tiff_image_1.0");
-		Node tiffIFD = originRoot.getFirstChild(); // TIFFIFD root
+		Node sourceTree = source.getAsTree(formatName);
+		Node firstMetadataNode = sourceTree.getFirstChild(); // Metadata for first Image
 		jfif.setAttribute("resUnits", "1"); // density dots per inch == 1
-		NodeList originChilds = tiffIFD.getChildNodes();
+		NodeList originChilds = firstMetadataNode.getChildNodes();
 		for (int i = 0; i < originChilds.getLength(); i++) {
 			Node originChild = originChilds.item(i);
 			NamedNodeMap originAttributes = originChild.getAttributes();
@@ -262,7 +277,7 @@ class ImageProcessor {
 			}
 		}
 		try {
-			target.setFromTree(ImageProcessor.JAVAX_IMAGEIO_JPEG, tree);
+			target.setFromTree(ImageProcessor.JAVAX_IMAGEIO_JPEG, targetTree);
 		} catch (IIOInvalidTreeException e) {
 			throw new DigitalDerivansException(e);
 		}
