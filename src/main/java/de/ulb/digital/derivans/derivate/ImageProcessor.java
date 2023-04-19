@@ -38,9 +38,28 @@ import de.ulb.digital.derivans.config.DefaultConfiguration;
  */
 class ImageProcessor {
 
+	private static final String JFIF_ROOT_NODE = "app0JFIF";
+
+	private static final String METADATA_TIFF_X_RESOLUTION = "XResolution";
+
+	/*
+	 * String because it gets written into image metadata section.
+	 */
+	public static final String DEFAULT_IMAGE_DPI = "300";
+
+	public static final String DEFAULT_IMAGE_RES = "1";
+
 	public static final String JAVAX_IMAGEIO_JPEG = "javax_imageio_jpeg_image_1.0";
 
 	public static final String JAVAX_IMAGEIO_TIFF = "javax_imageio_tiff_image_1.0";
+
+	public static final String FILE_EXT_JPEG = "jpeg";
+
+	public static final String METADATA_JPEG_RESUNITS = "resUnits";
+
+	public static final String METADATA_JPEG_XDENSITY = "Xdensity";
+
+	public static final String METADATA_JPEG_YDENSITY = "Ydensity";
 
 	/**
 	 * Percentage image quality
@@ -108,7 +127,7 @@ class ImageProcessor {
 	/**
 	 * 
 	 * Please note:
-	 * 	Don't use Image.getScaledInstance!
+	 * Don't use Image.getScaledInstance!
 	 * 
 	 * {@link https://stackoverflow.com/questions/20083554/bufferedimage-getscaledinstance-changes-brightness-of-picture}
 	 * {@link https://community.oracle.com/docs/DOC-983611}
@@ -128,18 +147,20 @@ class ImageProcessor {
 		return dimg;
 	}
 
-	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, IIOMetadata metadata) throws IOException {
+	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, IIOMetadata metadata)
+			throws IOException {
 		buffer = handleMaximalDimension(buffer);
 
 		// determine BufferedImage.type
-		//  5 = 8-bit RGB color components, corresponding to Windows-style BGR color model
+		// 5 = 8-bit RGB color components, corresponding to Windows-style BGR color
+		// model
 		// 10 = unsigned byte grayscale image, non-indexed (CS_GRY)
 		int bType = buffer.getType();
 		if (bType == 0) {
 			bType = buffer.getColorModel().getColorSpace().getType();
 		}
 		ImageTypeSpecifier imageType = ImageTypeSpecifier.createFromBufferedImageType(bType);
-		
+
 		// determine JPG write parameters
 		JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
 		jpegParams.setProgressiveMode(ImageWriteParam.MODE_DEFAULT);
@@ -147,7 +168,7 @@ class ImageProcessor {
 		jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 		jpegParams.setCompressionQuality(this.getQuality());
 		jpegParams.setDestinationType(imageType);
-		
+
 		// write image buffer
 		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
 		FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());
@@ -160,9 +181,9 @@ class ImageProcessor {
 	public boolean writeJPG(Path pathIn, Path pathOut) throws IOException, DigitalDerivansException {
 		BufferedImage buffer = ImageIO.read(pathIn.toFile());
 		if (buffer == null) {
-			throw new DigitalDerivansException("Invalid image data " + pathIn+"!");
+			throw new DigitalDerivansException("Invalid image data " + pathIn + "!");
 		}
-		IIOMetadata metadata = this.getPreviousMetadata(pathIn);
+		IIOMetadata metadata = calculateMetadata(pathIn);
 		this.writeJPGWithQualityAndMetadata(buffer, pathOut, metadata);
 		buffer.flush();
 		return true;
@@ -174,22 +195,22 @@ class ImageProcessor {
 		// prepare footer buffer
 		BufferedImage buffer = ImageIO.read(pathIn.toFile());
 		if (buffer == null) {
-			throw new DigitalDerivansException("Invalid image data " + pathIn+"!");
+			throw new DigitalDerivansException("Invalid image data " + pathIn + "!");
 		}
 		float ratio = (float) buffer.getWidth() / (float) footerBuffer.getWidth();
 		BufferedImage scaledFooter = this.scale(footerBuffer, ratio);
 		int scaledHeigth = scaledFooter.getHeight();
 		if (scaledHeigth < EXPECTED_MINIMAL_HEIGHT) {
-			String msg2 = String.format("problem: footer h '%d' dropped beneath '%d' (scale: '%.2f')", 
-			scaledHeigth, EXPECTED_MINIMAL_HEIGHT, ratio);
+			String msg2 = String.format("problem: footer h '%d' dropped beneath '%d' (scale: '%.2f')",
+					scaledHeigth, EXPECTED_MINIMAL_HEIGHT, ratio);
 			throw new DigitalDerivansException(msg2);
 		}
 		int addHeight = scaledFooter.getHeight();
 
 		// append footer buffer at bottom
 		BufferedImage totalBuffer = this.append(buffer, scaledFooter);
-		
-		IIOMetadata metadata = getPreviousMetadata(pathIn);
+
+		IIOMetadata metadata = calculateMetadata(pathIn);
 		this.writeJPGWithQualityAndMetadata(totalBuffer, pathOut, metadata);
 		buffer.flush();
 		scaledFooter.flush();
@@ -199,87 +220,147 @@ class ImageProcessor {
 		return addHeight;
 	}
 
-	private IIOMetadata getPreviousMetadata(Path pathIn) throws IOException, DigitalDerivansException {
-		IIOMetadata targetMetadata = null;
+	/**
+	 * 
+	 * Calculate image metadata for new image from
+	 * Defaults regarding target format and some
+	 * attributes of preceeding image depending
+	 * on it's actual image metadata format
+	 * 
+	 * @param pathIn
+	 * @return
+	 * @throws IOException
+	 * @throws DigitalDerivansException
+	 */
+	static IIOMetadata calculateMetadata(Path pathIn) throws IOException, DigitalDerivansException {
 		ImageInputStream iis = ImageIO.createImageInputStream(pathIn.toFile());
 		Iterator<ImageReader> readerator = ImageIO.getImageReaders(iis);
-		if (readerator.hasNext()) {
-			ImageReader inputReader = readerator.next();
-			inputReader.setInput(iis);
-			ImageTypeSpecifier imgType = inputReader.getImageTypes(0).next();
-			ImageWriter jpgWriter = ImageIO.getImageWritersBySuffix("jpg").next();
-			ImageWriteParam defaultParams = jpgWriter.getDefaultWriteParam();
-			targetMetadata = jpgWriter.getDefaultImageMetadata(imgType, defaultParams);
-			String previousFormat = inputReader.getFormatName();
-			if (previousFormat.equalsIgnoreCase("tif")) {
-				IIOMetadata oldMetadata = inputReader.getImageMetadata(0);
-				this.enrichFromSource(targetMetadata, oldMetadata, ImageProcessor.JAVAX_IMAGEIO_TIFF);
-			} else {
-				targetMetadata = inputReader.getImageMetadata(0);
-			}
-			if (targetMetadata == null) {
-				throw new DigitalDerivansException("Unable to gather image Metadata for '"+pathIn+"'!");
+		if (!readerator.hasNext()) {
+			throw new DigitalDerivansException("Unable to recognize image '" + pathIn + "'!");
+		}
+		ImageReader inputReader = readerator.next();
+		inputReader.setInput(iis);
+		ImageTypeSpecifier imgType = inputReader.getImageTypes(0).next();
+		ImageWriter jpgWriter = ImageIO.getImageWritersBySuffix(ImageProcessor.FILE_EXT_JPEG).next();
+		ImageWriteParam defaultParams = jpgWriter.getDefaultWriteParam();
+		// imgType considers only Colorspace and SampleModel, so it's
+		// okay to re-use this, even for conversions from TIFF to JPEG
+		IIOMetadata targetMetadata = jpgWriter.getDefaultImageMetadata(imgType, defaultParams);
+		Element targetTree = (Element) targetMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
+		Element jfif = (Element) targetTree.getElementsByTagName(JFIF_ROOT_NODE).item(0);
+		// respect previous metadata
+		// gather previous Metadata from pathIn
+		String previousFormat = inputReader.getFormatName();
+		IIOMetadata sourceMetadata = inputReader.getImageMetadata(0);
+		Element sourceTree = null;
+		if (isTiffInput(previousFormat)) {
+			sourceTree = (Element) sourceMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_TIFF);
+		} else if (isJpegInput(previousFormat)) {
+			sourceTree = (Element) sourceMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
+		}
+		// enrich if source determined
+		if (sourceTree != null) {
+			enrichMetadata(jfif, sourceTree);
+			// sanitize and update only if previous 
+			// unknown meta data came into play
+			sanitizeMetadata(jfif);
+			// update default metadata
+			try {
+				targetMetadata.setFromTree(ImageProcessor.JAVAX_IMAGEIO_JPEG, targetTree);
+			} catch (IIOInvalidTreeException e) {
+				throw new DigitalDerivansException(e);
 			}
 		}
 		return targetMetadata;
 	}
 
+	private static boolean isTiffInput(String label) {
+		return "tif".equalsIgnoreCase(label) || "tiff".equalsIgnoreCase(label);
+	}
+
+	private static boolean isJpegInput(String label) {
+		return "jpg".equalsIgnoreCase(label) || FILE_EXT_JPEG.equalsIgnoreCase(label);
+	}
+
 	/**
 	 * 
-	 * Enrich IIOMetadata from original image at derived image IIOMetadata
+	 * Enrich Metadata for Resoulution/Density
+	 * from previous image, if available.
 	 * 
-	 * Please not, that it's assumed: DPI X = DPI Y
-	 * 
-	 * Important EXIF data take into account 
-	 * <ul>
-	 * 	<li>XResolution</li>
-	 * 	<li>YResolution</li>
-	 * 	<li>resUnits</li>
-	 * </ul>
-	 *  
 	 * Example TIFF Image Metadata:
 	 * 
-	 * <TIFFField number="282" name="XResolution"> 
+	 * <TIFFField number="282" name="XResolution">
 	 * <TIFFRationals><TIFFRational value="300/1"/></TIFFRationals>
 	 * </TIFFField>
 	 * <TIFFField number="283" name="YResolution">
-	 * <TIFFRationals><TIFFRational value="300/1"/> 
-	 * </TIFFRationals> 
+	 * <TIFFRationals><TIFFRational value="300/1"/>
+	 * </TIFFRationals>
 	 * </TIFFField>
 	 * 
-	 * @param origin
-	 * @return
+	 * JFIF - JPEG Interchange File Format
+	 * 
+	 * @param jfif
+	 * @param sourceTree
 	 */
-	void enrichFromSource(IIOMetadata target, IIOMetadata source, String formatName) throws DigitalDerivansException {
-
-		// prepare target
-		Element targetTree = (Element) target.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
-		Element jfif = (Element) targetTree.getElementsByTagName("app0JFIF").item(0);
-
-		// inspect source
-		Node sourceTree = source.getAsTree(formatName);
+	static void enrichMetadata(Element jfif, Node sourceTree) {
 		Node firstMetadataNode = sourceTree.getFirstChild(); // Metadata for first Image
-		jfif.setAttribute("resUnits", "1"); // density dots per inch == 1
-		NodeList originChilds = firstMetadataNode.getChildNodes();
-		for (int i = 0; i < originChilds.getLength(); i++) {
-			Node originChild = originChilds.item(i);
-			NamedNodeMap originAttributes = originChild.getAttributes();
-			Node originNodeName = originAttributes.getNamedItem("name");
-			if (originNodeName == null) { // no attribute "name"
-				continue;
+		NodeList childs = firstMetadataNode.getChildNodes();
+		if (childs.getLength() == 0) { // no metadata nodes, just stop
+			return;
+		}
+		if (ImageProcessor.JAVAX_IMAGEIO_JPEG.equals(sourceTree.getNodeName())) {
+			Node xDensitiyNode = childs.item(0).getAttributes().getNamedItem(METADATA_JPEG_XDENSITY);
+			if (xDensitiyNode != null) {
+				String xDensity = xDensitiyNode.getNodeValue();
+				jfif.setAttribute(METADATA_JPEG_XDENSITY, xDensity);
+				jfif.setAttribute(METADATA_JPEG_YDENSITY, xDensity);
 			}
-			if (originNodeName.getNodeValue().equals("XResolution")) {
-				String xRes = originChild.getFirstChild().getFirstChild().getAttributes().getNamedItem("value")
-						.getNodeValue();
-				String dpiX = xRes.split("/")[0];
-				jfif.setAttribute("Xdensity", dpiX);
-				jfif.setAttribute("Ydensity", dpiX);
+		} else if (ImageProcessor.JAVAX_IMAGEIO_TIFF.equals(sourceTree.getNodeName())) {
+			for (int i = 0; i < childs.getLength(); i++) {
+				Node originChild = childs.item(i);
+				NamedNodeMap originAttributes = originChild.getAttributes();
+				Node originNodeName = originAttributes.getNamedItem("name");
+				if (originNodeName == null) { // no attribute "name"
+					continue;
+				}
+				if (originNodeName.getNodeValue().equals(METADATA_TIFF_X_RESOLUTION)) {
+					String xRes = originChild.getFirstChild().getFirstChild().getAttributes().getNamedItem("value")
+							.getNodeValue();
+					String dpiX = xRes.split("/")[0];
+					jfif.setAttribute(METADATA_JPEG_XDENSITY, dpiX);
+					jfif.setAttribute(METADATA_JPEG_YDENSITY, dpiX);
+				}
 			}
 		}
-		try {
-			target.setFromTree(ImageProcessor.JAVAX_IMAGEIO_JPEG, targetTree);
-		} catch (IIOInvalidTreeException e) {
-			throw new DigitalDerivansException(e);
+	}
+
+	/**
+	 * 
+	 * Ensure that Important metadata for subsequent
+	 * steps holds valid information, i.e.:
+	 * 
+	 * <ul>
+	 * <li>XResolution, default: 300</li>
+	 * <li>YResolution, default: 300</li>
+	 * <li>resUnits: density dots per inch == 1, "0" means unknown</li>
+	 * </ul>
+	 * 
+	 * Please note, that DPI X = DPI Y is assumed
+	 * 
+	 * @param jfif
+	 */
+	static void sanitizeMetadata(Element jfif) {
+		String resUnit = jfif.getAttribute(METADATA_JPEG_RESUNITS);
+		if (resUnit.equals("0")) {
+			jfif.setAttribute(METADATA_JPEG_RESUNITS, DEFAULT_IMAGE_RES);
+		}
+		String xDensity = jfif.getAttribute(METADATA_JPEG_XDENSITY);
+		if (xDensity == null || xDensity.isEmpty() || xDensity.equals("1")) {
+			jfif.setAttribute(METADATA_JPEG_XDENSITY, DEFAULT_IMAGE_DPI);
+		}
+		String yDensity = jfif.getAttribute(METADATA_JPEG_YDENSITY);
+		if (yDensity == null || yDensity.isEmpty() || yDensity.equals("1")) {
+			jfif.setAttribute(METADATA_JPEG_YDENSITY, DEFAULT_IMAGE_DPI);
 		}
 	}
 

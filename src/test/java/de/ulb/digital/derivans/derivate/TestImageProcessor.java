@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import javax.imageio.metadata.IIOMetadata;
@@ -18,6 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import static de.ulb.digital.derivans.derivate.ImageProcessor.*;
 import de.ulb.digital.derivans.TestResource;
 
 /**
@@ -47,14 +49,14 @@ class TestImageProcessor {
 		Optional<IIOMetadata> optNewMetadata = ImageProcessor.getMetadataFromImagePath(targetPath);
 		assertTrue(optNewMetadata.isPresent());
 		IIOMetadata newMetadata = optNewMetadata.get();
-		Node root = newMetadata.getAsTree("javax_imageio_jpeg_image_1.0");
+		Node root = newMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
 		Node firstChild = root.getFirstChild();
 		assertEquals("JPEGvariety", firstChild.getLocalName());
 		Node firstGrandchild = firstChild.getFirstChild();
 		assertEquals("app0JFIF", firstGrandchild.getLocalName());
-		assertEquals("300", firstGrandchild.getAttributes().getNamedItem("Xdensity").getNodeValue());
-		assertEquals("300", firstGrandchild.getAttributes().getNamedItem("Ydensity").getNodeValue());
-		assertEquals("1", firstGrandchild.getAttributes().getNamedItem("resUnits").getNodeValue());
+		assertEquals(DEFAULT_IMAGE_DPI, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_XDENSITY).getNodeValue());
+		assertEquals(DEFAULT_IMAGE_DPI, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_YDENSITY).getNodeValue());
+		assertEquals(DEFAULT_IMAGE_RES, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_RESUNITS).getNodeValue());
 	}
 
 	@Test
@@ -66,7 +68,7 @@ class TestImageProcessor {
 
 		// assert
 		assertTrue(metadata.isPresent());
-		Node root = metadata.get().getAsTree("javax_imageio_jpeg_image_1.0");
+		Node root = metadata.get().getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
 		var grandChilds = root.getFirstChild().getChildNodes();
 		assertEquals(1, grandChilds.getLength());
 	}
@@ -80,7 +82,7 @@ class TestImageProcessor {
 
 		// assert
 		assertTrue(metadata.isPresent());
-		Node root = metadata.get().getAsTree("javax_imageio_tiff_image_1.0");
+		Node root = metadata.get().getAsTree(ImageProcessor.JAVAX_IMAGEIO_TIFF);
 		var grandChilds = root.getFirstChild().getChildNodes();
 		assertEquals(25, grandChilds.getLength());
 		assertEquals("TIFFField", grandChilds.item(6).getNodeName());
@@ -103,15 +105,15 @@ class TestImageProcessor {
 		Optional<IIOMetadata> optNewMetadata = ImageProcessor.getMetadataFromImagePath(targetPath);
 		assertTrue(optNewMetadata.isPresent());
 		IIOMetadata newMetadata = optNewMetadata.get();
-		Node root = newMetadata.getAsTree("javax_imageio_jpeg_image_1.0");
+		Node root = newMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
 		assertNotNull(root);
 		Node firstChild = root.getFirstChild();
 		assertEquals("JPEGvariety", firstChild.getLocalName());
 		Node firstGrandchild = firstChild.getFirstChild();
 		assertEquals("app0JFIF", firstGrandchild.getLocalName());
-		assertEquals("470", firstGrandchild.getAttributes().getNamedItem("Xdensity").getNodeValue());
-		assertEquals("470", firstGrandchild.getAttributes().getNamedItem("Ydensity").getNodeValue());
-		assertEquals("1", firstGrandchild.getAttributes().getNamedItem("resUnits").getNodeValue());
+		assertEquals("470", firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_XDENSITY).getNodeValue());
+		assertEquals("470", firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_YDENSITY).getNodeValue());
+		assertEquals(DEFAULT_IMAGE_RES, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_RESUNITS).getNodeValue());
 	}
 
 	@Test
@@ -129,15 +131,15 @@ class TestImageProcessor {
 		Optional<IIOMetadata> optNewMetadata = ImageProcessor.getMetadataFromImagePath(targetPath);
 		assertTrue(optNewMetadata.isPresent());
 		IIOMetadata newMetadata = optNewMetadata.get();
-		Node root = newMetadata.getAsTree("javax_imageio_jpeg_image_1.0");
+		Node root = newMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
 		assertNotNull(root);
 		Node firstChild = root.getFirstChild();
 		assertEquals("JPEGvariety", firstChild.getLocalName());
 		Node firstGrandchild = firstChild.getFirstChild();
 		assertEquals("app0JFIF", firstGrandchild.getLocalName());
-		assertEquals("470", firstGrandchild.getAttributes().getNamedItem("Xdensity").getNodeValue());
-		assertEquals("470", firstGrandchild.getAttributes().getNamedItem("Ydensity").getNodeValue());
-		assertEquals("1", firstGrandchild.getAttributes().getNamedItem("resUnits").getNodeValue());
+		assertEquals("470", firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_XDENSITY).getNodeValue());
+		assertEquals("470", firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_YDENSITY).getNodeValue());
+		assertEquals(DEFAULT_IMAGE_RES, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_RESUNITS).getNodeValue());
 	}
 
 	/**
@@ -154,7 +156,7 @@ class TestImageProcessor {
 
 		// assert
 		assertTrue(metadata.isPresent());
-		Node root = metadata.get().getAsTree("javax_imageio_tiff_image_1.0");
+		Node root = metadata.get().getAsTree(JAVAX_IMAGEIO_TIFF);
 		NodeList children = root.getChildNodes();
 		assertEquals(1, children.getLength());
 
@@ -181,9 +183,9 @@ class TestImageProcessor {
 		assertEquals("JPEGvariety", firstChild.getLocalName());
 		Node firstGrandchild = firstChild.getFirstChild();
 		assertEquals("app0JFIF", firstGrandchild.getLocalName());
-		assertEquals("300", firstGrandchild.getAttributes().getNamedItem("Xdensity").getNodeValue());
-		assertEquals("300", firstGrandchild.getAttributes().getNamedItem("Ydensity").getNodeValue());
-		assertEquals("1", firstGrandchild.getAttributes().getNamedItem("resUnits").getNodeValue());
+		assertEquals(DEFAULT_IMAGE_DPI, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_XDENSITY).getNodeValue());
+		assertEquals(DEFAULT_IMAGE_DPI, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_YDENSITY).getNodeValue());
+		assertEquals(DEFAULT_IMAGE_RES, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_RESUNITS).getNodeValue());
 	}
 
 	@Test
@@ -207,4 +209,69 @@ class TestImageProcessor {
 				grandChilds.item(13).getFirstChild().getFirstChild().getAttributes().item(0).getNodeValue());
 	}
 
+	/**
+	 * 
+	 * Ensure we determine the *real* data from given image
+	 * 
+	 * @param tempDir
+	 * @throws DigitalDerivansException
+	 * @throws IOException
+	 */
+	@Test
+	void testProcessSLUBImageBaselineMetadata() throws DigitalDerivansException, IOException {
+		// arrange
+		String img = "src/test/resources/images/FILE_0001_MAX.jpg";
+		Path imgSource = Paths.get(img).toAbsolutePath();
+
+		// act
+		var metadata = ImageProcessor.getMetadataFromImagePath(imgSource);
+
+		// assert
+		assertTrue(Files.exists(imgSource, LinkOption.NOFOLLOW_LINKS));
+		Node root = metadata.get().getAsTree(JAVAX_IMAGEIO_JPEG);
+		NodeList grandChilds = root.getFirstChild().getChildNodes();
+		Node firstChild = root.getFirstChild();
+		assertEquals("JPEGvariety", firstChild.getLocalName());
+		Node firstGrandchild = firstChild.getFirstChild();
+		assertEquals(1, grandChilds.getLength());
+		assertEquals("app0JFIF", firstGrandchild.getLocalName());
+		assertEquals("1", firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_XDENSITY).getNodeValue());
+		assertEquals("1", firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_YDENSITY).getNodeValue());
+		assertEquals("0", firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_RESUNITS).getNodeValue());
+	}
+
+	/**
+	 * 
+	 * Ensure if we process this image, we have valid values afterwards
+	 * 
+	 * @param tempDir
+	 * @throws DigitalDerivansException
+	 * @throws IOException
+	 */
+	@Test
+	void testProcessSLUBImageBaseline(@TempDir Path tempDir) throws DigitalDerivansException, IOException {
+		// arrange
+		String img = "src/test/resources/images/FILE_0001_MAX.jpg";
+		Path imgSource = Paths.get(img).toAbsolutePath();
+		Path targetDir = tempDir.resolve("IMAGE-BASELINE");
+		Files.createDirectory(targetDir);
+		Path targetPath = targetDir.resolve("FILE_0001_MAX.jpg");
+
+		// act
+		boolean outcome = imageProcessor.writeJPG(imgSource, targetPath);
+		assertTrue(outcome);
+		Optional<IIOMetadata> optNewMetadata = ImageProcessor.getMetadataFromImagePath(targetPath);
+
+		// assert
+		assertTrue(optNewMetadata.isPresent());
+		IIOMetadata newMetadata = optNewMetadata.get();
+		Node root = newMetadata.getAsTree("javax_imageio_jpeg_image_1.0");
+		Node firstChild = root.getFirstChild();
+		assertEquals("JPEGvariety", firstChild.getLocalName());
+		Node firstGrandchild = firstChild.getFirstChild();
+		assertEquals("app0JFIF", firstGrandchild.getLocalName());
+		assertEquals(DEFAULT_IMAGE_DPI, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_XDENSITY).getNodeValue());
+		assertEquals(DEFAULT_IMAGE_DPI, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_YDENSITY).getNodeValue());
+		assertEquals(DEFAULT_IMAGE_RES, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_RESUNITS).getNodeValue());
+	}
 }
