@@ -139,7 +139,11 @@ class ImageProcessor {
 	BufferedImage scale(BufferedImage original, float ratio) {
 		int newW = (int) (ratio * original.getWidth());
 		int newH = (int) (ratio * original.getHeight());
-		BufferedImage dimg = new BufferedImage(newW, newH, original.getType());
+		int bType = original.getType();
+		if (bType == 0) {
+			bType = original.getColorModel().getColorSpace().getType();
+		}
+		BufferedImage dimg = new BufferedImage(newW, newH, bType);
 		Graphics2D g2d = dimg.createGraphics();
 		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g2d.drawImage(original, 0, 0, newW, newH, null);
