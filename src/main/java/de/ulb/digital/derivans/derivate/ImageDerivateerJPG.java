@@ -44,7 +44,9 @@ public class ImageDerivateerJPG extends ImageDerivateer {
 			LOGGER.trace("write {} ({})", pathOut, imageProcessor.getQuality());
 			imageProcessor.writeJPG(pathIn, pathOut);
 		} catch (IOException|DigitalDerivansException e) {
-			LOGGER.error("render {}: {}", pathIn , e.getMessage());
+			String msg = String.format("%s:%s", pathIn, e.getMessage());
+			LOGGER.error("write error {}", msg);
+			throw new RuntimeException(msg);
 		}
 		return pathOut.toString();
 	}
