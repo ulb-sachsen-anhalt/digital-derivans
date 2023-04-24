@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.derivate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -158,6 +159,23 @@ class TestImageProcessor {
 		NodeList children = root.getChildNodes();
 		assertEquals(1, children.getLength());
 
+	}
+
+	@Test
+	void testReadMetadata_TIF_Postscan_RGB(@TempDir Path tempDir) throws Exception {
+		Path sourcePath = Path.of("src/test/resources/images/00000020-small.tif");
+		Path targetDir = tempDir.resolve("MAX");
+		Files.createDirectory(targetDir);
+		Path targetPath = targetDir.resolve("20.jpg");
+
+		// act
+		// var actualExc = assertThrows(DigitalDerivansException.class, () -> mds.getStructure());
+		var actualExc = assertThrows(DigitalDerivansException.class, () -> imageProcessor.writeJPG(sourcePath, targetPath));
+
+		// assert
+		var excMsg = actualExc.getMessage();
+		assertTrue(excMsg.startsWith("Illegal band size: should be 0 < size <= 8:"));
+		assertTrue(excMsg.endsWith("MAX/20.jpg"));
 	}
 
 	@Test

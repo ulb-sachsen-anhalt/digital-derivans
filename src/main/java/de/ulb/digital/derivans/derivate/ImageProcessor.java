@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Optional;
 
+import javax.imageio.IIOException;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -126,7 +127,7 @@ class ImageProcessor {
 		return dimg;
 	}
 
-	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, IIOMetadata metadata) throws IOException {
+	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, IIOMetadata metadata) throws DigitalDerivansException, IOException {
 		buffer = handleMaximalDimension(buffer);
 
 		// determine BufferedImage.type
@@ -144,10 +145,12 @@ class ImageProcessor {
 		jpegParams.setCompressionQuality(this.getQuality());
 		jpegParams.setDestinationType(imageType);
 		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-		FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());
-		writer.setOutput(fios);
-		writer.write(null, new IIOImage(buffer, null, metadata), jpegParams);
-		fios.close();
+		try (FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());){
+			writer.setOutput(fios);
+			writer.write(null, new IIOImage(buffer, null, metadata), jpegParams);
+		} catch (IIOException e) {
+			throw new DigitalDerivansException(e.getMessage()+":"+pathOut);
+		}
 		return true;
 	}
 
