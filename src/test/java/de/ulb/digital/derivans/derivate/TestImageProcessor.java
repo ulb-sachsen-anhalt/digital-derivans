@@ -169,7 +169,6 @@ class TestImageProcessor {
 		Path targetPath = targetDir.resolve("20.jpg");
 
 		// act
-		// var actualExc = assertThrows(DigitalDerivansException.class, () -> mds.getStructure());
 		var actualExc = assertThrows(DigitalDerivansException.class, () -> imageProcessor.writeJPG(sourcePath, targetPath));
 
 		// assert
@@ -225,4 +224,18 @@ class TestImageProcessor {
 				grandChilds.item(13).getFirstChild().getFirstChild().getAttributes().item(0).getNodeValue());
 	}
 
+
+	@Test
+	void testProcessImageFromEmptyInput(@TempDir Path tempDir) throws Exception {
+		Path sourcePath = TestResource.IMG_JPG_ZERO.get();
+		Path targetDir = tempDir.resolve("IMAGE");
+		Files.createDirectory(targetDir);
+		Path targetPath = targetDir.resolve("zero.jpg");
+
+		// act
+		var actual = assertThrows(DigitalDerivansException.class, () -> imageProcessor.writeJPG(sourcePath, targetPath));
+
+		// assert
+		assertEquals("Invalid fileSize 0 for src/test/resources/images/00000020.jpg!", actual.getMessage());
+	}
 }

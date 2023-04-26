@@ -5,6 +5,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Optional;
@@ -107,7 +108,7 @@ class ImageProcessor {
 	/**
 	 * 
 	 * Please note:
-	 * 	Don't use Image.getScaledInstance!
+	 * Don't use Image.getScaledInstance!
 	 * 
 	 * {@link https://stackoverflow.com/questions/20083554/bufferedimage-getscaledinstance-changes-brightness-of-picture}
 	 * {@link https://community.oracle.com/docs/DOC-983611}
@@ -127,37 +128,43 @@ class ImageProcessor {
 		return dimg;
 	}
 
-	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, IIOMetadata metadata) throws DigitalDerivansException, IOException {
+	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, IIOMetadata metadata)
+			throws DigitalDerivansException, IOException {
 		buffer = handleMaximalDimension(buffer);
 
 		// determine BufferedImage.type
-		//  5 = 8-bit RGB color components, corresponding to Windows-style BGR color model
+		// 5 = 8-bit RGB color components, corresponding to 
+		// Windows-style BGR color model
 		// 10 = unsigned byte grayscale image, non-indexed (CS_GRY)
 		int bType = buffer.getType();
 		if (bType == 0) {
 			bType = buffer.getColorModel().getColorSpace().getType();
 		}
 		ImageTypeSpecifier imageType = ImageTypeSpecifier.createFromBufferedImageType(bType);
-		
+
 		// determine JPG write parameters
 		JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
 		jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 		jpegParams.setCompressionQuality(this.getQuality());
 		jpegParams.setDestinationType(imageType);
 		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-		try (FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());){
+		try (FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());) {
 			writer.setOutput(fios);
 			writer.write(null, new IIOImage(buffer, null, metadata), jpegParams);
 		} catch (IIOException e) {
-			throw new DigitalDerivansException(e.getMessage()+":"+pathOut);
+			throw new DigitalDerivansException(e.getMessage() + ":" + pathOut);
 		}
 		return true;
 	}
 
 	public boolean writeJPG(Path pathIn, Path pathOut) throws IOException, DigitalDerivansException {
+		var fileSize = Files.size(pathIn);
+		if (fileSize < 1L) {
+			throw new DigitalDerivansException("Invalid fileSize " + fileSize + " for " + pathIn + "!");
+		}
 		BufferedImage buffer = ImageIO.read(pathIn.toFile());
 		if (buffer == null) {
-			throw new DigitalDerivansException("Invalid image data " + pathIn+"!");
+			throw new DigitalDerivansException("Invalid image data " + pathIn + "!");
 		}
 		IIOMetadata metadata = this.previousMetadata(pathIn);
 		this.writeJPGWithQualityAndMetadata(buffer, pathOut, metadata);
@@ -171,21 +178,21 @@ class ImageProcessor {
 		// prepare footer buffer
 		BufferedImage buffer = ImageIO.read(pathIn.toFile());
 		if (buffer == null) {
-			throw new DigitalDerivansException("Invalid image data " + pathIn+"!");
+			throw new DigitalDerivansException("Invalid image data " + pathIn + "!");
 		}
 		float ratio = (float) buffer.getWidth() / (float) footerBuffer.getWidth();
 		BufferedImage scaledFooter = this.scale(footerBuffer, ratio);
 		int scaledHeigth = scaledFooter.getHeight();
 		if (scaledHeigth < EXPECTED_MINIMAL_HEIGHT) {
-			String msg2 = String.format("problem: footer h '%d' dropped beneath '%d' (scale: '%.2f')", 
-			scaledHeigth, EXPECTED_MINIMAL_HEIGHT, ratio);
+			String msg2 = String.format("problem: footer h '%d' dropped beneath '%d' (scale: '%.2f')",
+					scaledHeigth, EXPECTED_MINIMAL_HEIGHT, ratio);
 			throw new DigitalDerivansException(msg2);
 		}
 		int addHeight = scaledFooter.getHeight();
 
 		// append footer buffer at bottom
 		BufferedImage totalBuffer = this.append(buffer, scaledFooter);
-		
+
 		IIOMetadata metadata = previousMetadata(pathIn);
 		this.writeJPGWithQualityAndMetadata(totalBuffer, pathOut, metadata);
 		buffer.flush();
@@ -226,13 +233,13 @@ class ImageProcessor {
 	 * 
 	 * Important TIFF EXIF data take into account
 	 * 
-	 * <TIFFIFD ... 
-	 * <TIFFField number="282" name="XResolution"> 
+	 * <TIFFIFD ...
+	 * <TIFFField number="282" name="XResolution">
 	 * <TIFFRationals><TIFFRational value="300/1"/></TIFFRationals>
 	 * </TIFFField>
 	 * <TIFFField number="283" name="YResolution">
-	 * <TIFFRationals><TIFFRational value="300/1"/> 
-	 * </TIFFRationals> 
+	 * <TIFFRationals><TIFFRational value="300/1"/>
+	 * </TIFFRationals>
 	 * </TIFFField>
 	 * 
 	 * @param origin

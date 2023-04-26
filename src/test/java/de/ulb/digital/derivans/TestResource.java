@@ -73,6 +73,7 @@ public enum TestResource {
 	IMG_TIF_ZD1_GREY(Path.of("src/test/resources/images/1681877805_J_0125_0001x128.tif")),
 	IMG_TIF_ZD1_RGB(Path.of("src/test/resources/images/1681875195_J_0001_0008x128.tif")),
 	IMG_JPG_ZD2_GREY(Path.of("src/test/resources/images/1667522809_J_0025_0001x128.jpg")),
+	IMG_JPG_ZERO(Path.of("src/test/resources/images/00000020.jpg")),
 
 	/**
 	 * opendata 
