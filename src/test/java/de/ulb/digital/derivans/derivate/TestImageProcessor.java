@@ -61,7 +61,7 @@ class TestImageProcessor {
 	}
 
 	@Test
-	void testReadMetadata_JPG_RGB() {
+	void testReadMetadata_JPG_RGB() throws Exception {
 		Path sourcePath = TestResource.IMG_JPG_148811035_MAX_1.get();
 
 		// act
@@ -75,7 +75,7 @@ class TestImageProcessor {
 	}
 
 	@Test
-	void testReadMetadata_TIF_Greyscale() {
+	void testReadMetadata_TIF_Greyscale() throws Exception {
 		Path sourcePath = TestResource.IMG_TIF_ZD1_GREY.get();
 
 		// act
@@ -149,7 +149,7 @@ class TestImageProcessor {
 	 * 
 	 */
 	@Test
-	void testReadMetadata_TIF_RGB() {
+	void testReadMetadata_TIF_RGB() throws Exception {
 		Path sourcePath = TestResource.IMG_TIF_ZD1_RGB.get();
 
 		// act
@@ -206,7 +206,7 @@ class TestImageProcessor {
 	}
 
 	@Test
-	void testReadMetadata_TIF_RGB_withInvalidAttributes() {
+	void testReadMetadata_TIF_RGB_withInvalidAttributes() throws Exception {
 		Path sourcePath = TestResource.IMG_TIF_MENA_1.get();
 
 		// act

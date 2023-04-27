@@ -53,6 +53,8 @@ class ImageProcessor {
 
 	public static final String JAVAX_IMAGEIO_JPEG = "javax_imageio_jpeg_image_1.0";
 
+	public static final String JAVAX_IMAGEIO = "javax_imageio_1.0";
+
 	public static final String JAVAX_IMAGEIO_TIFF = "javax_imageio_tiff_image_1.0";
 
 	public static final String FILE_EXT_JPEG = "jpeg";
@@ -153,12 +155,12 @@ class ImageProcessor {
 		return dimg;
 	}
 
-	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, IIOMetadata metadata)
+	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, ImageMetadata metadata)
 			throws DigitalDerivansException, IOException {
 		buffer = handleMaximalDimension(buffer);
 
 		// determine BufferedImage.type
-		// 5 = 8-bit RGB color components, corresponding to 
+		// 5 = 8-bit RGB color components, corresponding to
 		// Windows-style BGR color model
 		// 10 = unsigned byte grayscale image, non-indexed (CS_GRY)
 		int bType = buffer.getType();
@@ -167,10 +169,11 @@ class ImageProcessor {
 		}
 		ImageTypeSpecifier imageType = ImageTypeSpecifier.createFromBufferedImageType(bType);
 
-		// determine JPG write parameters
+		// determine JPG write parameter
 		JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
-		// jpegParams.setProgressiveMode(ImageWriteParam.MODE_DEFAULT);
-		// jpegParams.setOptimizeHuffmanTables(true);
+		if (metadata.requiresProgression()) {
+			jpegParams.setProgressiveMode(ImageWriteParam.MODE_DEFAULT);
+		}
 		jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 		jpegParams.setCompressionQuality(this.getQuality());
 		jpegParams.setDestinationType(imageType);
@@ -179,7 +182,7 @@ class ImageProcessor {
 		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
 		try (FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());) {
 			writer.setOutput(fios);
-			writer.write(null, new IIOImage(buffer, null, metadata), jpegParams);
+			writer.write(null, new IIOImage(buffer, null, metadata.getIIOMetadata()), jpegParams);
 		} catch (IIOException e) {
 			throw new DigitalDerivansException(e.getMessage() + ":" + pathOut);
 		}
@@ -195,8 +198,7 @@ class ImageProcessor {
 		if (buffer == null) {
 			throw new DigitalDerivansException("Invalid image data " + pathIn + "!");
 		}
-		IIOMetadata metadata = calculateMetadata(pathIn);
-		this.writeJPGWithQualityAndMetadata(buffer, pathOut, metadata);
+		this.writeJPGWithQualityAndMetadata(buffer, pathOut, gatherMetadata(pathIn));
 		buffer.flush();
 		return true;
 	}
@@ -221,9 +223,7 @@ class ImageProcessor {
 
 		// append footer buffer at bottom
 		BufferedImage totalBuffer = this.append(buffer, scaledFooter);
-
-		IIOMetadata metadata = calculateMetadata(pathIn);
-		this.writeJPGWithQualityAndMetadata(totalBuffer, pathOut, metadata);
+		this.writeJPGWithQualityAndMetadata(totalBuffer, pathOut, gatherMetadata(pathIn));
 		buffer.flush();
 		scaledFooter.flush();
 		totalBuffer.flush();
@@ -234,7 +234,7 @@ class ImageProcessor {
 
 	/**
 	 * 
-	 * Calculate image metadata for new image from
+	 * Gather image metadata for new image from
 	 * Defaults regarding target format and some
 	 * attributes of preceeding image depending
 	 * on it's actual image metadata format
@@ -244,7 +244,7 @@ class ImageProcessor {
 	 * @throws IOException
 	 * @throws DigitalDerivansException
 	 */
-	static IIOMetadata calculateMetadata(Path pathIn) throws IOException, DigitalDerivansException {
+	static ImageMetadata gatherMetadata(Path pathIn) throws IOException, DigitalDerivansException {
 		ImageInputStream iis = ImageIO.createImageInputStream(pathIn.toFile());
 		Iterator<ImageReader> readerator = ImageIO.getImageReaders(iis);
 		if (!readerator.hasNext()) {
@@ -252,38 +252,36 @@ class ImageProcessor {
 		}
 		ImageReader inputReader = readerator.next();
 		inputReader.setInput(iis);
-		ImageTypeSpecifier imgType = inputReader.getImageTypes(0).next();
+		ImageTypeSpecifier imageType = inputReader.getImageTypes(0).next();
 		ImageWriter jpgWriter = ImageIO.getImageWritersBySuffix(ImageProcessor.FILE_EXT_JPEG).next();
 		ImageWriteParam defaultParams = jpgWriter.getDefaultWriteParam();
 		// imgType considers only Colorspace and SampleModel, so it's
 		// okay to re-use this, even for conversions from TIFF to JPEG
-		IIOMetadata targetMetadata = jpgWriter.getDefaultImageMetadata(imgType, defaultParams);
+		IIOMetadata targetMetadata = jpgWriter.getDefaultImageMetadata(imageType, defaultParams);
 		Element targetTree = (Element) targetMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
-		Element jfif = (Element) targetTree.getElementsByTagName(JFIF_ROOT_NODE).item(0);
 		// respect previous metadata
-		// gather previous Metadata from pathIn
+		// gather previous ImageMetadata from pathIn
 		String previousFormat = inputReader.getFormatName();
 		IIOMetadata sourceMetadata = inputReader.getImageMetadata(0);
-		Element sourceTree = null;
-		if (isTiffInput(previousFormat)) {
-			sourceTree = (Element) sourceMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_TIFF);
-		} else if (isJpegInput(previousFormat)) {
-			sourceTree = (Element) sourceMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
-		}
-		// enrich if source determined
-		if (sourceTree != null) {
-			enrichMetadata(jfif, sourceTree);
-			// sanitize and update only if previous 
-			// unknown meta data came into play
-			sanitizeMetadata(jfif);
-			// update default metadata
-			try {
-				targetMetadata.setFromTree(ImageProcessor.JAVAX_IMAGEIO_JPEG, targetTree);
-			} catch (IIOInvalidTreeException e) {
-				throw new DigitalDerivansException(e);
+		Node sourceTree = null;
+		try {
+			Element jfif = (Element) targetTree.getElementsByTagName(JFIF_ROOT_NODE).item(0);
+			if (isTiffInput(previousFormat)) {
+				sourceTree = sourceMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_TIFF);
+			} else if (isJpegInput(previousFormat)) {
+				sourceTree = sourceMetadata.getAsTree(ImageProcessor.JAVAX_IMAGEIO_JPEG);
 			}
+			// enrich and sanitize if source determined
+			if (sourceTree == null) {
+				throw new DigitalDerivansException("no valid metadata source for " + pathIn + "!");
+			}
+			enrichMetadata(jfif, sourceTree);
+			sanitizeMetadata(jfif);
+			targetMetadata.setFromTree(JAVAX_IMAGEIO_JPEG, targetTree);
+		} catch (IIOInvalidTreeException e) {
+			throw new DigitalDerivansException(e);
 		}
-		return targetMetadata;
+		return new ImageMetadata(targetMetadata);
 	}
 
 	private static boolean isTiffInput(String label) {
@@ -296,10 +294,10 @@ class ImageProcessor {
 
 	/**
 	 * 
-	 * Enrich Metadata for Resoulution/Density
+	 * Enrich ImageMetadata for Resoulution/Density
 	 * from previous image, if available.
 	 * 
-	 * Example TIFF Image Metadata:
+	 * Example TIFF Image ImageMetadata:
 	 * 
 	 * Important TIFF EXIF data take into account
 	 * 
@@ -318,7 +316,7 @@ class ImageProcessor {
 	 * @param sourceTree
 	 */
 	static void enrichMetadata(Element jfif, Node sourceTree) {
-		Node firstMetadataNode = sourceTree.getFirstChild(); // Metadata for first Image
+		Node firstMetadataNode = sourceTree.getFirstChild(); // ImageMetadata for first Image
 		NodeList childs = firstMetadataNode.getChildNodes();
 		if (childs.getLength() == 0) { // no metadata nodes, just stop
 			return;
@@ -394,7 +392,7 @@ class ImageProcessor {
 		return (float) this.maximal / (float) maxDim;
 	}
 
-	public static Optional<IIOMetadata> getMetadataFromImagePath(Path sourcePath) {
+	public static Optional<IIOMetadata> getMetadataFromImagePath(Path sourcePath) throws DigitalDerivansException {
 		try {
 			File file = sourcePath.toFile();
 			ImageInputStream iis = ImageIO.createImageInputStream(file);
@@ -405,9 +403,57 @@ class ImageProcessor {
 				return Optional.of(reader.getImageMetadata(0));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new DigitalDerivansException(e);
 		}
 		return Optional.empty();
 	}
 
+	/**
+	 * 
+	 * Wrapper for processing Image ImageMetadata details
+	 * 
+	 */
+	static class ImageMetadata {
+
+		private final IIOMetadata iioMetadata;
+
+		private static final String COMPRESSION = "Compression";
+
+		private static final String ATTRIBUTE_NUMPROGS = "NumProgressiveScans";
+
+		// considered to mean: "Baseline"
+		private static final String VALUE_PROGESSION_LOW = "1";
+
+		/**
+		 * Default constructor
+		 */
+		public ImageMetadata(IIOMetadata iioMetadata) {
+			this.iioMetadata = iioMetadata;
+		}
+
+		public IIOMetadata getIIOMetadata() {
+			return iioMetadata;
+		}
+
+		public boolean requiresProgression() {
+			var meta = iioMetadata.getAsTree(JAVAX_IMAGEIO);
+			var kids = meta.getChildNodes();
+			for (var i = 0; i < kids.getLength(); i++) {
+				Node n = kids.item(i);
+				if (COMPRESSION.equals(n.getNodeName())) {
+					var compressions = n.getChildNodes();
+					for (var j = 0; j < compressions.getLength(); j++) {
+						Node m = compressions.item(j);
+						if (ATTRIBUTE_NUMPROGS.equals(m.getNodeName())) {
+							var value = m.getAttributes().getNamedItem("value").getNodeValue();
+							if(VALUE_PROGESSION_LOW.equals(value)) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+			return false;
+		}
+	}
 }
