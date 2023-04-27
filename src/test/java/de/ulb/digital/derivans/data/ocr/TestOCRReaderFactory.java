@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data.ocr.alto;
+package de.ulb.digital.derivans.data.ocr;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

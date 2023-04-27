@@ -39,7 +39,7 @@
   <Layout>
     <Page HEIGHT="2448" ID="p00000006" PAGECLASS="content" PHYSICAL_IMG_NR="0" WIDTH="2164">
       <PrintSpace ID="PageSpaceTypeID0">
-        <TextBlock HEIGHT="22" HPOS="1211" ID="region0000" IDNEXT="region0004" VPOS="44" WIDTH="167">
+        <TextBlock HEIGHT="22" HPOS="1211" ID="region0000" VPOS="44" WIDTH="167">
           <TextLine HEIGHT="22" HPOS="1211" ID="region0000_line" VPOS="44" WIDTH="167">
             <String CONTENT="A" HEIGHT="9" HPOS="1216" ID="region0000_line_word0000" VPOS="54" WIDTH="27"/>
             <SP/>

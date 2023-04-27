@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.derivate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -163,6 +164,22 @@ class TestImageProcessor {
 	}
 
 	@Test
+	void testReadMetadata_TIF_Postscan_RGB(@TempDir Path tempDir) throws Exception {
+		Path sourcePath = Path.of("src/test/resources/images/00000020-small.tif");
+		Path targetDir = tempDir.resolve("MAX");
+		Files.createDirectory(targetDir);
+		Path targetPath = targetDir.resolve("20.jpg");
+
+		// act
+		var actualExc = assertThrows(DigitalDerivansException.class, () -> imageProcessor.writeJPG(sourcePath, targetPath));
+
+		// assert
+		var excMsg = actualExc.getMessage();
+		assertTrue(excMsg.startsWith("Illegal band size: should be 0 < size <= 8:"));
+		assertTrue(excMsg.endsWith("MAX/20.jpg"));
+	}
+
+	@Test
 	void testProcessImage_TIFRGB_to_JPG(@TempDir Path tempDir) throws Exception {
 		Path sourcePath = TestResource.IMG_TIF_ZD1_RGB.get();
 		Path targetDir = tempDir.resolve("IMAGE");
@@ -273,5 +290,19 @@ class TestImageProcessor {
 		assertEquals(DEFAULT_IMAGE_DPI, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_XDENSITY).getNodeValue());
 		assertEquals(DEFAULT_IMAGE_DPI, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_YDENSITY).getNodeValue());
 		assertEquals(DEFAULT_IMAGE_RES, firstGrandchild.getAttributes().getNamedItem(METADATA_JPEG_RESUNITS).getNodeValue());
+	}
+
+	@Test
+	void testProcessImageFromEmptyInput(@TempDir Path tempDir) throws Exception {
+		Path sourcePath = TestResource.IMG_JPG_ZERO.get();
+		Path targetDir = tempDir.resolve("IMAGE");
+		Files.createDirectory(targetDir);
+		Path targetPath = targetDir.resolve("zero.jpg");
+
+		// act
+		var actual = assertThrows(DigitalDerivansException.class, () -> imageProcessor.writeJPG(sourcePath, targetPath));
+
+		// assert
+		assertEquals("Invalid fileSize 0 for src/test/resources/images/00000020.jpg!", actual.getMessage());
 	}
 }

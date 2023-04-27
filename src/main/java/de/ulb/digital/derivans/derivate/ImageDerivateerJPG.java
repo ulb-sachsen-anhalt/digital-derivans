@@ -41,10 +41,14 @@ public class ImageDerivateerJPG extends ImageDerivateer {
 		this.resolver.setImagePath(page, this);
 		Path pathOut = page.getImagePath();
 		try {
-			LOGGER.trace("write {} ({})", pathOut, imageProcessor.getQuality());
+			LOGGER.trace("start to write JPEG {} ({})", pathOut, imageProcessor.getQuality());
 			imageProcessor.writeJPG(pathIn, pathOut);
-		} catch (IOException|DigitalDerivansException e) {
-			LOGGER.error("render {}: {}", pathIn , e.getMessage());
+		} catch (DigitalDerivansException e1) {
+			String msg = String.format("%s:%s", pathIn, e1.getMessage());
+			LOGGER.error("processing error {}", msg);
+		} catch (IOException e2) {
+			String msg = String.format("%s:%s", pathIn, e2.getMessage());
+			LOGGER.error("I/O error {}", msg);
 		}
 		return pathOut.toString();
 	}

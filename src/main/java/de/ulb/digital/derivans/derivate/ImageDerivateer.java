@@ -113,12 +113,16 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 		// forward to actual image creation implementation
 		// subject to each concrete subclass
-		boolean isSuccess = forward();
-
-		if (isSuccess) {
-			String msg2 = String.format("created '%02d' images at '%s'", digitalPages.size(), outputDir);
-			LOGGER.info(msg2);
+		try {
+			boolean isSuccess = forward();
+			if (isSuccess) {
+				String msg2 = String.format("created '%02d' images at '%s'", digitalPages.size(), outputDir);
+				LOGGER.info(msg2);
+			}
+		} catch (RuntimeException e) {
+			throw new DigitalDerivansException(e.getMessage());
 		}
+
 		return this.digitalPages.size();
 	}
 

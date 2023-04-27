@@ -5,10 +5,12 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Optional;
 
+import javax.imageio.IIOException;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -152,12 +154,12 @@ class ImageProcessor {
 	}
 
 	boolean writeJPGWithQualityAndMetadata(BufferedImage buffer, Path pathOut, IIOMetadata metadata)
-			throws IOException {
+			throws DigitalDerivansException, IOException {
 		buffer = handleMaximalDimension(buffer);
 
 		// determine BufferedImage.type
-		// 5 = 8-bit RGB color components, corresponding to Windows-style BGR color
-		// model
+		// 5 = 8-bit RGB color components, corresponding to 
+		// Windows-style BGR color model
 		// 10 = unsigned byte grayscale image, non-indexed (CS_GRY)
 		int bType = buffer.getType();
 		if (bType == 0) {
@@ -167,22 +169,28 @@ class ImageProcessor {
 
 		// determine JPG write parameters
 		JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
-		jpegParams.setProgressiveMode(ImageWriteParam.MODE_DEFAULT);
-		jpegParams.setOptimizeHuffmanTables(true);
+		// jpegParams.setProgressiveMode(ImageWriteParam.MODE_DEFAULT);
+		// jpegParams.setOptimizeHuffmanTables(true);
 		jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 		jpegParams.setCompressionQuality(this.getQuality());
 		jpegParams.setDestinationType(imageType);
 
 		// write image buffer
 		ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-		FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());
-		writer.setOutput(fios);
-		writer.write(null, new IIOImage(buffer, null, metadata), jpegParams);
-		fios.close();
+		try (FileImageOutputStream fios = new FileImageOutputStream(pathOut.toFile());) {
+			writer.setOutput(fios);
+			writer.write(null, new IIOImage(buffer, null, metadata), jpegParams);
+		} catch (IIOException e) {
+			throw new DigitalDerivansException(e.getMessage() + ":" + pathOut);
+		}
 		return true;
 	}
 
 	public boolean writeJPG(Path pathIn, Path pathOut) throws IOException, DigitalDerivansException {
+		var fileSize = Files.size(pathIn);
+		if (fileSize < 1L) {
+			throw new DigitalDerivansException("Invalid fileSize " + fileSize + " for " + pathIn + "!");
+		}
 		BufferedImage buffer = ImageIO.read(pathIn.toFile());
 		if (buffer == null) {
 			throw new DigitalDerivansException("Invalid image data " + pathIn + "!");
@@ -293,6 +301,9 @@ class ImageProcessor {
 	 * 
 	 * Example TIFF Image Metadata:
 	 * 
+	 * Important TIFF EXIF data take into account
+	 * 
+	 * <TIFFIFD ...
 	 * <TIFFField number="282" name="XResolution">
 	 * <TIFFRationals><TIFFRational value="300/1"/></TIFFRationals>
 	 * </TIFFField>

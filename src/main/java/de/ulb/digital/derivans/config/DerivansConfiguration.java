@@ -111,6 +111,7 @@ public class DerivansConfiguration {
 		if (!this.pathConfigFile.toString().endsWith(".ini")) {
 			LOGGER.warn("consider to change '{}' file ext to '.ini'", this.pathConfigFile);
 		}
+		LOGGER.info("use configuration {}", this.pathConfigFile);
 		INIConfiguration conf = new INIConfiguration();
 		parse(conf);
 		evaluate(conf);
@@ -191,6 +192,7 @@ public class DerivansConfiguration {
 				LoggerContext context = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
 				context.setConfigLocation(pathLogFile.toUri());
 				LOGGER.info("reconfigured application logging using '{}'", pathLogFile);
+				LOGGER.info("configuration file '{}'", pathConfigFile);
 			} else {
 				LOGGER.warn("invalid location of logger configuration: '{}'. use default configuration.", pathLogFile);
 			}
