@@ -84,6 +84,12 @@ public enum TestResource {
 
 	SHARE_IT_VD18_43053(Path.of("src/test/resources/mets/share_it/1981185920_43053.xml")),
 
+	/**
+	 * 
+	 * SLUB 
+	 * 
+	*/
+	K2_PRES_SLUB_321094271(Path.of("src/test/resources/mets/kitodo_pres/slub-dresden-db-id-321094271.xml")),
 	;
 	
 	private Path path;

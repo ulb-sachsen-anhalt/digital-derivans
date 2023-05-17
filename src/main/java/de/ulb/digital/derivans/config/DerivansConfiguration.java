@@ -27,6 +27,10 @@ import de.ulb.digital.derivans.model.PDFMetaInformation;
  * 
  * Application Configuration
  * 
+ * Start directory for image data
+ * 
+ * Defaults to {@link DefaultConfiguration#DEFAULT_INPUT_IMAGES}
+ * 
  * @author hartwig
  *
  */
@@ -39,6 +43,10 @@ public class DerivansConfiguration {
 	private Path pathDir;
 
 	private Path pathConfigFile;
+
+	private Path inputDirImages = DefaultConfiguration.DEFAULT_INPUT_IMAGES;
+
+	private Path inputDirOcr = DefaultConfiguration.DEFAULT_INPUT_FULLTEXT;
 
 	private Integer quality;
 
@@ -75,16 +83,36 @@ public class DerivansConfiguration {
 			input = input.toAbsolutePath();
 		}
 
-		// determine if regular METS-file is available or not
+		// determine if inputPath points to a METS-file or directory
 		if (Files.isDirectory(input)) {
 			this.metadataFile = Optional.empty();
 			this.pathDir = input;
-			LOGGER.warn("no metadata available in '{}'", input);
+			LOGGER.warn("no metadata available for input '{}'", input);
 		} else if (Files.isRegularFile(input, LinkOption.NOFOLLOW_LINKS)) {
 			this.metadataFile = Optional.of(input);
 			this.pathDir = input.getParent();
 		}
 
+		// probably directories set for
+		// input images or fulltext data
+		if(params.getPathDirImages() != null) {
+			Path imgSubdir = params.getPathDirImages();
+			if (!Files.exists(imgSubdir)) {
+				throw new DigitalDerivansException("Invalid image dir "+imgSubdir+" provided!");
+			}
+			this.inputDirImages = imgSubdir;
+			LOGGER.info("use images from {}", this.inputDirImages);
+		}
+		if(params.getPathDirOcr() != null) {
+			Path dirOcr = params.getPathDirOcr();
+			if (!Files.exists(dirOcr)) {
+				throw new DigitalDerivansException("Invalid ocr dir "+dirOcr+" provided!");
+			}
+			this.inputDirOcr = dirOcr;
+			LOGGER.info("use ocr from {}", this.inputDirOcr);
+		}
+
+		// set configuration file for later examination
 		this.derivateSteps = new ArrayList<>();
 		if (params.getPathConfig() != null) {
 			LOGGER.debug("inspect cli config file {}", params.getPathConfig());
@@ -151,6 +179,22 @@ public class DerivansConfiguration {
 
 	public void setPoolsize(Integer poolsize) {
 		this.poolsize = poolsize;
+	}
+
+	public void setInputDirImages(String inputImages) {
+		this.inputDirImages = Path.of(inputImages);
+	}
+
+	public Path getInputDirImages() {
+		return this.inputDirImages;
+	}
+
+	public void setInputDirOcr(String inputOcr) {
+		this.inputDirOcr = Path.of(inputOcr);
+	}
+
+	public Path getInputDirOcr() {
+		return this.inputDirOcr;
 	}
 
 	public List<DerivateStep> getDerivateSteps() {
@@ -370,7 +414,8 @@ public class DerivansConfiguration {
 	 */
 	private void provideDefaultSteps() {
 		DerivateStep createMins = new DerivateStep();
-		createMins.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_INPUT_SUB_PATH));
+		//createMins.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_INPUT_SUB_PATH));
+		createMins.setInputPath(this.pathDir.resolve(this.inputDirImages));
 		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
 		createMins.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_SUB_PATH));
 		createMins.setQuality(DefaultConfiguration.DEFAULT_QUALITY);

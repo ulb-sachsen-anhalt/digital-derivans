@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.w3c.dom.Document;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
-import de.ulb.digital.derivans.data.MetadataStore;
+import de.ulb.digital.derivans.data.IMetadataStore;
 
 /**
  * 
@@ -17,9 +17,9 @@ import de.ulb.digital.derivans.data.MetadataStore;
  */
 public class PDFMetaInformation {
 
-	private String author = MetadataStore.UNKNOWN;
-	private String title = MetadataStore.UNKNOWN;
-	private String publicationYear = MetadataStore.UNKNOWN;
+	private String author = IMetadataStore.UNKNOWN;
+	private String title = IMetadataStore.UNKNOWN;
+	private String publicationYear = IMetadataStore.UNKNOWN;
 	private Map<String, String> metadata;
 	private Document xmpMetadata;
 	private Optional<String> optCreator = Optional.empty();

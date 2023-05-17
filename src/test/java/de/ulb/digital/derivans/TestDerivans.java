@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
-import de.ulb.digital.derivans.data.MetadataStore;
+import de.ulb.digital.derivans.data.IMetadataStore;
 
 /**
  * 
@@ -138,7 +138,7 @@ public class TestDerivans {
 		Element r = (Element) cs.get(0);
 		IteratorIterable<Element> es = r.getDescendants(new ElementFilter("agent"));
 		for (Element e : es) {
-			List<Element> kids = e.getChildren("note", MetadataStore.NS_METS);
+			List<Element> kids = e.getChildren("note", IMetadataStore.NS_METS);
 			if (!kids.isEmpty()) {
 				for (Element kid : kids) {
 					if (kid.getText().startsWith("PDF FileGroup")) {

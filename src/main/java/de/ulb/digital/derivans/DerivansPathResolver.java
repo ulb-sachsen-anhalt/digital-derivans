@@ -15,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
-import de.ulb.digital.derivans.data.MetadataStore;
+import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivateStep;
@@ -109,7 +109,7 @@ public class DerivansPathResolver {
 	
 	/**
 	 * 
-	 * Try to match OCR Files from {@link DefaultConfiguration#DEFAULT_FULLTEXT_INPUT_SUB_PATH}
+	 * Try to match OCR Files from {@link DefaultConfiguration#DEFAULT_INPUT_FULLTEXT}
 	 * by name in the file system only.
 	 * 
 	 * @param pages
@@ -120,7 +120,7 @@ public class DerivansPathResolver {
 			LOGGER.warn("cant enrich ocr: root-dir unset!");
 			return pages;
 		}
-		Path ocrPath = rootDir.resolve(DefaultConfiguration.DEFAULT_FULLTEXT_INPUT_SUB_PATH);
+		Path ocrPath = rootDir.resolve(DefaultConfiguration.DEFAULT_INPUT_FULLTEXT);
 		if(!Files.exists(ocrPath, LinkOption.NOFOLLOW_LINKS)) {
 			LOGGER.warn("cant enrich ocr: invalid path '{}'!", ocrPath);
 			return pages;
@@ -268,7 +268,7 @@ public class DerivansPathResolver {
 		if (Files.isDirectory(pdfPath)) {
 			String identifier = dd.getIdentifier();
 			// if metadata is *not* present, the identifier must be invalid ("n.a.")
-			if (identifier.equals(MetadataStore.UNKNOWN)) {
+			if (identifier.equals(IMetadataStore.UNKNOWN)) {
 				identifier = pdfPath.getFileName().toString();
 				LOGGER.warn("invalid descriptive data, use filename '{}' to name PDF-file", identifier);
 			}

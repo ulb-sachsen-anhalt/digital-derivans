@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jdom2.Namespace;
 import org.mycore.mets.model.Mets;
 import org.mycore.mets.model.files.FLocat;
 import org.mycore.mets.model.files.File;
@@ -21,6 +20,8 @@ import org.mycore.mets.model.struct.PhysicalStructMap;
 import org.mycore.mets.model.struct.PhysicalSubDiv;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.config.DefaultConfiguration;
+import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -36,26 +37,19 @@ import de.ulb.digital.derivans.model.ocr.OCRData;
  */
 public class MetadataStore implements IMetadataStore {
 
-	// METS file group for images with maximal resolution
-	public static final String FILEGROUP_MAX = "MAX";
-
-	// METS file group for OCR-data with, most likely, MIMETYPE="application/alto+xml"
-	public static final String FILEGROUP_FULLTEXT = "FULLTEXT";
-
-	// Mark unresolved information about author, title, ...
-	public static final String UNKNOWN = "n.a.";
-
-	public static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
-
-	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
-	
 	private static final Logger LOGGER = LogManager.getLogger(MetadataStore.class);
 
+	private DerivansConfiguration config;
+	
 	private DescriptiveData descriptiveData;
 
 	private MetadataHandler handler;
 
 	private Mets mets;
+
+	private String fileGroupImages = DefaultConfiguration.DEFAULT_INPUT_IMAGES.toString();
+
+	private String fileGroupOcr = DefaultConfiguration.DEFAULT_INPUT_FULLTEXT.toString();
 
 	/**
 	 * Constructor if no METS/MODS available
@@ -65,12 +59,36 @@ public class MetadataStore implements IMetadataStore {
 
 	/**
 	 * 
-	 * Default constructor requires Path to valid Metadata file
+	 * Default constructor with path to METS file
+	 * 
+	 * @deprecated
 	 * 
 	 * @param filePath
 	 * @throws DigitalDerivansException
 	 */
+	@Deprecated(since = "1.8")
 	public MetadataStore(Path filePath) throws DigitalDerivansException {
+		this(filePath, null);
+	}
+	
+	/**
+	 * 
+	 * Extended constructor with METS-Path and {@link DerivansConfiguration}.
+	 * 
+	 * @param filePath
+	 * @param config
+	 * @throws DigitalDerivansException
+	 */
+	public MetadataStore(Path filePath, DerivansConfiguration config) throws DigitalDerivansException {
+		this.config = config;
+		if(this.config != null) { 
+			if (this.config.getInputDirImages() != null) {
+			this.fileGroupImages = this.config.getInputDirImages().toString();
+			}
+			if (this.config.getInputDirOcr() != null) {
+				this.fileGroupOcr = this.config.getInputDirOcr().toString();
+			}
+		}
 		this.handler = new MetadataHandler(filePath);
 		this.mets = handler.getMets();
 		LOGGER.info("created new metadatastore from '{}'", filePath);
@@ -96,16 +114,16 @@ public class MetadataStore implements IMetadataStore {
 
 					// handle image file
 					Optional<FilePointerMatch> optMaxImage = fptrs.stream()
-							.filter(fptr -> FILEGROUP_MAX.equals(fptr.getFileGroup())).findFirst();
+							.filter(fptr -> this.fileGroupImages.equals(fptr.getFileGroup())).findFirst();
 					if (optMaxImage.isPresent()) {
 						FilePointerMatch match = optMaxImage.get();
 						enrichImageData(physSubDiv, page, match);
 					}
 					
 					// handle optional attached ocr file
-					LOGGER.trace("search for {} within {}", FILEGROUP_FULLTEXT, fptrs);
+					LOGGER.trace("search for {} within {}", IMetadataStore.DEFAULT_METS_FILEGROUP_FULLTEXT, fptrs);
 					Optional<FilePointerMatch> optFulltext = fptrs.stream()
-							.filter(fptr -> FILEGROUP_FULLTEXT.equals(fptr.getFileGroup())).findFirst();
+							.filter(fptr -> this.fileGroupOcr.equals(fptr.getFileGroup())).findFirst();
 					if (optFulltext.isPresent()) {
 						FilePointerMatch match = optFulltext.get();
 						enrichFulltextData(physSubDiv, page, match);
@@ -171,7 +189,7 @@ public class MetadataStore implements IMetadataStore {
 	 */
 	private Path sanitizePath(Path path) {
 		Path metsDir = this.handler.getPath().getParent();
-		Path p = metsDir.resolve(Path.of(FILEGROUP_FULLTEXT)).resolve(path);
+		Path p = metsDir.resolve(Path.of(IMetadataStore.DEFAULT_METS_FILEGROUP_FULLTEXT)).resolve(path);
 		if(Files.exists(p, LinkOption.NOFOLLOW_LINKS)) {
 			LOGGER.debug("found ocr data file '{}'", p);
 			return p;
@@ -211,7 +229,7 @@ public class MetadataStore implements IMetadataStore {
 
 	@Override
 	public boolean enrichPDF(String identifier) {
-		if (MetadataStore.UNKNOWN.equals(identifier)) {
+		if (IMetadataStore.UNKNOWN.equals(identifier)) {
 			LOGGER.warn("no mets available to enrich created PDF");
 			return false;
 		}
@@ -266,8 +284,8 @@ public class MetadataStore implements IMetadataStore {
 	 */
 	static class FilePointerMatch {
 
-		private String fileGroup = UNKNOWN;
-		private String reference = UNKNOWN;
+		private String fileGroup = IMetadataStore.UNKNOWN;
+		private String reference = IMetadataStore.UNKNOWN;
 
 		public FilePointerMatch() {
 		}

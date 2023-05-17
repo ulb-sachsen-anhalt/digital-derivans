@@ -2,7 +2,7 @@ package de.ulb.digital.derivans.model;
 
 import java.util.Optional;
 
-import de.ulb.digital.derivans.data.MetadataStore;
+import de.ulb.digital.derivans.data.IMetadataStore;
 
 /**
  * 
@@ -28,15 +28,15 @@ import de.ulb.digital.derivans.data.MetadataStore;
  */
 public class DescriptiveData {
 
-	private String urn = MetadataStore.UNKNOWN;
+	private String urn = IMetadataStore.UNKNOWN;
 
-	private String identifier = MetadataStore.UNKNOWN;
+	private String identifier = IMetadataStore.UNKNOWN;
 
-	private String title = MetadataStore.UNKNOWN;
+	private String title = IMetadataStore.UNKNOWN;
 
-	private String person = MetadataStore.UNKNOWN;
+	private String person = IMetadataStore.UNKNOWN;
 
-	private String yearPublished = MetadataStore.UNKNOWN;
+	private String yearPublished = IMetadataStore.UNKNOWN;
 
 //	private Optional<String> creator = Optional.empty();
 
@@ -85,7 +85,7 @@ public class DescriptiveData {
 	}
 
 	public void setYearPublished(String yearPublished) {
-		if (MetadataStore.UNKNOWN.equals(yearPublished))
+		if (IMetadataStore.UNKNOWN.equals(yearPublished))
 			yearPublished = "0";
 		this.yearPublished = yearPublished;
 	}
@@ -101,7 +101,7 @@ public class DescriptiveData {
 	public void setLicense(Optional<String> labelLicense) {
 		if(labelLicense.isPresent()) {
 			String newLicence = labelLicense.get();
-			if (! MetadataStore.UNKNOWN.equals(newLicence)) {
+			if (! IMetadataStore.UNKNOWN.equals(newLicence)) {
 				this.license = labelLicense;
 			}
 		}

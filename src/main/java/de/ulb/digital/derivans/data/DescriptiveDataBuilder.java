@@ -1,7 +1,5 @@
 package de.ulb.digital.derivans.data;
 
-import static de.ulb.digital.derivans.data.MetadataStore.NS_MODS;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,17 +24,17 @@ import de.ulb.digital.derivans.model.DescriptiveData;
  */
 class DescriptiveDataBuilder {
 
-	private String urn = MetadataStore.UNKNOWN;
+	private String urn = IMetadataStore.UNKNOWN;
 
-	private String person = MetadataStore.UNKNOWN;
+	private String person = IMetadataStore.UNKNOWN;
 
-	private String identifier = MetadataStore.UNKNOWN;
+	private String identifier = IMetadataStore.UNKNOWN;
 
-	private String title = MetadataStore.UNKNOWN;
+	private String title = IMetadataStore.UNKNOWN;
 
-	private String year = MetadataStore.UNKNOWN;
+	private String year = IMetadataStore.UNKNOWN;
 
-	private String accessCondition = MetadataStore.UNKNOWN;
+	private String accessCondition = IMetadataStore.UNKNOWN;
 
 	private MetadataHandler handler;
 	
@@ -87,13 +85,13 @@ class DescriptiveDataBuilder {
 	String getPerson() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
-			List<Element> nameSubtrees = mods.getChildren("name", NS_MODS);
+			List<Element> nameSubtrees = mods.getChildren("name", IMetadataStore.NS_MODS);
 
 			// collect proper name relations
 			Map<MARCRelator, List<Element>> properRelations = getDesiredRelations(nameSubtrees);
 			if (properRelations.isEmpty()) {
 				LOGGER.warn("found no proper related persons!");
-				return MetadataStore.UNKNOWN;
+				return IMetadataStore.UNKNOWN;
 			}
 
 			// assume we have pbl's or aut's candidates
@@ -104,7 +102,7 @@ class DescriptiveDataBuilder {
 			}
 
 		}
-		return MetadataStore.UNKNOWN;
+		return IMetadataStore.UNKNOWN;
 	}
 
 	/**
@@ -122,24 +120,24 @@ class DescriptiveDataBuilder {
 	 */
 	private String getSomeName(List<Element> list) {
 		for (Element e : list) {
-			List<Element> displayers = e.getChildren("displayForm", NS_MODS);
+			List<Element> displayers = e.getChildren("displayForm", IMetadataStore.NS_MODS);
 			if (!displayers.isEmpty()) {
 				return displayers.get(0).getTextNormalize();
 			}
-			for (Element f : e.getChildren("namePart", NS_MODS)) {
+			for (Element f : e.getChildren("namePart", IMetadataStore.NS_MODS)) {
 				if ("family".equals(f.getAttributeValue("type"))) {
 					return f.getTextNormalize();
 				}
 			}
 		}
-		return MetadataStore.UNKNOWN;
+		return IMetadataStore.UNKNOWN;
 	}
 
 	private Map<MARCRelator, List<Element>> getDesiredRelations(List<Element> nameSubtrees) {
 		Map<MARCRelator, List<Element>> map = new TreeMap<>();
 		for (Element e : nameSubtrees) {
-			for (Element f : e.getChildren("role", NS_MODS)) {
-				for (Element g : f.getChildren("roleTerm", NS_MODS)) {
+			for (Element f : e.getChildren("role", IMetadataStore.NS_MODS)) {
+				for (Element g : f.getChildren("roleTerm", IMetadataStore.NS_MODS)) {
 					if ("code".equals(g.getAttributeValue("type"))) {
 						String code = g.getTextNormalize();
 						MARCRelator rel = MARCRelator.forCode(code);
@@ -179,10 +177,10 @@ class DescriptiveDataBuilder {
 		if (mods == null) {
 			return null;
 		}
-		List<Element> recordInfos = mods.getChildren("recordInfo", NS_MODS);
+		List<Element> recordInfos = mods.getChildren("recordInfo", IMetadataStore.NS_MODS);
 		Predicate<Element> sourceExists = e -> Objects.nonNull(e.getAttributeValue("source"));
 		for (Element recordInfo : recordInfos) {
-			List<Element> identifiers = recordInfo.getChildren("recordIdentifier", NS_MODS);
+			List<Element> identifiers = recordInfo.getChildren("recordIdentifier", IMetadataStore.NS_MODS);
 			Optional<Element> optUrn = identifiers.stream().filter(sourceExists).findFirst();
 			if (optUrn.isPresent()) {
 				return optUrn.get().getTextTrim();
@@ -194,75 +192,75 @@ class DescriptiveDataBuilder {
 	String getTitle() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
-			Element titleInfo = mods.getChild("titleInfo", NS_MODS);
+			Element titleInfo = mods.getChild("titleInfo", IMetadataStore.NS_MODS);
 			if (titleInfo != null) {
-				Element titleText = titleInfo.getChild("title", NS_MODS);
+				Element titleText = titleInfo.getChild("title", IMetadataStore.NS_MODS);
 				if (titleText != null) {
 					return titleText.getTextNormalize();
 				}
-				Element subtitleText = mods.getChild("subTitle", NS_MODS);	
+				Element subtitleText = mods.getChild("subTitle", IMetadataStore.NS_MODS);	
 				if (subtitleText != null) {	
 					return subtitleText.getTextNormalize();
 				}	
 			} else {
 				// if exists a relatedItem ...
-				if(mods.getChild("relatedItem", NS_MODS) != null) {
+				if(mods.getChild("relatedItem", IMetadataStore.NS_MODS) != null) {
 					// ... then it must be a volume of something
 					return "Band";
 				}
 			}
 		}
-		return MetadataStore.UNKNOWN;
+		return IMetadataStore.UNKNOWN;
 	}
 
 	String getURN() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
-			List<Element> identifiers = mods.getChildren("identifier", NS_MODS);
+			List<Element> identifiers = mods.getChildren("identifier", IMetadataStore.NS_MODS);
 			Predicate<Element> typeUrn = e -> e.getAttribute("type").getValue().equals("urn");
 			Optional<Element> optUrn = identifiers.stream().filter(typeUrn).findFirst();
 			if (optUrn.isPresent()) {
 				return optUrn.get().getTextNormalize();
 			}
 		}
-		return MetadataStore.UNKNOWN;
+		return IMetadataStore.UNKNOWN;
 	}
 
 	String getAccessCondition() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
-			Element cond = mods.getChild("accessCondition", NS_MODS);
+			Element cond = mods.getChild("accessCondition", IMetadataStore.NS_MODS);
 			if (cond != null) {
 				return cond.getTextNormalize();
 			}
 		}
-		return MetadataStore.UNKNOWN;
+		return IMetadataStore.UNKNOWN;
 	}
 
 	String getYear() {
 		Element mods = handler.getPrimaryMods();
 		if (mods != null) {
 			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
-			Optional<Element> optPubl = mods.getChildren("originInfo", NS_MODS).stream().filter(publicationEvent)
+			Optional<Element> optPubl = mods.getChildren("originInfo", IMetadataStore.NS_MODS).stream().filter(publicationEvent)
 					.findFirst();
 			if (optPubl.isPresent()) {
 				Element publ = optPubl.get();
-				Element issued = publ.getChild("dateIssued", NS_MODS);
+				Element issued = publ.getChild("dateIssued", IMetadataStore.NS_MODS);
 				if (issued != null) {
 					return issued.getTextNormalize();
 				}
 			}
 			// Attribute 'eventType=publication' of node 'publication' is missing
 			// so try to find/filter node less consistently
-			Element oInfo = mods.getChild("originInfo", NS_MODS);
+			Element oInfo = mods.getChild("originInfo", IMetadataStore.NS_MODS);
 			if (oInfo != null) {
-				Element issued = oInfo.getChild("dateIssued", NS_MODS);
+				Element issued = oInfo.getChild("dateIssued", IMetadataStore.NS_MODS);
 				if (issued != null) {
 					return issued.getTextNormalize();
 				}
 			}
 		}
-		return MetadataStore.UNKNOWN;
+		return IMetadataStore.UNKNOWN;
 	}
 
 	public void setHandler(MetadataHandler handler) {

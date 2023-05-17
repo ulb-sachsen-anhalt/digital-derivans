@@ -51,6 +51,8 @@ public class Derivans {
 
 	private Path pathMetsFile;
 
+	private final DerivansConfiguration config;
+
 	private Optional<IMetadataStore> metadataStore = Optional.empty();
 	
 	private Optional<Path> optPDFPath = Optional.empty();
@@ -63,10 +65,16 @@ public class Derivans {
 
 	boolean footerDerivatesForPDFRendered;
 
-
+	/**
+	 * 
+	 * Initialize Derivans Instance with according {@link DerivansConfiguration}.
+	 * 
+	 * @param conf
+	 * @throws DigitalDerivansException
+	 */
 	public Derivans(DerivansConfiguration conf) throws DigitalDerivansException {
-		Path path = conf.getPathDir();
-		
+		this.config = conf;
+		Path path = this.config.getPathDir();
 		if (!Files.exists(path)) {
 			String message = String.format("workdir not existing: '%s'!", path);
 			LOGGER.error(message);
@@ -78,26 +86,26 @@ public class Derivans {
 		}
 		this.processDir = path;
 		this.resolver = new DerivansPathResolver(this.processDir);
-		this.resolver.setNamePrefixes(conf.getPrefixes());
+		this.resolver.setNamePrefixes(this.config.getPrefixes());
 
 		// get common configuration
-		this.pdfMeta = conf.getPdfMetainformation();
+		this.pdfMeta = this.config.getPdfMetainformation();
 
 		// handle Derivate Steps
-		var confSteps = conf.getDerivateSteps();
+		var confSteps = this.config.getDerivateSteps();
 		if (confSteps == null || confSteps.isEmpty()) {
 			String msg = "DerivateSteps missing!";
 			LOGGER.error(msg);
 			throw new DigitalDerivansException(msg);
 		}
-		this.steps = new ArrayList<>(conf.getDerivateSteps());
+		this.steps = new ArrayList<>(this.config.getDerivateSteps());
 
 		// handle optional METS-file
-		var optMetadata = conf.getMetadataFile();
+		var optMetadata = this.config.getMetadataFile();
 		if (optMetadata.isPresent()) {
 			this.pathMetsFile = optMetadata.get();
 			LOGGER.info("set derivates pathDir: '{}', metsFile: '{}'", processDir, pathMetsFile);
-			this.metadataStore = Optional.of(new MetadataStore(pathMetsFile));
+			this.metadataStore = Optional.of(new MetadataStore(pathMetsFile, this.config));
 		} else {
 			LOGGER.info("set derivates pathDir: '{}' without Metadata", processDir);
 		}
@@ -120,7 +128,7 @@ public class Derivans {
 			resolver.enrichAbsoluteStartPath(pages, step0.getInputPath());
 			structure = store.getStructure();
 		} else {
-			LOGGER.debug("try to enrich ocr straigt from file system");
+			LOGGER.debug("enrich ocr from file system");
 			resolver.enrichOCRFromFilesystem(pages);
 		}
 
@@ -249,7 +257,7 @@ public class Derivans {
 			var store = this.metadataStore.get();
 			return store.getDescriptiveData().getUrn();
 		}
-		return MetadataStore.UNKNOWN;
+		return IMetadataStore.UNKNOWN;
 	}
 
 }

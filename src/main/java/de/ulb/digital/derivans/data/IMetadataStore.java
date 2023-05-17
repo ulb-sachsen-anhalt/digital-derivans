@@ -2,6 +2,8 @@ package de.ulb.digital.derivans.data;
 
 import java.util.List;
 
+import org.jdom2.Namespace;
+
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -15,6 +17,15 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
  *
  */
 public interface IMetadataStore {
+
+	// METS file group for images with maximal resolution
+	String DEFAULT_METS_FILEGROUP_MAX = "MAX";
+	// METS file group for OCR-data with, most likely, MIMETYPE="application/alto+xml"
+	String DEFAULT_METS_FILEGROUP_FULLTEXT = "FULLTEXT";
+	// Mark unresolved information about author, title, ...
+	String UNKNOWN = "n.a.";
+	Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
+	Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 
 	/**
 	 * 
