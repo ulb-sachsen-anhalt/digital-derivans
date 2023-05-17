@@ -287,6 +287,40 @@ public class TestDerivans {
 		Path pdfWritten = pathTarget.resolve("zd1.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
+	
+	
+	/**
+	 * 
+	 * Configured image dir requires currently absolute paths
+	 * otherwise tries to resolve against inputPath
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	@Order(7)
+	void testDerivatesWithConfiguredImages(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		var imgDir = "ORIGINAL";
+		Path pathTarget = tempDir.resolve("conf_images");
+		Path pathImageMax = pathTarget.resolve(imgDir);
+		Files.createDirectories(pathImageMax);
+		generateJpgs(pathImageMax, 620, 877, 6);
+
+		// act
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathInput(pathTarget);
+		dp.setPathDirImages(Path.of(imgDir));
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		Derivans derivans = new Derivans(dc);
+		derivans.create();
+
+		// assert
+		Path pdfWritten = pathTarget.resolve("only_images.pdf");
+		assertTrue(Files.exists(pdfWritten));
+	}
+	
 
 	public static Path arrangeMetsAndImagesFor737429(Path tempDir) throws IOException {
 		Path pathTarget = tempDir.resolve("737429");

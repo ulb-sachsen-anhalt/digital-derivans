@@ -70,9 +70,22 @@ public class DerivansParameter {
 		return this.pathConfig;
 	}
 
+	/**
+	 * 
+	 * Path to find image directory.
+	 * If Path doesn't exist, try to
+	 * resolve directory relative to
+	 * {@link #pathInput} 
+	 * 
+	 * @param imgDir
+	 * @throws DigitalDerivansException
+	 */
 	public void setPathDirImages(Path imgDir) throws DigitalDerivansException {
 		if (!Files.exists(imgDir)) {
-			throw new DigitalDerivansException("Invalid image subdir '" + imgDir + "'");
+			imgDir = this.pathInput.resolve(imgDir);
+			if (!Files.exists(imgDir)) {
+				throw new DigitalDerivansException("Invalid image subdir '" + imgDir + "'");
+			}
 		}
 		this.pathDirImages = imgDir;
 	}
@@ -84,9 +97,22 @@ public class DerivansParameter {
 		return this.pathDirImages;
 	}
 
+	/**
+	 *  
+	 * Path to find fulltext directory.
+	 * If Path doesn't exist, try to
+	 * resolve directory relative to
+	 * {@link #pathInput}
+	 * 
+	 * @param ocrDir
+	 * @throws DigitalDerivansException
+	 */
 	public void setPathOcr(Path ocrDir) throws DigitalDerivansException {
 		if (!Files.exists(ocrDir)) {
-			throw new DigitalDerivansException("Invalid image subdir '" + ocrDir + "'");
+			ocrDir = this.pathInput.resolve(ocrDir);
+			if(!Files.exists(ocrDir)) {
+				throw new DigitalDerivansException("Invalid image subdir '" + ocrDir + "'");
+			}
 		}
 		this.pathDirOcr = ocrDir;
 	}
