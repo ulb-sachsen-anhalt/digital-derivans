@@ -16,21 +16,28 @@ import org.kohsuke.args4j.ParserProperties;
  */
 public class DerivansParameter {
 
-	@Argument(index = 0, required = true, usage = "Path to METS/MODS file or Directory with images\nrequired")
+	@Argument(index = 0, required = true, 
+		usage = "Path to METS/MODS file or Directory with images\nrequired")
 	private Path pathInput;
 
-	@Option(name = "-c", aliases = {
-			"--config-path" }, required = false, usage = "Path to configuration file (default:'./config/derivans.ini')\nIf not present, guess configurations.")
+	@Option(name = "-c", aliases = {"--config-path" }, 
+		required = false, 
+		usage = "Path to configuration file (default:'./config/derivans.ini')\nIf not present, guess configurations.")
 	private Path pathConfig;
 
-	@Option(name = "-d", aliases = {
-			"--debug-render" }, required = false, usage = "Render PDF-Layers; Usefull only if OCR-Data present (default: false)")
+	@Option(name = "-d", aliases = {"--debug-render" }, 
+		required = false, 
+		usage = "Render PDF-Layers; Usefull only if OCR-Data present (default: false)")
 	private Boolean debugRender;
 
-	@Option(name = "-i", aliases = { "--image-subdir" }, required = false)
+	@Option(name = "-i", aliases = { "--image-subdir" }, 
+		required = false,
+		usage = "Path to image directory, absolute or relative to input")
 	private Path pathDirImages;
 
-	@Option(name = "-o", aliases = { "--ocr-subdir" }, required = false)
+	@Option(name = "-o", aliases = { "--ocr-subdir" }, 
+		required = false,
+		usage = "Path to ocr-data directory, absolute or relative to input")
 	private Path pathDirOcr;
 
 	/**
@@ -92,8 +99,8 @@ public class DerivansParameter {
 
 	public Path getPathDirImages() throws DigitalDerivansException {
 		if ((this.pathDirImages != null) && (!Files.exists(this.pathDirImages))) {
-			throw new DigitalDerivansException("Invalid image subdir '" + pathDirImages + "'");
-		}
+				throw new DigitalDerivansException("Invalid image subdir '" + pathDirImages + "'");
+			}
 		return this.pathDirImages;
 	}
 
