@@ -367,7 +367,7 @@ public class MetadataHandler {
 				// only 1 child container this value needs to be 
 				// inspected further because it can't be trusted
 				if (mapToN.size() == 2) {
-					return this.determine_parent_id(new IDPair(mapToN.keySet()));
+					return this.determineParentId(new IDPair(mapToN.keySet()));
 				} else {
 					return maxMapping.getKey();
 				}
@@ -385,7 +385,7 @@ public class MetadataHandler {
 	 * @return parent ID
 	 * @throws DigitalDerivansException
 	 */
-	private String determine_parent_id(IDPair pair) throws DigitalDerivansException {
+	private String determineParentId(IDPair pair) throws DigitalDerivansException {
 		var currentId = pair.id1;
 		List<Element> logSubcontainers = this.requestSubcontainers(true);
 		var currentElement = logSubcontainers.stream()

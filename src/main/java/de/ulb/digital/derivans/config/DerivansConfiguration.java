@@ -44,13 +44,13 @@ public class DerivansConfiguration {
 
 	private Path pathConfigFile;
 
-	private Path inputDirImages = DefaultConfiguration.DEFAULT_INPUT_IMAGES;
+	private Path initialImageDir = null;
 
-	private Path inputDirOcr = DefaultConfiguration.DEFAULT_INPUT_FULLTEXT;
+	private Path optionalOcrDir = null;
 
-	private Integer quality;
+	private Integer quality = DefaultConfiguration.DEFAULT_QUALITY;
 
-	private Integer poolsize;
+	private Integer poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 
 	private List<DerivateStep> derivateSteps;
 	
@@ -93,25 +93,6 @@ public class DerivansConfiguration {
 			this.pathDir = input.getParent();
 		}
 
-		// probably directories set for
-		// input images or fulltext data
-		if(params.getPathDirImages() != null) {
-			Path imgSubdir = params.getPathDirImages();
-			if (!Files.exists(imgSubdir)) {
-				throw new DigitalDerivansException("Invalid image dir "+imgSubdir+" provided!");
-			}
-			this.inputDirImages = imgSubdir;
-			LOGGER.info("use images from {}", this.inputDirImages);
-		}
-		if(params.getPathDirOcr() != null) {
-			Path dirOcr = params.getPathDirOcr();
-			if (!Files.exists(dirOcr)) {
-				throw new DigitalDerivansException("Invalid ocr dir "+dirOcr+" provided!");
-			}
-			this.inputDirOcr = dirOcr;
-			LOGGER.info("use ocr from {}", this.inputDirOcr);
-		}
-
 		// set configuration file for later examination
 		this.derivateSteps = new ArrayList<>();
 		if (params.getPathConfig() != null) {
@@ -119,7 +100,7 @@ public class DerivansConfiguration {
 			this.pathConfigFile = params.getPathConfig();
 			this.initConfigurationFromFile();
 		} else {
-			Path defaultConfigLocation = Path.of("").resolve("config").resolve(DefaultConfiguration.DEFAULT_CONFIG_FILE);
+			Path defaultConfigLocation = Path.of("").resolve("config").resolve(DefaultConfiguration.DEFAULT_CONFIG_FILE_LABEL);
 			LOGGER.info("no config from cli, inspect default {}", defaultConfigLocation);
 			if (!Files.exists(defaultConfigLocation)) {
 				LOGGER.warn("no config file '{}'", defaultConfigLocation);
@@ -129,12 +110,22 @@ public class DerivansConfiguration {
 				this.initConfigurationFromFile();
 			}
 		}
+		// take care of args for input images/ocr
+		if (params.getPathDirImages() != null) {
+			this.setInitialImageDir(params.getPathDirImages());
+		}
+		if(params.getPathDirOcr() != null) {
+			this.setOptionalOcrDir(params.getPathDirOcr());
+		}
+		// take care if no config provided
 		if (derivateSteps.isEmpty()) {
 			provideDefaultSteps();
 			LOGGER.warn("no config read, use fallback with {} steps", this.derivateSteps.size());
 		}
+		LOGGER.info("use config with {} steps", this.derivateSteps.size());
+		LOGGER.debug("first step inputs from '{}'", this.derivateSteps.get(0).getInputPath());
 	}
-
+	
 	private void initConfigurationFromFile() throws DigitalDerivansException {
 		if (!this.pathConfigFile.toString().endsWith(".ini")) {
 			LOGGER.warn("consider to change '{}' file ext to '.ini'", this.pathConfigFile);
@@ -181,20 +172,55 @@ public class DerivansConfiguration {
 		this.poolsize = poolsize;
 	}
 
-	public void setInputDirImages(String inputImages) {
-		this.inputDirImages = Path.of(inputImages);
+	public void setInitialImageDir(Path imgSubdir) throws DigitalDerivansException {
+		if (imgSubdir != null) {
+			if (!imgSubdir.isAbsolute()) {
+				imgSubdir = this.pathDir.resolve(imgSubdir);
+			}
+			if(!Files.exists(imgSubdir)) {
+				throw new DigitalDerivansException("Invalid image dir "+imgSubdir+" provided!");
+			} else {
+				this.initialImageDir = imgSubdir;
+				LOGGER.debug("use images from {}", this.initialImageDir);
+				this.reviewDerivates();
+			}
+		} 
+	}
+	
+	private void reviewDerivates() throws DigitalDerivansException {
+		if(!this.derivateSteps.isEmpty()) {
+			var firstStep = this.derivateSteps.get(0);
+			var prevImgDir = firstStep.getInputPath();
+			if (!prevImgDir.equals(this.getInitialImageDir())) {
+				LOGGER.warn("replace step0 previous image path {} with {},", prevImgDir, this.getInitialImageDir());
+				firstStep.setInputPath(this.getInitialImageDir());
+			}
+		}
 	}
 
-	public Path getInputDirImages() {
-		return this.inputDirImages;
+	public Path getInitialImageDir() throws DigitalDerivansException {
+		if(this.initialImageDir == null) {
+			this.setInitialImageDir(DefaultConfiguration.DEFAULT_INPUT_IMAGES);
+		}
+		return this.initialImageDir;
 	}
 
-	public void setInputDirOcr(String inputOcr) {
-		this.inputDirOcr = Path.of(inputOcr);
+	public void setOptionalOcrDir(Path inputOcr) throws DigitalDerivansException {
+		if (inputOcr != null) {
+			if (!inputOcr.isAbsolute()) {
+				inputOcr = this.pathDir.resolve(inputOcr);
+			}
+			if(!Files.exists(inputOcr)) {
+				throw new DigitalDerivansException("Invalid dir "+inputOcr+" provided!");
+			} else {
+				this.optionalOcrDir = inputOcr;
+				LOGGER.debug("use ocr from {}", this.initialImageDir);
+			}
+		} 
 	}
 
-	public Path getInputDirOcr() {
-		return this.inputDirOcr;
+	public Path getOptionalOcrDir() {
+		return this.optionalOcrDir;
 	}
 
 	public List<DerivateStep> getDerivateSteps() {
@@ -288,7 +314,12 @@ public class DerivansConfiguration {
 			String keyInputDir = derivateSection + ".input_dir";
 			Optional<String> optInputDir = extractValue(conf, keyInputDir, String.class);
 			if (optInputDir.isPresent()) {
-				step.setInputPath(this.pathDir.resolve(optInputDir.get()));
+				var inputPath = this.pathDir.resolve(optInputDir.get());
+				step.setInputPath(inputPath);
+				// set first section's input as global input
+				if(nSection == 1 && this.initialImageDir == null) {
+					this.initialImageDir = inputPath;
+				}
 			}
 
 			// output dir
@@ -411,20 +442,19 @@ public class DerivansConfiguration {
 
 	/**
 	 * Default Steps supposed to work out-of-the-box, even without any METS-data at hand.
+	 * @throws DigitalDerivansException
 	 */
-	private void provideDefaultSteps() {
+	private void provideDefaultSteps() throws DigitalDerivansException {
 		DerivateStep createMins = new DerivateStep();
-		//createMins.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_INPUT_SUB_PATH));
-		createMins.setInputPath(this.pathDir.resolve(this.inputDirImages));
+		createMins.setInputPath(this.getInitialImageDir());
 		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
-		createMins.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_SUB_PATH));
+		createMins.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL));
 		createMins.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
 		createMins.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
 		createMins.setDerivateType(DerivateType.JPG);
 		this.derivateSteps.add(createMins);
-
 		DerivateStep createPdf = new DerivateStep();
-		createPdf.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_SUB_PATH));
+		createPdf.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL));
 		createPdf.setDerivateType(DerivateType.PDF);
 		createPdf.setOutputType("pdf");
 		createPdf.setOutputPath(this.pathDir);

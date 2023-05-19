@@ -32,21 +32,27 @@ public class DefaultConfiguration {
 	public static final Integer DEFAULT_POOLSIZE = 2;
 
 	public static final Integer DEFAULT_MAXIMAL = 14400; // limited by itextpdf  
+
+	public static final String DEFAULT_INPUT_IMAGES_LABEL = "MAX";
+
+	public static final Path DEFAULT_INPUT_IMAGES = Path.of(DEFAULT_INPUT_IMAGES_LABEL);
+
+	public static final String DEFAULT_INPUT_FULLTEXT_LABEL = "FULLTEXT";
 	
-	public static final Path DEFAULT_INPUT_IMAGES = Path.of("MAX");
+	public static final Path DEFAULT_INPUT_FULLTEXT = Path.of(DEFAULT_INPUT_FULLTEXT_LABEL);
 	
-	public static final Path DEFAULT_INPUT_FULLTEXT = Path.of("FULLTEXT");
+	public static final Path DEFAULT_MAX_FOOTER_OUTPUT_SUB_PATH = Path.of("FOOTER_MAX");
 	
-	public static final Path DEFAULT_FOOTER_OUTPUT_SUB_PATH = Path.of("FOOTER_MAX");
-	
-	public static final Path DEFAULT_MIN_OUTPUT_SUB_PATH = Path.of("FOOTER_80");
+	public static final Path DEFAULT_FOOTER_MIN_OUTPUT_SUB_PATH = Path.of("FOOTER_80");
+
+	public static final String DEFAULT_MIN_OUTPUT_LABEL = "IMAGE_80";
 	
 	public static final Path DEFAULT_FOOTER_TEMPLATE_PATH = Path.of("").toAbsolutePath()
 			.resolve("config/footer_template.png");
 	
 	public static final String DEFAULT_FOOTER_LABEL = "Mass Digitalization";
 
-	public static final String DEFAULT_CONFIG_FILE = "derivans.ini";
+	public static final String DEFAULT_CONFIG_FILE_LABEL = "derivans.ini";
 
 	public static final String DEFAULT_RENDER_LEVEL = "line";
 

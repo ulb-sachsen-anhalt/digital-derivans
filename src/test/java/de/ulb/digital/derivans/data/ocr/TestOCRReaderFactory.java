@@ -8,9 +8,6 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.ocr.OCRReader;
-import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
-import de.ulb.digital.derivans.data.ocr.Type;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**

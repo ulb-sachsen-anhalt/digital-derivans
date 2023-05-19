@@ -25,7 +25,7 @@ public class App {
 		try {
 			parser.parseArgument(args);
 			pathConfig = dp.getPathConfig();
-		} catch (CmdLineException | DigitalDerivansException exc) {
+		} catch (CmdLineException exc) {
 			Derivans.LOGGER.error(exc.getLocalizedMessage());
 			// sonarlint hint disabled by method annotation above
 			parser.printUsage(System.out);

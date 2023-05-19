@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DerivansParameter;
+import de.ulb.digital.derivans.TestDerivans;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DerivateStep;
 import de.ulb.digital.derivans.model.DerivateType;
@@ -21,8 +22,15 @@ import de.ulb.digital.derivans.model.DerivateType;
  */
 public class TestDerivansConfiguration {
 
+	/**
+	 * 
+	 * Common configuration with metadata present
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
-	void testCommonConfiguration(@TempDir Path tempDir) throws Exception {
+	void testCommonConfigurationMetadata(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path targetMetsDir = tempDir.resolve("226134857");
@@ -66,6 +74,130 @@ public class TestDerivansConfiguration {
 		assertEquals("BUNDLE_BRANDED_PREVIEW__", steps.get(5).getOutputPrefix());
 		assertEquals(1000, steps.get(5).getMaximal());
 		assertEquals(DerivateType.PDF, steps.get(2).getDerivateType());
+	}
+
+	/**
+	 * 
+	 * Default/Fallback configuration without 
+	 * metadata but default image sub dir (MAX)
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testDefaultLocalConfiguration(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		var imgDir = DefaultConfiguration.DEFAULT_INPUT_IMAGES_LABEL;
+		Path pathInput = tempDir.resolve("default_local");
+		Path pathImageMax = pathInput.resolve(imgDir);
+		Files.createDirectories(pathImageMax);
+		TestDerivans.generateJpgs(pathImageMax, 620, 877, 6);
+		var params = new DerivansParameter();
+		params.setPathInput(pathInput);
+
+		// act
+		DerivansConfiguration dc = new DerivansConfiguration(params);
+
+		// assert
+		assertEquals(80, dc.getQuality());
+		assertEquals(2, dc.getPoolsize());
+
+		List<DerivateStep> steps = dc.getDerivateSteps();
+		assertEquals(2, steps.size());
+
+		// minimal derivate from images
+		assertEquals("jpg", steps.get(0).getOutputType());
+		assertEquals(80, steps.get(0).getQuality());
+		assertEquals("MAX", steps.get(0).getInputPath().getFileName().toString());
+		assertEquals("IMAGE_80", steps.get(0).getOutputPath().getFileName().toString());
+		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
+
+		// pdf
+		assertEquals("pdf", steps.get(1).getOutputType());
+		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
+	}
+
+
+	/**
+	 * 
+	 * Test behavior if image sub directory
+	 * was set as relative path
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testConfigurationRelativeImageDir(@TempDir Path tempDir) throws Exception {
+		// arrange
+		var customImageSubDir = "ORIGINAL";
+		Path pathInput = tempDir.resolve("default_local");
+		Path pathImageMax = pathInput.resolve(customImageSubDir);
+		Files.createDirectories(pathImageMax);
+		TestDerivans.generateJpgs(pathImageMax, 620, 877, 6);
+		var params = new DerivansParameter();
+		params.setPathInput(pathInput);
+		params.setPathDirImages(Path.of(customImageSubDir));
+
+		// act
+		DerivansConfiguration dc = new DerivansConfiguration(params);
+
+		// assert
+		List<DerivateStep> steps = dc.getDerivateSteps();
+		assertEquals(2, steps.size());
+
+		// minimal derivate from images
+		assertEquals("jpg", steps.get(0).getOutputType());
+		assertEquals(80, steps.get(0).getQuality());
+		assertEquals(customImageSubDir, steps.get(0).getInputPath().getFileName().toString());
+		assertEquals("IMAGE_80", steps.get(0).getOutputPath().getFileName().toString());
+		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
+
+		// pdf
+		assertEquals("pdf", steps.get(1).getOutputType());
+		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
+	}
+
+
+	/**
+	 * 
+	 * Test behavior if image sub directory
+	 * was set as absolute path which is *not*
+	 * sub dir of pathInput
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testConfigurationAbsoluteImageDir(@TempDir Path tempDir) throws Exception {
+		// arrange
+		var customImageSubDir = "MY_WAY";
+		Path pathInput = tempDir.resolve("custom_images_local");
+		Files.createDirectory(pathInput);
+		Path pathImageMax = tempDir.resolve(customImageSubDir);
+		Files.createDirectories(pathImageMax);
+		TestDerivans.generateJpgs(pathImageMax, 620, 877, 6);
+		var params = new DerivansParameter();
+		params.setPathInput(pathInput);
+		params.setPathDirImages(pathImageMax);
+
+		// act
+		DerivansConfiguration dc = new DerivansConfiguration(params);
+
+		// assert
+		List<DerivateStep> steps = dc.getDerivateSteps();
+		assertEquals(2, steps.size());
+
+		// minimal derivate from images
+		assertEquals("jpg", steps.get(0).getOutputType());
+		assertEquals(80, steps.get(0).getQuality());
+		assertEquals(customImageSubDir, steps.get(0).getInputPath().getFileName().toString());
+		assertEquals("IMAGE_80", steps.get(0).getOutputPath().getFileName().toString());
+		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
+
+		// pdf
+		assertEquals("pdf", steps.get(1).getOutputType());
+		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
 	}
 
 }

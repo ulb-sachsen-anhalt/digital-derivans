@@ -36,6 +36,7 @@
 		<maven-shade-plugin.version>3.2.0</maven-shade-plugin.version>
 		<git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
 		<junit.jupiter.version>5.6.2</junit.jupiter.version>
+		<mockito.version>5.3.1</mockito.version>
 		<mets-model.version>2.0</mets-model.version>
 		<itextpdf.version>5.5.13.1</itextpdf.version>
 		<jaxen.version>1.2.0</jaxen.version>
@@ -56,6 +57,12 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
 			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -193,8 +200,8 @@
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
 					<generateGitPropertiesFilename>${project.build.outputDirectory}/derivans-git.properties</generateGitPropertiesFilename>
 					<includeOnlyProperties>
-                        <includeOnlyProperty>^git.build.version$</includeOnlyProperty>
-                    </includeOnlyProperties>
+						<includeOnlyProperty>^git.build.version$</includeOnlyProperty>
+					</includeOnlyProperties>
 					<format>json</format>
 					<gitDescribe>
 						<skip>false</skip>

@@ -125,7 +125,7 @@ public class Derivans {
 			var store = this.metadataStore.get();
 			descriptiveData = store.getDescriptiveData();
 			pages = store.getDigitalPagesInOrder();
-			resolver.enrichAbsoluteStartPath(pages, step0.getInputPath());
+			resolver.enrichAbsoluteStartPath(pages, this.processDir);
 			structure = store.getStructure();
 		} else {
 			LOGGER.debug("enrich ocr from file system");

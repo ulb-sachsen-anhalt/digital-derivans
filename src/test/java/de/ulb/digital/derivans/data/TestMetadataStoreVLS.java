@@ -95,10 +95,10 @@ class TestMetadataStoreVLS {
 		String urn2 = "urn:nbn:de:gbv:3:3-21437-p0004-6";
 		assertEquals(urn1, pages.get(0).getIdentifier().get());
 		assertEquals(urn2, pages.get(3).getIdentifier().get());
-		assertEquals("737434.jpg", pages.get(0).getImageFile());
-		assertEquals("737436.jpg", pages.get(1).getImageFile());
-		assertEquals("737437.jpg", pages.get(2).getImageFile());
-		assertEquals("737438.jpg", pages.get(3).getImageFile());
+		assertEquals("MAX/737434.jpg", pages.get(0).getImageFile());
+		assertEquals("MAX/737436.jpg", pages.get(1).getImageFile());
+		assertEquals("MAX/737437.jpg", pages.get(2).getImageFile());
+		assertEquals("MAX/737438.jpg", pages.get(3).getImageFile());
 	}
 
 	@Test

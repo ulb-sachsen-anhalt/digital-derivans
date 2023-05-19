@@ -70,13 +70,13 @@ public class TestDerivans {
 			Files.delete(configTargetDir);
 		}
 		copyTree(configSourceDir, configTargetDir);
-
-		// act
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(configTargetDir.resolve("derivans.ini"));
 		dp.setPathInput(pathTarget.resolve("737429.xml"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
+
+		// act
 		derivans.create();
 
 		// assert pdf exists
@@ -111,18 +111,26 @@ public class TestDerivans {
 		assertEquals("BUNDLE_THUMBNAIL__737434.jpg", fileName);
 	}
 
+	/**
+	 * 
+	 * Create Derivates with metadata and default settings
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	@Order(2)
 	void testDerivatesFrom737429Defaults(@TempDir Path tempDir) throws Exception {
 
+		// arrange
 		Path pathTarget = arrangeMetsAndImagesFor737429(tempDir);
-
-		// act
 		DerivansParameter dp = new DerivansParameter();
 		Path metadataPath = pathTarget.resolve("737429.xml");
 		dp.setPathInput(metadataPath);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
+
+		// act
 		derivans.create();
 
 		// assert
@@ -168,6 +176,7 @@ public class TestDerivans {
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		// dc.setInputDirImages(pathImageMax);
 		Derivans derivans = new Derivans(dc);
 		derivans.create();
 
@@ -190,7 +199,7 @@ public class TestDerivans {
 		Files.copy(TestResource.HD_Aa_737429.get(), targetMets);
 
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathInput(pathTarget);
+		// dp.setPathInput(pathTarget);
 		dp.setPathInput(targetMets);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
@@ -291,8 +300,7 @@ public class TestDerivans {
 	
 	/**
 	 * 
-	 * Configured image dir requires currently absolute paths
-	 * otherwise tries to resolve against inputPath
+	 * Behavior if custom image dir set
 	 * 
 	 * @param tempDir
 	 * @throws Exception
@@ -307,17 +315,17 @@ public class TestDerivans {
 		Path pathImageMax = pathTarget.resolve(imgDir);
 		Files.createDirectories(pathImageMax);
 		generateJpgs(pathImageMax, 620, 877, 6);
-
-		// act
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
 		dp.setPathDirImages(Path.of(imgDir));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
+
+		// act
 		derivans.create();
 
 		// assert
-		Path pdfWritten = pathTarget.resolve("only_images.pdf");
+		Path pdfWritten = pathTarget.resolve("conf_images.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
 	

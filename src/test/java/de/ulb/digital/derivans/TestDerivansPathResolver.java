@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
-import de.ulb.digital.derivans.model.DerivateStep;
-import de.ulb.digital.derivans.model.DerivateType;
 import de.ulb.digital.derivans.model.DigitalPage;
 
 /**
@@ -32,13 +30,12 @@ public class TestDerivansPathResolver {
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		dc.setInitialImageDir(pathImageMax);
 		Derivans derivans = new Derivans(dc);
 		DerivansPathResolver resolver = new DerivansPathResolver();
 
 		// act
-		List<DerivateStep> steps = derivans.steps;
-		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
-		List<DigitalPage> actuals = resolver.resolveFromStep(steps.get(0));
+		List<DigitalPage> actuals = resolver.resolveFromStep(derivans.steps.get(0));
 		
 		// assert
 		assertNotNull(actuals);

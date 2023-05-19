@@ -1,11 +1,12 @@
 package de.ulb.digital.derivans;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.ParserProperties;
+
+import static de.ulb.digital.derivans.config.DefaultConfiguration.*;
 
 /**
  * 
@@ -17,29 +18,49 @@ import org.kohsuke.args4j.ParserProperties;
 public class DerivansParameter {
 
 	@Argument(index = 0, required = true, 
-		usage = "Path to METS/MODS file or Directory with images\nrequired")
+		usage = "Path to input data (required).\n" +
+			"Stands for a path to metadata file (i.e., METS-file), or\n" +
+			"path to a locale directory with subdirectories (locale mode)\n" +
+			"for images (required) and fulltext data (optional)." +
+			"(no default: required)"
+	)
 	private Path pathInput;
 
 	@Option(name = "-c", aliases = {"--config-path" }, 
 		required = false, 
-		usage = "Path to configuration file (default:'./config/derivans.ini')\nIf not present, guess configurations.")
+		usage = "Path to Derivans configuration file.\n" +
+			"If not present, search configuration at default location.\n" +
+			"(default:'./config/" + DEFAULT_CONFIG_FILE_LABEL +"')"
+	)
 	private Path pathConfig;
 
-	@Option(name = "-d", aliases = {"--debug-render" }, 
-		required = false, 
-		usage = "Render PDF-Layers; Usefull only if OCR-Data present (default: false)")
-	private Boolean debugRender;
-
-	@Option(name = "-i", aliases = { "--image-subdir" }, 
+	@Option(name = "-i", aliases = { "--images-subdir" }, 
 		required = false,
-		usage = "Path to image directory, absolute or relative to input")
+		usage = "Path to image directory.\n" +
+			"Absolute path or path relative to input directory.\n" +
+			"If metadata present, stands for required image fileGroup label,\n" + 
+			"which defaults to '" + DEFAULT_INPUT_IMAGES_LABEL + "'.\n" + 
+			"If no metadata present, defaults to '" + DEFAULT_INPUT_IMAGES_LABEL + "'.\n"
+	)
 	private Path pathDirImages;
-
+	
 	@Option(name = "-o", aliases = { "--ocr-subdir" }, 
 		required = false,
-		usage = "Path to ocr-data directory, absolute or relative to input")
+		usage = "Path to ocr-data directory.\n" + 
+			"Absolute path or path relative to input directory.\n" +
+			"If metadata present, stands for required ocr fileGroup label,\n" + 
+			"which defaults to '" + DEFAULT_INPUT_FULLTEXT_LABEL + "'.\n" + 
+			"If no metadata present, defaults to '" + DEFAULT_INPUT_FULLTEXT_LABEL + "'.\n"
+	)
 	private Path pathDirOcr;
-
+	
+	@Option(name = "-d", aliases = {"--debug-render" }, 
+		required = false, 
+		usage = "Render PDF-Layers for debugging if OCR-Data present.\n" + 
+			"(default: false)"
+	)
+	private Boolean debugRender;
+	
 	/**
 	 * 
 	 * Set specific Parser Information
@@ -48,7 +69,7 @@ public class DerivansParameter {
 	 */
 	public ParserProperties getProperties() {
 		ParserProperties pp = ParserProperties.defaults();
-		pp.withUsageWidth(80);
+		pp.withUsageWidth(120);
 		return pp;
 	}
 
@@ -56,78 +77,31 @@ public class DerivansParameter {
 		return this.pathInput;
 	}
 
-	public void setPathInput(Path path) throws DigitalDerivansException {
-		if (!Files.exists(path)) {
-			throw new DigitalDerivansException("Invalid input path '" + path + "'");
-		}
+	public void setPathInput(Path path) {
 		this.pathInput = path;
 	}
 
-	public void setPathConfig(Path config) throws DigitalDerivansException {
-		if (!Files.exists(config)) {
-			throw new DigitalDerivansException("Invalid configuration path'" + config + "'");
-		}
+	public void setPathConfig(Path config) {
 		this.pathConfig = config;
 	}
 
-	public Path getPathConfig() throws DigitalDerivansException {
-		if ((pathConfig != null) && (!Files.exists(pathConfig))) {
-			throw new DigitalDerivansException("Invalid configuration file location '" + pathConfig + "'");
-		}
+	public Path getPathConfig() {
 		return this.pathConfig;
 	}
 
-	/**
-	 * 
-	 * Path to find image directory.
-	 * If Path doesn't exist, try to
-	 * resolve directory relative to
-	 * {@link #pathInput} 
-	 * 
-	 * @param imgDir
-	 * @throws DigitalDerivansException
-	 */
-	public void setPathDirImages(Path imgDir) throws DigitalDerivansException {
-		if (!Files.exists(imgDir)) {
-			imgDir = this.pathInput.resolve(imgDir);
-			if (!Files.exists(imgDir)) {
-				throw new DigitalDerivansException("Invalid image subdir '" + imgDir + "'");
-			}
-		}
+	public void setPathDirImages(Path imgDir) {
 		this.pathDirImages = imgDir;
 	}
 
-	public Path getPathDirImages() throws DigitalDerivansException {
-		if ((this.pathDirImages != null) && (!Files.exists(this.pathDirImages))) {
-				throw new DigitalDerivansException("Invalid image subdir '" + pathDirImages + "'");
-			}
+	public Path getPathDirImages() {
 		return this.pathDirImages;
 	}
 
-	/**
-	 *  
-	 * Path to find fulltext directory.
-	 * If Path doesn't exist, try to
-	 * resolve directory relative to
-	 * {@link #pathInput}
-	 * 
-	 * @param ocrDir
-	 * @throws DigitalDerivansException
-	 */
-	public void setPathOcr(Path ocrDir) throws DigitalDerivansException {
-		if (!Files.exists(ocrDir)) {
-			ocrDir = this.pathInput.resolve(ocrDir);
-			if(!Files.exists(ocrDir)) {
-				throw new DigitalDerivansException("Invalid image subdir '" + ocrDir + "'");
-			}
-		}
+	public void setPathOcr(Path ocrDir) {
 		this.pathDirOcr = ocrDir;
 	}
 
-	public Path getPathDirOcr() throws DigitalDerivansException {
-		if ((this.pathDirOcr != null) && (!Files.exists(this.pathDirOcr))) {
-			throw new DigitalDerivansException("Invalid image subdir '" + pathDirOcr + "'");
-		}
+	public Path getPathDirOcr() {
 		return this.pathDirOcr;
 	}
 

@@ -82,11 +82,13 @@ public class MetadataStore implements IMetadataStore {
 	public MetadataStore(Path filePath, DerivansConfiguration config) throws DigitalDerivansException {
 		this.config = config;
 		if(this.config != null) { 
-			if (this.config.getInputDirImages() != null) {
-			this.fileGroupImages = this.config.getInputDirImages().toString();
+			var imgDir = this.config.getInitialImageDir();
+			if (imgDir instanceof Path) {
+				this.fileGroupImages = imgDir.getFileName().toString();
 			}
-			if (this.config.getInputDirOcr() != null) {
-				this.fileGroupOcr = this.config.getInputDirOcr().toString();
+			var ocrDir = this.config.getOptionalOcrDir();
+			if (ocrDir instanceof Path) {
+				this.fileGroupOcr = ocrDir.getFileName().toString();
 			}
 		}
 		this.handler = new MetadataHandler(filePath);
@@ -110,21 +112,26 @@ public class MetadataStore implements IMetadataStore {
 				for (PhysicalSubDiv physSubDiv : physStruct.getDivContainer().getChildren()) {
 					List<FilePointerMatch> fptrs = getFilePointer(physSubDiv);
 					DigitalPage page = new DigitalPage(n);
-					LOGGER.debug("create digital page from {}", fptrs);
-
+					
 					// handle image file
-					Optional<FilePointerMatch> optMaxImage = fptrs.stream()
-							.filter(fptr -> this.fileGroupImages.equals(fptr.getFileGroup())).findFirst();
-					if (optMaxImage.isPresent()) {
-						FilePointerMatch match = optMaxImage.get();
+					Optional<FilePointerMatch> optImage = fptrs.stream()
+						.filter(fptr -> this.fileGroupImages.equals(fptr.getFileGroup())).findFirst();
+					LOGGER.debug("enrich digital page from {}", optImage);
+					if (optImage.isPresent()) {
+						FilePointerMatch match = optImage.get();
 						enrichImageData(physSubDiv, page, match);
+					// probably encountered something empty
+					// since no filtering forehand, might contain
+					// top-level mets:fptr to PDFs or alike
+					} else {
+						continue;
 					}
 					
 					// handle optional attached ocr file
-					LOGGER.trace("search for {} within {}", IMetadataStore.DEFAULT_METS_FILEGROUP_FULLTEXT, fptrs);
 					Optional<FilePointerMatch> optFulltext = fptrs.stream()
-							.filter(fptr -> this.fileGroupOcr.equals(fptr.getFileGroup())).findFirst();
+						.filter(fptr -> this.fileGroupOcr.equals(fptr.getFileGroup())).findFirst();
 					if (optFulltext.isPresent()) {
+						LOGGER.trace("enrich ocr from {}", optFulltext);
 						FilePointerMatch match = optFulltext.get();
 						enrichFulltextData(physSubDiv, page, match);
 					}
@@ -159,7 +166,7 @@ public class MetadataStore implements IMetadataStore {
 		if (!fileRefSegment.endsWith(".jpg") && !fileRefSegment.endsWith(".tif")) {
 			fileRefSegment += ".jpg";
 		}
-		page.setImagePath(Path.of(fileRefSegment));
+		page.setImagePath(Path.of(match.fileGroup, fileRefSegment));
 		// handle granular urn (aka CONTENTIDS)
 		String contentIds = physSubDiv.getContentIds();
 		if (contentIds != null) {
