@@ -256,7 +256,7 @@ public class Derivans {
 				.findAny().isPresent();
 	}
 
-	private String getIdentifier() {
+	private String getIdentifier() throws DigitalDerivansException {
 		if (this.metadataStore.isPresent()) {
 			var store = this.metadataStore.get();
 			return store.getDescriptiveData().getUrn();

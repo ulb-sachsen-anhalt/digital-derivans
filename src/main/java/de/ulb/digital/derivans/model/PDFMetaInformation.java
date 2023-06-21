@@ -31,6 +31,7 @@ public class PDFMetaInformation {
 	private String renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
 	private String renderModus = DefaultConfiguration.DEFAULT_RENDER_VISIBILTY;
 	private boolean enrichMetadata = true;
+	private Optional<String> modsIdentifierXPath = Optional.empty();
 
 	public String getConformanceLevel() {
 		return conformanceLevel;
@@ -178,6 +179,14 @@ public class PDFMetaInformation {
 
 	public void setEnrichMetadata(boolean enrichMetadata) {
 		this.enrichMetadata = enrichMetadata;
+	}
+
+	public Optional<String> getModsIdentifierXPath() {
+		return modsIdentifierXPath;
+	}
+
+	public void setModsIdentifierXPath(String modsIdentifierXPath) {
+		this.modsIdentifierXPath = Optional.of(modsIdentifierXPath);
 	}
 
 	/**

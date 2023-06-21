@@ -40,7 +40,7 @@ public class MetadataStore implements IMetadataStore {
 	private static final Logger LOGGER = LogManager.getLogger(MetadataStore.class);
 
 	private DerivansConfiguration config;
-	
+
 	private DescriptiveData descriptiveData;
 
 	private MetadataHandler handler;
@@ -70,7 +70,7 @@ public class MetadataStore implements IMetadataStore {
 	public MetadataStore(Path filePath) throws DigitalDerivansException {
 		this(filePath, null);
 	}
-	
+
 	/**
 	 * 
 	 * Extended constructor with METS-Path and {@link DerivansConfiguration}.
@@ -81,7 +81,7 @@ public class MetadataStore implements IMetadataStore {
 	 */
 	public MetadataStore(Path filePath, DerivansConfiguration config) throws DigitalDerivansException {
 		this.config = config;
-		if(this.config != null) { 
+		if (this.config != null) {
 			var imgDir = this.config.getInitialImageDir();
 			if (imgDir instanceof Path) {
 				this.fileGroupImages = imgDir.getFileName().toString();
@@ -94,6 +94,10 @@ public class MetadataStore implements IMetadataStore {
 		this.handler = new MetadataHandler(filePath);
 		this.mets = handler.getMets();
 		LOGGER.info("created new metadatastore from '{}'", filePath);
+	}
+
+	public DerivansConfiguration getConfiguration() {
+		return this.config;
 	}
 
 	@Override
@@ -112,30 +116,30 @@ public class MetadataStore implements IMetadataStore {
 				for (PhysicalSubDiv physSubDiv : physStruct.getDivContainer().getChildren()) {
 					List<FilePointerMatch> fptrs = getFilePointer(physSubDiv);
 					DigitalPage page = new DigitalPage(n);
-					
+
 					// handle image file
 					Optional<FilePointerMatch> optImage = fptrs.stream()
-						.filter(fptr -> this.fileGroupImages.equals(fptr.getFileGroup())).findFirst();
+							.filter(fptr -> this.fileGroupImages.equals(fptr.getFileGroup())).findFirst();
 					LOGGER.debug("enrich digital page from {}", optImage);
 					if (optImage.isPresent()) {
 						FilePointerMatch match = optImage.get();
 						enrichImageData(physSubDiv, page, match);
-					// probably encountered something empty
-					// since no filtering forehand, might contain
-					// top-level mets:fptr to PDFs or alike
+						// probably encountered something empty
+						// since no filtering forehand, might contain
+						// top-level mets:fptr to PDFs or alike
 					} else {
 						continue;
 					}
-					
+
 					// handle optional attached ocr file
 					Optional<FilePointerMatch> optFulltext = fptrs.stream()
-						.filter(fptr -> this.fileGroupOcr.equals(fptr.getFileGroup())).findFirst();
+							.filter(fptr -> this.fileGroupOcr.equals(fptr.getFileGroup())).findFirst();
 					if (optFulltext.isPresent()) {
 						LOGGER.trace("enrich ocr from {}", optFulltext);
 						FilePointerMatch match = optFulltext.get();
 						enrichFulltextData(physSubDiv, page, match);
 					}
-					
+
 					pages.add(page);
 					n++;
 				}
@@ -147,13 +151,13 @@ public class MetadataStore implements IMetadataStore {
 	public MetadataHandler getMetadataHandler() {
 		return this.handler;
 	}
-	
+
 	/**
 	 * 
 	 * Enrich Information about physical images that represent pages
 	 * <ul>
-	 * 	<li>sanitize file extension (likely missing when got over OAI)</li>
-	 * 	<li>take care of optional granular URN as unique identifier</li>
+	 * <li>sanitize file extension (likely missing when got over OAI)</li>
+	 * <li>take care of optional granular URN as unique identifier</li>
 	 * </ul>
 	 * 
 	 * @param physSubDiv
@@ -174,10 +178,10 @@ public class MetadataStore implements IMetadataStore {
 			page.setIdentifier(contentIds);
 		}
 	}
-	
+
 	private void enrichFulltextData(PhysicalSubDiv physSubDiv, DigitalPage page, FilePointerMatch match) {
 		String fileRefSegment = match.reference;
-		Path ocrFilePath = sanitizePath(Path.of(fileRefSegment)); 
+		Path ocrFilePath = sanitizePath(Path.of(fileRefSegment));
 		try {
 			OCRData data = OCRReaderFactory.from(ocrFilePath).get(ocrFilePath);
 			page.setOcrData(data);
@@ -197,7 +201,7 @@ public class MetadataStore implements IMetadataStore {
 	private Path sanitizePath(Path path) {
 		Path metsDir = this.handler.getPath().getParent();
 		Path p = metsDir.resolve(Path.of(IMetadataStore.DEFAULT_METS_FILEGROUP_FULLTEXT)).resolve(path);
-		if(Files.exists(p, LinkOption.NOFOLLOW_LINKS)) {
+		if (Files.exists(p, LinkOption.NOFOLLOW_LINKS)) {
 			LOGGER.debug("found ocr data file '{}'", p);
 			return p;
 		}
@@ -268,15 +272,11 @@ public class MetadataStore implements IMetadataStore {
 	}
 
 	@Override
-	public DescriptiveData getDescriptiveData() {
+	public DescriptiveData getDescriptiveData() throws DigitalDerivansException {
 		if (descriptiveData == null) {
 			DescriptiveDataBuilder builder = new DescriptiveDataBuilder();
-			builder.setHandler(this.handler);
-			try {
-				descriptiveData = builder.person().access().identifier().title().urn().year().build();
-			} catch (DigitalDerivansException e) {
-				LOGGER.error(e);
-			}
+			builder.setMetadataStore(this);
+			descriptiveData = builder.person().access().identifier().title().urn().year().build();
 		}
 		return descriptiveData;
 	}
@@ -309,7 +309,7 @@ public class MetadataStore implements IMetadataStore {
 		public String getReference() {
 			return reference;
 		}
-		
+
 		@Override
 		public String toString() {
 			return fileGroup + "=>" + reference;

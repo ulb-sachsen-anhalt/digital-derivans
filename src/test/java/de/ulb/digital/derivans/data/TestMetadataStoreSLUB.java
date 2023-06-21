@@ -3,6 +3,8 @@ package de.ulb.digital.derivans.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
@@ -39,7 +41,14 @@ class TestMetadataStoreSLUB {
 	@Test
 	void testDescriptiveDataSLUBMonographyDefaultConfig() throws DigitalDerivansException {
 		// arrange
-		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
+		Path conf = Path.of("src/test/resources/config/derivans.ini");
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(conf);
+		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
+
+		// act
+		DerivansConfiguration config = new DerivansConfiguration(dp);
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), config);
 		var dd321094271 = slub321094271.getDescriptiveData();
 
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
@@ -59,6 +68,105 @@ class TestMetadataStoreSLUB {
 		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut"
 		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl
 		assertEquals("Fesca, Friedrich Ernst", dd321094271.getPerson());
+	}
+
+	/**
+	 * 
+	 * Using in invalid, empty XPath yields exception
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testDescriptiveDataXPathEmptyString() throws DigitalDerivansException {
+		// arrange
+		Path conf = Path.of("src/test/resources/config/derivans.ini");
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(conf);
+		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
+		DerivansConfiguration config = new DerivansConfiguration(dp);
+		config.getPdfMetainformation().setModsIdentifierXPath("");
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), config);
+
+		// act
+		var expectedExc = assertThrows(DigitalDerivansException.class, () -> slub321094271.getDescriptiveData());
+
+		// mods:recodInfo/mods:recordIdentifier[@source]/text()
+		assertEquals("Unable to compile ''. See Cause.", expectedExc.getMessage());
+	}
+
+	/**
+	 * 
+	 * Using in invalid, empty XPath yields exception even in attempt
+	 * just to set this as value for an optional
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testDescriptiveDataXPathNull() throws DigitalDerivansException {
+		// arrange
+		Path conf = Path.of("src/test/resources/config/derivans.ini");
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(conf);
+		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
+		DerivansConfiguration config = new DerivansConfiguration(dp);
+
+		// act
+		var pdfMeta = config.getPdfMetainformation();
+		var expectedExc = assertThrows(NullPointerException.class, () -> pdfMeta.setModsIdentifierXPath(null));
+
+		// mods:recodInfo/mods:recordIdentifier[@source]/text()
+		assertNull(expectedExc.getMessage());
+	}
+
+	/**
+	 * 
+	 * Using no configuration at all
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testDescriptiveDataSLUBMIdentifierValidXPath() throws DigitalDerivansException {
+		// arrange
+		Path conf = Path.of("src/test/resources/config/derivans.ini");
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(conf);
+		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
+		DerivansConfiguration config = new DerivansConfiguration(dp);
+		String xPath = "//mods:mods/mods:titleInfo/mods:title";
+		config.getPdfMetainformation().setModsIdentifierXPath(xPath);
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), config);
+
+		// act
+		var dd321094271 = slub321094271.getDescriptiveData();
+
+		// mods:recodInfo/mods:recordIdentifier[@source]/text()
+		assertEquals("Der_103te_Psalm", dd321094271.getIdentifier());
+	}
+
+	/**
+	 * 
+	 * Using XPath which yields empty results => Exception
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testDescriptiveDataXPathEmptyResult() throws DigitalDerivansException {
+		// arrange
+		Path conf = Path.of("src/test/resources/config/derivans.ini");
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(conf);
+		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
+		DerivansConfiguration config = new DerivansConfiguration(dp);
+		config.getPdfMetainformation().setModsIdentifierXPath("//mets:dmdSec");
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), config);
+
+		// act
+		var expectedExc = assertThrows(DigitalDerivansException.class, () -> slub321094271.getDescriptiveData());
+
+		// mods:recodInfo/mods:recordIdentifier[@source]/text()
+		assertEquals(
+				"PDF Identifier XPath '//mets:dmdSec' empty for 'src/test/resources/mets/kitodo_pres/slub-dresden-db-id-321094271.xml'",
+				expectedExc.getMessage());
 	}
 
 	/**

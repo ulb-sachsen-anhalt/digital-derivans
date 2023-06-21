@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DescriptiveData;
 
 /**
@@ -36,8 +37,10 @@ class DescriptiveDataBuilder {
 
 	private String accessCondition = IMetadataStore.UNKNOWN;
 
-	private MetadataHandler handler;
-	
+	private MetadataStore store;
+
+	private Element primeMods;
+
 	private static final Logger LOGGER = LogManager.getLogger(DescriptiveDataBuilder.class);
 
 	DescriptiveDataBuilder urn() {
@@ -83,9 +86,8 @@ class DescriptiveDataBuilder {
 	}
 
 	String getPerson() {
-		Element mods = handler.getPrimaryMods();
-		if (mods != null) {
-			List<Element> nameSubtrees = mods.getChildren("name", IMetadataStore.NS_MODS);
+		if (this.primeMods != null) {
+			List<Element> nameSubtrees = this.primeMods.getChildren("name", IMetadataStore.NS_MODS);
 
 			// collect proper name relations
 			Map<MARCRelator, List<Element>> properRelations = getDesiredRelations(nameSubtrees);
@@ -142,18 +144,18 @@ class DescriptiveDataBuilder {
 						String code = g.getTextNormalize();
 						MARCRelator rel = MARCRelator.forCode(code);
 						switch (rel) {
-						case AUTHOR:
-						case PUBLISHER:
-							LOGGER.debug("map '{}' as person", rel);
-							List<Element> currList = new ArrayList<>();
-							currList.add(e);
-							map.merge(rel, currList, (prev, curr) -> {
-								prev.addAll(curr);
-								return prev;
-							});
-							break;
-						default:
-							LOGGER.debug("dont map '{}' as person", rel);
+							case AUTHOR:
+							case PUBLISHER:
+								LOGGER.debug("map '{}' as person", rel);
+								List<Element> currList = new ArrayList<>();
+								currList.add(e);
+								map.merge(rel, currList, (prev, curr) -> {
+									prev.addAll(curr);
+									return prev;
+								});
+								break;
+							default:
+								LOGGER.debug("dont map '{}' as person", rel);
 						}
 					}
 				}
@@ -164,20 +166,54 @@ class DescriptiveDataBuilder {
 
 	/**
 	 * 
-	 * Please note, this information is critical, that it cannot guess a default
-	 * value and must be set to something meaningful.
+	 * Identifier to be used to label PDF-Derivates.
 	 * 
-	 * If this setup fails due missing metadata, the identifier must be set later
-	 * on. Therefore it returns null.
+	 * Handles different scenarios:
+	 * <ul>
+	 *	<li>no metadata present, return Zero information</li>
+	 *	<li>configured {@link DefaultConfiguration.Key.PDF_MODS_IDENTIFIER_XPATH}
+	 *		present, then go for it</li>
+	 *	<li>former not present: use first mods:recordIdentifier</li>
+	 * </ul>
 	 * 
-	 * @return
+	 * If nothing present at all (since not metadata present),
+	 * later stages *might* set this vital information in their
+	 * own fashion (i.e., use digi root-directory as label ...)
+	 * 
+	 * Please note, that any including whitespaces will be replaced
+	 * by the special glue-token "_"
+	 * 
+	 * @throws DigitalDerivansException
+	 * 		If Xpath provided but nothing matches
+	 * 
+	 * @return String Identifier
+	 * 
 	 */
 	private String loadIdentifier() throws DigitalDerivansException {
-		Element mods = handler.getPrimaryMods();
-		if (mods == null) {
+		if (this.primeMods == null) {
 			return null;
 		}
-		List<Element> recordInfos = mods.getChildren("recordInfo", IMetadataStore.NS_MODS);
+		if (this.store != null && this.store.getConfiguration() != null && this.store.getConfiguration().getPdfMetainformation() != null) {
+			var config = this.store.getConfiguration();
+			var optXPath = config.getPdfMetainformation().getModsIdentifierXPath();
+			if (optXPath.isPresent()) {
+				String xPath = optXPath.get();
+				Element match = this.store.getMetadataHandler().evaluateFirst(xPath);
+				if (match != null) {
+					String textualContent = match.getTextTrim();
+					if (!textualContent.isEmpty()) {
+						return textualContent.replace(' ', '_');
+					} else {
+						var msg = String.format("PDF Identifier XPath '%s' empty for '%s'", xPath, this.store.getMetadataHandler().getPath());
+						throw new DigitalDerivansException(msg);
+					}
+				} else {
+					var msg = String.format("PDF Identifier XPath '%s' no match in '%s'", xPath, this.store.getMetadataHandler().getPath());
+					throw new DigitalDerivansException(msg);
+				}
+			}
+		}
+		List<Element> recordInfos = this.primeMods.getChildren("recordInfo", IMetadataStore.NS_MODS);
 		Predicate<Element> sourceExists = e -> Objects.nonNull(e.getAttributeValue("source"));
 		for (Element recordInfo : recordInfos) {
 			List<Element> identifiers = recordInfo.getChildren("recordIdentifier", IMetadataStore.NS_MODS);
@@ -190,21 +226,20 @@ class DescriptiveDataBuilder {
 	}
 
 	String getTitle() {
-		Element mods = handler.getPrimaryMods();
-		if (mods != null) {
-			Element titleInfo = mods.getChild("titleInfo", IMetadataStore.NS_MODS);
+		if (this.primeMods != null) {
+			Element titleInfo = this.primeMods.getChild("titleInfo", IMetadataStore.NS_MODS);
 			if (titleInfo != null) {
 				Element titleText = titleInfo.getChild("title", IMetadataStore.NS_MODS);
 				if (titleText != null) {
 					return titleText.getTextNormalize();
 				}
-				Element subtitleText = mods.getChild("subTitle", IMetadataStore.NS_MODS);	
-				if (subtitleText != null) {	
+				Element subtitleText = this.primeMods.getChild("subTitle", IMetadataStore.NS_MODS);
+				if (subtitleText != null) {
 					return subtitleText.getTextNormalize();
-				}	
+				}
 			} else {
 				// if exists a relatedItem ...
-				if(mods.getChild("relatedItem", IMetadataStore.NS_MODS) != null) {
+				if (this.primeMods.getChild("relatedItem", IMetadataStore.NS_MODS) != null) {
 					// ... then it must be a volume of something
 					return "Band";
 				}
@@ -214,9 +249,8 @@ class DescriptiveDataBuilder {
 	}
 
 	String getURN() {
-		Element mods = handler.getPrimaryMods();
-		if (mods != null) {
-			List<Element> identifiers = mods.getChildren("identifier", IMetadataStore.NS_MODS);
+		if (this.primeMods != null) {
+			List<Element> identifiers = this.primeMods.getChildren("identifier", IMetadataStore.NS_MODS);
 			Predicate<Element> typeUrn = e -> e.getAttribute("type").getValue().equals("urn");
 			Optional<Element> optUrn = identifiers.stream().filter(typeUrn).findFirst();
 			if (optUrn.isPresent()) {
@@ -227,9 +261,8 @@ class DescriptiveDataBuilder {
 	}
 
 	String getAccessCondition() {
-		Element mods = handler.getPrimaryMods();
-		if (mods != null) {
-			Element cond = mods.getChild("accessCondition", IMetadataStore.NS_MODS);
+		if (this.primeMods != null) {
+			Element cond = this.primeMods.getChild("accessCondition", IMetadataStore.NS_MODS);
 			if (cond != null) {
 				return cond.getTextNormalize();
 			}
@@ -238,10 +271,10 @@ class DescriptiveDataBuilder {
 	}
 
 	String getYear() {
-		Element mods = handler.getPrimaryMods();
-		if (mods != null) {
+		if (this.primeMods != null) {
 			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
-			Optional<Element> optPubl = mods.getChildren("originInfo", IMetadataStore.NS_MODS).stream().filter(publicationEvent)
+			Optional<Element> optPubl = this.primeMods.getChildren("originInfo", IMetadataStore.NS_MODS).stream()
+					.filter(publicationEvent)
 					.findFirst();
 			if (optPubl.isPresent()) {
 				Element publ = optPubl.get();
@@ -252,7 +285,7 @@ class DescriptiveDataBuilder {
 			}
 			// Attribute 'eventType=publication' of node 'publication' is missing
 			// so try to find/filter node less consistently
-			Element oInfo = mods.getChild("originInfo", IMetadataStore.NS_MODS);
+			Element oInfo = this.primeMods.getChild("originInfo", IMetadataStore.NS_MODS);
 			if (oInfo != null) {
 				Element issued = oInfo.getChild("dateIssued", IMetadataStore.NS_MODS);
 				if (issued != null) {
@@ -263,9 +296,9 @@ class DescriptiveDataBuilder {
 		return IMetadataStore.UNKNOWN;
 	}
 
-	public void setHandler(MetadataHandler handler) {
-		this.handler = handler;
-
+	public void setMetadataStore(MetadataStore store) {
+		this.store = store;
+		this.primeMods = store.getMetadataHandler().getPrimaryMods();
 	}
 }
 
@@ -299,11 +332,11 @@ class PredicateEventTypePublication implements Predicate<Element> {
  */
 enum MARCRelator {
 
-	AUTHOR("aut"), 
-	ASSIGNED_NAME("asn"), 
-	CONTRIBUTOR("ctb"), 
-	OTHER("oth"), 
-	PUBLISHER("pbl"), 
+	AUTHOR("aut"),
+	ASSIGNED_NAME("asn"),
+	CONTRIBUTOR("ctb"),
+	OTHER("oth"),
+	PUBLISHER("pbl"),
 	PRINTER("prt"),
 	UNKNOWN("n.a.");
 

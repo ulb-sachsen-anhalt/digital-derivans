@@ -32,10 +32,13 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.filter.ElementFilter;
+import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.util.IteratorIterable;
+import org.jdom2.xpath.XPathBuilder;
+import org.jdom2.xpath.XPathFactory;
 import org.mycore.mets.model.Mets;
 import org.mycore.mets.model.sections.DmdSec;
 import org.mycore.mets.model.struct.SmLink;
@@ -98,14 +101,32 @@ public class MetadataHandler {
 		SAXBuilder builder = new SAXBuilder();
 		// please sonarqube "Disable XML external entity (XXE) processing"
 		builder.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-		document = builder.build(f);
-		return new Mets(document);
+		this.document = builder.build(f);
+		return new Mets(this.document);
+	}
+
+	/**
+	 * Evaluate XPath expressions on underlying {@link Document document instance}
+	 * @param xpathStr
+	 * @return {@link Element}
+	 * @throws DigitalDerivansException If any internal Exceptions occour
+	 */
+	public Element evaluateFirst(String xpathStr) throws DigitalDerivansException {
+		try {
+			XPathBuilder<Element> builder = new XPathBuilder<>(xpathStr, Filters.element());
+			builder.setNamespace(NS_METS);
+			builder.setNamespace(NS_MODS);
+			var xpr = builder.compileWith(XPathFactory.instance());
+			return xpr.evaluateFirst(this.document);
+		} catch (Exception exc) {
+			throw new DigitalDerivansException(exc.getMessage());
+		}
 	}
 
 	public boolean write() {
 		try (OutputStream metsOut = Files.newOutputStream(this.pathFile)) {
 			XMLOutputter xout = new XMLOutputter(Format.getPrettyFormat());
-			xout.output(document, metsOut);
+			xout.output(this.document, metsOut);
 		} catch (Exception e) {
 			return false;
 		}

@@ -20,7 +20,8 @@ public interface IMetadataStore {
 
 	// METS file group for images with maximal resolution
 	String DEFAULT_METS_FILEGROUP_MAX = "MAX";
-	// METS file group for OCR-data with, most likely, MIMETYPE="application/alto+xml"
+	// METS file group for OCR-data with, most likely,
+	// MIMETYPE="application/alto+xml"
 	String DEFAULT_METS_FILEGROUP_FULLTEXT = "FULLTEXT";
 	// Mark unresolved information about author, title, ...
 	String UNKNOWN = "n.a.";
@@ -34,15 +35,16 @@ public interface IMetadataStore {
 	 * May contain information about official title, author and alike.
 	 * 
 	 * @return {@link DescriptiveData}
+	 * @throws {@link DigitalDerivansException}
 	 */
-	DescriptiveData getDescriptiveData();
+	DescriptiveData getDescriptiveData() throws DigitalDerivansException;
 
 	/**
 	 * 
 	 * Create recursive data structure used as Outline for PDF
 	 * 
-	 * @return
-	 * @throws DigitalDerivansException
+	 * @return {@link DigitalStructureTree}
+	 * @throws {@link DigitalDerivansException}
 	 */
 	DigitalStructureTree getStructure() throws DigitalDerivansException;
 
@@ -55,7 +57,7 @@ public interface IMetadataStore {
 	 * If no METS/MODS is available, use filenames in corresponding directory to
 	 * create page order. Please note, that this can lead to unexpected results.
 	 * 
-	 * @return ordered list of pages
+	 * @return ordered list of {@link DigitalPage pages}
 	 * 
 	 */
 	List<DigitalPage> getDigitalPagesInOrder();
@@ -69,7 +71,7 @@ public interface IMetadataStore {
 	 * </ul>
 	 * 
 	 * @param fileId
-	 * @return
+	 * @return isEnriched
 	 */
 	boolean enrichPDF(String fileId);
 }

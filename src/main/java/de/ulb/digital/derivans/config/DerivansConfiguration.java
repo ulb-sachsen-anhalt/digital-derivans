@@ -416,8 +416,8 @@ public class DerivansConfiguration {
 				this.pdfMeta.setRenderModus(optRenderVis.get());
 			}
 
-			// probably disable to enrich created PDF file into metadata file
-			String keyPdfEnrichMeta = derivateSection + ".enrich_pdf_metadata";
+			// disable automated enrichment of created PDF file into metadata file
+			String keyPdfEnrichMeta = derivateSection + "." + DefaultConfiguration.Key.PDF_ENRICH_METADATA;
 			Optional<String> optEnrichMeta = extractValue(conf, keyPdfEnrichMeta, String.class);
 			if(optEnrichMeta.isPresent()) {
 				String enrichMetaStr = optEnrichMeta.get();
@@ -425,6 +425,15 @@ public class DerivansConfiguration {
 				LOGGER.debug("try to set enrich metadata to '{}'", mustEnrich);
 				this.pdfMeta.setEnrichMetadata(mustEnrich);
 				step.setEnrichMetadata(mustEnrich);
+			}
+
+			// search optional xpath to get pdf label
+			String optionPdfIdentifier = derivateSection + "." + DefaultConfiguration.Key.PDF_MODS_IDENTIFIER_XPATH;
+			Optional<String> optPdfIdentifier = extractValue(conf, optionPdfIdentifier, String.class);
+			if(optPdfIdentifier.isPresent()) {
+				String pdfIdentXPath = optPdfIdentifier.get();
+				LOGGER.debug("set pdf identifier xpath '{}'", pdfIdentXPath);
+				this.pdfMeta.setModsIdentifierXPath(pdfIdentXPath);
 			}
 
 			this.derivateSteps.add(step);

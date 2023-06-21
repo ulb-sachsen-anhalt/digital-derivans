@@ -11,6 +11,15 @@ import java.nio.file.Path;
  */
 public class DefaultConfiguration {
 
+	static class Key {
+
+		public static final String PDF_ENRICH_METADATA = "enrich_pdf_metadata";
+
+		public static final String PDF_MODS_IDENTIFIER_XPATH = "mods_identifier_xpath";
+
+		private Key() {}
+	}
+
 	public static final Integer DEFAULT_QUALITY = 80;
 	
 	public static final Integer DEFAULT_QUALITY_FOOTER = 95;
