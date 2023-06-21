@@ -1,6 +1,8 @@
 package de.ulb.digital.derivans.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,7 +32,7 @@ public class TestDerivansConfiguration {
 	 * @throws Exception
 	 */
 	@Test
-	void testCommonConfigurationMetadata(@TempDir Path tempDir) throws Exception {
+	void testCommonConfigurationWithMETS(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path targetMetsDir = tempDir.resolve("226134857");
@@ -69,12 +71,51 @@ public class TestDerivansConfiguration {
 		// pdf
 		assertEquals("pdf", steps.get(2).getOutputType());
 		assertEquals(DerivateType.PDF, steps.get(2).getDerivateType());
+		assertTrue(steps.get(2).isEnrichMetadata());
 
 		// additional assets
 		assertEquals("BUNDLE_BRANDED_PREVIEW__", steps.get(5).getOutputPrefix());
 		assertEquals(1000, steps.get(5).getMaximal());
 		assertEquals(DerivateType.PDF, steps.get(2).getDerivateType());
 	}
+
+
+		/**
+	 * 
+	 * Common configuration with metadata present
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testConfigurationWithDisabledPDFEnrichment(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path targetMetsDir = tempDir.resolve("226134857");
+		Files.createDirectory(targetMetsDir);
+		Path metsModsTarget = targetMetsDir.resolve("226134857.xml");
+		Files.copy(TestResource.HD_Aa_226134857_LEGACY.get(), metsModsTarget);
+		Path conf = Path.of("src/test/resources/config/derivans-pdf.ini");
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(conf);
+		dp.setPathInput(metsModsTarget);
+
+		// act
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+
+		// assert
+		assertEquals(80, dc.getQuality());
+		assertEquals(4, dc.getPoolsize());
+
+		List<DerivateStep> steps = dc.getDerivateSteps();
+		assertEquals(3, steps.size());
+
+		// pdf
+		assertEquals("pdf", steps.get(2).getOutputType());
+		assertEquals(DerivateType.PDF, steps.get(2).getDerivateType());
+		assertFalse(steps.get(2).isEnrichMetadata());
+	}
+
 
 	/**
 	 * 

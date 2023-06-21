@@ -416,6 +416,17 @@ public class DerivansConfiguration {
 				this.pdfMeta.setRenderModus(optRenderVis.get());
 			}
 
+			// probably disable to enrich created PDF file into metadata file
+			String keyPdfEnrichMeta = derivateSection + ".enrich_pdf_metadata";
+			Optional<String> optEnrichMeta = extractValue(conf, keyPdfEnrichMeta, String.class);
+			if(optEnrichMeta.isPresent()) {
+				String enrichMetaStr = optEnrichMeta.get();
+				boolean mustEnrich = Boolean.parseBoolean(enrichMetaStr);
+				LOGGER.debug("try to set enrich metadata to '{}'", mustEnrich);
+				this.pdfMeta.setEnrichMetadata(mustEnrich);
+				step.setEnrichMetadata(mustEnrich);
+			}
+
 			this.derivateSteps.add(step);
 			nSection++;
 			derivateSection = String.format("derivate_%02d", nSection);

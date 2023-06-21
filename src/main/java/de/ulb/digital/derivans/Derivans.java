@@ -54,11 +54,11 @@ public class Derivans {
 	private final DerivansConfiguration config;
 
 	private Optional<IMetadataStore> metadataStore = Optional.empty();
-	
+
 	private Optional<Path> optPDFPath = Optional.empty();
 
 	private PDFMetaInformation pdfMeta;
-	
+
 	private DerivansPathResolver resolver;
 
 	boolean footerDerivatesRendered;
@@ -118,9 +118,9 @@ public class Derivans {
 
 		DescriptiveData descriptiveData = new DescriptiveData();
 		DigitalStructureTree structure = new DigitalStructureTree();
-		
+
 		// set optional metadata information
-		if(this.metadataStore.isPresent()) {
+		if (this.metadataStore.isPresent()) {
 			LOGGER.info("use information from optional metadata");
 			var store = this.metadataStore.get();
 			descriptiveData = store.getDescriptiveData();
@@ -171,14 +171,14 @@ public class Derivans {
 		}
 		return derivateers;
 	}
-	
+
 	public void create() throws DigitalDerivansException {
 
 		List<IDerivateer> derivateers = this.init(steps);
 
 		// run derivateers
 		for (IDerivateer derivateer : derivateers) {
-			
+
 			int pages = derivateer.getDigitalPages().size();
 			String msg = String.format("process '%02d' digital pages", pages);
 			LOGGER.info(msg);
@@ -195,10 +195,10 @@ public class Derivans {
 
 			if (results > 0) {
 				String msg2 = String.format("created '%02d' results in '%dm%02ds'",
-				 results, minsElapsed, secsElapsed);
+						results, minsElapsed, secsElapsed);
 				LOGGER.info(msg2);
 			}
-			
+
 			LOGGER.info("finished derivate step '{}': '{}'", derivateer.getClass().getSimpleName(), true);
 		}
 
@@ -206,11 +206,15 @@ public class Derivans {
 		if (optPDFPath.isPresent() && metadataStore.isPresent()) {
 			Path pdfPath = optPDFPath.get();
 			if (Files.exists(pdfPath)) {
-				LOGGER.info("enrich created pdf '{}'", pdfPath);
-				String filename = pdfPath.getFileName().toString();
-				String identifier = filename.substring(0, filename.indexOf('.'));
-				var store = this.metadataStore.get();
-				store.enrichPDF(identifier);
+				if (!this.pdfMeta.isEnrichMetadata()) {
+					LOGGER.warn("pdf '{}' not enriched in metadata", pdfPath);
+				} else {
+					LOGGER.info("enrich created pdf '{}' in '{}'", pdfPath, this.pathMetsFile);
+					String filename = pdfPath.getFileName().toString();
+					String identifier = filename.substring(0, filename.indexOf('.'));
+					var store = this.metadataStore.get();
+					store.enrichPDF(identifier);
+				}
 			} else {
 				String msg = "Missing pdf " + pdfPath.toString() + "!";
 				LOGGER.error(msg);
@@ -219,7 +223,6 @@ public class Derivans {
 		}
 		LOGGER.info("finished generating '{}' derivates at '{}'", derivateers.size(), processDir);
 	}
-
 
 	private IDerivateer transformToJPG(BaseDerivateer base, DerivateStep step, List<DigitalPage> pages) {
 		Integer quality = step.getQuality();
@@ -231,7 +234,8 @@ public class Derivans {
 		return d;
 	}
 
-	private ImageDerivateerJPGFooter transformToJPGFooter(BaseDerivateer base, DerivateStep step, List<DigitalPage> pages)
+	private ImageDerivateerJPGFooter transformToJPGFooter(BaseDerivateer base, DerivateStep step,
+			List<DigitalPage> pages)
 			throws DigitalDerivansException {
 		String recordIdentifier = getIdentifier();
 		LOGGER.info("got identifier {}", recordIdentifier);
@@ -253,7 +257,7 @@ public class Derivans {
 	}
 
 	private String getIdentifier() {
-		if(this.metadataStore.isPresent()) {
+		if (this.metadataStore.isPresent()) {
 			var store = this.metadataStore.get();
 			return store.getDescriptiveData().getUrn();
 		}

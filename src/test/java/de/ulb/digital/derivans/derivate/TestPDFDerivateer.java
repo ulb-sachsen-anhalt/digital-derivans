@@ -287,7 +287,7 @@ public class TestPDFDerivateer {
 	}
 
 	@Test
-	void testGetPDFMetaInformation01() throws Exception {
+	void testReadMetaInformationFromPDF01() throws Exception {
 		// act
 		Path pdfPath = Paths.get("src/test/resources/pdf/169683404X.pdf");
 		PDFInspector inspector = new PDFInspector(pdfPath);

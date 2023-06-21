@@ -30,6 +30,7 @@ public class PDFMetaInformation {
 	private Boolean debugRender = Boolean.FALSE;
 	private String renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
 	private String renderModus = DefaultConfiguration.DEFAULT_RENDER_VISIBILTY;
+	private boolean enrichMetadata = true;
 
 	public String getConformanceLevel() {
 		return conformanceLevel;
@@ -49,7 +50,7 @@ public class PDFMetaInformation {
 
 	public PDFMetaInformation() {
 	}
-	
+
 	public PDFMetaInformation(String author, String title, Map<String, String> metadata, Document xmpMetadata) {
 		this.author = author;
 		this.title = title;
@@ -146,7 +147,7 @@ public class PDFMetaInformation {
 	public void setPublicationYear(String publicationYear) {
 		this.publicationYear = publicationYear;
 	}
-	
+
 	public Boolean getDebugRender() {
 		return debugRender;
 	}
@@ -158,7 +159,7 @@ public class PDFMetaInformation {
 	public String getRenderLevel() {
 		return this.renderLevel;
 	}
-	
+
 	public void setRenderLevel(String level) {
 		this.renderLevel = level;
 	}
@@ -166,9 +167,17 @@ public class PDFMetaInformation {
 	public String getRenderModus() {
 		return this.renderModus;
 	}
-	
+
 	public void setRenderModus(String modus) {
 		this.renderModus = modus;
+	}
+
+	public boolean isEnrichMetadata() {
+		return enrichMetadata;
+	}
+
+	public void setEnrichMetadata(boolean enrichMetadata) {
+		this.enrichMetadata = enrichMetadata;
 	}
 
 	/**

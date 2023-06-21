@@ -33,15 +33,17 @@ public class DerivateStep {
 	private String footerLabel;
 
 	private DerivateType derivateType;
-	
+
 	private int imageDpi;
-	
+
+	private boolean enrichMetadata = true;
+
 	public DerivateStep() {
 		this.outputType = DefaultConfiguration.DEFAULT_OUTPUT_TYPE;
 		this.quality = DefaultConfiguration.DEFAULT_QUALITY;
 		this.poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 		this.derivateType = DerivateType.JPG;
-		this.maximal = DefaultConfiguration.DEFAULT_MAXIMAL; 
+		this.maximal = DefaultConfiguration.DEFAULT_MAXIMAL;
 	}
 
 	public String getOutputType() {
@@ -89,7 +91,7 @@ public class DerivateStep {
 	}
 
 	public void setMaximal(Integer maximal) throws DigitalDerivansException {
-		int max=DefaultConfiguration.DEFAULT_MAXIMAL;
+		int max = DefaultConfiguration.DEFAULT_MAXIMAL;
 		if (maximal > max) {
 			throw new DigitalDerivansException("maximal too large: " + max);
 		}
@@ -146,8 +148,17 @@ public class DerivateStep {
 	public void setImageDpi(int dpi) {
 		this.imageDpi = dpi;
 	}
-	
+
 	public int getImageDpi() {
 		return this.imageDpi;
 	}
+
+	public boolean isEnrichMetadata() {
+		return enrichMetadata;
+	}
+
+	public void setEnrichMetadata(boolean enrichMetadata) {
+		this.enrichMetadata = enrichMetadata;
+	}
+
 }
