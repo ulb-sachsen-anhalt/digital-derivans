@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +20,11 @@ import org.apache.logging.log4j.core.LoggerContext;
 
 import de.ulb.digital.derivans.DerivansParameter;
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.model.DerivateStep;
-import de.ulb.digital.derivans.model.DerivateType;
-import de.ulb.digital.derivans.model.PDFMetaInformation;
+import de.ulb.digital.derivans.model.step.DerivateStep;
+import de.ulb.digital.derivans.model.step.DerivateStepImage;
+import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
+import de.ulb.digital.derivans.model.step.DerivateStepPDF;
+import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -44,19 +47,15 @@ public class DerivansConfiguration {
 
 	private Path pathConfigFile;
 
-	private Path initialImageDir = null;
+	private Path paramDirImage;
 
-	private Path optionalOcrDir = null;
+	private Path paramDirOCR;
 
 	private Integer quality = DefaultConfiguration.DEFAULT_QUALITY;
 
 	private Integer poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 
 	private List<DerivateStep> derivateSteps;
-	
-	private PDFMetaInformation pdfMeta;
-	
-	private List<String> prefixes;
 
 	/**
 	 * 
@@ -66,15 +65,11 @@ public class DerivansConfiguration {
 	 * @throws DigitalDerivansException
 	 */
 	public DerivansConfiguration(DerivansParameter params) throws DigitalDerivansException {
-		this.quality = DefaultConfiguration.DEFAULT_QUALITY;
-		this.prefixes = new ArrayList<>();
-		this.pdfMeta = new PDFMetaInformation();
-		this.pdfMeta.setDebugRender(params.getDebugRender());
 		if (params.getPathInput() == null) {
 			throw new DigitalDerivansException("invalid data path 'null'");
 		}
-		if (! Files.exists(params.getPathInput())) {
-			throw new DigitalDerivansException("invalid data path '"+ params.getPathInput()+"'");
+		if (!Files.exists(params.getPathInput())) {
+			throw new DigitalDerivansException("invalid data path '" + params.getPathInput() + "'");
 		}
 
 		// sanitize: path must be absolute for PDF generation afterwards
@@ -100,7 +95,8 @@ public class DerivansConfiguration {
 			this.pathConfigFile = params.getPathConfig();
 			this.initConfigurationFromFile();
 		} else {
-			Path defaultConfigLocation = Path.of("").resolve("config").resolve(DefaultConfiguration.DEFAULT_CONFIG_FILE_LABEL);
+			Path defaultConfigLocation = Path.of("").resolve("config")
+					.resolve(DefaultConfiguration.DEFAULT_CONFIG_FILE_LABEL);
 			LOGGER.info("no config from cli, inspect default {}", defaultConfigLocation);
 			if (!Files.exists(defaultConfigLocation)) {
 				LOGGER.warn("no config file '{}'", defaultConfigLocation);
@@ -111,12 +107,9 @@ public class DerivansConfiguration {
 			}
 		}
 		// take care of args for input images/ocr
-		if (params.getPathDirImages() != null) {
-			this.setInitialImageDir(params.getPathDirImages());
-		}
-		if(params.getPathDirOcr() != null) {
-			this.setOptionalOcrDir(params.getPathDirOcr());
-		}
+		this.paramDirImage = params.getPathDirImages();
+		this.paramDirOCR = params.getPathDirOcr();
+
 		// take care if no config provided
 		if (derivateSteps.isEmpty()) {
 			provideDefaultSteps();
@@ -125,7 +118,7 @@ public class DerivansConfiguration {
 		LOGGER.info("use config with {} steps", this.derivateSteps.size());
 		LOGGER.debug("first step inputs from '{}'", this.derivateSteps.get(0).getInputPath());
 	}
-	
+
 	private void initConfigurationFromFile() throws DigitalDerivansException {
 		if (!this.pathConfigFile.toString().endsWith(".ini")) {
 			LOGGER.warn("consider to change '{}' file ext to '.ini'", this.pathConfigFile);
@@ -172,77 +165,10 @@ public class DerivansConfiguration {
 		this.poolsize = poolsize;
 	}
 
-	public void setInitialImageDir(Path imgSubdir) throws DigitalDerivansException {
-		if (imgSubdir != null) {
-			if (!imgSubdir.isAbsolute()) {
-				imgSubdir = this.pathDir.resolve(imgSubdir);
-			}
-			if(!Files.exists(imgSubdir)) {
-				throw new DigitalDerivansException("Invalid image dir "+imgSubdir+" provided!");
-			} else {
-				this.initialImageDir = imgSubdir;
-				LOGGER.debug("use images from {}", this.initialImageDir);
-				this.reviewDerivates();
-			}
-		} 
-	}
-	
-	private void reviewDerivates() throws DigitalDerivansException {
-		if(!this.derivateSteps.isEmpty()) {
-			var firstStep = this.derivateSteps.get(0);
-			var prevImgDir = firstStep.getInputPath();
-			if (!prevImgDir.equals(this.getInitialImageDir())) {
-				LOGGER.warn("replace step0 previous image path {} with {},", prevImgDir, this.getInitialImageDir());
-				firstStep.setInputPath(this.getInitialImageDir());
-			}
-		}
-	}
-
-	public Path getInitialImageDir() throws DigitalDerivansException {
-		if(this.initialImageDir == null) {
-			this.setInitialImageDir(DefaultConfiguration.DEFAULT_INPUT_IMAGES);
-		}
-		return this.initialImageDir;
-	}
-
-	public void setOptionalOcrDir(Path inputOcr) throws DigitalDerivansException {
-		if (inputOcr != null) {
-			if (!inputOcr.isAbsolute()) {
-				inputOcr = this.pathDir.resolve(inputOcr);
-			}
-			if(!Files.exists(inputOcr)) {
-				throw new DigitalDerivansException("Invalid dir "+inputOcr+" provided!");
-			} else {
-				this.optionalOcrDir = inputOcr;
-				LOGGER.debug("use ocr from {}", this.initialImageDir);
-			}
-		} 
-	}
-
-	public Path getOptionalOcrDir() {
-		return this.optionalOcrDir;
-	}
-
 	public List<DerivateStep> getDerivateSteps() {
 		return derivateSteps;
 	}
-	
-	public PDFMetaInformation getPdfMetainformation() {
-		 return this.pdfMeta;
-	}
-	
-	/**
-	 * 
-	 * Derivates that also carry a prefix in their name,
-	 * keep track of this information which is later required for
-	 * proper name and path resolving. 
-	 * 
-	 * @return
-	 */
-	public List<String> getPrefixes() {
-		return this.prefixes;
-	}
-	
+
 	private void evaluate(INIConfiguration conf) throws DigitalDerivansException {
 
 		// read global configuration
@@ -273,169 +199,16 @@ public class DerivansConfiguration {
 		String derivateSection = String.format("derivate_%02d", nSection);
 		List<HierarchicalConfiguration<ImmutableNode>> section = conf.childConfigurationsAt(derivateSection);
 		while (!section.isEmpty()) {
-			DerivateStep step = new DerivateStep();
-			String outPutType = null;
-
-			// output type
-			String keyOutType = derivateSection + ".output_type";
-			Optional<String> optOutType = extractValue(conf, keyOutType, String.class);
-			if (optOutType.isPresent()) {
-				outPutType = optOutType.get();
-			} else {
-				outPutType = DefaultConfiguration.DEFAULT_OUTPUT_TYPE;
-			}
-			step.setOutputType(outPutType);
-			// depending on this set PDF type
-			if ("pdf".equalsIgnoreCase(step.getOutputType())) {
-				step.setDerivateType(DerivateType.PDF);
-			}
-
-			// output_prefix (used for additional derivates)
-			String keyOutPrefix = derivateSection + ".output_prefix";
-			Optional<String> optOutPrefix = extractValue(conf, keyOutPrefix, String.class);
-			if (optOutPrefix.isPresent()) {
-				String prefix = optOutPrefix.get();
-				step.setOutputPrefix(prefix);
-				prefixes.add(prefix);
-			}
-
-			// poolsize
-			String keyPoolsize = derivateSection + ".poolsize";
-			Optional<Integer> optPoolsize = extractValue(conf, keyPoolsize, Integer.class);
-			if (optPoolsize.isPresent()) {
-				step.setPoolsize(optPoolsize.get());
-			} else {
-				if (this.getPoolsize() != null) {
-					step.setPoolsize(this.getPoolsize());
+			DerivateStep step = getDerivateStepCommons(conf, derivateSection);
+			if (isImageDerivate(step)) {
+				enrichImageDerivateInformation((DerivateStepImage) step, conf, derivateSection);
+				// propably some more information required
+				if (step.getDerivateType() == DerivateType.JPG_FOOTER) {
+					enrichImageFooterInformation((DerivateStepImageFooter) step, conf, derivateSection);
 				}
+			} else if (step.getDerivateType() == DerivateType.PDF) {
+				enrichPDFDerivateInformation((DerivateStepPDF) step, conf, derivateSection);
 			}
-
-			// input dir
-			String keyInputDir = derivateSection + ".input_dir";
-			Optional<String> optInputDir = extractValue(conf, keyInputDir, String.class);
-			if (optInputDir.isPresent()) {
-				var inputPath = this.pathDir.resolve(optInputDir.get());
-				step.setInputPath(inputPath);
-				// set first section's input as global input
-				if(nSection == 1 && this.initialImageDir == null) {
-					this.initialImageDir = inputPath;
-				}
-			}
-
-			// output dir
-			String keyOutputDir = derivateSection + ".output_dir";
-			Optional<String> optOutputDir = extractValue(conf, keyOutputDir, String.class);
-			if (optOutputDir.isPresent()) {
-				String outputDir = optOutputDir.get();
-				Path output = this.pathDir.resolve(optOutputDir.get());
-				if (".".equals(outputDir) || outputDir.isBlank()) {
-					output = this.pathDir;
-				}
-				step.setOutputPath(output);
-			}
-
-			// quality
-			String keyQuality = derivateSection + ".quality";
-			Optional<Integer> valQuality = extractValue(conf, keyQuality, Integer.class);
-			if (valQuality.isPresent()) {
-				step.setQuality(valQuality.get());
-			}
-
-			// maximal dimension, width or height
-			String keyMaximal = derivateSection + ".maximal";
-			Optional<Integer> valMaximal = extractValue(conf, keyMaximal, Integer.class);
-			if (valMaximal.isPresent()) {
-				step.setMaximal(valMaximal.get());
-			}
-
-			// image footer template
-			String keyTemplate = derivateSection + ".footer_template";
-			Optional<String> optTemplate = extractValue(conf, keyTemplate, String.class);
-			if (optTemplate.isPresent()) {
-				Path pathTemplate = Path.of(optTemplate.get());
-				if (!pathTemplate.isAbsolute()) {
-					pathTemplate = this.pathConfigFile.getParent().resolve(pathTemplate);
-				}
-				if (Files.exists(pathTemplate)) {
-					LOGGER.info("set footer template '{}'", pathTemplate);
-					step.setPathTemplate(pathTemplate);
-				} else {
-					LOGGER.warn("invalid footer template '{}'", pathTemplate);
-				}
-				step.setDerivateType(DerivateType.JPG_FOOTER);
-			}
-
-			// image footer label copyright
-			String keyFooterCopy = derivateSection + ".footer_label_copyright";
-			Optional<String> optFooterCopy = extractValue(conf, keyFooterCopy, String.class);
-			if (optFooterCopy.isPresent()) {
-				step.setFooterLabel(optFooterCopy.get());
-			}
-
-			// metadata creator pdf
-			String keyMetadataCreator = derivateSection + ".metadata_creator";
-			Optional<String> optCreator = extractValue(conf, keyMetadataCreator, String.class);
-			if(optCreator.isPresent()) {
-				this.pdfMeta.setCreator(optCreator);
-			}
-			
-			// metadata keyword pdf
-			String keyMetadataKeyword = derivateSection + ".metadata_keywords";
-			Optional<String> optKeywords = extractValue(conf, keyMetadataKeyword, String.class);
-			if(optKeywords.isPresent()) {
-				this.pdfMeta.setKeywords(optKeywords);
-			}
-						
-			// metadata licence 
-			String keyMetadataLicense = derivateSection + ".metadata_license";
-			Optional<String> optLicense = extractValue(conf, keyMetadataLicense, String.class);
-			if(optLicense.isPresent()) {
-				this.pdfMeta.setLicense(optLicense);
-			}
-			
-			// pdf image dpi for scaling image data 
-			String keyPdfImageDPI = derivateSection + ".image_dpi";
-			Optional<String> optImageDpi = extractValue(conf, keyPdfImageDPI, String.class);
-			if(optImageDpi.isPresent()) {
-				this.pdfMeta.setImageDpi(Integer.valueOf(optImageDpi.get()));
-			}
-
-			// on which level optional text to render: per word, per line ... ?
-			String keyPdfRenderLvl = derivateSection + ".render_text_level";
-			Optional<String> optRenderLvl = extractValue(conf, keyPdfRenderLvl, String.class);
-			if(optRenderLvl.isPresent()) {
-				LOGGER.debug("set render text level '{}'", optRenderLvl.get());
-				this.pdfMeta.setRenderLevel(optRenderLvl.get());
-			}
-
-			// on which level optional text to render: per word, per line ... ?
-			String keyPdfRenderVis = derivateSection + ".render_text_visibility";
-			Optional<String> optRenderVis = extractValue(conf, keyPdfRenderVis, String.class);
-			if(optRenderVis.isPresent()) {
-				LOGGER.debug("set render text visibility '{}'", optRenderVis.get());
-				this.pdfMeta.setRenderModus(optRenderVis.get());
-			}
-
-			// disable automated enrichment of created PDF file into metadata file
-			String keyPdfEnrichMeta = derivateSection + "." + DefaultConfiguration.Key.PDF_ENRICH_METADATA;
-			Optional<String> optEnrichMeta = extractValue(conf, keyPdfEnrichMeta, String.class);
-			if(optEnrichMeta.isPresent()) {
-				String enrichMetaStr = optEnrichMeta.get();
-				boolean mustEnrich = Boolean.parseBoolean(enrichMetaStr);
-				LOGGER.debug("try to set enrich metadata to '{}'", mustEnrich);
-				this.pdfMeta.setEnrichMetadata(mustEnrich);
-				step.setEnrichMetadata(mustEnrich);
-			}
-
-			// search optional xpath to get pdf label
-			String optionPdfIdentifier = derivateSection + "." + DefaultConfiguration.Key.PDF_MODS_IDENTIFIER_XPATH;
-			Optional<String> optPdfIdentifier = extractValue(conf, optionPdfIdentifier, String.class);
-			if(optPdfIdentifier.isPresent()) {
-				String pdfIdentXPath = optPdfIdentifier.get();
-				LOGGER.debug("set pdf identifier xpath '{}'", pdfIdentXPath);
-				this.pdfMeta.setModsIdentifierXPath(pdfIdentXPath);
-			}
-
 			this.derivateSteps.add(step);
 			nSection++;
 			derivateSection = String.format("derivate_%02d", nSection);
@@ -461,23 +234,256 @@ public class DerivansConfiguration {
 	}
 
 	/**
-	 * Default Steps supposed to work out-of-the-box, even without any METS-data at hand.
-	 * @throws DigitalDerivansException
+	 * Default Steps supposed to work out-of-the-box, even without any METS-data at
+	 * hand.
+	 * 
+	 * Take care of optional provided CLI params.
+	 * 
 	 */
-	private void provideDefaultSteps() throws DigitalDerivansException {
-		DerivateStep createMins = new DerivateStep();
-		createMins.setInputPath(this.getInitialImageDir());
+	private void provideDefaultSteps() {
+		DerivateStepImage createMins = new DerivateStepImage();
+		var subDir = DefaultConfiguration.DEFAULT_PATH_INPUT_IMAGES;
+		if (this.paramDirImage != null) {
+			subDir = this.paramDirImage;
+		}
+		createMins.setInputPath(this.pathDir.resolve(subDir));
 		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
 		createMins.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL));
 		createMins.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
 		createMins.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
 		createMins.setDerivateType(DerivateType.JPG);
 		this.derivateSteps.add(createMins);
-		DerivateStep createPdf = new DerivateStep();
+		DerivateStepPDF createPdf = new DerivateStepPDF();
 		createPdf.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL));
 		createPdf.setDerivateType(DerivateType.PDF);
 		createPdf.setOutputType("pdf");
 		createPdf.setOutputPath(this.pathDir);
+		if (this.paramDirOCR != null) {
+			createPdf.setFulltextInput(this.paramDirOCR.toString());
+		}
 		this.derivateSteps.add(createPdf);
+	}
+
+
+	/**
+	 * 
+	 * Determine Derivate Step Type by generated Output
+	 * 
+	 * @param conf
+	 * @param stepSection
+	 * @return derivateStep
+	 * @throws DigitalDerivansException
+	 */
+	public DerivateStep getStepFor(INIConfiguration conf, String stepSection) throws DigitalDerivansException {
+		String keyOutType = stepSection + ".output_type";
+		String outPutType = null;
+		Optional<String> optOutType = extractValue(conf, keyOutType, String.class);
+		if (optOutType.isPresent()) {
+			outPutType = optOutType.get();
+		} else {
+			outPutType = DefaultConfiguration.DEFAULT_OUTPUT_TYPE;
+		}
+		DerivateStep step = null;
+		if (outPutType.equalsIgnoreCase(DerivateType.PDF.toString())) {
+			step = new DerivateStepPDF();
+			step.setDerivateType(DerivateType.PDF);
+		} else if (outPutType.startsWith(DerivateType.JPG.toString().toLowerCase())) {
+			step = new DerivateStepImage();
+			step.setDerivateType(DerivateType.JPG);
+			if (isFooterDerivateSection(conf, stepSection)) {
+				step = new DerivateStepImageFooter((DerivateStepImage) step);
+			}
+		} else {
+			throw new DigitalDerivansException("No DerivateType for " + stepSection + "!");
+		}
+		step.setOutputType(outPutType);
+		return step;
+	}
+
+	/**
+	 * 
+	 * Create {@link DerivateStep derivate step instance}
+	 * along with some basic information
+	 * 
+	 * @param conf
+	 * @param stepSection
+	 * @return
+	 * @throws DigitalDerivansException
+	 */
+	public DerivateStep getDerivateStepCommons(INIConfiguration conf, String stepSection)
+			throws DigitalDerivansException {
+
+		DerivateStep step = getStepFor(conf, stepSection);
+		// input dir
+		String keyInputDir = stepSection + ".input_dir";
+		Optional<String> optInputDir = extractValue(conf, keyInputDir, String.class);
+		if (optInputDir.isPresent()) {
+			var inputDir = Path.of(optInputDir.get());
+			if (!inputDir.isAbsolute()) {
+				inputDir = this.pathDir.resolve(inputDir);
+			}
+			step.setInputPath(inputDir);
+		}
+		// output dir
+		String keyOutputDir = stepSection + ".output_dir";
+		Optional<String> optOutputDir = extractValue(conf, keyOutputDir, String.class);
+		if (optOutputDir.isPresent()) {
+			Path output = Path.of(optOutputDir.get());
+			if (".".equals(output.toString()) || output.toString().isBlank()) {
+				output = this.pathDir;
+			} else if (! output.isAbsolute()) {
+				output = this.pathDir.resolve(optOutputDir.get());
+			}
+			step.setOutputPath(output);
+		}
+		// optional output_prefix (used for additional derivates)
+		String keyOutPrefix = stepSection + ".output_prefix";
+		Optional<String> optOutPrefix = extractValue(conf, keyOutPrefix, String.class);
+		if (optOutPrefix.isPresent()) {
+			String prefix = optOutPrefix.get();
+			step.setOutputPrefix(prefix);
+		}
+		return step;
+	}
+
+	protected void enrichImageDerivateInformation(DerivateStepImage step, INIConfiguration conf, String stepSection)
+	throws DigitalDerivansException {
+		// poolsize
+		String keyPoolsize = stepSection + ".poolsize";
+		Optional<Integer> optPoolsize = extractValue(conf, keyPoolsize, Integer.class);
+		if (optPoolsize.isPresent()) {
+			step.setPoolsize(optPoolsize.get());
+		} else {
+			if (this.getPoolsize() != null) {
+				step.setPoolsize(this.getPoolsize());
+			}
+		}
+		// quality
+		String keyQuality = stepSection + ".quality";
+		Optional<Integer> valQuality = extractValue(conf, keyQuality, Integer.class);
+		if (valQuality.isPresent()) {
+			step.setQuality(valQuality.get());
+		}
+
+		// maximal dimension, width or height
+		String keyMaximal = stepSection + ".maximal";
+		Optional<Integer> valMaximal = extractValue(conf, keyMaximal, Integer.class);
+		if (valMaximal.isPresent()) {
+			step.setMaximal(valMaximal.get());
+		}
+	}
+
+	protected void enrichImageFooterInformation(DerivateStepImageFooter step, INIConfiguration conf,
+			String stepSection) {
+		String keyTemplate = stepSection + ".footer_template";
+		Optional<String> optTemplate = extractValue(conf, keyTemplate, String.class);
+		if (optTemplate.isPresent()) {
+			Path pathTemplate = Path.of(optTemplate.get());
+			if (!pathTemplate.isAbsolute()) {
+				pathTemplate = this.pathConfigFile.getParent().resolve(pathTemplate);
+			}
+			if (Files.exists(pathTemplate)) {
+				LOGGER.info("set footer template '{}'", pathTemplate);
+				step.setPathTemplate(pathTemplate);
+			} else {
+				LOGGER.warn("invalid footer template '{}'", pathTemplate);
+			}
+			step.setDerivateType(DerivateType.JPG_FOOTER);
+			// image footer label copyright
+			String keyFooterCopy = stepSection + ".footer_label_copyright";
+			Optional<String> optFooterCopy = extractValue(conf, keyFooterCopy, String.class);
+			if (optFooterCopy.isPresent()) {
+				step.setFooterLabel(optFooterCopy.get());
+			}
+		}
+	}
+
+	protected void enrichPDFDerivateInformation(DerivateStepPDF step, INIConfiguration conf, String section) {
+		String keyMetadataCreator = section + ".metadata_creator";
+		Optional<String> optCreator = extractValue(conf, keyMetadataCreator, String.class);
+		if (optCreator.isPresent()) {
+			step.setCreator(optCreator);
+		}
+
+		// metadata keyword pdf
+		String keyMetadataKeyword = section + ".metadata_keywords";
+		Optional<String> optKeywords = extractValue(conf, keyMetadataKeyword, String.class);
+		if (optKeywords.isPresent()) {
+			step.setKeywords(optKeywords);
+		}
+
+		// metadata licence
+		String keyMetadataLicense = section + ".metadata_license";
+		Optional<String> optLicense = extractValue(conf, keyMetadataLicense, String.class);
+		if (optLicense.isPresent()) {
+			step.setLicense(optLicense);
+		}
+
+		// pdf image dpi for scaling image data
+		String keyPdfImageDPI = section + ".image_dpi";
+		Optional<String> optImageDpi = extractValue(conf, keyPdfImageDPI, String.class);
+		if (optImageDpi.isPresent()) {
+			step.setImageDpi(Integer.valueOf(optImageDpi.get()));
+		}
+
+		// on which level optional text to render: per word, per line ... ?
+		String keyPdfRenderLvl = section + ".render_text_level";
+		Optional<String> optRenderLvl = extractValue(conf, keyPdfRenderLvl, String.class);
+		if (optRenderLvl.isPresent()) {
+			LOGGER.debug("set render text level '{}'", optRenderLvl.get());
+			step.setRenderLevel(optRenderLvl.get());
+		}
+
+		// on which level optional text to render: per word, per line ... ?
+		String keyPdfRenderVis = section + ".render_text_visibility";
+		Optional<String> optRenderVis = extractValue(conf, keyPdfRenderVis, String.class);
+		if (optRenderVis.isPresent()) {
+			LOGGER.debug("set render text visibility '{}'", optRenderVis.get());
+			step.setRenderModus(optRenderVis.get());
+		}
+
+		// disable automated enrichment of created PDF file into metadata file
+		String keyPdfEnrichMeta = section + "." + DefaultConfiguration.Key.PDF_ENRICH_METADATA;
+		Optional<String> optEnrichMeta = extractValue(conf, keyPdfEnrichMeta, String.class);
+		if (optEnrichMeta.isPresent()) {
+			String enrichMetaStr = optEnrichMeta.get();
+			boolean mustEnrich = Boolean.parseBoolean(enrichMetaStr);
+			LOGGER.debug("try to set enrich metadata to '{}'", mustEnrich);
+			step.setEnrichMetadata(mustEnrich);
+			step.setEnrichMetadata(mustEnrich);
+		}
+
+		// search optional xpath to get pdf label
+		String optionPdfIdentifier = section + "." + DefaultConfiguration.Key.PDF_MODS_IDENTIFIER_XPATH;
+		Optional<String> optPdfIdentifier = extractValue(conf, optionPdfIdentifier, String.class);
+		if (optPdfIdentifier.isPresent()) {
+			String pdfIdentXPath = optPdfIdentifier.get();
+			LOGGER.debug("set pdf identifier xpath '{}'", pdfIdentXPath);
+			step.setModsIdentifierXPath(pdfIdentXPath);
+		}
+
+		// change pdf fulltext input filegroup/path
+		String optionPdfFulltext = section + "." + DefaultConfiguration.Key.PDF_METS_FILEGROUP_FULLTEXT;
+		Optional<String> optPdfFulltext = extractValue(conf, optionPdfFulltext, String.class);
+		if (optPdfFulltext.isPresent()) {
+			String pdfFulltext = optPdfFulltext.get();
+			LOGGER.debug("set fulltext input for pdf '{}'", pdfFulltext);
+			step.setModsIdentifierXPath(pdfFulltext);
+		}
+	}
+
+	private static boolean isImageDerivate(DerivateStep step) {
+		var aType = step.getDerivateType();
+		return aType == DerivateType.IMAGE || aType == DerivateType.JPG || aType == DerivateType.JPG_FOOTER;
+	}
+
+	private static boolean isFooterDerivateSection(INIConfiguration conf, String section) {
+		Iterator<String> itKeys = conf.configurationAt(section).getKeys();
+		while (itKeys.hasNext()) {
+			if (itKeys.next().contains("footer")) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

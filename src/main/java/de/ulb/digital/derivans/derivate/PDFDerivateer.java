@@ -43,6 +43,7 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 import de.ulb.digital.derivans.model.ocr.OCRToken;
+import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
  * 
@@ -63,7 +64,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private AtomicInteger nPagesWithOCR = new AtomicInteger();
 
-	private PDFMetaInformation pdfMeta;
+	// private PDFMetaInformation pdfMeta;
 
 	public static final float ITEXT_ASSUMES_DPI = 72.0f;
 
@@ -77,6 +78,8 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private String renderModus;
 
+	private DerivateStepPDF derivateStep;
+
 	/**
 	 * 
 	 * Create new instance on top of {@link BaseDerivateer}
@@ -87,16 +90,20 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param pages
 	 */
 	public PDFDerivateer(BaseDerivateer basic, DigitalStructureTree tree, List<DigitalPage> pages,
-			PDFMetaInformation metaInfo) throws DigitalDerivansException {
+			DerivateStepPDF derivateStep) throws DigitalDerivansException {
 		super(basic.getInput(), basic.getOutput());
 		this.structure = tree;
 		this.digitalPages = pages;
-		this.pdfMeta = metaInfo;
-		this.setDpi(metaInfo.getImageDpi());
-		this.debugRender = metaInfo.getDebugRender();
-		this.renderLevel = metaInfo.getRenderLevel();
-		this.renderModus = metaInfo.getRenderModus();
+		this.derivateStep = derivateStep;
+		this.setDpi(derivateStep.getImageDpi());
+		this.debugRender = derivateStep.getDebugRender();
+		this.renderLevel = derivateStep.getRenderLevel();
+		this.renderModus = derivateStep.getRenderModus();
 		LOGGER.info("debugRender: {}", this.debugRender);
+	}
+
+	public DerivateStepPDF getConfig() {
+		return this.derivateStep;
 	}
 
 	private void setDpi(int dpi) throws DigitalDerivansException {
@@ -413,36 +420,36 @@ public class PDFDerivateer extends BaseDerivateer {
 
 		PdfWriter writer = null;
 		try (FileOutputStream fos = new FileOutputStream(pathToPDF.toFile())) {
-			if (this.pdfMeta.getConformanceLevel() != null && !this.debugRender) {
-				PdfAConformanceLevel pdfaLevel = PdfAConformanceLevel.valueOf(this.pdfMeta.getConformanceLevel());
+			if (this.derivateStep.getConformanceLevel() != null && !this.debugRender) {
+				PdfAConformanceLevel pdfaLevel = PdfAConformanceLevel.valueOf(this.derivateStep.getConformanceLevel());
 				writer = PdfAWriter.getInstance(document, fos, pdfaLevel);
 			} else {
 				writer = PdfWriter.getInstance(document, fos);
 			}
 
 			// metadata must be added afterwards creation of pdfWriter
-			document.addTitle(this.pdfMeta.getTitle());
-			document.addAuthor(this.pdfMeta.getAuthor());
-			Optional<String> optCreator = this.pdfMeta.getCreator();
+			document.addTitle(this.derivateStep.getTitle());
+			document.addAuthor(this.derivateStep.getAuthor());
+			Optional<String> optCreator = this.derivateStep.getCreator();
 			if (optCreator.isPresent()) {
 				document.addCreator(optCreator.get());
 			}
-			Optional<String> optKeywords = this.pdfMeta.getKeywords();
+			Optional<String> optKeywords = this.derivateStep.getKeywords();
 			if (optKeywords.isPresent()) {
 				document.addKeywords(optKeywords.get());
 			}
 			// custom metadata entry -> com.itextpdf.text.Header
-			Optional<String> optLicense = this.pdfMeta.getLicense();
+			Optional<String> optLicense = this.derivateStep.getLicense();
 			if (optLicense.isPresent()) {
 				document.add(new Header("Access condition", optLicense.get()));
 			}
-			document.add(new Header("Published", this.pdfMeta.getPublicationYear()));
+			document.add(new Header("Published", this.derivateStep.getPublicationYear()));
 
 			writer.createXmpMetadata();
 			document.open();
 			// add profile if pdf-a required
 			// not possible in debug mode
-			if (this.pdfMeta.getConformanceLevel() != null && !this.debugRender) {
+			if (this.derivateStep.getConformanceLevel() != null && !this.debugRender) {
 				String iccPath = "icc/sRGB_CS_profile.icm";
 				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPath);
 				ICC_Profile icc = ICC_Profile.getInstance(is);

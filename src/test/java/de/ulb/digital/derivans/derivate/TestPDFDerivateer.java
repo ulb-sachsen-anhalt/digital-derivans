@@ -30,14 +30,15 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestDerivans;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DerivansData;
-import de.ulb.digital.derivans.model.DerivateStep;
-import de.ulb.digital.derivans.model.DerivateType;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
 import de.ulb.digital.derivans.model.PDFPageformation;
 import de.ulb.digital.derivans.model.ocr.OCRData;
+import de.ulb.digital.derivans.model.step.DerivateStep;
+import de.ulb.digital.derivans.model.step.DerivateStepPDF;
+import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -89,7 +90,7 @@ public class TestPDFDerivateer {
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
 		BaseDerivateer base = new BaseDerivateer(input, output);
 		int pdfImageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
-		PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setImageDpi(pdfImageDpi);
 		pdfMeta.mergeDescriptiveData(dd);
 		IDerivateer handler = new PDFDerivateer(base, get(), pages, pdfMeta);
@@ -106,7 +107,7 @@ public class TestPDFDerivateer {
 		// no default creator information exists
 		assertTrue(pdfMetaInformation.getCreator().isEmpty());
 	}
-	
+
 	@Test
 	void testCreatePDFWithDifferentSizeImages(@TempDir Path tempDir) throws Exception {
 
@@ -118,7 +119,7 @@ public class TestPDFDerivateer {
 		for (int i = 1; i <= n_pages; i++) {
 			String imageName = String.format("%04d.jpg", i);
 			Path jpgFile = pathImages.resolve(imageName);
-			int width = (i % 2 == 0) ? 500 : 625; 
+			int width = (i % 2 == 0) ? 500 : 625;
 			int heigth = (i % 2 == 1) ? 600 : 700;
 			BufferedImage bi2 = new BufferedImage(width, heigth, BufferedImage.TYPE_3BYTE_BGR);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
@@ -137,7 +138,7 @@ public class TestPDFDerivateer {
 		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
 		BaseDerivateer base = new BaseDerivateer(input, output);
-		PDFMetaInformation pdfMeta= new PDFMetaInformation();
+		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setImageDpi(300);
 		IDerivateer handler = new PDFDerivateer(base, tree, pages, pdfMeta);
 		handler.create();
@@ -149,9 +150,9 @@ public class TestPDFDerivateer {
 		assertEquals(10, pagesInfo.size());
 		assertEquals(1, pagesInfo.get(0).getNumber());
 		// adjusted because differences between images and document dimensions
-		assertEquals(150, pagesInfo.get(0).getDimension().width);  // was: 650
+		assertEquals(150, pagesInfo.get(0).getDimension().width); // was: 650
 		assertEquals(144, pagesInfo.get(0).getDimension().height); // was: 600
-		assertEquals(120, pagesInfo.get(5).getDimension().width);  // was: 500
+		assertEquals(120, pagesInfo.get(5).getDimension().width); // was: 500
 		assertEquals(168, pagesInfo.get(5).getDimension().height); // was: 700
 	}
 
@@ -184,7 +185,7 @@ public class TestPDFDerivateer {
 		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
 		BaseDerivateer base = new BaseDerivateer(input, output);
-		PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setConformanceLevel(level);
 		pdfMeta.setImageDpi(300);
 		pdfMeta.mergeDescriptiveData(dd);
@@ -220,7 +221,7 @@ public class TestPDFDerivateer {
 			g2d.fillRect(0, 0, 575, 799);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
 			DigitalPage e = new DigitalPage(i, imageName);
-			
+
 			// create some ocr data
 			List<OCRData.Text> texts1 = new ArrayList<>();
 			texts1.add(new OCRData.Text("Hello", new Rectangle(100, 100, 100, 50)));
@@ -246,12 +247,12 @@ public class TestPDFDerivateer {
 			texts3.add(new OCRData.Text("chiao", new Rectangle(420, 300, 50, 15)));
 			texts3.add(new OCRData.Text("chiao!", new Rectangle(480, 300, 50, 15)));
 			List<OCRData.Textline> lines = List.of(
-					new OCRData.Textline(texts1), 
+					new OCRData.Textline(texts1),
 					new OCRData.Textline(texts4),
 					new OCRData.Textline(texts2),
 					new OCRData.Textline(texts3));
 			OCRData ocrData = new OCRData(lines, new Dimension(575, 799));
-			
+
 			e.setOcrData(ocrData);
 			pages.add(e);
 		}
@@ -266,7 +267,7 @@ public class TestPDFDerivateer {
 		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
 		BaseDerivateer base = new BaseDerivateer(input, output);
-		PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setConformanceLevel(level);
 		pdfMeta.setImageDpi(144);
 		pdfMeta.mergeDescriptiveData(dd);
@@ -276,7 +277,7 @@ public class TestPDFDerivateer {
 
 		PDFInspector inspector = new PDFInspector(outPath);
 		PDFMetaInformation pdfMetaInformation = inspector.getPDFMetaInformation();
-		
+
 		// assert
 		assertEquals(1, result);
 		assertTrue(Files.exists(outPath));
@@ -305,14 +306,15 @@ public class TestPDFDerivateer {
 
 	/**
 	 * 
-	 * Ensure that OCR Data is really taken into account
+	 * Ensure that OCR Data is taken into account
+	 * if running in local mode
 	 * 
 	 * @param tempDir
 	 * @throws Exception
 	 */
 	@Test
 	void testTextlayerFromFulltextDirectoryOnly(@TempDir Path tempDir) throws Exception {
-		
+
 		Path pathTarget = tempDir.resolve("zd1");
 
 		// arrange ocr data
@@ -334,21 +336,21 @@ public class TestPDFDerivateer {
 		DerivansData input = new DerivansData(pathImageMax, DerivateType.JPG);
 		DerivansData output = new DerivansData(pathTarget, DerivateType.PDF);
 		BaseDerivateer base = new BaseDerivateer(input, output);
-		
+
 		// arrange pdf path and pages
 		DerivansPathResolver resolver = new DerivansPathResolver(pathTarget);
-		DerivateStep step = new DerivateStep();
+		DerivateStepPDF step = new DerivateStepPDF();
 		step.setOutputPath(pathTarget);
 		step.setInputPath(pathImageMax);
 		DescriptiveData dd = new DescriptiveData();
 		DigitalStructureTree structure = new DigitalStructureTree();
 		List<DigitalPage> pages = resolver.resolveFromStep(step);
-		resolver.enrichOCRFromFilesystem(pages);
-		PDFMetaInformation pdfMeta = new PDFMetaInformation();
-		pdfMeta.mergeDescriptiveData(dd);
-		
+		resolver.enrichOCRFromFilesystem(pages, targetDir);
+		// PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		step.mergeDescriptiveData(dd);
+
 		// go
-		PDFDerivateer handler = new PDFDerivateer(base, structure, pages, pdfMeta);
+		PDFDerivateer handler = new PDFDerivateer(base, structure, pages, step);
 
 		// act
 		int result = handler.create();
@@ -359,15 +361,17 @@ public class TestPDFDerivateer {
 		assertTrue(Files.exists(pdfWritten));
 		assertEquals(1, handler.getNPagesWithOCR().get());
 	}
-	
+
 	/**
 	 * 
-	 * Testdata from VL HD ID 369765, page 316642  
+	 * Testdata from VL HD ID 369765, page 316642
 	 * 
-	 * <String CONTENT="⸗" HEIGHT="12" HPOS="939" ID="region0000_line0021_word0000" VPOS="1293" WIDTH="14"/>
+	 * <String CONTENT="⸗" HEIGHT="12" HPOS="939" ID="region0000_line0021_word0000"
+	 * VPOS="1293" WIDTH="14"/>
 	 * 
 	 * Please note:
-	 * 	iText5 is not able to calculate a valid length for this char, therefore it crashes
+	 * iText5 is not able to calculate a valid length for this char, therefore it
+	 * crashes
 	 * 
 	 * @throws Exception
 	 */
@@ -376,10 +380,10 @@ public class TestPDFDerivateer {
 		String fontPath = "src/main/resources/ttf/DejaVuSans.ttf";
 		assumeTrue(Files.exists(Path.of(fontPath)));
 		BaseFont font = new FontHandler().forPDF(fontPath);
-		
-		// 31662.xml 
+
+		// 31662.xml
 		String text = "⸗";
-		
+
 		assertFalse(Character.isAlphabetic(text.toCharArray()[0]));
 		// act
 		float size = PDFDerivateer.calculateFontSize(font, text, 14, 12);
@@ -388,9 +392,10 @@ public class TestPDFDerivateer {
 
 	/**
 	 * 
-	 * Testdata from VL HD ID 369765, page 316642  
+	 * Testdata from VL HD ID 369765, page 316642
 	 * 
-	 * <String CONTENT="/" HEIGHT="45" HPOS="394" ID="region0000_line0023_word0001" VPOS="1372" WIDTH="11"/>
+	 * <String CONTENT="/" HEIGHT="45" HPOS="394" ID="region0000_line0023_word0001"
+	 * VPOS="1372" WIDTH="11"/>
 	 * 
 	 * @throws Exception
 	 */
@@ -399,16 +404,15 @@ public class TestPDFDerivateer {
 		String fontPath = "src/main/resources/ttf/DejaVuSans.ttf";
 		assumeTrue(Files.exists(Path.of(fontPath)));
 		BaseFont font = new FontHandler().forPDF(fontPath);
-		
-		// 316642.xml  
+
+		// 316642.xml
 		String backslash = "/";
-		
+
 		// act
 		assertFalse(Character.isAlphabetic(backslash.toCharArray()[0]));
 		float size = PDFDerivateer.calculateFontSize(font, backslash, 45, 11);
 		assertTrue(size > 3.0);
 	}
-
 
 	@Test
 	void testInvalidImageDPI() throws Exception {
@@ -419,15 +423,15 @@ public class TestPDFDerivateer {
 		BaseDerivateer base = new BaseDerivateer(input, output);
 		DescriptiveData dd = new DescriptiveData();
 		DigitalStructureTree structure = new DigitalStructureTree();
-		PDFMetaInformation pdfMeta = new PDFMetaInformation();
+		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.mergeDescriptiveData(dd);
 		pdfMeta.setImageDpi(1);
-		
+
 		// act
 		var thrown = assertThrows(DigitalDerivansException.class, () -> {
 			new PDFDerivateer(base, structure, new ArrayList<>(), pdfMeta);
 		});
-		
+
 		assertTrue(thrown.getMessage().contains("invalid dpi: '1'"));
 
 	}

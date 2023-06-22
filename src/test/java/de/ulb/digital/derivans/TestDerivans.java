@@ -30,7 +30,6 @@ import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.Namespace;
 import org.jdom2.filter.ElementFilter;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
@@ -44,6 +43,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.model.step.DerivateStepImage;
 
 /**
  * 
@@ -51,8 +51,6 @@ import de.ulb.digital.derivans.data.IMetadataStore;
  *
  */
 public class TestDerivans {
-
-	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 
 	@Test
 	@Order(1)
@@ -251,7 +249,7 @@ public class TestDerivans {
 		int maximal = 2339; // A4 200 DPI ok
 //		int maximal = 1754; // A4 150 DPI tw, print vanishes over top up to "Sero ..."
 //		int maximal = 1170; // A4 100 DPI ok with smaller text
-		dc.getDerivateSteps().get(1).setMaximal(maximal);
+		((DerivateStepImage)dc.getDerivateSteps().get(1)).setMaximal(maximal);
 		Derivans derivans = new Derivans(dc);
 
 		// act
@@ -340,7 +338,7 @@ public class TestDerivans {
 		Path metsTarget = pathTarget.resolve("737429.xml");
 		Files.copy(TestResource.HD_Aa_737429.get(), metsTarget);
 		Path imagePath = pathTarget.resolve("MAX");
-		generateJpgsFromList(imagePath, 2367, 3737, List.of("737434", "737436", "737437", "737438"));
+		generateJpgsFromList(imagePath, 475, 750, List.of("737434", "737436", "737437", "737438"));
 		return pathTarget;
 	}
 
@@ -411,7 +409,7 @@ public class TestDerivans {
 
 	public XPathExpression<Element> generateXpression(String xpathStr) {
 		XPathBuilder<Element> builder = new XPathBuilder<Element>(xpathStr, Filters.element());
-		builder.setNamespace(NS_METS);
+		builder.setNamespace(IMetadataStore.NS_METS);
 		return builder.compileWith(XPathFactory.instance());
 	}
 

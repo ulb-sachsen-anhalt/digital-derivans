@@ -18,21 +18,35 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
  */
 public interface IMetadataStore {
 
-	// METS file group for images with maximal resolution
-	String DEFAULT_METS_FILEGROUP_MAX = "MAX";
-	// METS file group for OCR-data with, most likely,
-	// MIMETYPE="application/alto+xml"
-	String DEFAULT_METS_FILEGROUP_FULLTEXT = "FULLTEXT";
-	// Mark unresolved information about author, title, ...
+	/*
+	 * Default METS file group for images with maximal resolution
+	 */
+	String DEFAULT_INPUT_IMAGE = "MAX";
+
+	/*
+	 * Default METS file group for OCR-data with, most likely,
+	 * MIMETYPE="application/alto+xml"
+	 */
+	String DEFAULT_INPUT_FULLTEXT = "FULLTEXT";
+
+	/*
+	 * Mark all unresolved information about author, title, ...
+	 */
 	String UNKNOWN = "n.a.";
+
+	/*
+	 * XML Namespaces for METS/MODS parsing
+	 */
 	Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
 	Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 
 	/**
 	 * 
-	 * Provide specific subset of information from metadata section.
+	 * Provide specific subset of information from descriptive 
+	 * metadata section.
 	 * 
-	 * May contain information about official title, author and alike.
+	 * May contain information about title, author, 
+	 * URN of the digital object and alike.
 	 * 
 	 * @return {@link DescriptiveData}
 	 * @throws {@link DigitalDerivansException}
@@ -41,7 +55,8 @@ public interface IMetadataStore {
 
 	/**
 	 * 
-	 * Create recursive data structure used as Outline for PDF
+	 * Create recursive data structure used for rendering
+	 * Outline of PDF.
 	 * 
 	 * @return {@link DigitalStructureTree}
 	 * @throws {@link DigitalDerivansException}
@@ -55,7 +70,9 @@ public interface IMetadataStore {
 	 * available.
 	 * 
 	 * If no METS/MODS is available, use filenames in corresponding directory to
-	 * create page order. Please note, that this can lead to unexpected results.
+	 * create page order. Please note, that this can lead to unexpected results,
+	 * since it is assumed, that filenames for images and corresponding
+	 * OCR-data match exactly by filename (without concerning file extensions).
 	 * 
 	 * @return ordered list of {@link DigitalPage pages}
 	 * 
@@ -64,7 +81,7 @@ public interface IMetadataStore {
 
 	/**
 	 * 
-	 * Enrich Metadata with
+	 * Enrich generated PDF file in METS metadata with
 	 * <ul>
 	 * <li>FileGroup USE="DOWNLOAD" that holds PDF information</li>
 	 * <li>metsHdr-Agent entry for Digital Derivans Tool</li>

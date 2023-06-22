@@ -19,6 +19,7 @@ import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
  * 
@@ -48,7 +49,8 @@ class TestMetadataStoreSLUB {
 
 		// act
 		DerivansConfiguration config = new DerivansConfiguration(dp);
-		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), config);
+//		DerivateStepPDF stepPDF = config.getDerivateSteps();
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
 		var dd321094271 = slub321094271.getDescriptiveData();
 
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
@@ -84,8 +86,8 @@ class TestMetadataStoreSLUB {
 		dp.setPathConfig(conf);
 		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
 		DerivansConfiguration config = new DerivansConfiguration(dp);
-		config.getPdfMetainformation().setModsIdentifierXPath("");
-		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), config);
+		((DerivateStepPDF)config.getDerivateSteps().get(2)).setModsIdentifierXPath("");
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
 
 		// act
 		var expectedExc = assertThrows(DigitalDerivansException.class, () -> slub321094271.getDescriptiveData());
@@ -111,8 +113,8 @@ class TestMetadataStoreSLUB {
 		DerivansConfiguration config = new DerivansConfiguration(dp);
 
 		// act
-		var pdfMeta = config.getPdfMetainformation();
-		var expectedExc = assertThrows(NullPointerException.class, () -> pdfMeta.setModsIdentifierXPath(null));
+		var pdfStepCfg = ((DerivateStepPDF)config.getDerivateSteps().get(2));
+		var expectedExc = assertThrows(NullPointerException.class, () -> pdfStepCfg.setModsIdentifierXPath(null));
 
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
 		assertNull(expectedExc.getMessage());
@@ -133,8 +135,8 @@ class TestMetadataStoreSLUB {
 		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
 		DerivansConfiguration config = new DerivansConfiguration(dp);
 		String xPath = "//mods:mods/mods:titleInfo/mods:title";
-		config.getPdfMetainformation().setModsIdentifierXPath(xPath);
-		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), config);
+		((DerivateStepPDF)config.getDerivateSteps().get(2)).setModsIdentifierXPath(xPath);
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
 
 		// act
 		var dd321094271 = slub321094271.getDescriptiveData();
@@ -157,8 +159,8 @@ class TestMetadataStoreSLUB {
 		dp.setPathConfig(conf);
 		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
 		DerivansConfiguration config = new DerivansConfiguration(dp);
-		config.getPdfMetainformation().setModsIdentifierXPath("//mets:dmdSec");
-		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), config);
+		((DerivateStepPDF)config.getDerivateSteps().get(2)).setModsIdentifierXPath("//mets:dmdSec");
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
 
 		// act
 		var expectedExc = assertThrows(DigitalDerivansException.class, () -> slub321094271.getDescriptiveData());
@@ -186,7 +188,7 @@ class TestMetadataStoreSLUB {
 		var dcMock = Mockito.mock(DerivansConfiguration.class);
 		// we only need the last Path segment, so stay tuned
 		when(dcMock.getInitialImageDir()).thenReturn(Path.of("foo/bar/ORIGINAL"));
-		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), dcMock);
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
 
 		// act
 		List<DigitalPage> pages = slub321094271.getDigitalPagesInOrder();
@@ -220,7 +222,7 @@ class TestMetadataStoreSLUB {
 		var dcMock = Mockito.mock(DerivansConfiguration.class);
 		// we only need the last Path segment, so stay tuned
 		when(dcMock.getInitialImageDir()).thenReturn(Path.of("foo/bar/ORIGINAL"));
-		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get(), dcMock);
+		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
 
 		DigitalStructureTree dst = slub321094271.getStructure();
 		assertNotNull(dst);

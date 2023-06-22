@@ -15,6 +15,14 @@ import org.junit.jupiter.api.io.TempDir;
  */
 class TestApp {
 
+	/**
+	 * 
+	 * Testing the application with bare bone config (=missing
+	 * using default, implicite steps)
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	void testAppOdeFallbackConfiguration(@TempDir Path tempDir) throws Exception {
 

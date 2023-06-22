@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.model;
+package de.ulb.digital.derivans.model.step;
 
 /**
  * 

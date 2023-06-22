@@ -7,10 +7,13 @@ import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.ParserProperties;
 
 import static de.ulb.digital.derivans.config.DefaultConfiguration.*;
+import static de.ulb.digital.derivans.data.IMetadataStore.*;
 
 /**
  * 
- * Application Parameters
+ * Application Parameters.
+ * 
+ * Can be set global on CLI-level.
  * 
  * @author hartwig
  *
@@ -36,21 +39,21 @@ public class DerivansParameter {
 
 	@Option(name = "-i", aliases = { "--images-subdir" }, 
 		required = false,
-		usage = "Path to image directory.\n" +
+		usage = "Path to inital image directory.\n" +
 			"Absolute path or path relative to input directory.\n" +
 			"If metadata present, stands for required image fileGroup label,\n" + 
-			"which defaults to '" + DEFAULT_INPUT_IMAGES_LABEL + "'.\n" + 
-			"If no metadata present, defaults to '" + DEFAULT_INPUT_IMAGES_LABEL + "'.\n"
+			"which defaults to '" + DEFAULT_INPUT_IMAGE + "'.\n" + 
+			"If no metadata present, defaults to '" + DEFAULT_INPUT_IMAGE + "'.\n"
 	)
 	private Path pathDirImages;
 	
 	@Option(name = "-o", aliases = { "--ocr-subdir" }, 
 		required = false,
 		usage = "Path to ocr-data directory.\n" + 
-			"Absolute path or path relative to input directory.\n" +
-			"If metadata present, stands for required ocr fileGroup label,\n" + 
-			"which defaults to '" + DEFAULT_INPUT_FULLTEXT_LABEL + "'.\n" + 
-			"If no metadata present, defaults to '" + DEFAULT_INPUT_FULLTEXT_LABEL + "'.\n"
+			"Absolute path or path relative to OCR-data input directory.\n" +
+			"If metadata present, may override ocr fileGroup label,\n" + 
+			"which defaults otherwise to '" + DEFAULT_INPUT_FULLTEXT + "'.\n" + 
+			"If no metadata present, defaults to '" + DEFAULT_INPUT_FULLTEXT + "'.\n"
 	)
 	private Path pathDirOcr;
 	

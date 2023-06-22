@@ -15,6 +15,7 @@ import org.jdom2.Element;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DescriptiveData;
+import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
  * 
@@ -38,6 +39,8 @@ class DescriptiveDataBuilder {
 	private String accessCondition = IMetadataStore.UNKNOWN;
 
 	private MetadataStore store;
+
+	private DerivateStepPDF stepPDFConfig;
 
 	private Element primeMods;
 
@@ -193,9 +196,9 @@ class DescriptiveDataBuilder {
 		if (this.primeMods == null) {
 			return null;
 		}
-		if (this.store != null && this.store.getConfiguration() != null && this.store.getConfiguration().getPdfMetainformation() != null) {
-			var config = this.store.getConfiguration();
-			var optXPath = config.getPdfMetainformation().getModsIdentifierXPath();
+		if (this.stepPDFConfig != null) {
+			var conf = this.stepPDFConfig;
+			var optXPath = conf.getModsIdentifierXPath();
 			if (optXPath.isPresent()) {
 				String xPath = optXPath.get();
 				Element match = this.store.getMetadataHandler().evaluateFirst(xPath);
@@ -297,8 +300,12 @@ class DescriptiveDataBuilder {
 	}
 
 	public void setMetadataStore(MetadataStore store) {
-		this.store = store;
+		// this.store = store;
 		this.primeMods = store.getMetadataHandler().getPrimaryMods();
+	}
+
+	public void setStepConfiguration(DerivateStepPDF step) {
+		this.stepPDFConfig = step;
 	}
 }
 

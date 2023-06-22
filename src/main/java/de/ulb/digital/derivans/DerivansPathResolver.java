@@ -18,11 +18,11 @@ import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
-import de.ulb.digital.derivans.model.DerivateStep;
-import de.ulb.digital.derivans.model.DerivateType;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.ocr.OCRData;
+import de.ulb.digital.derivans.model.step.DerivateStep;
+import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -110,23 +110,21 @@ public class DerivansPathResolver {
 	/**
 	 * 
 	 * Try to match OCR Files from {@link DefaultConfiguration#DEFAULT_INPUT_FULLTEXT}
-	 * by name in the file system only.
+	 * _by name_ in file system only.
 	 * 
 	 * @param pages
 	 * @return
 	 */
-	public List<DigitalPage> enrichOCRFromFilesystem(List<DigitalPage> pages) {
+	public List<DigitalPage> enrichOCRFromFilesystem(List<DigitalPage> pages, Path ocrPath) {
 		if(this.rootDir == null) {
 			LOGGER.warn("cant enrich ocr: root-dir unset!");
 			return pages;
 		}
-		Path ocrPath = rootDir.resolve(DefaultConfiguration.DEFAULT_INPUT_FULLTEXT);
+		// Path ocrPath = rootDir.resolve(DefaultConfiguration.DEFAULT_INPUT_FULLTEXT);
 		if(!Files.exists(ocrPath, LinkOption.NOFOLLOW_LINKS)) {
 			LOGGER.warn("cant enrich ocr: invalid path '{}'!", ocrPath);
 			return pages;
 		}
-		
-		
 		List<Path> ocrFiles = new ArrayList<>();
 		try (Stream<Path> files = Files.list(ocrPath)) {
 			ocrFiles = files.collect(Collectors.toList());

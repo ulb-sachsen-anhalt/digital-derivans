@@ -20,7 +20,7 @@ import de.ulb.digital.derivans.DerivansPathResolver;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestDerivans;
 import de.ulb.digital.derivans.model.DerivansData;
-import de.ulb.digital.derivans.model.DerivateType;
+import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 

@@ -3,8 +3,8 @@ package de.ulb.digital.derivans.derivate;
 import java.util.List;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.model.DerivateType;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 

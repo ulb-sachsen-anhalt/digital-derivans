@@ -32,7 +32,7 @@ public class TestDerivansPathResolver {
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		dc.setInitialImageDir(pathImageMax);
 		Derivans derivans = new Derivans(dc);
-		DerivansPathResolver resolver = new DerivansPathResolver();
+		DerivansPathResolver resolver = new DerivansPathResolver(dc.getPathDir());
 
 		// act
 		List<DigitalPage> actuals = resolver.resolveFromStep(derivans.steps.get(0));
