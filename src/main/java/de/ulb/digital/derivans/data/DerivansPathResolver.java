@@ -228,7 +228,7 @@ public class DerivansPathResolver {
 			fileName += ".jpg";
 		}
 
-		// prefix in name present?
+		// prefix in name already present?
 		if(! namePrefixes.isEmpty()) {
 			for(String prefix : namePrefixes) {
 				if(fileName.contains(prefix)) {

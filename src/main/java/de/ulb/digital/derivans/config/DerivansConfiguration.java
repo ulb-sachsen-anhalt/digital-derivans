@@ -59,6 +59,8 @@ public class DerivansConfiguration {
 
 	private List<DerivateStep> derivateSteps;
 
+	private List<String> derivatePrefixes = new ArrayList<>();
+
 	/**
 	 * 
 	 * Default Constructor
@@ -347,6 +349,7 @@ public class DerivansConfiguration {
 		if (optOutPrefix.isPresent()) {
 			String prefix = optOutPrefix.get();
 			step.setOutputPrefix(prefix);
+			this.derivatePrefixes.add(prefix);
 		}
 		return step;
 	}
@@ -506,5 +509,18 @@ public class DerivansConfiguration {
 
 	public void setParamOCR(String paramOCR) {
 		this.paramOCR = paramOCR;
+	}
+
+	/**
+	 * 
+	 * Remember all encountered prefixes for
+	 * derivates. Used in later stages for
+	 * name resolving to clear each name from
+	 * probably before enriched prefixes.
+	 * 
+	 * @return optional Prefixes
+	 */
+	public List<String> getDerivatePrefixes() {
+		return this.derivatePrefixes;
 	}
 }
