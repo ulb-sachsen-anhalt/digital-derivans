@@ -13,10 +13,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import de.ulb.digital.derivans.DerivansParameter;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
+import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
@@ -187,7 +187,7 @@ class TestMetadataStoreSLUB {
 		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
 		var dcMock = Mockito.mock(DerivansConfiguration.class);
 		// we only need the last Path segment, so stay tuned
-		when(dcMock.getInitialImageDir()).thenReturn(Path.of("foo/bar/ORIGINAL"));
+		when(dcMock.getParamImages()).thenReturn("foo/bar/ORIGINAL");
 		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
 
 		// act
@@ -221,7 +221,7 @@ class TestMetadataStoreSLUB {
 		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
 		var dcMock = Mockito.mock(DerivansConfiguration.class);
 		// we only need the last Path segment, so stay tuned
-		when(dcMock.getInitialImageDir()).thenReturn(Path.of("foo/bar/ORIGINAL"));
+		when(dcMock.getParamImages()).thenReturn("foo/bar/ORIGINAL");
 		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
 
 		DigitalStructureTree dst = slub321094271.getStructure();

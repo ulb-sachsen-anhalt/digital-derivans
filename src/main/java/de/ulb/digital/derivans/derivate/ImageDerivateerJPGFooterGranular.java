@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.derivate;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -56,10 +57,12 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	
 	private void renderFooterGranular(DigitalPage page) {
 		Path pathIn = page.getImagePath();
+		if (!Files.exists(pathIn)) {
+			throw new RuntimeException("input '"+ pathIn + "' missing!");
+		}
 		this.resolver.setImagePath(page, this);
 		Path pathOut = page.getImagePath();
 		LOGGER.trace("read '{}' write '{}'", pathIn, pathOut);
-
 		try {
 			// keep track of granularity
 			String urn = "";

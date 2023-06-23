@@ -18,13 +18,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
-import de.ulb.digital.derivans.DerivansParameter;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
+
+import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_FULLTEXT;
+import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_IMAGES;
 
 /**
  * 
@@ -47,9 +49,9 @@ public class DerivansConfiguration {
 
 	private Path pathConfigFile;
 
-	private Path paramDirImage;
+	private String paramImages;
 
-	private Path paramDirOCR;
+	private String paramOCR;
 
 	private Integer quality = DefaultConfiguration.DEFAULT_QUALITY;
 
@@ -107,8 +109,8 @@ public class DerivansConfiguration {
 			}
 		}
 		// take care of args for input images/ocr
-		this.paramDirImage = params.getPathDirImages();
-		this.paramDirOCR = params.getPathDirOcr();
+		this.paramImages = params.getImages();
+		this.paramOCR = params.getOcr();
 
 		// take care if no config provided
 		if (derivateSteps.isEmpty()) {
@@ -234,17 +236,17 @@ public class DerivansConfiguration {
 	}
 
 	/**
-	 * Default Steps supposed to work out-of-the-box, even without any METS-data at
-	 * hand.
+	 * Default Steps supposed to work out-of-the-box,
+	 * without any METS-data to be respected.
 	 * 
 	 * Take care of optional provided CLI params.
 	 * 
 	 */
 	private void provideDefaultSteps() {
 		DerivateStepImage createMins = new DerivateStepImage();
-		var subDir = DefaultConfiguration.DEFAULT_PATH_INPUT_IMAGES;
-		if (this.paramDirImage != null) {
-			subDir = this.paramDirImage;
+		var subDir = DEFAULT_INPUT_IMAGES;
+		if (this.paramImages != null) {
+			subDir = this.paramImages;
 		}
 		createMins.setInputPath(this.pathDir.resolve(subDir));
 		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
@@ -258,12 +260,15 @@ public class DerivansConfiguration {
 		createPdf.setDerivateType(DerivateType.PDF);
 		createPdf.setOutputType("pdf");
 		createPdf.setOutputPath(this.pathDir);
-		if (this.paramDirOCR != null) {
-			createPdf.setFulltextInput(this.paramDirOCR.toString());
+		// guess ocr data
+		if (Files.exists(this.pathDir.resolve(DEFAULT_INPUT_FULLTEXT))) {
+			createPdf.setParamOCR(DEFAULT_INPUT_FULLTEXT);
+		}
+		if (this.paramOCR != null) {
+			createPdf.setParamOCR(this.paramOCR);
 		}
 		this.derivateSteps.add(createPdf);
 	}
-
 
 	/**
 	 * 
@@ -331,7 +336,7 @@ public class DerivansConfiguration {
 			Path output = Path.of(optOutputDir.get());
 			if (".".equals(output.toString()) || output.toString().isBlank()) {
 				output = this.pathDir;
-			} else if (! output.isAbsolute()) {
+			} else if (!output.isAbsolute()) {
 				output = this.pathDir.resolve(optOutputDir.get());
 			}
 			step.setOutputPath(output);
@@ -347,7 +352,7 @@ public class DerivansConfiguration {
 	}
 
 	protected void enrichImageDerivateInformation(DerivateStepImage step, INIConfiguration conf, String stepSection)
-	throws DigitalDerivansException {
+			throws DigitalDerivansException {
 		// poolsize
 		String keyPoolsize = stepSection + ".poolsize";
 		Optional<Integer> optPoolsize = extractValue(conf, keyPoolsize, Integer.class);
@@ -485,5 +490,21 @@ public class DerivansConfiguration {
 			}
 		}
 		return false;
+	}
+
+	public String getParamImages() {
+		return paramImages;
+	}
+
+	public void setParamImages(String paramImage) {
+		this.paramImages = paramImage;
+	}
+
+	public String getParamOCR() {
+		return paramOCR;
+	}
+
+	public void setParamOCR(String paramOCR) {
+		this.paramOCR = paramOCR;
 	}
 }

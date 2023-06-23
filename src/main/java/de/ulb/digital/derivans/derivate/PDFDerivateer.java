@@ -38,6 +38,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
+import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
@@ -64,8 +66,6 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private AtomicInteger nPagesWithOCR = new AtomicInteger();
 
-	// private PDFMetaInformation pdfMeta;
-
 	public static final float ITEXT_ASSUMES_DPI = 72.0f;
 
 	private int dpi;
@@ -80,6 +80,8 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private DerivateStepPDF derivateStep;
 
+	private Optional<IMetadataStore> optMetadataStore = Optional.empty();
+
 	/**
 	 * 
 	 * Create new instance on top of {@link BaseDerivateer}
@@ -89,10 +91,13 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param descriptiveData
 	 * @param pages
 	 */
-	public PDFDerivateer(BaseDerivateer basic, DigitalStructureTree tree, List<DigitalPage> pages,
+	public PDFDerivateer(DerivansData input, DerivansData output, DigitalStructureTree tree, List<DigitalPage> pages,
 			DerivateStepPDF derivateStep) throws DigitalDerivansException {
-		super(basic.getInput(), basic.getOutput());
+		super(input, output);
 		this.structure = tree;
+		if (pages == null) {
+			throw new DigitalDerivansException("Invalid pages for PDF!");
+		}
 		this.digitalPages = pages;
 		this.derivateStep = derivateStep;
 		this.setDpi(derivateStep.getImageDpi());
@@ -104,6 +109,19 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	public DerivateStepPDF getConfig() {
 		return this.derivateStep;
+	}
+
+	public void setMetadataStore(Optional<IMetadataStore> metadataStore) throws DigitalDerivansException {
+		this.optMetadataStore = metadataStore;
+		if (this.optMetadataStore.isPresent()) {
+			var store = this.optMetadataStore.get();
+			store.setFileGroupOCR(this.derivateStep.getParamOCR());
+			store.setFileGroupImages(this.derivateStep.getParamImages());
+			var descriptiveData = store.getDescriptiveData();
+			this.derivateStep.mergeDescriptiveData(descriptiveData);
+			this.digitalPages = store.getDigitalPagesInOrder();
+			this.structure = store.getStructure();
+		}
 	}
 
 	private void setDpi(int dpi) throws DigitalDerivansException {
@@ -199,7 +217,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			// communicate once
 			if (this.renderLevel.equalsIgnoreCase(DefaultConfiguration.DEFAULT_RENDER_LEVEL)) {
 				LOGGER.trace("render text at line-level");
-			} else if(this.renderLevel.equalsIgnoreCase("word")) {
+			} else if (this.renderLevel.equalsIgnoreCase("word")) {
 				LOGGER.trace("render text at word-level");
 			}
 			// actual rendering about to start
@@ -212,7 +230,7 @@ public class PDFDerivateer extends BaseDerivateer {
 						render(font, (int) currentImageHeight, cb, word);
 					}
 				}
-			} 
+			}
 			cb.restoreState();
 			// optional: render ocr data outlines for debugging visualization
 			if (this.debugRender) {
@@ -255,7 +273,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);
 		}
 		// propably hide text layer font
-		if(this.renderModus.equalsIgnoreCase("invisible")) {
+		if (this.renderModus.equalsIgnoreCase("invisible")) {
 			cb.setTextRenderingMode(PdfContentByte.TEXT_RENDER_MODE_INVISIBLE);
 		}
 		cb.beginText();
@@ -478,6 +496,28 @@ public class PDFDerivateer extends BaseDerivateer {
 		boolean result = hasPagesAdded && hasOutlineAdded;
 		LOGGER.info("created pdf '{}' with {} pages (outline:{})", pathToPDF, document.getPageNumber(),
 				hasOutlineAdded);
+
+		// post-action
+		if (this.optMetadataStore.isPresent() && this.derivateStep.isEnrichMetadata()) {
+			this.enrichPDFInformation(pathToPDF);
+		} else {
+			LOGGER.warn("pdf '{}' not enriched in metadata", pathToPDF);
+		}
 		return result ? 1 : 0;
+	}
+
+	private void enrichPDFInformation(Path pathtoPDF) throws DigitalDerivansException {
+		if (Files.exists(pathtoPDF)) {
+			var store = this.optMetadataStore.get();
+			var storePath = store.usedStore();
+			LOGGER.info("enrich created pdf '{}' in '{}'", pathtoPDF, storePath);
+			String filename = pathtoPDF.getFileName().toString();
+			String identifier = filename.substring(0, filename.indexOf('.'));
+			store.enrichPDF(identifier);
+		} else {
+			String msg3 = "Missing pdf " + pathtoPDF.toString() + "!";
+			LOGGER.error(msg3);
+			throw new DigitalDerivansException(msg3);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 package de.ulb.digital.derivans.model.step;
 
-import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_FULLTEXT;
+import static de.ulb.digital.derivans.data.IMetadataStore.*;
 import static de.ulb.digital.derivans.data.IMetadataStore.UNKNOWN;
 
 import java.util.Optional;
@@ -17,8 +17,8 @@ import de.ulb.digital.derivans.model.DescriptiveData;
 public class DerivateStepPDF extends DerivateStep {
 
 	protected boolean enrichMetadata = true;
-	protected String fulltextInput = DEFAULT_INPUT_FULLTEXT;
-	// protected String fileGroupOCR = DEFAULT_INPUT_FULLTEXT;
+	protected String paramOCR = DEFAULT_INPUT_FULLTEXT;
+	protected String paramImages = DEFAULT_INPUT_IMAGES;
 	private int imageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
 	private Boolean debugRender = Boolean.FALSE;
 	private String renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
@@ -31,14 +31,6 @@ public class DerivateStepPDF extends DerivateStep {
 	private Optional<String> optCreator = Optional.empty();
 	private Optional<String> optLicense = Optional.empty();
 	private Optional<String> optKeywords = Optional.empty();
-
-	public String getFulltextInput() {
-		return fulltextInput;
-	}
-
-	public void setFulltextInput(String fulltextInput) {
-		this.fulltextInput = fulltextInput;
-	}
 
 	public boolean isEnrichMetadata() {
 		return enrichMetadata;
@@ -144,13 +136,21 @@ public class DerivateStepPDF extends DerivateStep {
 		this.publicationYear = publicationYear;
 	}
 
-	// public String getFileGroupOCR() {
-	// 	return fileGroupOCR;
-	// }
+	public String getParamImages() {
+		return paramImages;
+	}
 
-	// public void setFileGroupOCR(String fileGroupOCR) {
-	// 	this.fileGroupOCR = fileGroupOCR;
-	// }
+	public void setParamImages(String fileGroupImages) {
+		this.paramImages = fileGroupImages;
+	}
+
+	public String getParamOCR() {
+		return paramOCR;
+	}
+
+	public void setParamOCR(String fileGroupOCR) {
+		this.paramOCR = fileGroupOCR;
+	}
 
 	/**
 	 * 

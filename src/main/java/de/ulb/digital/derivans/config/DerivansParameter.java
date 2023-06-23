@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans;
+package de.ulb.digital.derivans.config;
 
 import java.nio.file.Path;
 
@@ -37,25 +37,25 @@ public class DerivansParameter {
 	)
 	private Path pathConfig;
 
-	@Option(name = "-i", aliases = { "--images-subdir" }, 
+	@Option(name = "-i", aliases = { "--images" }, 
 		required = false,
-		usage = "Path to inital image directory.\n" +
-			"Absolute path or path relative to input directory.\n" +
-			"If metadata present, stands for required image fileGroup label,\n" + 
-			"which defaults to '" + DEFAULT_INPUT_IMAGE + "'.\n" + 
-			"If no metadata present, defaults to '" + DEFAULT_INPUT_IMAGE + "'.\n"
+		usage = "Identify images, depending on context.\n" +
+			"If in local mode, stands for directory containing images.\n" +
+			"If metadata present, stands for required image fileGroup label.\n" + 
+			"which defaults to '" + DEFAULT_INPUT_IMAGES + "'.\n" + 
+			"If no metadata present, defaults to '" + DEFAULT_INPUT_IMAGES + "'.\n"
 	)
-	private Path pathDirImages;
+	private String images;
 	
-	@Option(name = "-o", aliases = { "--ocr-subdir" }, 
+	@Option(name = "-o", aliases = { "--ocr" }, 
 		required = false,
-		usage = "Path to ocr-data directory.\n" + 
-			"Absolute path or path relative to OCR-data input directory.\n" +
-			"If metadata present, may override ocr fileGroup label,\n" + 
+		usage = "Identify OCR-Data, depending on context.\n" + 
+			"If in local mode, stands for directory containing ocr files.\n" +
+			"If metadata present, stands for required ocr fileGroup label,\n" + 
 			"which defaults otherwise to '" + DEFAULT_INPUT_FULLTEXT + "'.\n" + 
 			"If no metadata present, defaults to '" + DEFAULT_INPUT_FULLTEXT + "'.\n"
 	)
-	private Path pathDirOcr;
+	private String ocr;
 	
 	@Option(name = "-d", aliases = {"--debug-render" }, 
 		required = false, 
@@ -92,20 +92,20 @@ public class DerivansParameter {
 		return this.pathConfig;
 	}
 
-	public void setPathDirImages(Path imgDir) {
-		this.pathDirImages = imgDir;
+	public void setImages(String images) {
+		this.images = images;
 	}
 
-	public Path getPathDirImages() {
-		return this.pathDirImages;
+	public String getImages() {
+		return this.images;
 	}
 
-	public void setPathOcr(Path ocrDir) {
-		this.pathDirOcr = ocrDir;
+	public void setOcr(String ocr) {
+		this.ocr = ocr;
 	}
 
-	public Path getPathDirOcr() {
-		return this.pathDirOcr;
+	public String getOcr() {
+		return this.ocr;
 	}
 
 	public Boolean getDebugRender() {

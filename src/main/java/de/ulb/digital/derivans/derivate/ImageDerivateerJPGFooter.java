@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -99,6 +100,9 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 
 	private String renderFooter(DigitalPage page) {
 		Path sourcePath = page.getImagePath();
+		if (!Files.exists(sourcePath)) {
+			throw new RuntimeException("input '"+ sourcePath + "' missing!");
+		}
 		this.resolver.setImagePath(page, this);
 		Path targetPath = page.getImagePath();
 

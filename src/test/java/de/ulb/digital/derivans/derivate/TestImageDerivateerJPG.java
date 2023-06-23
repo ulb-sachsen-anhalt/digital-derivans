@@ -16,9 +16,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import de.ulb.digital.derivans.DerivansPathResolver;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestDerivans;
+import de.ulb.digital.derivans.data.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.step.DerivateType;
 

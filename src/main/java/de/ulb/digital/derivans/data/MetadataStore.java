@@ -20,14 +20,12 @@ import org.mycore.mets.model.struct.PhysicalStructMap;
 import org.mycore.mets.model.struct.PhysicalSubDiv;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.ocr.OCRData;
-import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
  * 
@@ -40,37 +38,23 @@ public class MetadataStore implements IMetadataStore {
 
 	private static final Logger LOGGER = LogManager.getLogger(MetadataStore.class);
 
-	// private DerivansConfiguration config;
-	private DerivateStepPDF pdfConfig;
-
 	private DescriptiveData descriptiveData;
 
 	private MetadataHandler handler;
 
 	private Mets mets;
 
-	private String fileGroupImages = DefaultConfiguration.DEFAULT_PATH_INPUT_IMAGES.toString();
+	private final Optional<String> storePath;
 
-	private String fileGroupOcr = DefaultConfiguration.DEFAULT_PATH_INPUT_FULLTEXT.toString();
+	private String fileGroupImages = IMetadataStore.DEFAULT_INPUT_IMAGES;
+
+	private String fileGroupOcr = IMetadataStore.DEFAULT_INPUT_FULLTEXT;
 
 	/**
 	 * Constructor if no METS/MODS available
 	 */
 	public MetadataStore() {
-	}
-
-	/**
-	 * 
-	 * Default constructor with path to METS file
-	 * 
-	 * @deprecated
-	 * 
-	 * @param filePath
-	 * @throws DigitalDerivansException
-	 */
-	@Deprecated(since = "1.8")
-	public MetadataStore(Path filePath) throws DigitalDerivansException {
-		this(filePath, null);
+		storePath = Optional.empty();
 	}
 
 	/**
@@ -81,30 +65,22 @@ public class MetadataStore implements IMetadataStore {
 	 * @param config
 	 * @throws DigitalDerivansException
 	 */
-	public MetadataStore(Path filePath, DerivateStepPDF stepConfig) throws DigitalDerivansException {
-		// this.config = config;
-		// if (this.config != null) {
-		// 	var imgDir = this.config.getInitialImageDir();
-		// 	if (imgDir instanceof Path) {
-		// 		this.fileGroupImages = imgDir.getFileName().toString();
-		// 	}
-		// 	var ocrDir = this.config.getOptionalOcrDir();
-		// 	if (ocrDir instanceof Path) {
-		// 		this.fileGroupOcr = ocrDir.getFileName().toString();
-		// 	}
-		// }
+	public MetadataStore(Path filePath) throws DigitalDerivansException {
+		this.storePath = Optional.of(filePath.toString());
 		this.handler = new MetadataHandler(filePath);
 		this.mets = handler.getMets();
-		this.fileGroupImages = stepConfig.getInputPath().getFileName().toString();
-		if (stepConfig.getFulltextInput() != null) {
-			this.fileGroupOcr = stepConfig.getFulltextInput();
-		}
 		LOGGER.info("created new metadatastore from '{}'", filePath);
 	}
 
-	// public DerivansConfiguration getConfiguration() {
-	// 	return this.config;
-	// }
+	@Override
+	public void setFileGroupImages(String fileGrp) {
+		this.fileGroupImages = fileGrp;
+	}
+
+	@Override
+	public void setFileGroupOCR(String fileGrp) {
+		this.fileGroupOcr = fileGrp;
+	}
 
 	@Override
 	public DigitalStructureTree getStructure() throws DigitalDerivansException {
@@ -285,6 +261,11 @@ public class MetadataStore implements IMetadataStore {
 			descriptiveData = builder.person().access().identifier().title().urn().year().build();
 		}
 		return descriptiveData;
+	}
+
+	@Override
+	public String usedStore() {
+		return this.storePath.orElse(IMetadataStore.UNKNOWN);
 	}
 
 	/**

@@ -21,7 +21,7 @@ public interface IMetadataStore {
 	/*
 	 * Default METS file group for images with maximal resolution
 	 */
-	String DEFAULT_INPUT_IMAGE = "MAX";
+	String DEFAULT_INPUT_IMAGES = "MAX";
 
 	/*
 	 * Default METS file group for OCR-data with, most likely,
@@ -91,4 +91,28 @@ public interface IMetadataStore {
 	 * @return isEnriched
 	 */
 	boolean enrichPDF(String fileId);
+
+
+	/*
+	 * Where to find the Metastore input?
+	 */
+	String usedStore();
+
+
+	/**
+	 * 
+	 * Alter or re-set metadata Filegroup for images
+	 * 
+	 * @param imageGroup
+	 */
+	void setFileGroupImages(String imageGroup);
+
+
+	/**
+	 * 
+	 * Alter or re-set metadata Filegroup for OCR-data
+	 * 
+	 * @param ocrGroup
+	 */
+	void setFileGroupOCR(String ocrGroup);
 }

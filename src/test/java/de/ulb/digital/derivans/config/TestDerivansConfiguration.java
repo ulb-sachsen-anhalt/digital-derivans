@@ -12,9 +12,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import de.ulb.digital.derivans.DerivansParameter;
 import de.ulb.digital.derivans.TestDerivans;
 import de.ulb.digital.derivans.TestResource;
+import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
@@ -30,7 +30,7 @@ public class TestDerivansConfiguration {
 
 	/**
 	 * 
-	 * Common configuration with metadata present
+	 * Common configuration with metadata file present
 	 * 
 	 * @param tempDir
 	 * @throws Exception
@@ -142,7 +142,7 @@ public class TestDerivansConfiguration {
 	void testDefaultLocalConfiguration(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		var imgDir = DefaultConfiguration.DEFAULT_PATH_INPUT_IMAGES;
+		var imgDir = IMetadataStore.DEFAULT_INPUT_IMAGES;
 		Path pathInput = tempDir.resolve("default_local");
 		Path pathImageMax = pathInput.resolve(imgDir);
 		Files.createDirectories(pathImageMax);
@@ -192,7 +192,7 @@ public class TestDerivansConfiguration {
 		TestDerivans.generateJpgs(pathImageMax, 620, 877, 6);
 		var params = new DerivansParameter();
 		params.setPathInput(pathInput);
-		params.setPathDirImages(Path.of(customImageSubDir));
+		params.setImages(customImageSubDir);
 
 		// act
 		DerivansConfiguration dc = new DerivansConfiguration(params);
@@ -234,7 +234,7 @@ public class TestDerivansConfiguration {
 		TestDerivans.generateJpgs(pathImageMax, 620, 877, 6);
 		var params = new DerivansParameter();
 		params.setPathInput(pathInput);
-		params.setPathDirImages(pathImageMax);
+		params.setImages(pathImageMax.toString());
 
 		// act
 		DerivansConfiguration dc = new DerivansConfiguration(params);

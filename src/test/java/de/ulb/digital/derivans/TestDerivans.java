@@ -42,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
+import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 
@@ -52,6 +53,14 @@ import de.ulb.digital.derivans.model.step.DerivateStepImage;
  */
 public class TestDerivans {
 
+
+	/**
+	 * 
+	 * Common setup with images and metadata
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	@Order(1)
 	void testConfig(@TempDir Path tempDir) throws Exception {
@@ -315,7 +324,7 @@ public class TestDerivans {
 		generateJpgs(pathImageMax, 620, 877, 6);
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
-		dp.setPathDirImages(Path.of(imgDir));
+		dp.setImages(imgDir);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 

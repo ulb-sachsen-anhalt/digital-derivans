@@ -6,6 +6,7 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
+import de.ulb.digital.derivans.config.DerivansParameter;
 
 /**
  * 

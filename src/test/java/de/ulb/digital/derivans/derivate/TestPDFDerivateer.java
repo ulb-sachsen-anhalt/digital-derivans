@@ -25,10 +25,10 @@ import org.junit.jupiter.api.io.TempDir;
 
 import com.itextpdf.text.pdf.BaseFont;
 
-import de.ulb.digital.derivans.DerivansPathResolver;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestDerivans;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
+import de.ulb.digital.derivans.data.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -41,6 +41,8 @@ import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
+ * 
+ * Basic specification for creation of PDF derivates
  * 
  * @author hartwig
  *
@@ -64,6 +66,13 @@ public class TestPDFDerivateer {
 		return new DigitalStructureTree(1, "Buch 1", List.of(kap1, kap2, kap3, kap4, kap5));
 	}
 
+	/**
+	 * 
+	 * Create Derivates from plain root dir without any further metadata
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	void testCreateFromPath01_0025(@TempDir Path tempDir) throws Exception {
 
@@ -88,12 +97,13 @@ public class TestPDFDerivateer {
 
 		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
-		BaseDerivateer base = new BaseDerivateer(input, output);
+		// BaseDerivateer base = new BaseDerivateer(input, output);
 		int pdfImageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setImageDpi(pdfImageDpi);
 		pdfMeta.mergeDescriptiveData(dd);
-		IDerivateer handler = new PDFDerivateer(base, get(), pages, pdfMeta);
+		// IDerivateer handler = new PDFDerivateer(base, get(), pages, pdfMeta);
+		IDerivateer handler = new PDFDerivateer(input, output, get(), pages, pdfMeta);
 		int result = handler.create();
 
 		PDFInspector inspector = new PDFInspector(outPath);
@@ -108,6 +118,14 @@ public class TestPDFDerivateer {
 		assertTrue(pdfMetaInformation.getCreator().isEmpty());
 	}
 
+	/**
+	 * 
+	 * Create PDFs with differernt size requirements
+	 * but still without additional metadata
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	void testCreatePDFWithDifferentSizeImages(@TempDir Path tempDir) throws Exception {
 
@@ -137,10 +155,14 @@ public class TestPDFDerivateer {
 		Path outPath = tempDir.resolve(pdfName);
 		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
-		BaseDerivateer base = new BaseDerivateer(input, output);
+		// BaseDerivateer base = new BaseDerivateer(input, output);
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setImageDpi(300);
-		IDerivateer handler = new PDFDerivateer(base, tree, pages, pdfMeta);
+		IDerivateer handler = new PDFDerivateer(input, output, tree, pages, pdfMeta);
+		// TODO
+		// IDerivateer handler = new PDFDerivateer(base, tree, pages, pdfMeta);
+
+		// act
 		handler.create();
 
 		PDFInspector inspector = new PDFInspector(outPath);
@@ -156,6 +178,13 @@ public class TestPDFDerivateer {
 		assertEquals(168, pagesInfo.get(5).getDimension().height); // was: 700
 	}
 
+	/**
+	 * 
+	 * Create PDF with format PDF/A but still no metadata
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	void testCreatePDFA(@TempDir Path tempDir) throws Exception {
 
@@ -184,15 +213,15 @@ public class TestPDFDerivateer {
 
 		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
-		BaseDerivateer base = new BaseDerivateer(input, output);
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setConformanceLevel(level);
 		pdfMeta.setImageDpi(300);
 		pdfMeta.mergeDescriptiveData(dd);
-		IDerivateer handler = new PDFDerivateer(base, get(), pages, pdfMeta);
+		IDerivateer handler = new PDFDerivateer(input, output, get(), pages, pdfMeta);
 
-		int result = handler.create();
-
+		// act
+		var result = handler.create();
+		;
 		PDFInspector inspector = new PDFInspector(outPath);
 		PDFMetaInformation pdfMetaInformation = inspector.getPDFMetaInformation();
 
@@ -205,6 +234,14 @@ public class TestPDFDerivateer {
 		assertTrue(pdfMetaInformation.getCreator().isEmpty());
 	}
 
+	/**
+	 * 
+	 * Create PDF from local images plus local OCR files
+	 * without metadata
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	void testCreatePDFTextlayer(@TempDir Path tempDir) throws Exception {
 
@@ -266,15 +303,16 @@ public class TestPDFDerivateer {
 
 		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
-		BaseDerivateer base = new BaseDerivateer(input, output);
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setConformanceLevel(level);
 		pdfMeta.setImageDpi(144);
 		pdfMeta.mergeDescriptiveData(dd);
-		IDerivateer handler = new PDFDerivateer(base, get(), pages, pdfMeta);
+		IDerivateer handler = new PDFDerivateer(input, output, get(), pages, pdfMeta);
 
+		// act
 		int result = handler.create();
 
+		// inspect
 		PDFInspector inspector = new PDFInspector(outPath);
 		PDFMetaInformation pdfMetaInformation = inspector.getPDFMetaInformation();
 
@@ -307,7 +345,7 @@ public class TestPDFDerivateer {
 	/**
 	 * 
 	 * Ensure that OCR Data is taken into account
-	 * if running in local mode
+	 * if running in local mode without metadata
 	 * 
 	 * @param tempDir
 	 * @throws Exception
@@ -335,7 +373,7 @@ public class TestPDFDerivateer {
 		// arrange base derivateer
 		DerivansData input = new DerivansData(pathImageMax, DerivateType.JPG);
 		DerivansData output = new DerivansData(pathTarget, DerivateType.PDF);
-		BaseDerivateer base = new BaseDerivateer(input, output);
+		// BaseDerivateer base = new BaseDerivateer(input, output);
 
 		// arrange pdf path and pages
 		DerivansPathResolver resolver = new DerivansPathResolver(pathTarget);
@@ -346,11 +384,8 @@ public class TestPDFDerivateer {
 		DigitalStructureTree structure = new DigitalStructureTree();
 		List<DigitalPage> pages = resolver.resolveFromStep(step);
 		resolver.enrichOCRFromFilesystem(pages, targetDir);
-		// PDFMetaInformation pdfMeta = new PDFMetaInformation();
 		step.mergeDescriptiveData(dd);
-
-		// go
-		PDFDerivateer handler = new PDFDerivateer(base, structure, pages, step);
+		PDFDerivateer handler = new PDFDerivateer(input, output, structure, pages, step);
 
 		// act
 		int result = handler.create();
@@ -392,7 +427,8 @@ public class TestPDFDerivateer {
 
 	/**
 	 * 
-	 * Testdata from VL HD ID 369765, page 316642
+	 * Check: how gets a backslash rendered?
+	 * OCR data from VL HD ID 369765, page 316642
 	 * 
 	 * <String CONTENT="/" HEIGHT="45" HPOS="394" ID="region0000_line0023_word0001"
 	 * VPOS="1372" WIDTH="11"/>
@@ -414,13 +450,18 @@ public class TestPDFDerivateer {
 		assertTrue(size > 3.0);
 	}
 
+	/**
+	 * 
+	 * check: providing illegal DPI yields exception
+	 * 
+	 * @throws Exception
+	 */
 	@Test
 	void testInvalidImageDPI() throws Exception {
 
 		// arrange mwe
 		DerivansData input = new DerivansData(Path.of("."), DerivateType.JPG);
 		DerivansData output = new DerivansData(Path.of("."), DerivateType.PDF);
-		BaseDerivateer base = new BaseDerivateer(input, output);
 		DescriptiveData dd = new DescriptiveData();
 		DigitalStructureTree structure = new DigitalStructureTree();
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
@@ -429,10 +470,37 @@ public class TestPDFDerivateer {
 
 		// act
 		var thrown = assertThrows(DigitalDerivansException.class, () -> {
-			new PDFDerivateer(base, structure, new ArrayList<>(), pdfMeta);
+			new PDFDerivateer(input, output, structure, new ArrayList<>(), pdfMeta);
 		});
 
+		// assert
 		assertTrue(thrown.getMessage().contains("invalid dpi: '1'"));
+	}
 
+
+	/**
+	 * 
+	 * Check: invalid pages provided => yield exception
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testInvalidPageArg() throws Exception {
+
+		// arrange mwe
+		DerivansData input = new DerivansData(Path.of("."), DerivateType.JPG);
+		DerivansData output = new DerivansData(Path.of("."), DerivateType.PDF);
+		DescriptiveData dd = new DescriptiveData();
+		DigitalStructureTree structure = new DigitalStructureTree();
+		DerivateStepPDF pdfMeta = new DerivateStepPDF();
+		pdfMeta.mergeDescriptiveData(dd);
+
+		// act
+		var thrown = assertThrows(DigitalDerivansException.class, () -> {
+			new PDFDerivateer(input, output, structure, null, pdfMeta);
+		});
+
+		// assert
+		assertTrue(thrown.getMessage().contains("Invalid pages"));
 	}
 }

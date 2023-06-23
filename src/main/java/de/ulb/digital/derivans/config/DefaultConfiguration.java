@@ -1,8 +1,8 @@
 package de.ulb.digital.derivans.config;
 
 import de.ulb.digital.derivans.model.step.DerivateType;
-import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_FULLTEXT;
-import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_IMAGE;
+// import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_FULLTEXT;
+// import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_IMAGE;
 
 import java.nio.file.Path;
 
@@ -58,9 +58,9 @@ public class DefaultConfiguration {
 	 */
 	public static final Integer DEFAULT_MAXIMAL = 14400; 
 
-	public static final Path DEFAULT_PATH_INPUT_IMAGES = Path.of(DEFAULT_INPUT_IMAGE);
+	// public static final Path DEFAULT_PATH_INPUT_IMAGES = Path.of(DEFAULT_INPUT_IMAGE);
 
-	public static final Path DEFAULT_PATH_INPUT_FULLTEXT = Path.of(DEFAULT_INPUT_FULLTEXT);
+	// public static final Path DEFAULT_PATH_INPUT_FULLTEXT = Path.of(DEFAULT_INPUT_FULLTEXT);
 	
 	public static final Path DEFAULT_MAX_FOOTER_OUTPUT_SUB_PATH = Path.of("FOOTER_MAX");
 	

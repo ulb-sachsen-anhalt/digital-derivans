@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans;
+package de.ulb.digital.derivans.data;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,8 +14,8 @@ import java.util.stream.Stream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
-import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DescriptiveData;
@@ -120,7 +120,6 @@ public class DerivansPathResolver {
 			LOGGER.warn("cant enrich ocr: root-dir unset!");
 			return pages;
 		}
-		// Path ocrPath = rootDir.resolve(DefaultConfiguration.DEFAULT_INPUT_FULLTEXT);
 		if(!Files.exists(ocrPath, LinkOption.NOFOLLOW_LINKS)) {
 			LOGGER.warn("cant enrich ocr: invalid path '{}'!", ocrPath);
 			return pages;

@@ -10,8 +10,7 @@ import de.ulb.digital.derivans.model.ocr.OCRData;
  * Representation of a single digital page with the following properties:
  * <ul>
  * <li>orderNr: order of page in a larger, compound work</li>
- * <li>image file: {@link File} path to physical image representation (via
- * METS-FileGroup)</li>
+ * <li>image file: {@link File} path to image of this page</li>
  * <li>opt. ocr file: {@link File} path to physical OCR Data</li>
  * <li>opt. ocr data: {@link OCRData} that has been read from ocr file</li>
  * <li>opt. identifier: unique, granular identifier</li>

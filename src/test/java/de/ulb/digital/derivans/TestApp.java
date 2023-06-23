@@ -17,8 +17,8 @@ class TestApp {
 
 	/**
 	 * 
-	 * Testing the application with bare bone config (=missing
-	 * using default, implicite steps)
+	 * Testing the application bare boned (=config missing)
+	 * using default, implicite steps
 	 * 
 	 * @param tempDir
 	 * @throws Exception
