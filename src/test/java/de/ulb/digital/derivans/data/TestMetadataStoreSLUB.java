@@ -85,9 +85,8 @@ class TestMetadataStoreSLUB {
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(conf);
 		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
-		DerivansConfiguration config = new DerivansConfiguration(dp);
-		((DerivateStepPDF)config.getDerivateSteps().get(2)).setModsIdentifierXPath("");
 		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
+		slub321094271.setIdentifierExpression("");
 
 		// act
 		var expectedExc = assertThrows(DigitalDerivansException.class, () -> slub321094271.getDescriptiveData());
@@ -133,10 +132,9 @@ class TestMetadataStoreSLUB {
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(conf);
 		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
-		DerivansConfiguration config = new DerivansConfiguration(dp);
 		String xPath = "//mods:mods/mods:titleInfo/mods:title";
-		((DerivateStepPDF)config.getDerivateSteps().get(2)).setModsIdentifierXPath(xPath);
 		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
+		slub321094271.setIdentifierExpression(xPath);
 
 		// act
 		var dd321094271 = slub321094271.getDescriptiveData();
@@ -158,9 +156,8 @@ class TestMetadataStoreSLUB {
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(conf);
 		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
-		DerivansConfiguration config = new DerivansConfiguration(dp);
-		((DerivateStepPDF)config.getDerivateSteps().get(2)).setModsIdentifierXPath("//mets:dmdSec");
 		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
+		slub321094271.setIdentifierExpression("//mets:dmdSec");
 
 		// act
 		var expectedExc = assertThrows(DigitalDerivansException.class, () -> slub321094271.getDescriptiveData());
@@ -175,7 +172,8 @@ class TestMetadataStoreSLUB {
 	 * 
 	 * ATTENZIONE!
 	 * Requires custom configuration for desired fileGroup!
-	 * Default 'MAX' is not present!
+	 * Default 'MAX' is not present, thereo it is required
+	 * to switch to "ORIGINAL"!
 	 * 
 	 * @throws DigitalDerivansException
 	 */
@@ -189,6 +187,7 @@ class TestMetadataStoreSLUB {
 		// we only need the last Path segment, so stay tuned
 		when(dcMock.getParamImages()).thenReturn("foo/bar/ORIGINAL");
 		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
+		slub321094271.setFileGroupImages("ORIGINAL");
 
 		// act
 		List<DigitalPage> pages = slub321094271.getDigitalPagesInOrder();

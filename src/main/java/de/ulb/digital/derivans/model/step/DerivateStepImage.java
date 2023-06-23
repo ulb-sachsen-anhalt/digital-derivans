@@ -12,8 +12,8 @@ import de.ulb.digital.derivans.config.DefaultConfiguration;
 public class DerivateStepImage extends DerivateStep {
 
 	protected Integer quality = DefaultConfiguration.DEFAULT_QUALITY;
-	protected Integer maximal  = DefaultConfiguration.DEFAULT_POOLSIZE;
-	protected Integer poolsize = DefaultConfiguration.DEFAULT_MAXIMAL;
+	protected Integer maximal  = DefaultConfiguration.DEFAULT_MAXIMAL;
+	protected Integer poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 	protected int imageDpi;
 
 	public DerivateStepImage() {}

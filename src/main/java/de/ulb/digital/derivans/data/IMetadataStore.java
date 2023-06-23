@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans.data;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.jdom2.Namespace;
 
@@ -115,4 +116,23 @@ public interface IMetadataStore {
 	 * @param ocrGroup
 	 */
 	void setFileGroupOCR(String ocrGroup);
+
+
+	/**
+	 * 
+	 * Set optional XPath-Expression to determine
+	 * identifier for PDF file
+	 * 
+	 * @param xPath
+	 */
+	void setIdentifierExpression(String xPath); 
+
+
+	/**
+	 * 
+	 * Return optional identifier expression
+	 * 
+	 * @return
+	 */
+	Optional<String> getIdentifierExpression();
 }

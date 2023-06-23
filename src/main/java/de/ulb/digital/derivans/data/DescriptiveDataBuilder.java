@@ -40,8 +40,6 @@ class DescriptiveDataBuilder {
 
 	private MetadataStore store;
 
-	private DerivateStepPDF stepPDFConfig;
-
 	private Element primeMods;
 
 	private static final Logger LOGGER = LogManager.getLogger(DescriptiveDataBuilder.class);
@@ -196,24 +194,20 @@ class DescriptiveDataBuilder {
 		if (this.primeMods == null) {
 			return null;
 		}
-		if (this.stepPDFConfig != null) {
-			var conf = this.stepPDFConfig;
-			var optXPath = conf.getModsIdentifierXPath();
-			if (optXPath.isPresent()) {
-				String xPath = optXPath.get();
-				Element match = this.store.getMetadataHandler().evaluateFirst(xPath);
-				if (match != null) {
-					String textualContent = match.getTextTrim();
-					if (!textualContent.isEmpty()) {
-						return textualContent.replace(' ', '_');
-					} else {
-						var msg = String.format("PDF Identifier XPath '%s' empty for '%s'", xPath, this.store.getMetadataHandler().getPath());
-						throw new DigitalDerivansException(msg);
-					}
+		if (this.store.getIdentifierExpression().isPresent()) {
+			String xPath = this.store.getIdentifierExpression().get();
+			Element match = this.store.getMetadataHandler().evaluateFirst(xPath);
+			if (match != null) {
+				String textualContent = match.getTextTrim();
+				if (!textualContent.isEmpty()) {
+					return textualContent.replace(' ', '_');
 				} else {
-					var msg = String.format("PDF Identifier XPath '%s' no match in '%s'", xPath, this.store.getMetadataHandler().getPath());
+					var msg = String.format("PDF Identifier XPath '%s' empty for '%s'", xPath, this.store.getMetadataHandler().getPath());
 					throw new DigitalDerivansException(msg);
 				}
+			} else {
+				var msg = String.format("PDF Identifier XPath '%s' no match in '%s'", xPath, this.store.getMetadataHandler().getPath());
+				throw new DigitalDerivansException(msg);
 			}
 		}
 		List<Element> recordInfos = this.primeMods.getChildren("recordInfo", IMetadataStore.NS_MODS);
@@ -300,13 +294,10 @@ class DescriptiveDataBuilder {
 	}
 
 	public void setMetadataStore(MetadataStore store) {
-		// this.store = store;
+		this.store = store;
 		this.primeMods = store.getMetadataHandler().getPrimaryMods();
 	}
 
-	public void setStepConfiguration(DerivateStepPDF step) {
-		this.stepPDFConfig = step;
-	}
 }
 
 /**

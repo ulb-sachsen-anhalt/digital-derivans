@@ -50,6 +50,8 @@ public class MetadataStore implements IMetadataStore {
 
 	private String fileGroupOcr = IMetadataStore.DEFAULT_INPUT_FULLTEXT;
 
+	private Optional<String> xPathIdentifier = Optional.empty();
+
 	/**
 	 * Constructor if no METS/MODS available
 	 */
@@ -59,10 +61,9 @@ public class MetadataStore implements IMetadataStore {
 
 	/**
 	 * 
-	 * Extended constructor with METS-Path and {@link DerivansConfiguration}.
+	 * Default constructor
 	 * 
 	 * @param filePath
-	 * @param config
 	 * @throws DigitalDerivansException
 	 */
 	public MetadataStore(Path filePath) throws DigitalDerivansException {
@@ -80,6 +81,16 @@ public class MetadataStore implements IMetadataStore {
 	@Override
 	public void setFileGroupOCR(String fileGrp) {
 		this.fileGroupOcr = fileGrp;
+	}
+
+	@Override
+	public void setIdentifierExpression(String xPath) {
+		this.xPathIdentifier = Optional.of(xPath);
+	}
+
+	@Override
+	public Optional<String> getIdentifierExpression() {
+		return this.xPathIdentifier;
 	}
 
 	@Override
