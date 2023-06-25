@@ -26,7 +26,6 @@ import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
@@ -140,7 +139,7 @@ public class Derivans {
 				DigitalFooter footer = new DigitalFooter(footerLabel, getIdentifier(), pathTemplate);
 				Integer quality = stepFooter.getQuality();
 				ImageDerivateerJPGFooter d = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
-				boolean containsGranularUrns = inspect(pages);
+				boolean containsGranularUrns = isGranularIdentifierPresent(pages);
 				if (containsGranularUrns) {
 					d = new ImageDerivateerJPGFooterGranular(d, quality);
 				}
@@ -215,7 +214,7 @@ public class Derivans {
 		LOGGER.info("finished generating '{}' derivates at '{}'", derivateers.size(), processDir);
 	}
 
-	private boolean inspect(List<DigitalPage> pages) {
+	private boolean isGranularIdentifierPresent(List<DigitalPage> pages) {
 		return pages.stream()
 				.filter(page -> page.getIdentifier().isPresent())
 				.map(page -> page.getIdentifier().get())
