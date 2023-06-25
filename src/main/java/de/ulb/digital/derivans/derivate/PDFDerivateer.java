@@ -62,7 +62,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private static final Logger LOGGER = LogManager.getLogger(PDFDerivateer.class);
 
-	private DigitalStructureTree structure;
+	private DigitalStructureTree structure = new DigitalStructureTree();
 
 	private AtomicInteger nPagesWithOCR = new AtomicInteger();
 
@@ -86,15 +86,15 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * 
 	 * Create new instance on top of {@link BaseDerivateer}
 	 * 
-	 * @param basic
-	 * @param tree
-	 * @param descriptiveData
+	 * @param input
+	 * @param output
 	 * @param pages
+	 * @param derivateStep
+	 * @throws DigitalDerivansException
 	 */
-	public PDFDerivateer(DerivansData input, DerivansData output, DigitalStructureTree tree, List<DigitalPage> pages,
+	public PDFDerivateer(DerivansData input, DerivansData output, List<DigitalPage> pages,
 			DerivateStepPDF derivateStep) throws DigitalDerivansException {
 		super(input, output);
-		this.structure = tree;
 		if (pages == null) {
 			throw new DigitalDerivansException("Invalid pages for PDF!");
 		}
@@ -119,8 +119,8 @@ public class PDFDerivateer extends BaseDerivateer {
 			store.setFileGroupImages(this.derivateStep.getParamImages());
 			var descriptiveData = store.getDescriptiveData();
 			this.derivateStep.mergeDescriptiveData(descriptiveData);
-			this.digitalPages = store.getDigitalPagesInOrder();
 			this.structure = store.getStructure();
+			this.digitalPages = store.getDigitalPagesInOrder();
 		}
 	}
 
@@ -519,5 +519,13 @@ public class PDFDerivateer extends BaseDerivateer {
 			LOGGER.error(msg3);
 			throw new DigitalDerivansException(msg3);
 		}
+	}
+
+	/*
+	 * Set structure data for testing purposes
+	 * independent when no *real* metadata present
+	 */
+	public void setStructure(DigitalStructureTree tree) {
+		this.structure = tree;
 	}
 }

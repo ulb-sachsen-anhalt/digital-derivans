@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:vl="http://visuallibrary.net/vl" xmlns:dv="http://dfg-viewer.de/" xmlns:vlz="http://visuallibrary.net/vlz/1.0/" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="8" LABEL="Zeitungen des 18. und 19. Jahrhunderts">
+  <mets:metsHdr CREATEDATE="2022-09-23T21:56:29">
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>vls/2203</mets:name>
+      <mets:note>legacy vlid: oai:digitale.bibliothek.uni-halle.de/zd:16359604</mets:note>
+      <mets:note>legacy date: 2022-03-04T09:11:02Z</mets:note>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="INSTANCE">
+      <mets:name>ulbhalvd</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="REPOSITORY">
+      <mets:name>digitale.bibliothek.uni-halle.de</mets:name>
+    </mets:agent>
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="BUILDER">
+      <mets:name>periodicalissue</mets:name>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="md16359604">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:genre authority="marcgt">issue</mods:genre>
+          <mods:part order="1201">
+            <mods:detail type="issue">
+              <mods:number>3</mods:number>
+            </mods:detail>
+            <mods:date encoding="w3cdtf">1889-03-23</mods:date>
+            <mods:detail type="volume">
+              <mods:number>1. Jg.</mods:number>
+            </mods:detail>
+            <mods:date encoding="w3cdtf">1889</mods:date>
+          </mods:part>
+          <mods:recordInfo>
+            <mods:recordIdentifier source="local">ulbhalvd:16359604</mods:recordIdentifier>
+          </mods:recordInfo>
+          <mods:relatedItem type="host">
+            <mods:titleInfo>
+              <mods:title>General-Anzeiger für Halle und den Saalkreis</mods:title>
+            </mods:titleInfo>
+            <mods:typeOfResource>text</mods:typeOfResource>
+            <mods:originInfo eventType="publication">
+              <mods:place>
+                <mods:placeTerm type="text">Halle, S.</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Kutschbach</mods:publisher>
+              <mods:dateIssued>1889,1(21.März) - 1918,125(31.Mai)</mods:dateIssued>
+              <mods:dateIssued encoding="w3cdtf" keyDate="yes">1889</mods:dateIssued>
+              <mods:issuance>continuing</mods:issuance>
+            </mods:originInfo>
+            <mods:language>
+              <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+            </mods:language>
+            <mods:note type="date/sequential designation">1889,1(21.März) - 1918,125(31.Mai)</mods:note>
+            <mods:note>Reproduktion</mods:note>
+            <mods:identifier type="urn">urn:nbn:de:gbv:3:1-847518</mods:identifier>
+            <mods:relatedItem type="otherFormat" displayLabel="selfreferencing digital edition">
+              <mods:titleInfo>
+                <mods:title>General-Anzeiger für Halle und den Saalkreis</mods:title>
+              </mods:titleInfo>
+              <mods:originInfo eventType="publication">
+                <mods:place>
+                  <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+                </mods:place>
+                <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+                <mods:dateIssued encoding="iso8601" point="start" keyDate="yes">2019</mods:dateIssued>
+                <mods:dateIssued encoding="iso8601" point="end">2019</mods:dateIssued>
+                <mods:dateIssued qualifier="inferred">[2019]</mods:dateIssued>
+                <mods:issuance>continuing</mods:issuance>
+              </mods:originInfo>
+              <mods:recordInfo>
+                <mods:recordIdentifier source="ulbhalzd">246044853</mods:recordIdentifier>
+              </mods:recordInfo>
+            </mods:relatedItem>
+            <mods:location>
+              <mods:url displayLabel="Resolving-System">https://nbn-resolving.org/urn:nbn:de:gbv:3:1-847518</mods:url>
+            </mods:location>
+            <mods:location>
+              <mods:url displayLabel="Unbekannt" note="Kostenfrei zugänglich ohne Registrierung">http://digitale.bibliothek.uni-halle.de/urn/urn:nbn:de:gbv:3:1-847518</mods:url>
+            </mods:location>
+            <mods:extension>
+              <vlz:externalType recordSyntax="pica" code="Ob"/>
+              <vlz:info version="2"/>
+            </mods:extension>
+            <mods:recordInfo>
+              <mods:recordCreationDate encoding="marc">17-06-19</mods:recordCreationDate>
+              <mods:recordChangeDate encoding="marc">18-06-19</mods:recordChangeDate>
+              <mods:recordIdentifier source="ulbhalzd">1667522809</mods:recordIdentifier>
+              <mods:descriptionStandard>rda</mods:descriptionStandard>
+            </mods:recordInfo>
+            <mods:extension>
+              <vl:id>16289661</vl:id>
+              <vl:odid>8</vl:odid>
+              <vl:datatype>1</vl:datatype>
+              <vl:type>21</vl:type>
+              <vl:state>1</vl:state>
+            </mods:extension>
+          </mods:relatedItem>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="md17308997">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7">
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:part>
+            <mods:detail>
+              <mods:number>1. Jg.</mods:number>
+            </mods:detail>
+            <mods:date encoding="w3cdtf">1889</mods:date>
+          </mods:part>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-852911</mods:identifier>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="md16289661">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.5" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
+          <mods:titleInfo>
+            <mods:title>General-Anzeiger für Halle und den Saalkreis</mods:title>
+          </mods:titleInfo>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Halle, S.</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Kutschbach</mods:publisher>
+            <mods:dateIssued>1889,1(21.März) - 1918,125(31.Mai)</mods:dateIssued>
+            <mods:dateIssued encoding="w3cdtf" keyDate="yes">1889</mods:dateIssued>
+            <mods:issuance>continuing</mods:issuance>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="iso639-2b" type="code">ger</mods:languageTerm>
+          </mods:language>
+          <mods:note type="date/sequential designation">1889,1(21.März) - 1918,125(31.Mai)</mods:note>
+          <mods:note>Reproduktion</mods:note>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:1-847518</mods:identifier>
+          <mods:relatedItem type="otherFormat" displayLabel="selfreferencing digital edition">
+            <mods:titleInfo>
+              <mods:title>General-Anzeiger für Halle und den Saalkreis</mods:title>
+            </mods:titleInfo>
+            <mods:originInfo eventType="publication">
+              <mods:place>
+                <mods:placeTerm type="text">Halle, Saale</mods:placeTerm>
+              </mods:place>
+              <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+              <mods:dateIssued encoding="iso8601" point="start" keyDate="yes">2019</mods:dateIssued>
+              <mods:dateIssued encoding="iso8601" point="end">2019</mods:dateIssued>
+              <mods:dateIssued qualifier="inferred">[2019]</mods:dateIssued>
+              <mods:issuance>continuing</mods:issuance>
+            </mods:originInfo>
+            <mods:recordInfo>
+              <mods:recordIdentifier source="ulbhalzd">246044853</mods:recordIdentifier>
+            </mods:recordInfo>
+          </mods:relatedItem>
+          <mods:location>
+            <mods:url displayLabel="Resolving-System">https://nbn-resolving.org/urn:nbn:de:gbv:3:1-847518</mods:url>
+          </mods:location>
+          <mods:location>
+            <mods:url displayLabel="Unbekannt" note="Kostenfrei zugänglich ohne Registrierung">http://digitale.bibliothek.uni-halle.de/urn/urn:nbn:de:gbv:3:1-847518</mods:url>
+          </mods:location>
+          <mods:extension>
+            <vlz:externalType recordSyntax="pica" code="Ob"/>
+            <vlz:info version="2"/>
+          </mods:extension>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">17-06-19</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">18-06-19</mods:recordChangeDate>
+            <mods:recordIdentifier source="ulbhalzd">1667522809</mods:recordIdentifier>
+            <mods:descriptionStandard>rda</mods:descriptionStandard>
+          </mods:recordInfo>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd16359604">
+    <mets:rightsMD ID="rights16359604">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights>
+            <dv:ownerLogo>http://digitale.bibliothek.uni-halle.de//domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Halle, Saale : Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov16359604">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links>
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=ulbhalvd%3A16359604</dv:reference>
+            <dv:presentation>http://digitale.bibliothek.uni-halle.de/id/16359604</dv:presentation>
+            <dv:iiif>http://digitale.bibliothek.uni-halle.de/i3f/v20/16359604/manifest</dv:iiif>
+            <dv:sru>http://digitale.bibliothek.uni-halle.de/proto_ftsearch/16359604</dv:sru>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:amdSec ID="amd16289661">
+    <mets:rightsMD ID="rights16289661">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights>
+            <dv:ownerLogo>http://digitale.bibliothek.uni-halle.de//domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Halle, Saale : Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov16289661">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links>
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=1667522809</dv:reference>
+            <dv:presentation>http://digitale.bibliothek.uni-halle.de/id/16289661</dv:presentation>
+            <dv:sru>http://digitale.bibliothek.uni-halle.de/proto_ftsearch/16289661</dv:sru>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:amdSec ID="amd17308997">
+    <mets:rightsMD ID="rights17308997">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights>
+            <dv:ownerLogo>http://digitale.bibliothek.uni-halle.de//domainresource/static/graphics/connectors/viewerLogo.gif</dv:ownerLogo>
+            <dv:owner>Halle, Saale : Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov17308997">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links>
+            <dv:presentation>http://digitale.bibliothek.uni-halle.de/id/17308997</dv:presentation>
+            <dv:iiif>http://digitale.bibliothek.uni-halle.de/i3f/v20/17308997/manifest</dv:iiif>
+            <dv:sru>http://digitale.bibliothek.uni-halle.de/proto_ftsearch/17308997</dv:sru>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="ORIGINAL">
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_16331005">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/16331005" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_16331006">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/16331006" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_16331007">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/16331007" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_16331008">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/16331008" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_16331009">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/16331009" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_16331010">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/16331010" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_16331011">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/16331011" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_16331012">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/webcache/0/16331012" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp USE="ALTO3">
+      <mets:file MIMETYPE="text/xml" CREATED="2021-12-09T21:56:32.976800Z" ID="ALTO16331005">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/fulltext/alto3/16331005" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="text/xml" CREATED="2021-12-09T21:27:49.648400Z" ID="ALTO16331006">
+        <mets:FLocat xlink:href="http://digitale.bibliothek.uni-halle.de/download/fulltext/alto3/16331006" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys16331005" TYPE="page" LABEL="[Seite]" CONTENTIDS="urn:nbn:de:gbv:3:1-852911/fragment/page=16331005" ORDER="1">
+        <mets:fptr FILEID="IMG_MAX_16331005"/>
+        <mets:fptr FILEID="ALTO16331005"/>
+      </mets:div>
+      <mets:div ID="phys16331006" TYPE="page" LABEL="[Seite]" CONTENTIDS="urn:nbn:de:gbv:3:1-852911/fragment/page=16331006" ORDER="2">
+        <mets:fptr FILEID="IMG_MAX_16331006"/>
+        <mets:fptr FILEID="ALTO16331006"/>
+      </mets:div>
+      <mets:div ID="phys16331007" TYPE="page" LABEL="Seite 3" CONTENTIDS="urn:nbn:de:gbv:3:1-852911/fragment/page=16331007" ORDER="3" ORDERLABEL="3">
+        <mets:fptr FILEID="IMG_MAX_16331007"/>
+      </mets:div>
+      <mets:div ID="phys16331008" TYPE="page" LABEL="Seite 4" CONTENTIDS="urn:nbn:de:gbv:3:1-852911/fragment/page=16331008" ORDER="4" ORDERLABEL="4">
+        <mets:fptr FILEID="IMG_MAX_16331008"/>
+      </mets:div>
+      <mets:div ID="phys16331009" TYPE="page" LABEL="Seite 5" CONTENTIDS="urn:nbn:de:gbv:3:1-852911/fragment/page=16331009" ORDER="5" ORDERLABEL="5">
+        <mets:fptr FILEID="IMG_MAX_16331009"/>
+      </mets:div>
+      <mets:div ID="phys16331010" TYPE="page" LABEL="Seite 6" CONTENTIDS="urn:nbn:de:gbv:3:1-852911/fragment/page=16331010" ORDER="6" ORDERLABEL="6">
+        <mets:fptr FILEID="IMG_MAX_16331010"/>
+      </mets:div>
+      <mets:div ID="phys16331011" TYPE="page" LABEL="[Seite]" CONTENTIDS="urn:nbn:de:gbv:3:1-852911/fragment/page=16331011" ORDER="7">
+        <mets:fptr FILEID="IMG_MAX_16331011"/>
+      </mets:div>
+      <mets:div ID="phys16331012" TYPE="page" LABEL="[Seite]" CONTENTIDS="urn:nbn:de:gbv:3:1-852911/fragment/page=16331012" ORDER="8">
+        <mets:fptr FILEID="IMG_MAX_16331012"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="log16289661" DMDID="md16289661" ADMID="amd16289661" TYPE="newspaper" LABEL="General-Anzeiger für Halle und den Saalkreis" ORDER="1">
+      <mets:mptr LOCTYPE="URL" xlink:href="http://digitale.bibliothek.uni-halle.de/oai/?verb=GetRecord&amp;metadataPrefix=mets&amp;identifier=16289661"/>
+      <mets:div ID="log17308997" DMDID="md17308997" ADMID="amd17308997" TYPE="year" LABEL="1889" ORDER="1" ORDERLABEL="1889">
+        <mets:mptr LOCTYPE="URL" xlink:href="http://digitale.bibliothek.uni-halle.de/oai/?verb=GetRecord&amp;metadataPrefix=mets&amp;identifier=17308997"/>
+        <mets:div TYPE="month" ID="month03" LABEL="03" ORDERLABEL="3">
+          <mets:div TYPE="day" ID="day0323" LABEL="23" ORDERLABEL="23">
+            <mets:div ID="log16359604" DMDID="md16359604" ADMID="amd16359604" TYPE="issue" LABEL="3 (23.3.1889)" ORDER="1"/>
+          </mets:div>
+        </mets:div>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="log16359604" xlink:to="physroot"/>
+    <mets:smLink xlink:from="log16359604" xlink:to="phys16331005"/>
+    <mets:smLink xlink:from="log16359604" xlink:to="phys16331006"/>
+    <mets:smLink xlink:from="log16359604" xlink:to="phys16331007"/>
+    <mets:smLink xlink:from="log16359604" xlink:to="phys16331008"/>
+    <mets:smLink xlink:from="log16359604" xlink:to="phys16331009"/>
+    <mets:smLink xlink:from="log16359604" xlink:to="phys16331010"/>
+    <mets:smLink xlink:from="log16359604" xlink:to="phys16331011"/>
+    <mets:smLink xlink:from="log16359604" xlink:to="phys16331012"/>
+  </mets:structLink>
+</mets:mets>

@@ -36,7 +36,6 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
 import de.ulb.digital.derivans.model.PDFPageformation;
 import de.ulb.digital.derivans.model.ocr.OCRData;
-import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
@@ -83,7 +82,7 @@ public class TestPDFDerivateer {
 		for (int i = 1; i <= testPageSize; i++) {
 			String imageName = String.format("%04d.jpg", i);
 			Path jpgFile = pathImages.resolve(imageName);
-			BufferedImage bi2 = new BufferedImage(1050, 1498, BufferedImage.TYPE_3BYTE_BGR);
+			BufferedImage bi2 = new BufferedImage(500, 750, BufferedImage.TYPE_3BYTE_BGR);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
 			DigitalPage e = new DigitalPage(i, imageName);
 			pages.add(e);
@@ -103,7 +102,8 @@ public class TestPDFDerivateer {
 		pdfMeta.setImageDpi(pdfImageDpi);
 		pdfMeta.mergeDescriptiveData(dd);
 		// IDerivateer handler = new PDFDerivateer(base, get(), pages, pdfMeta);
-		IDerivateer handler = new PDFDerivateer(input, output, get(), pages, pdfMeta);
+		IDerivateer handler = new PDFDerivateer(input, output, pages, pdfMeta);
+		((PDFDerivateer) handler).setStructure(get());
 		int result = handler.create();
 
 		PDFInspector inspector = new PDFInspector(outPath);
@@ -155,12 +155,10 @@ public class TestPDFDerivateer {
 		Path outPath = tempDir.resolve(pdfName);
 		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
 		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
-		// BaseDerivateer base = new BaseDerivateer(input, output);
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setImageDpi(300);
-		IDerivateer handler = new PDFDerivateer(input, output, tree, pages, pdfMeta);
-		// TODO
-		// IDerivateer handler = new PDFDerivateer(base, tree, pages, pdfMeta);
+		IDerivateer handler = new PDFDerivateer(input, output, pages, pdfMeta);
+		((PDFDerivateer) handler).setStructure(tree);
 
 		// act
 		handler.create();
@@ -217,11 +215,10 @@ public class TestPDFDerivateer {
 		pdfMeta.setConformanceLevel(level);
 		pdfMeta.setImageDpi(300);
 		pdfMeta.mergeDescriptiveData(dd);
-		IDerivateer handler = new PDFDerivateer(input, output, get(), pages, pdfMeta);
+		IDerivateer handler = new PDFDerivateer(input, output, pages, pdfMeta);
 
 		// act
 		var result = handler.create();
-		;
 		PDFInspector inspector = new PDFInspector(outPath);
 		PDFMetaInformation pdfMetaInformation = inspector.getPDFMetaInformation();
 
@@ -307,7 +304,8 @@ public class TestPDFDerivateer {
 		pdfMeta.setConformanceLevel(level);
 		pdfMeta.setImageDpi(144);
 		pdfMeta.mergeDescriptiveData(dd);
-		IDerivateer handler = new PDFDerivateer(input, output, get(), pages, pdfMeta);
+		IDerivateer handler = new PDFDerivateer(input, output, pages, pdfMeta);
+		((PDFDerivateer)handler).setStructure(get());
 
 		// act
 		int result = handler.create();
@@ -368,7 +366,8 @@ public class TestPDFDerivateer {
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectory(pathImageMax);
 		Path imagePath = pathImageMax.resolve("1667524704_J_0150_0512.jpg");
-		TestDerivans.writeImage(imagePath, 7544, 10536, BufferedImage.TYPE_BYTE_GRAY, "JPG");
+		// original dimensions: 7544,10536
+		TestDerivans.writeImage(imagePath, 754, 1053, BufferedImage.TYPE_BYTE_GRAY, "JPG");
 
 		// arrange base derivateer
 		DerivansData input = new DerivansData(pathImageMax, DerivateType.JPG);
@@ -381,11 +380,10 @@ public class TestPDFDerivateer {
 		step.setOutputPath(pathTarget);
 		step.setInputPath(pathImageMax);
 		DescriptiveData dd = new DescriptiveData();
-		DigitalStructureTree structure = new DigitalStructureTree();
 		List<DigitalPage> pages = resolver.resolveFromStep(step);
 		resolver.enrichOCRFromFilesystem(pages, targetDir);
 		step.mergeDescriptiveData(dd);
-		PDFDerivateer handler = new PDFDerivateer(input, output, structure, pages, step);
+		PDFDerivateer handler = new PDFDerivateer(input, output, pages, step);
 
 		// act
 		int result = handler.create();
@@ -463,14 +461,13 @@ public class TestPDFDerivateer {
 		DerivansData input = new DerivansData(Path.of("."), DerivateType.JPG);
 		DerivansData output = new DerivansData(Path.of("."), DerivateType.PDF);
 		DescriptiveData dd = new DescriptiveData();
-		DigitalStructureTree structure = new DigitalStructureTree();
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.mergeDescriptiveData(dd);
 		pdfMeta.setImageDpi(1);
 
 		// act
 		var thrown = assertThrows(DigitalDerivansException.class, () -> {
-			new PDFDerivateer(input, output, structure, new ArrayList<>(), pdfMeta);
+			new PDFDerivateer(input, output, new ArrayList<>(), pdfMeta);
 		});
 
 		// assert
@@ -491,13 +488,12 @@ public class TestPDFDerivateer {
 		DerivansData input = new DerivansData(Path.of("."), DerivateType.JPG);
 		DerivansData output = new DerivansData(Path.of("."), DerivateType.PDF);
 		DescriptiveData dd = new DescriptiveData();
-		DigitalStructureTree structure = new DigitalStructureTree();
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.mergeDescriptiveData(dd);
 
 		// act
 		var thrown = assertThrows(DigitalDerivansException.class, () -> {
-			new PDFDerivateer(input, output, structure, null, pdfMeta);
+			new PDFDerivateer(input, output, null, pdfMeta);
 		});
 
 		// assert

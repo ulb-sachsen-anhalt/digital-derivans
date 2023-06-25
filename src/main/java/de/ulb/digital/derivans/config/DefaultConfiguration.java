@@ -23,6 +23,8 @@ public class DefaultConfiguration {
 
 		public static final String PDF_METS_FILEGROUP_FULLTEXT = "mets_filegroup_fulltext";
 
+		public static final String PDF_METS_FILEGROUP_IMAGES = "mets_filegroup_images";
+
 		private Key() {}
 	}
 
@@ -58,10 +60,6 @@ public class DefaultConfiguration {
 	 */
 	public static final Integer DEFAULT_MAXIMAL = 14400; 
 
-	// public static final Path DEFAULT_PATH_INPUT_IMAGES = Path.of(DEFAULT_INPUT_IMAGE);
-
-	// public static final Path DEFAULT_PATH_INPUT_FULLTEXT = Path.of(DEFAULT_INPUT_FULLTEXT);
-	
 	public static final Path DEFAULT_MAX_FOOTER_OUTPUT_SUB_PATH = Path.of("FOOTER_MAX");
 	
 	public static final Path DEFAULT_FOOTER_MIN_OUTPUT_SUB_PATH = Path.of("FOOTER_80");

@@ -20,7 +20,6 @@ import org.mycore.mets.model.struct.PhysicalStructMap;
 import org.mycore.mets.model.struct.PhysicalSubDiv;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -103,39 +102,37 @@ public class MetadataStore implements IMetadataStore {
 	public List<DigitalPage> getDigitalPagesInOrder() {
 		List<DigitalPage> pages = new ArrayList<>();
 		int n = 1;
-		if (this.mets != null) {
-			PhysicalStructMap physStruct = mets.getPhysicalStructMap();
-			if (physStruct != null) {
-				for (PhysicalSubDiv physSubDiv : physStruct.getDivContainer().getChildren()) {
-					List<FilePointerMatch> fptrs = getFilePointer(physSubDiv);
-					DigitalPage page = new DigitalPage(n);
+		PhysicalStructMap physStruct = mets.getPhysicalStructMap();
+		if (physStruct != null) {
+			for (PhysicalSubDiv physSubDiv : physStruct.getDivContainer().getChildren()) {
+				List<FilePointerMatch> fptrs = getFilePointer(physSubDiv);
+				DigitalPage page = new DigitalPage(n);
 
-					// handle image file
-					Optional<FilePointerMatch> optImage = fptrs.stream()
-							.filter(fptr -> this.fileGroupImages.equals(fptr.getFileGroup())).findFirst();
-					LOGGER.debug("enrich digital page from {}", optImage);
-					if (optImage.isPresent()) {
-						FilePointerMatch match = optImage.get();
-						enrichImageData(physSubDiv, page, match);
-						// probably encountered something empty
-						// since no filtering forehand, might contain
-						// top-level mets:fptr to PDFs or alike
-					} else {
-						continue;
-					}
-
-					// handle optional attached ocr file
-					Optional<FilePointerMatch> optFulltext = fptrs.stream()
-							.filter(fptr -> this.fileGroupOcr.equals(fptr.getFileGroup())).findFirst();
-					if (optFulltext.isPresent()) {
-						LOGGER.trace("enrich ocr from {}", optFulltext);
-						FilePointerMatch match = optFulltext.get();
-						enrichFulltextData(physSubDiv, page, match);
-					}
-
-					pages.add(page);
-					n++;
+				// handle image file
+				Optional<FilePointerMatch> optImage = fptrs.stream()
+						.filter(fptr -> this.fileGroupImages.equals(fptr.getFileGroup())).findFirst();
+				LOGGER.debug("enrich digital page from {}", optImage);
+				if (optImage.isPresent()) {
+					FilePointerMatch match = optImage.get();
+					enrichImageData(physSubDiv, page, match);
+					// probably encountered something empty
+					// since no filtering forehand, might contain
+					// top-level mets:fptr to PDFs or alike
+				} else {
+					continue;
 				}
+
+				// handle optional attached ocr file
+				Optional<FilePointerMatch> optFulltext = fptrs.stream()
+						.filter(fptr -> this.fileGroupOcr.equals(fptr.getFileGroup())).findFirst();
+				if (optFulltext.isPresent()) {
+					LOGGER.trace("enrich ocr from {}", optFulltext);
+					FilePointerMatch match = optFulltext.get();
+					enrichFulltextData(physSubDiv, page, match);
+				}
+
+				pages.add(page);
+				n++;
 			}
 		}
 		return pages;
@@ -174,31 +171,40 @@ public class MetadataStore implements IMetadataStore {
 
 	private void enrichFulltextData(PhysicalSubDiv physSubDiv, DigitalPage page, FilePointerMatch match) {
 		String fileRefSegment = match.reference;
-		Path ocrFilePath = sanitizePath(Path.of(fileRefSegment));
-		try {
-			OCRData data = OCRReaderFactory.from(ocrFilePath).get(ocrFilePath);
-			page.setOcrData(data);
-			LOGGER.debug("[{}] enriched ocr data with '{}' lines", physSubDiv.getId(), data.getTextlines().size());
-		} catch (DigitalDerivansException e) {
-			LOGGER.error(e);
+		Optional<Path> optOCRPath = calculateOCRPath(Path.of(fileRefSegment));
+		if (optOCRPath.isPresent()) {
+			Path ocrFilePath = optOCRPath.get();
+			try {
+				OCRData data = OCRReaderFactory.from(ocrFilePath).get(ocrFilePath);
+				page.setOcrData(data);
+				LOGGER.debug("[{}] enriched ocr data with '{}' lines", physSubDiv.getId(), data.getTextlines().size());
+			} catch (DigitalDerivansException e) {
+				LOGGER.error(e);
+			}
 		}
 	}
 
 	/**
 	 * 
 	 * Guess where OCR-Data physically resides
+	 * by first sanitizing the extension and
+	 * afterwards resolve local path from
+	 * root and OCR-data sub dir
 	 * 
 	 * @param path
 	 * @return
 	 */
-	private Path sanitizePath(Path path) {
+	private Optional<Path> calculateOCRPath(Path path) {
 		Path metsDir = this.handler.getPath().getParent();
-		Path p = metsDir.resolve(Path.of(IMetadataStore.DEFAULT_INPUT_FULLTEXT)).resolve(path);
+		if (!path.endsWith(".xml")) {
+			path = Path.of(path.toString() + ".xml");
+		}
+		Path p = metsDir.resolve(Path.of(this.fileGroupOcr)).resolve(path);
 		if (Files.exists(p, LinkOption.NOFOLLOW_LINKS)) {
 			LOGGER.debug("found ocr data file '{}'", p);
-			return p;
+			return Optional.of(p);
 		}
-		return path;
+		return Optional.empty();
 	}
 
 	private List<FilePointerMatch> getFilePointer(PhysicalSubDiv physSubDiv) {

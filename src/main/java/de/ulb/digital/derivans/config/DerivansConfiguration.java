@@ -476,7 +476,24 @@ public class DerivansConfiguration {
 		if (optPdfFulltext.isPresent()) {
 			String pdfFulltext = optPdfFulltext.get();
 			LOGGER.debug("set fulltext input for pdf '{}'", pdfFulltext);
-			step.setModsIdentifierXPath(pdfFulltext);
+			step.setParamOCR(pdfFulltext);
+		}
+		// overwrite via CLI flag
+		if (this.paramOCR != null) {
+			step.setParamOCR(this.paramOCR);
+		}
+
+		// images and filegroup param
+		String optionPdfImageGroup = section + "." + DefaultConfiguration.Key.PDF_METS_FILEGROUP_IMAGES;
+		Optional<String> optPdfImageGroup = extractValue(conf, optionPdfImageGroup, String.class);
+		if (optPdfImageGroup.isPresent()) {
+			String pdfImageGroup = optPdfImageGroup.get();
+			LOGGER.debug("set fulltext input for pdf '{}'", pdfImageGroup);
+			step.setParamImages(pdfImageGroup);
+		}
+		// overwrite via CLI flag
+		if (this.paramImages != null) {
+			step.setParamImages(this.paramImages);
 		}
 	}
 

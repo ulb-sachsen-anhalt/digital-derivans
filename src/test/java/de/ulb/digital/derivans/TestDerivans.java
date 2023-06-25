@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 import javax.xml.XMLConstants;
@@ -56,17 +57,19 @@ public class TestDerivans {
 
 	/**
 	 * 
-	 * Common setup with images and metadata
+	 * Common ULB Sachsen-Anhalt data setup 
+	 * with images and METS/MODS metadata
+	 * from legacy vlserver
 	 * 
 	 * @param tempDir
 	 * @throws Exception
 	 */
 	@Test
 	@Order(1)
-	void testConfig(@TempDir Path tempDir) throws Exception {
+	void testConfigULBCommons(@TempDir Path tempDir) throws Exception {
 
 		// arrange metadata and images
-		Path pathTarget = arrangeMetsAndImagesFor737429(tempDir);
+		Path pathTarget = arrangeMetsAndMAXImagesFor737429(tempDir);
 
 		// arrange configuration
 		// migration configuration with extended derivates
@@ -130,7 +133,7 @@ public class TestDerivans {
 	void testDerivatesFrom737429Defaults(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		Path pathTarget = arrangeMetsAndImagesFor737429(tempDir);
+		Path pathTarget = arrangeMetsAndMAXImagesFor737429(tempDir);
 		DerivansParameter dp = new DerivansParameter();
 		Path metadataPath = pathTarget.resolve("737429.xml");
 		dp.setPathInput(metadataPath);
@@ -307,14 +310,14 @@ public class TestDerivans {
 	
 	/**
 	 * 
-	 * Behavior if custom image dir set
+	 * Behavior if custom image dir set and only images present
 	 * 
 	 * @param tempDir
 	 * @throws Exception
 	 */
 	@Test
 	@Order(7)
-	void testDerivatesWithConfiguredImages(@TempDir Path tempDir) throws Exception {
+	void testDerivatesWithCLIsetImages(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		var imgDir = "ORIGINAL";
@@ -337,7 +340,56 @@ public class TestDerivans {
 	}
 	
 
-	public static Path arrangeMetsAndImagesFor737429(Path tempDir) throws IOException {
+	/**
+	 * 
+	 * Behavior if OCR referenced by URL without file extension
+	 * resides in file group named 'ALTO3' and also images
+	 * are in group 'ORIGINAL' (rather kitodo.presentation like)
+	 * for VL ID 16359604
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	@Order(8)
+	void testDerivatesWithCustomImagesAndPartialOCR(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path configSourceDir = Path.of("src/test/resources/config");
+		Path configTargetDir = tempDir.resolve("config");
+		if (Files.exists(configTargetDir)) {
+			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			Files.delete(configTargetDir);
+		}
+		Files.createDirectories(configTargetDir);
+		Path testConfig = configSourceDir.resolve("derivans-custom.ini");
+		Files.copy(testConfig, configTargetDir.resolve("derivans-custom.ini"));
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(testConfig);
+		Path pathTarget = tempDir.resolve("16359604");
+		dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
+		Path sourceImageDir = Path.of("src/test/resources/16359604");
+		copyTree(sourceImageDir, pathTarget);
+		// create artificial "ORIGINAL" testimages
+		Path imageOriginal = pathTarget.resolve("ORIGINAL");
+		List<String> ids = IntStream.range(5, 13).mapToObj(i -> String.format("163310%02d",
+		i)).collect(Collectors.toList());
+		// these are the least dimensions a newspaper page
+		// shall shrink to which was originally 7000x10000
+		generateJpgsFromList(imageOriginal, 700, 1000, ids);
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		Derivans derivans = new Derivans(dc);
+
+		// act
+		derivans.create();
+
+		// assert
+		String pdfName = "General-Anzeiger_f\u00FCr_Halle_und_den_Saalkreis.pdf";
+		Path pdfWritten = pathTarget.resolve(pdfName);
+		assertTrue(Files.exists(pdfWritten));
+	}
+
+	public static Path arrangeMetsAndMAXImagesFor737429(Path tempDir) throws IOException {
 		Path pathTarget = tempDir.resolve("737429");
 		if (Files.exists(pathTarget)) {
 			Files.walk(pathTarget).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
