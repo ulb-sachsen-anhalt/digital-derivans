@@ -48,8 +48,6 @@ class TestMetadataStoreSLUB {
 		dp.setPathInput(TestResource.K2_PRES_SLUB_321094271.get());
 
 		// act
-		DerivansConfiguration config = new DerivansConfiguration(dp);
-//		DerivateStepPDF stepPDF = config.getDerivateSteps();
 		var slub321094271 = new MetadataStore(TestResource.K2_PRES_SLUB_321094271.get());
 		var dd321094271 = slub321094271.getDescriptiveData();
 

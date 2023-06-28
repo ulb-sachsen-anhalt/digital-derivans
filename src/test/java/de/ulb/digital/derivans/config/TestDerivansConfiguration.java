@@ -13,11 +13,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.data.IMetadataStore;
@@ -260,7 +258,7 @@ public class TestDerivansConfiguration {
 	}
 
 
-		/**
+	/**
 	 * 
 	 * Behavior if ULB config, but images are in group
 	 * 'ORIGINAL' (rather kitodo.presentation like)
@@ -272,7 +270,6 @@ public class TestDerivansConfiguration {
 	 * @throws Exception
 	 */
 	@Test
-	@Order(8)
 	void testConfigULBOverwriteImageGroup(@TempDir Path tempDir) throws Exception {
 
 		// arrange
@@ -294,17 +291,16 @@ public class TestDerivansConfiguration {
 		Path sourceImageDir = Path.of("src/test/resources/16359604");
 		TestHelper.copyTree(sourceImageDir, pathTarget);
 		// create artificial "ORIGINAL" testimages
-		Path imageDir = pathTarget.resolve("ORIGINAL");
+		Path imageDirOriginal = pathTarget.resolve("ORIGINAL");
 		List<String> ids = IntStream.range(5, 13)
 				.mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
 		// these are the least dimensions a newspaper page
 		// shall shrink to which was originally 7000x10000
-		TestHelper.generateJpgsFromList(imageDir, 700, 1000, ids);
+		TestHelper.generateJpgsFromList(imageDirOriginal, 700, 1000, ids);
 		// Derivans derivans = new Derivans(dc);
 		
 		// act
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
-		// derivans.create();
 
 		// assert
 		var dSteps = dc.getDerivateSteps();
@@ -312,9 +308,60 @@ public class TestDerivansConfiguration {
 		assertSame( DerivateType.PDF, dSteps.get(2).getDerivateType());
 		DerivateStepPDF pdfStep = (DerivateStepPDF)dSteps.get(2);
 		assertEquals("ORIGINAL", pdfStep.getParamImages());
-		assertEquals(imageDir, dSteps.get(0).getInputPath());
-		// String pdfName = "General-Anzeiger_f\u00FCr_Halle_und_den_Saalkreis.pdf";
-		// Path pdfWritten = pathTarget.resolve(pdfName);
-		// assertTrue(Files.exists(pdfWritten));
+		assertEquals(imageDirOriginal, dSteps.get(0).getInputPath());
+	}
+
+
+	/** 
+	 * Behavior if no explicite config => 2 fallback steps
+	 * just to generate a PDF from an image input group
+	 * 
+	 * If now images are in different group 
+	 * 'ORIGINAL' instead of default 'MAX',
+	 * ensure, overwriting fallback via CLI works too!
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testFallbackButOverwriteImageGroup(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		// Path configTargetDir = tempDir.resolve("config");
+		// if (Files.exists(configTargetDir)) {
+		// 	Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+		// 	Files.delete(configTargetDir);
+		// }
+		// Path testConfig = configSourceDir.resolve("derivans.ini");
+		// Files.copy(testConfig, configTargetDir.resolve("derivans.ini"));
+		DerivansParameter dp = new DerivansParameter();
+		// dp.setPathConfig(testConfig);
+		// this is the mandatory point
+		dp.setImages("ORIGINAL");
+		Path pathTarget = tempDir.resolve("16359604");
+		dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
+		Path sourceImageDir = Path.of("src/test/resources/16359604");
+		TestHelper.copyTree(sourceImageDir, pathTarget);
+		// create artificial "ORIGINAL" testimages
+		Path imageDirOriginal = pathTarget.resolve("ORIGINAL");
+		List<String> ids = IntStream.range(5, 13)
+				.mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
+		// these are the least dimensions a newspaper page
+		// shall shrink to which was originally 7000x10000
+		TestHelper.generateJpgsFromList(imageDirOriginal, 700, 1000, ids);
+		// Derivans derivans = new Derivans(dc);
+		
+		// act
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+
+		// assert
+		var dSteps = dc.getDerivateSteps();
+		assertEquals(2, dSteps.size());
+		assertEquals(imageDirOriginal, dSteps.get(0).getInputPath());
+		assertSame( DerivateType.PDF, dSteps.get(1).getDerivateType());
+		DerivateStepPDF pdfStep = (DerivateStepPDF)dSteps.get(1);
+		assertEquals(pathTarget.resolve("IMAGE_80"), pdfStep.getInputPath());
+		assertEquals("ORIGINAL", pdfStep.getParamImages());
+		assertEquals(imageDirOriginal, dSteps.get(0).getInputPath());
 	}
 }

@@ -49,15 +49,15 @@ public class DerivansConfiguration {
 
 	private Path pathConfigFile;
 
-	private String paramImages;
+	private Optional<String> paramImages = Optional.empty();
 
-	private String paramOCR;
+	private Optional<String> paramOCR = Optional.empty();
 
 	private Integer quality = DefaultConfiguration.DEFAULT_QUALITY;
 
 	private Integer poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 
-	private List<DerivateStep> derivateSteps = new ArrayList<>();;
+	private List<DerivateStep> derivateSteps = new ArrayList<>();
 
 	private List<String> derivatePrefixes = new ArrayList<>();
 
@@ -80,6 +80,14 @@ public class DerivansConfiguration {
 		Path input = params.getPathInput();
 		if (!input.isAbsolute()) {
 			input = input.toAbsolutePath();
+		}
+
+		// take care of args for input images/ocr
+		if(params.getImages() != null) {
+			this.paramImages = Optional.of(params.getImages());
+		}
+		if(params.getOcr() != null) {
+			this.paramOCR = Optional.of(params.getOcr());
 		}
 
 		// determine if inputPath points to a METS-file or directory
@@ -109,9 +117,6 @@ public class DerivansConfiguration {
 				this.initConfigurationFromFile();
 			}
 		}
-		// take care of args for input images/ocr
-		this.paramImages = params.getImages();
-		this.paramOCR = params.getOcr();
 
 		// take care if no config provided
 		if (derivateSteps.isEmpty()) {
@@ -209,6 +214,12 @@ public class DerivansConfiguration {
 				if (step.getDerivateType() == DerivateType.JPG_FOOTER) {
 					enrichImageFooterInformation((DerivateStepImageFooter) step, conf, derivateSection);
 				}
+				// if very first step and param image set, exchange
+				if (nSection == 1 && this.paramImages.isPresent()) {
+					var images = paramImages.get();
+					var parent = step.getInputPath().getParent();
+					step.setInputPath(parent.resolve(images));
+				}
 			} else if (step.getDerivateType() == DerivateType.PDF) {
 				enrichPDFDerivateInformation((DerivateStepPDF) step, conf, derivateSection);
 			}
@@ -245,28 +256,29 @@ public class DerivansConfiguration {
 	 */
 	private void provideDefaultSteps() {
 		DerivateStepImage createMins = new DerivateStepImage();
-		var subDir = DEFAULT_INPUT_IMAGES;
-		if (this.paramImages != null) {
-			subDir = this.paramImages;
-		}
-		createMins.setInputPath(this.pathDir.resolve(subDir));
+		var inputs = this.paramImages.orElse(DEFAULT_INPUT_IMAGES);
+		createMins.setInputPath(this.pathDir.resolve(inputs));
 		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
-		createMins.setOutputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL));
+		var minOutput = this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL);
+		createMins.setOutputPath(minOutput);
 		createMins.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
 		createMins.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
 		createMins.setDerivateType(DerivateType.JPG);
 		this.derivateSteps.add(createMins);
 		DerivateStepPDF createPdf = new DerivateStepPDF();
-		createPdf.setInputPath(this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL));
+		createPdf.setInputPath(minOutput);
 		createPdf.setDerivateType(DerivateType.PDF);
 		createPdf.setOutputType("pdf");
 		createPdf.setOutputPath(this.pathDir);
-		// guess ocr data
-		if (Files.exists(this.pathDir.resolve(DEFAULT_INPUT_FULLTEXT))) {
-			createPdf.setParamOCR(DEFAULT_INPUT_FULLTEXT);
-		}
-		if (this.paramOCR != null) {
-			createPdf.setParamOCR(this.paramOCR);
+		// handle optional image group too
+		this.paramImages.ifPresent(createPdf::setParamImages);
+		// handle optional OCR data
+		var ocr = this.paramOCR.orElse(DEFAULT_INPUT_FULLTEXT);
+		var ocrDir = this.pathDir.resolve(ocr);
+		if (Files.exists(ocrDir)) {
+			createPdf.setParamOCR(ocr);
+		} else {
+			LOGGER.warn("Can't set invalid input OCR data from '{}'!", ocrDir);
 		}
 		this.derivateSteps.add(createPdf);
 	}
@@ -477,10 +489,8 @@ public class DerivansConfiguration {
 			LOGGER.debug("set fulltext input for pdf '{}'", pdfFulltext);
 			step.setParamOCR(pdfFulltext);
 		}
-		// overwrite via CLI flag
-		if (this.paramOCR != null) {
-			step.setParamOCR(this.paramOCR);
-		}
+		// probably set via CLI flag, even if nothing configured
+		this.paramOCR.ifPresent(step::setParamOCR);
 
 		// images and filegroup param
 		String optionPdfImageGroup = section + "." + DefaultConfiguration.Key.PDF_METS_FILEGROUP_IMAGES;
@@ -490,10 +500,8 @@ public class DerivansConfiguration {
 			LOGGER.debug("set fulltext input for pdf '{}'", pdfImageGroup);
 			step.setParamImages(pdfImageGroup);
 		}
-		// overwrite via CLI flag
-		if (this.paramImages != null) {
-			step.setParamImages(this.paramImages);
-		}
+		// probably set via CLI flag, even if nothing configured
+		this.paramImages.ifPresent(step::setParamImages);
 	}
 
 	private static boolean isImageDerivate(DerivateStep step) {
@@ -511,20 +519,28 @@ public class DerivansConfiguration {
 		return false;
 	}
 
+	/**
+	 * For testing purposes only
+	 * @return
+	 */
 	public String getParamImages() {
-		return paramImages;
+		return paramImages.get();
 	}
 
 	public void setParamImages(String paramImage) {
-		this.paramImages = paramImage;
+		this.paramImages = Optional.of(paramImage);
 	}
 
+	/**
+	 * For testing purposes only
+	 * @return
+	 */
 	public String getParamOCR() {
-		return paramOCR;
+		return paramOCR.get();
 	}
 
 	public void setParamOCR(String paramOCR) {
-		this.paramOCR = paramOCR;
+		this.paramOCR = Optional.of(paramOCR);
 	}
 
 	/**
