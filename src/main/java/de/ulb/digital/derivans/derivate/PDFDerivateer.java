@@ -422,6 +422,8 @@ public class PDFDerivateer extends BaseDerivateer {
 			LOGGER.info("Firstpage: {}x{})", image.getWidth(), image.getHeight());
 			image.scaleAbsolute(image.getWidth() * this.dpiScale, image.getHeight() * this.dpiScale);
 			LOGGER.info("Firstpage scaled: {}x{})", image.getScaledWidth(), image.getScaledHeight());
+		} catch (IndexOutOfBoundsException i) {
+			throw new DigitalDerivansException("No images for " + this.getInput());
 		} catch (BadElementException | IOException e) {
 			throw new DigitalDerivansException(e);
 		}

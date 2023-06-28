@@ -57,7 +57,7 @@ public class DerivansConfiguration {
 
 	private Integer poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 
-	private List<DerivateStep> derivateSteps;
+	private List<DerivateStep> derivateSteps = new ArrayList<>();;
 
 	private List<String> derivatePrefixes = new ArrayList<>();
 
@@ -93,7 +93,6 @@ public class DerivansConfiguration {
 		}
 
 		// set configuration file for later examination
-		this.derivateSteps = new ArrayList<>();
 		if (params.getPathConfig() != null) {
 			LOGGER.debug("inspect cli config file {}", params.getPathConfig());
 			this.pathConfigFile = params.getPathConfig();

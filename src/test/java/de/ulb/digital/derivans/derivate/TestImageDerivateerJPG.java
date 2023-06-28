@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.TestDerivans;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.data.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.step.DerivateType;
@@ -42,7 +42,7 @@ class TestImageDerivateerJPG {
 		int height = 5500;
 		int number = 8;
 
-		TestDerivans.generateJpgs(imageDir, width, height, number);
+		TestHelper.generateJpgs(imageDir, width, height, number);
 	}
 
 	@Test

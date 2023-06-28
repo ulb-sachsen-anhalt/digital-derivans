@@ -26,7 +26,7 @@ import org.junit.jupiter.api.io.TempDir;
 import com.itextpdf.text.pdf.BaseFont;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.TestDerivans;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.data.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
@@ -367,7 +367,7 @@ public class TestPDFDerivateer {
 		Files.createDirectory(pathImageMax);
 		Path imagePath = pathImageMax.resolve("1667524704_J_0150_0512.jpg");
 		// original dimensions: 7544,10536
-		TestDerivans.writeImage(imagePath, 754, 1053, BufferedImage.TYPE_BYTE_GRAY, "JPG");
+		TestHelper.writeImage(imagePath, 754, 1053, BufferedImage.TYPE_BYTE_GRAY, "JPG");
 
 		// arrange base derivateer
 		DerivansData input = new DerivansData(pathImageMax, DerivateType.JPG);

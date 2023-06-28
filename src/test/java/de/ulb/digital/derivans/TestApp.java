@@ -47,7 +47,7 @@ class TestApp {
 		Path configDir = Path.of("src/test/resources/config");
 		Path configTempDir = tempDir.resolve("config");
 		Path configTemp = configTempDir.resolve("derivans.ini");
-		TestDerivans.copyTree(configDir, configTempDir);
+		TestHelper.copyTree(configDir, configTempDir);
 
 		// act
 		String[] args = { pathTarget.resolve("737429.xml").toString(), "-c", configTemp.toString() };

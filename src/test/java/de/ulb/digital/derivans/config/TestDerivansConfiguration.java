@@ -2,17 +2,23 @@ package de.ulb.digital.derivans.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import de.ulb.digital.derivans.TestDerivans;
+import de.ulb.digital.derivans.Derivans;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.model.step.DerivateStep;
@@ -23,6 +29,9 @@ import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
+ * Test specification for different
+ * Derivans Configurations
+ * 
  * @author hartwig
  *
  */
@@ -30,13 +39,14 @@ public class TestDerivansConfiguration {
 
 	/**
 	 * 
-	 * Common configuration with metadata file present
+	 * Test minimal configuration to produce
+	 * PDF with metadata file present
 	 * 
 	 * @param tempDir
 	 * @throws Exception
 	 */
 	@Test
-	void testCommonConfigurationWithMETS(@TempDir Path tempDir) throws Exception {
+	void testMinimalPDFConfigurationWithMETS(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path targetMetsDir = tempDir.resolve("226134857");
@@ -56,13 +66,13 @@ public class TestDerivansConfiguration {
 		assertEquals(4, dc.getPoolsize());
 
 		List<DerivateStep> steps = dc.getDerivateSteps();
-		assertEquals(7, steps.size());
+		assertEquals(3, steps.size());
 
 		// footer
 		assertTrue(steps.get(0) instanceof DerivateStepImageFooter);
 		DerivateStepImageFooter stepFooter = (DerivateStepImageFooter)steps.get(0);
 		assertEquals("jpg", stepFooter.getOutputType());
-		assertEquals(95, stepFooter.getQuality());
+		assertEquals(90, stepFooter.getQuality());
 		assertEquals("Universitäts- und Landesbibliothek Sachsen-Anhalt", stepFooter.getFooterLabel());
 		assertEquals("src/test/resources/config/footer_template.png", stepFooter.getPathTemplate().toString());
 		assertEquals(DerivateType.JPG_FOOTER, steps.get(0).getDerivateType());
@@ -82,12 +92,6 @@ public class TestDerivansConfiguration {
 		assertEquals("pdf", stepPdf.getOutputType());
 		assertEquals(DerivateType.PDF, stepPdf.getDerivateType());
 		assertTrue(stepPdf.isEnrichMetadata());
-
-		// additional assets
-		assertTrue(steps.get(5) instanceof DerivateStepImage);
-		DerivateStepImage stepPreviewImage = (DerivateStepImage) steps.get(5);
-		assertEquals("BUNDLE_BRANDED_PREVIEW__", stepPreviewImage.getOutputPrefix());
-		assertEquals(1000,stepPreviewImage.getMaximal());
 	}
 
 
@@ -146,7 +150,7 @@ public class TestDerivansConfiguration {
 		Path pathInput = tempDir.resolve("default_local");
 		Path pathImageMax = pathInput.resolve(imgDir);
 		Files.createDirectories(pathImageMax);
-		TestDerivans.generateJpgs(pathImageMax, 620, 877, 6);
+		TestHelper.generateJpgs(pathImageMax, 620, 877, 6);
 		var params = new DerivansParameter();
 		params.setPathInput(pathInput);
 
@@ -189,7 +193,7 @@ public class TestDerivansConfiguration {
 		Path pathInput = tempDir.resolve("default_local");
 		Path pathImageMax = pathInput.resolve(customImageSubDir);
 		Files.createDirectories(pathImageMax);
-		TestDerivans.generateJpgs(pathImageMax, 620, 877, 6);
+		TestHelper.generateJpgs(pathImageMax, 620, 877, 6);
 		var params = new DerivansParameter();
 		params.setPathInput(pathInput);
 		params.setImages(customImageSubDir);
@@ -231,7 +235,7 @@ public class TestDerivansConfiguration {
 		Files.createDirectory(pathInput);
 		Path pathImageMax = tempDir.resolve(customImageSubDir);
 		Files.createDirectories(pathImageMax);
-		TestDerivans.generateJpgs(pathImageMax, 620, 877, 6);
+		TestHelper.generateJpgs(pathImageMax, 620, 877, 6);
 		var params = new DerivansParameter();
 		params.setPathInput(pathInput);
 		params.setImages(pathImageMax.toString());
@@ -255,4 +259,62 @@ public class TestDerivansConfiguration {
 		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
 	}
 
+
+		/**
+	 * 
+	 * Behavior if ULB config, but images are in group
+	 * 'ORIGINAL' (rather kitodo.presentation like)
+	 * for VL ID 16359604
+	 * 
+	 * => Ensure, overwriting config via CLI works!
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	@Order(8)
+	void testConfigULBOverwriteImageGroup(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path configSourceDir = Path.of("src/test/resources/config");
+		Path configTargetDir = tempDir.resolve("config");
+		if (Files.exists(configTargetDir)) {
+			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			Files.delete(configTargetDir);
+		}
+		Files.createDirectories(configTargetDir);
+		Path testConfig = configSourceDir.resolve("derivans.ini");
+		Files.copy(testConfig, configTargetDir.resolve("derivans.ini"));
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(testConfig);
+		// this is the mandatory point
+		dp.setImages("ORIGINAL");
+		Path pathTarget = tempDir.resolve("16359604");
+		dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
+		Path sourceImageDir = Path.of("src/test/resources/16359604");
+		TestHelper.copyTree(sourceImageDir, pathTarget);
+		// create artificial "ORIGINAL" testimages
+		Path imageDir = pathTarget.resolve("ORIGINAL");
+		List<String> ids = IntStream.range(5, 13)
+				.mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
+		// these are the least dimensions a newspaper page
+		// shall shrink to which was originally 7000x10000
+		TestHelper.generateJpgsFromList(imageDir, 700, 1000, ids);
+		// Derivans derivans = new Derivans(dc);
+		
+		// act
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		// derivans.create();
+
+		// assert
+		var dSteps = dc.getDerivateSteps();
+		assertEquals(3, dSteps.size());
+		assertSame( DerivateType.PDF, dSteps.get(2).getDerivateType());
+		DerivateStepPDF pdfStep = (DerivateStepPDF)dSteps.get(2);
+		assertEquals("ORIGINAL", pdfStep.getParamImages());
+		assertEquals(imageDir, dSteps.get(0).getInputPath());
+		// String pdfName = "General-Anzeiger_f\u00FCr_Halle_und_den_Saalkreis.pdf";
+		// Path pdfWritten = pathTarget.resolve(pdfName);
+		// assertTrue(Files.exists(pdfWritten));
+	}
 }

@@ -1,7 +1,9 @@
 package de.ulb.digital.derivans;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
@@ -54,12 +56,14 @@ import de.ulb.digital.derivans.model.step.DerivateStepImage;
  */
 public class TestDerivans {
 
-
 	/**
 	 * 
-	 * Common ULB Sachsen-Anhalt data setup 
+	 * Common ULB Sachsen-Anhalt data setup
 	 * with images and METS/MODS metadata
-	 * from legacy vlserver
+	 * from legacy vlserver to attach
+	 * footnote and generate some
+	 * additional derivates for dspace
+	 * (= 7 steps)
 	 * 
 	 * @param tempDir
 	 * @throws Exception
@@ -79,9 +83,9 @@ public class TestDerivans {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
-		copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(configSourceDir, configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(configTargetDir.resolve("derivans.ini"));
+		dp.setPathConfig(configTargetDir.resolve("derivans-7steps.ini"));
 		dp.setPathInput(pathTarget.resolve("737429.xml"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
@@ -94,8 +98,8 @@ public class TestDerivans {
 		assertTrue(Files.exists(pdfWritten));
 
 		// assert proper pdf-metadata integration
-		Document doc = readXMLDocument(pathTarget.resolve("737429.xml"));
-		XPathExpression<Element> xpath = generateXpression(".//mets:fptr[@FILEID='PDF_191092622']");
+		Document doc = TestHelper.readXMLDocument(pathTarget.resolve("737429.xml"));
+		XPathExpression<Element> xpath = TestHelper.generateXpression(".//mets:fptr[@FILEID='PDF_191092622']");
 		Element el = xpath.evaluateFirst(doc);
 		assertNotNull(el);
 
@@ -123,7 +127,9 @@ public class TestDerivans {
 
 	/**
 	 * 
-	 * Create Derivates with metadata and default settings
+	 * Create Derivates with metadata
+	 * and default settings but no explicite
+	 * configuration present
 	 * 
 	 * @param tempDir
 	 * @throws Exception
@@ -180,7 +186,7 @@ public class TestDerivans {
 		Path pathTarget = tempDir.resolve("only_images");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-		generateJpgs(pathImageMax, 1240, 1754, 6);
+		TestHelper.generateJpgs(pathImageMax, 1240, 1754, 6);
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
@@ -203,7 +209,7 @@ public class TestDerivans {
 		Path pathTarget = tempDir.resolve("only_images");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-		generateJpgsFromList(pathImageMax, 1240, 1754, List.of("737434", "737436", "737437", "737438"));
+		TestHelper.generateJpgsFromList(pathImageMax, 1240, 1754, List.of("737434", "737436", "737437", "737438"));
 
 		Path targetMets = pathTarget.resolve(Path.of("737429.mets.xml"));
 		Files.copy(TestResource.HD_Aa_737429.get(), targetMets);
@@ -233,12 +239,12 @@ public class TestDerivans {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
-		copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(configSourceDir, configTargetDir);
 		Path pathTarget = tempDir.resolve("148811035");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
 		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
-		copyTree(sourceImageDir, pathImageMax);
+		TestHelper.copyTree(sourceImageDir, pathImageMax);
 
 		// create artificial testimages
 		// List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d",
@@ -250,7 +256,7 @@ public class TestDerivans {
 		Files.copy(sourceMets, targetMets);
 		Path sourceOcr = Path.of("src/test/resources/alto/148811035/FULLTEXT");
 		Path targetOcr = pathTarget.resolve("FULLTEXT");
-		copyTree(sourceOcr, targetOcr);
+		TestHelper.copyTree(sourceOcr, targetOcr);
 
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(targetMets);
@@ -259,9 +265,10 @@ public class TestDerivans {
 
 		// apply some scaling, too
 		int maximal = 2339; // A4 200 DPI ok
-//		int maximal = 1754; // A4 150 DPI tw, print vanishes over top up to "Sero ..."
-//		int maximal = 1170; // A4 100 DPI ok with smaller text
-		((DerivateStepImage)dc.getDerivateSteps().get(1)).setMaximal(maximal);
+		// int maximal = 1754; // A4 150 DPI tw, print vanishes over top up to "Sero
+		// ..."
+		// int maximal = 1170; // A4 100 DPI ok with smaller text
+		((DerivateStepImage) dc.getDerivateSteps().get(1)).setMaximal(maximal);
 		Derivans derivans = new Derivans(dc);
 
 		// act
@@ -291,7 +298,7 @@ public class TestDerivans {
 		Path pathImageMax = pathTarget.resolve("TIF");
 		Files.createDirectory(pathImageMax);
 		Path imagePath = pathImageMax.resolve("1667524704_J_0150_0512.tif");
-		writeImage(imagePath, 7544, 10536, BufferedImage.TYPE_BYTE_GRAY, "TIFF");
+		TestHelper.writeImage(imagePath, 7544, 10536, BufferedImage.TYPE_BYTE_GRAY, "TIFF");
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
@@ -306,8 +313,7 @@ public class TestDerivans {
 		Path pdfWritten = pathTarget.resolve("zd1.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
-	
-	
+
 	/**
 	 * 
 	 * Behavior if custom image dir set and only images present
@@ -324,7 +330,7 @@ public class TestDerivans {
 		Path pathTarget = tempDir.resolve("conf_images");
 		Path pathImageMax = pathTarget.resolve(imgDir);
 		Files.createDirectories(pathImageMax);
-		generateJpgs(pathImageMax, 620, 877, 6);
+		TestHelper.generateJpgs(pathImageMax, 620, 877, 6);
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
 		dp.setImages(imgDir);
@@ -338,7 +344,6 @@ public class TestDerivans {
 		Path pdfWritten = pathTarget.resolve("conf_images.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
-	
 
 	/**
 	 * 
@@ -352,7 +357,7 @@ public class TestDerivans {
 	 */
 	@Test
 	@Order(8)
-	void testDerivatesWithCustomImagesAndPartialOCR(@TempDir Path tempDir) throws Exception {
+	void testConfigCustomWithImagesAndPartialOCR(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path configSourceDir = Path.of("src/test/resources/config");
@@ -369,14 +374,14 @@ public class TestDerivans {
 		Path pathTarget = tempDir.resolve("16359604");
 		dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
 		Path sourceImageDir = Path.of("src/test/resources/16359604");
-		copyTree(sourceImageDir, pathTarget);
+		TestHelper.copyTree(sourceImageDir, pathTarget);
 		// create artificial "ORIGINAL" testimages
 		Path imageOriginal = pathTarget.resolve("ORIGINAL");
-		List<String> ids = IntStream.range(5, 13).mapToObj(i -> String.format("163310%02d",
-		i)).collect(Collectors.toList());
+		List<String> ids = IntStream.range(5, 13)
+				.mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
 		// these are the least dimensions a newspaper page
 		// shall shrink to which was originally 7000x10000
-		generateJpgsFromList(imageOriginal, 700, 1000, ids);
+		TestHelper.generateJpgsFromList(imageOriginal, 700, 1000, ids);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 
@@ -389,6 +394,109 @@ public class TestDerivans {
 		assertTrue(Files.exists(pdfWritten));
 	}
 
+	// /**
+	//  * 
+	//  * Behavior if ULB config, but images are in group
+	//  * 'ORIGINAL' (rather kitodo.presentation like)
+	//  * for VL ID 16359604
+	//  * 
+	//  * => Ensure, overwriting config via CLI works!
+	//  * 
+	//  * @param tempDir
+	//  * @throws Exception
+	//  */
+	// @Test
+	// @Order(8)
+	// void testConfigULBOverwriteImageGroup(@TempDir Path tempDir) throws Exception {
+
+	// 	// arrange
+	// 	Path configSourceDir = Path.of("src/test/resources/config");
+	// 	Path configTargetDir = tempDir.resolve("config");
+	// 	if (Files.exists(configTargetDir)) {
+	// 		Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+	// 		Files.delete(configTargetDir);
+	// 	}
+	// 	Files.createDirectories(configTargetDir);
+	// 	Path testConfig = configSourceDir.resolve("derivans.ini");
+	// 	Files.copy(testConfig, configTargetDir.resolve("derivans.ini"));
+	// 	DerivansParameter dp = new DerivansParameter();
+	// 	dp.setPathConfig(testConfig);
+	// 	// this is the mandatory point
+	// 	dp.setImages("ORIGINAL");
+	// 	Path pathTarget = tempDir.resolve("16359604");
+	// 	dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
+	// 	Path sourceImageDir = Path.of("src/test/resources/16359604");
+	// 	copyTree(sourceImageDir, pathTarget);
+	// 	// create artificial "ORIGINAL" testimages
+	// 	Path imageOriginal = pathTarget.resolve("ORIGINAL");
+	// 	List<String> ids = IntStream.range(5, 13)
+	// 			.mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
+	// 	// these are the least dimensions a newspaper page
+	// 	// shall shrink to which was originally 7000x10000
+	// 	generateJpgsFromList(imageOriginal, 700, 1000, ids);
+	// 	DerivansConfiguration dc = new DerivansConfiguration(dp);
+	// 	Derivans derivans = new Derivans(dc);
+
+	// 	// act
+	// 	derivans.create();
+
+	// 	// assert
+	// 	String pdfName = "General-Anzeiger_f\u00FCr_Halle_und_den_Saalkreis.pdf";
+	// 	Path pdfWritten = pathTarget.resolve(pdfName);
+	// 	assertTrue(Files.exists(pdfWritten));
+	// }
+
+
+	/**
+	 * 
+	 * Ensure Exception is thrown if images are missing
+	 * because they are in a different file group
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testConfigULBButDifferentImageGroup(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path configSourceDir = Path.of("src/test/resources/config");
+		Path configTargetDir = tempDir.resolve("config");
+		if (Files.exists(configTargetDir)) {
+			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			Files.delete(configTargetDir);
+		}
+		Files.createDirectories(configTargetDir);
+		Path testConfig = configSourceDir.resolve("derivans.ini");
+		Files.copy(testConfig, configTargetDir.resolve("derivans.ini"));
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(testConfig);
+		// dp.setImages("ORIGINAL");
+		Path pathTarget = tempDir.resolve("16359604");
+		dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
+		Path sourceImageDir = Path.of("src/test/resources/16359604");
+		TestHelper.copyTree(sourceImageDir, pathTarget);
+		// create artificial "ORIGINAL" testimages
+		Path imageOriginal = pathTarget.resolve("ORIGINAL");
+		List<String> ids = IntStream.range(5, 13)
+				.mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
+		// these are the least dimensions a newspaper page
+		// shall shrink to which was originally 7000x10000
+		TestHelper.generateJpgsFromList(imageOriginal, 700, 1000, ids);
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		Derivans derivans = new Derivans(dc);
+
+		// act
+		var excResult = assertThrows(DigitalDerivansException.class, () -> derivans.create(), "foo");
+		
+
+		// assert
+		String pdfName = "General-Anzeiger_f\u00FCr_Halle_und_den_Saalkreis.pdf";
+		Path pdfWritten = pathTarget.resolve(pdfName);
+		assertFalse(Files.exists(pdfWritten));
+		assertTrue(excResult.getMessage().startsWith("No images for IMAGE"));
+	}
+
+
 	public static Path arrangeMetsAndMAXImagesFor737429(Path tempDir) throws IOException {
 		Path pathTarget = tempDir.resolve("737429");
 		if (Files.exists(pathTarget)) {
@@ -399,79 +507,79 @@ public class TestDerivans {
 		Path metsTarget = pathTarget.resolve("737429.xml");
 		Files.copy(TestResource.HD_Aa_737429.get(), metsTarget);
 		Path imagePath = pathTarget.resolve("MAX");
-		generateJpgsFromList(imagePath, 475, 750, List.of("737434", "737436", "737437", "737438"));
+		TestHelper.generateJpgsFromList(imagePath, 475, 750, List.of("737434", "737436", "737437", "737438"));
 		return pathTarget;
 	}
 
-	public static void generateJpgs(Path imageDir, int width, int height, int number) throws IOException {
-		if (Files.exists(imageDir)) {
-			Files.delete(imageDir);
-		}
-		Files.createDirectory(imageDir);
-		for (int i = 1; i <= number; i++) {
-			String imagePath = String.format("%04d.jpg", i);
-			Path jpgFile = imageDir.resolve(imagePath);
-			writeImage(jpgFile, width, height, BufferedImage.TYPE_3BYTE_BGR, "JPG");
-		}
-	}
+	// public static void generateJpgs(Path imageDir, int width, int height, int number) throws IOException {
+	// 	if (Files.exists(imageDir)) {
+	// 		Files.delete(imageDir);
+	// 	}
+	// 	Files.createDirectory(imageDir);
+	// 	for (int i = 1; i <= number; i++) {
+	// 		String imagePath = String.format("%04d.jpg", i);
+	// 		Path jpgFile = imageDir.resolve(imagePath);
+	// 		writeImage(jpgFile, width, height, BufferedImage.TYPE_3BYTE_BGR, "JPG");
+	// 	}
+	// }
 
-	public static void writeImage(Path imagePath, int width, int height, int type, String format) throws IOException {
-		BufferedImage bi2 = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-		Font theFont = new Font("Helvetica", Font.BOLD, 84);
-		Graphics2D g2d = bi2.createGraphics();
-		g2d.setColor(Color.WHITE);
-		g2d.setFont(theFont);
-		FontMetrics fontMetrics = g2d.getFontMetrics();
-		String imageName = imagePath.getFileName().toString();
-		Rectangle2D rect = fontMetrics.getStringBounds(imageName, g2d);
-		int centerX = (bi2.getWidth() - (int) rect.getWidth()) / 2;
-		g2d.drawString(imageName, centerX, 500);
-		g2d.dispose();
-		ImageIO.write(bi2, format, imagePath.toFile());
-	}
+	// public static void writeImage(Path imagePath, int width, int height, int type, String format) throws IOException {
+	// 	BufferedImage bi2 = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+	// 	Font theFont = new Font("Helvetica", Font.BOLD, 84);
+	// 	Graphics2D g2d = bi2.createGraphics();
+	// 	g2d.setColor(Color.WHITE);
+	// 	g2d.setFont(theFont);
+	// 	FontMetrics fontMetrics = g2d.getFontMetrics();
+	// 	String imageName = imagePath.getFileName().toString();
+	// 	Rectangle2D rect = fontMetrics.getStringBounds(imageName, g2d);
+	// 	int centerX = (bi2.getWidth() - (int) rect.getWidth()) / 2;
+	// 	g2d.drawString(imageName, centerX, 500);
+	// 	g2d.dispose();
+	// 	ImageIO.write(bi2, format, imagePath.toFile());
+	// }
 
-	public static void generateJpgsFromList(Path imageDir, int width, int height, List<String> labels)
-			throws IOException {
-		if (Files.exists(imageDir)) {
-			Files.delete(imageDir);
-		}
-		Files.createDirectory(imageDir);
-		for (int i = 0; i < labels.size(); i++) {
-			Path jpgFile = imageDir.resolve(labels.get(i) + ".jpg");
-			BufferedImage bi2 = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-			ImageIO.write(bi2, "JPG", jpgFile.toFile());
-		}
-	}
+	// public static void generateJpgsFromList(Path imageDir, int width, int height, List<String> labels)
+	// 		throws IOException {
+	// 	if (Files.exists(imageDir)) {
+	// 		Files.delete(imageDir);
+	// 	}
+	// 	Files.createDirectory(imageDir);
+	// 	for (int i = 0; i < labels.size(); i++) {
+	// 		Path jpgFile = imageDir.resolve(labels.get(i) + ".jpg");
+	// 		BufferedImage bi2 = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+	// 		ImageIO.write(bi2, "JPG", jpgFile.toFile());
+	// 	}
+	// }
 
-	public static void copyTree(Path pathSource, Path pathTarget) {
-		try {
-			Files.walk(pathSource).forEach(s -> {
-				try {
-					Path d = pathTarget.resolve(pathSource.relativize(s));
-					if (Files.isDirectory(s)) {
-						if (!Files.exists(d))
-							Files.createDirectory(d);
-						return;
-					}
-					Files.copy(s, d);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
+	// public static void copyTree(Path pathSource, Path pathTarget) {
+	// 	try {
+	// 		Files.walk(pathSource).forEach(s -> {
+	// 			try {
+	// 				Path d = pathTarget.resolve(pathSource.relativize(s));
+	// 				if (Files.isDirectory(s)) {
+	// 					if (!Files.exists(d))
+	// 						Files.createDirectory(d);
+	// 					return;
+	// 				}
+	// 				Files.copy(s, d);
+	// 			} catch (Exception e) {
+	// 				e.printStackTrace();
+	// 			}
+	// 		});
+	// 	} catch (Exception ex) {
+	// 		ex.printStackTrace();
+	// 	}
+	// }
 
-	public static Document readXMLDocument(Path filePath) throws JDOMException, IOException {
-		SAXBuilder builder = new SAXBuilder();
-		return builder.build(filePath.toFile());
-	}
+	// public static Document readXMLDocument(Path filePath) throws JDOMException, IOException {
+	// 	SAXBuilder builder = new SAXBuilder();
+	// 	return builder.build(filePath.toFile());
+	// }
 
-	public XPathExpression<Element> generateXpression(String xpathStr) {
-		XPathBuilder<Element> builder = new XPathBuilder<Element>(xpathStr, Filters.element());
-		builder.setNamespace(IMetadataStore.NS_METS);
-		return builder.compileWith(XPathFactory.instance());
-	}
+	// public XPathExpression<Element> generateXpression(String xpathStr) {
+	// 	XPathBuilder<Element> builder = new XPathBuilder<Element>(xpathStr, Filters.element());
+	// 	builder.setNamespace(IMetadataStore.NS_METS);
+	// 	return builder.compileWith(XPathFactory.instance());
+	// }
 
 }

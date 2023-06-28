@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.Derivans;
-import de.ulb.digital.derivans.TestDerivans;
-import de.ulb.digital.derivans.config.DerivansConfiguration;
-import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.data.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DigitalPage;
 
@@ -30,7 +28,7 @@ public class TestDerivansPathResolver {
 		Path pathTarget = tempDir.resolve("only_images");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-		TestDerivans.generateJpgs(pathImageMax, 1240, 1754, 6);
+		TestHelper.generateJpgs(pathImageMax, 1240, 1754, 6);
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
