@@ -7,7 +7,6 @@ import org.w3c.dom.Document;
 
 import de.ulb.digital.derivans.data.IMetadataStore;
 
-import static de.ulb.digital.derivans.data.IMetadataStore.*;
 
 /**
  * 

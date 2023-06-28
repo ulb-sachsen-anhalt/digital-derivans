@@ -50,10 +50,8 @@ public class OCRReaderFactory {
 			} else if (prelude.contains("alto/ns-v3")) {
 				return Type.ALTO_V3;
 			}
-		} else if(prelude.contains("PAGE")) {
-			if (prelude.contains("2019-07-15")) {
-				return Type.PAGE_2019;
-			}
+		} else if(prelude.contains("PAGE") && prelude.contains("2019-07-15")) {
+			return Type.PAGE_2019;
 		}
 		return Type.UNKNOWN;
 	}

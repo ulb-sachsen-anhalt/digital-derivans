@@ -1,8 +1,6 @@
 package de.ulb.digital.derivans.config;
 
 import de.ulb.digital.derivans.model.step.DerivateType;
-// import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_FULLTEXT;
-// import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_IMAGE;
 
 import java.nio.file.Path;
 

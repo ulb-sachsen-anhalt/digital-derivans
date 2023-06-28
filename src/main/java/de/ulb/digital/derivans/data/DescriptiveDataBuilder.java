@@ -15,7 +15,6 @@ import org.jdom2.Element;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.model.DescriptiveData;
-import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
  * 

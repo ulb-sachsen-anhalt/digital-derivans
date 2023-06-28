@@ -38,8 +38,6 @@ public class DescriptiveData {
 
 	private String yearPublished = IMetadataStore.UNKNOWN;
 
-//	private Optional<String> creator = Optional.empty();
-
 	private Optional<String> license = Optional.empty();
 
 	private Optional<String> keywords = Optional.empty();
@@ -76,10 +74,6 @@ public class DescriptiveData {
 		this.person = author;
 	}
 
-//	public Optional<String> getCreator() {
-//		return this.creator;
-//	}
-
 	public String getYearPublished() {
 		return yearPublished;
 	}
@@ -89,10 +83,6 @@ public class DescriptiveData {
 			yearPublished = "0";
 		this.yearPublished = yearPublished;
 	}
-
-//	public void setCreator(Optional<String> creator) {
-//		this.creator = creator;
-//	}
 
 	public Optional<String> getLicense() {
 		return license;
