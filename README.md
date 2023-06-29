@@ -76,7 +76,7 @@ java -jar <PATH>./target/digital-derivans-<version>.jar test/`
 ```
 
 will produce a pdf `test.pdf` in the `test/` directory from above with specified layout.  
-For more information concerning CLI-Usage, [please see here](#cli_parameter).
+For more information concerning CLI-Usage, [please see here](#cli-parameter).
 
 ## Configuration
 
