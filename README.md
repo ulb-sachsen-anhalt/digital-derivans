@@ -1,66 +1,59 @@
 # Digital Derivans
 
-![JDK11 Maven3](https://github.com/ulb-sachsen-anhalt/digital-derivans/workflows/Java%20CI%20with%20Maven/badge.svg) 
+![JDK11 Maven3](https://github.com/ulb-sachsen-anhalt/digital-derivans/workflows/Java%20CI%20with%20Maven/badge.svg)
 
-A tool that merges image files and OCR data to produce searchable pdf files with hidden text and optional footer.
+Java command line tool that creates image derivates with different, configurable sizes and qualities, appends additional image footer and may assemble image files and OCR data to produce searchable pdf files with hidden text layer and an outline.
 
-Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling, classical [iText5](https://github.com/itext/itextpdf) to create PDF, [Apache log4j2](https://github.com/apache/logging-log4j2) for logging and a workflow inspired by [OCR-D/Core](https://github.com/OCR-D/core) METS-driven-Workflows.
+Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling, classical [iText5](https://github.com/itext/itextpdf) to create PDF, [Apache log4j2](https://github.com/apache/logging-log4j2) for logging and a workflow inspired by [OCR-D/Core](https://github.com/OCR-D/core) Workflows.
 
 * [Features](#features)
-* [Installation](#installation)
+* [Local Installation](#installation)
 * [Usage](#usage)
 * [Configuration](#configuration)
+* [Limitations](#limitations)
 * [License](#license)
 
 ## Features
 
-Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max sizes. For details see [configuration section](#Configuration).
+Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max sizes.  
+For details see [configuration section](#configuration).
 
-If METS/MODS-information is available, the following will be utilized:
+If METS/MODS-information is available, the following will be taken into account:
 
-* `mods:recordInfo/mods:recordIdentifier` to name the resulting PDF-file
-* for PDF-outline attribute `mets:div[@ORDER]` for the file containers is strictly respected as defined in the METS physical structMap
-
-If METS/MODS is available and a footer with proper labelling is required, then additionally the following will be utilized:
-
-* `mods:identifier[@type="urn"]` as default URN in Image Footer
-to name the PDF-file
-* if granular URNs exist in METS physical strucMap, information from `mets:div[@CONTENTIDS]` will be used for each individual page in Image Footer
+* Attribute `mets:div[@ORDER]` for file containers as defined in the METS physical structMap to shape the PDF outline
+* Attribute `mets:div[@CONTENTIDS]` (granular URN) will be rendered for each page if image footer shall be appended
 
 ## Installation
 
-Digital Derivans is a Java project build with [Apache Maven](https://github.com/apache/maven).
+Digital Derivans is a Java 11+ project build with [Apache Maven](https://github.com/apache/maven).
 
-### Requirements
+### Development Requirements
 
 * OpenJDK 11+
 * Maven 3.6+
 * git 2.12+
-* build application
 
 ### Pull and compile
 
-Clone the repository
+Clone the repository and call Maven to trigger the build process.
 
 ```shell
 git clone git@github.com:ulb-sachsen-anhalt/digital-derivans.git
-
 cd digital-derivans
+mvn clean package
 ```
 
-Now build the java binary using Maven:
-
-  ```shell
-  mvn clean package
-  ```
-
-  This will create a shaded JAR ("FAT-JAR", by default `./target/digital-derivans-1.6.0.jar`) which can be passed to the actual target system. _Please note that a recent OpenJDK is required to run the Application._
+This will first run the tests and afterwards create a shaded JAR ("FAT-JAR") inside the build directory (`./target/digital-derivans-<version>.jar`)
 
 ## Usage
 
-The tool expects a project folder containing at least a `MAX` and `FULLTEXT` directory for image files and ocr-files respectively.
+In local mode, a recent OpenJRE is required.
+
+The tool expects a project folder containing an image directory (default: `MAX`) and optional OCR-data directory (default: `FULLTEXT`').
+
 The default name of the generated pdf is derived from the project folder name.
-*(Attention: If you call the programme from with the project folder, the resulting pdf will be called `..pdf`)*
+
+*(Attention: `)*
 
 A sample folder structure:
 
@@ -79,27 +72,23 @@ test/
 Running 
 
 ```bash
-java -jar <PATH>./target/digital-derivans-1.6.0.jar test/`
+java -jar <PATH>./target/digital-derivans-<version>.jar test/`
 ```
 
-will produce a pdf `test.pdf` in the `test/` directory.
+will produce a pdf `test.pdf` in the `test/` directory from above with specified layout.  
+For more information concerning CLI-Usage, [please see here](#cli_parameter).
 
 ## Configuration
 
-Several options can be customized with a plain INI-file.
-In subdir `config` next to derivans JAR place the following files:
+Although Derivans can be run without configuration, it's strongly recommended. Many flags, especially if metadata must be taken into account, are using defaults tied to digitalization workflows of ULB Sachsen-Anhalt that *might* not fit your custom requirements.
 
-* config/derivans.ini
-* config/derivans_logging.xml
-* config/footer_template.png
+### Sections
 
-Even `derivans.ini` is not mandatory. This scenario is only usable for evaluation purposes, since several output parameters can only be guessed by the system or remain unset (aka `n.a.`).
+Configuration options can be bundled into sections and customized with a INI-file.
 
-### Configure Sections
+Some params can be set on global level in section `[]` . Each section in a `*.ini`- file matching `[derivate_<n>]` represents a single derivate section for intermediate or resulting derivates.
 
-Each section in `derivans.ini`- file represents a single derivate section, used to derive Images or PDFs.
-Additionally, there can be a global section which sets default values for all subsequent steps.
-Order of Workflow is determined by pairs of input-output paths, whereas numbering of derivate sections determines order at parse-time.
+Order of execution is determined by pairs of input-output paths, whereas numbering of derivate sections determines order at parse-time.
 
 ### Default Values
 
@@ -117,15 +106,24 @@ Some options values must be set individually for each step:
 
 Additional options can be set, according to of the actual type to derive:
 
-* `quality` : compression rate (JPG)
-* `poolsize` : parallel workers (JPG)
-* `maximal` : maximal width/height (JPG)
-* `footer_template` : generic footer from template with URN from METS/MODS (JPG)
-* `footer_label_copyright` : additional static label for footer (JPG)
-* `metadata_creator` : enrich creator tag (PDF)
-* `metadata_keywords`: enrich keywords (PDF)
+Images:
 
-### Example
+* `quality` : compression rate
+* `poolsize` : parallel workers
+* `maximal` : maximal dimension width or height
+* `footer_template` : footer template Path
+* `footer_label_copyright` : additional (static) label for footer
+
+PDF:
+
+* `metadata_creator` : enrich creator tag
+* `metadata_keywords`: enrich keywords
+* `enrich_pdf_metadata` : if PDF shall be enriched into METS/MODS (default: `True`)
+* `mods_identifier_xpath` : if not set, use `mods:recordIdentifier` from primary MODS
+* `mets_filegroup_fulltext`: METS-filegroup for OCR-Data (default: `FULLTEXT`)
+* `mets_filegroup_images` : METS-filegroup for image data (default: `MAX`)
+
+### Minimal working Example
 
 The following example configuration contains global settings and 3 subsequent steps.
 On global level, it set the default JPG-quality to `80`, the number of parallel executors to `8` and determines the file for the logging-configuration.
@@ -135,31 +133,53 @@ On global level, it set the default JPG-quality to `80`, the number of parallel 
 3. Create new PDF with images from `IMAGE_80`, add some metadata and store in current dir.
 
 ```ini
-default_quality = 80
 default_poolsize = 8
 logger_configuration_file = derivans_logging.xml
 
 [derivate_01]
-quality = 95
-input_dir = MAX
-output_dir = IMAGE_FOOTER
-# path to footer_template relative to dir "config"
-footer_template = footer_template.png
-footer_label_copyright = "Universitäts- und Landesbibliothek Sachsen-Anhalt"
-
-[derivate_02]
-input_dir = IMAGE_FOOTER
+input_dir = DEFAULT
 output_dir = IMAGE_80
+default_quality = 75
 maximal = 1000
 
-[derivate_03]
+[derivate_02]
 type = pdf
 input_dir = IMAGE_80
 output_dir = .
 output_type = pdf
-metadata_creator = "Universitäts- und Landesbibliothek Sachsen-Anhalt"
-metadata_keywords = "VD18,Retro-Digitalisierung"
+metadata_creator = "<your organization label>"
+metadata_license = "Public Domain Mark 1.0"
 ```
+
+### CLI Parameter
+
+The main parameter for Derivans is the input path, which may be a local directory in local mode or the path to a METS/MODS-file, if using metadata.
+
+Additionally, one can also provide via CLI
+
+* path to custom configuration INI-file
+* set labels for OCR and input-image (will overwrite configuration)  
+  If metadata present, both will be used as filegroup names;
+  For images they will also be used as input directory for inital image processing
+
+## Limitations
+
+Derivans depends on standard JDK-components and external Libraries for image processing and PDF generation.
+
+### Image Processing
+
+* OpenJRE/OpenJDK can't process image data with more than 8bit channel depth ([javax.imageio.IIOException: Illegal band size](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/42)). To overcome this, one needs to reduce channel depth with an external tool.
+* Corrupt or exotic image metadata leads to process errors, since the metadata is copied too, when generating image derivates for proper scaling of PDF ([javax.imageio.IIOException: Unsupported marker](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/33)).
+
+### PDF Generation
+
+* If Derivans is called from within the project folder, the resulting pdf will be called `..pdf`.
+* PDF-Library limits the maximal dimension to 14400 px (weight/height, [Configured max dimension fails for very large Images](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/16)). This may cause trouble if one needs to generate PDF for very large prints like maps, deeds or scrolls.
+
+### Metadata
+
+* Derivans [does not accept METS with OCR-D-style](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/38) if it contains extended XML-features like inline namespace declarations. 
+
 
 ## License
 
