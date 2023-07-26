@@ -6,9 +6,11 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -24,6 +26,7 @@ import org.jdom2.xpath.XPathFactory;
 
 
 import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.derivate.PDFInspector;
 
 /**
  * 
@@ -104,4 +107,37 @@ public class TestHelper {
 		return builder.compileWith(XPathFactory.instance());
 	}
 
+	public static Path fixturePrint737429(Path tempDir, Path srcMets) throws IOException {
+		Path pathTarget = tempDir.resolve("737429");
+		if (Files.exists(pathTarget)) {
+			Files.walk(pathTarget).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			Files.delete(pathTarget);
+		}
+		Files.createDirectory(pathTarget);
+		Path metsTarget = pathTarget.resolve("737429.xml");
+		Files.copy(srcMets, metsTarget);
+		Path imagePath = pathTarget.resolve("MAX");
+		generateJpgsFromList(imagePath, 475, 750, List.of("737434", "737436", "737437", "737438"));
+		return pathTarget;
+	}
+
+	public static Path fixturePrint737429(Path tempDir) throws IOException {
+		return fixturePrint737429(tempDir,TestResource.HD_Aa_737429.get());
+	}
+
+
+	/**
+	 * 
+	 * Please note numbering starts with "1",
+	 * with "1" being the very first page.
+	 * 
+	 * @param writtenData
+	 * @param pageNr
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getText(Path writtenData, int pageNr) throws Exception {
+		PDFInspector inspector = new PDFInspector(writtenData);
+		return inspector.getPageText(pageNr);
+	}
 }

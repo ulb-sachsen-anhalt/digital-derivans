@@ -88,7 +88,7 @@ public class MetadataStore implements IMetadataStore {
 	}
 
 	@Override
-	public Optional<String> getIdentifierExpression() {
+	public Optional<String> optionalIdentifierExpression() {
 		return this.xPathIdentifier;
 	}
 
@@ -105,15 +105,15 @@ public class MetadataStore implements IMetadataStore {
 		PhysicalStructMap physStruct = mets.getPhysicalStructMap();
 		if (physStruct != null) {
 			for (PhysicalSubDiv physSubDiv : physStruct.getDivContainer().getChildren()) {
-				List<FilePointerMatch> fptrs = getFilePointer(physSubDiv);
+				List<FilePointerRef> fptrs = getFilePointer(physSubDiv);
 				DigitalPage page = new DigitalPage(n);
 
 				// handle image file
-				Optional<FilePointerMatch> optImage = fptrs.stream()
+				Optional<FilePointerRef> optImage = fptrs.stream()
 						.filter(fptr -> this.fileGroupImages.equals(fptr.getFileGroup())).findFirst();
 				LOGGER.debug("enrich digital page from {}", optImage);
 				if (optImage.isPresent()) {
-					FilePointerMatch match = optImage.get();
+					FilePointerRef match = optImage.get();
 					enrichImageData(physSubDiv, page, match);
 					// probably encountered something empty
 					// since no filtering forehand, might contain
@@ -123,11 +123,11 @@ public class MetadataStore implements IMetadataStore {
 				}
 
 				// handle optional attached ocr file
-				Optional<FilePointerMatch> optFulltext = fptrs.stream()
+				Optional<FilePointerRef> optFulltext = fptrs.stream()
 						.filter(fptr -> this.fileGroupOcr.equals(fptr.getFileGroup())).findFirst();
 				if (optFulltext.isPresent()) {
 					LOGGER.trace("enrich ocr from {}", optFulltext);
-					FilePointerMatch match = optFulltext.get();
+					FilePointerRef match = optFulltext.get();
 					enrichFulltextData(physSubDiv, page, match);
 				}
 
@@ -154,7 +154,7 @@ public class MetadataStore implements IMetadataStore {
 	 * @param page
 	 * @param match
 	 */
-	private void enrichImageData(PhysicalSubDiv physSubDiv, DigitalPage page, FilePointerMatch match) {
+	private void enrichImageData(PhysicalSubDiv physSubDiv, DigitalPage page, FilePointerRef match) {
 		String fileRefSegment = match.reference;
 		// sanitize file endings that are missing in METS links for valid local access
 		if (!fileRefSegment.endsWith(".jpg") && !fileRefSegment.endsWith(".tif")) {
@@ -169,7 +169,7 @@ public class MetadataStore implements IMetadataStore {
 		}
 	}
 
-	private void enrichFulltextData(PhysicalSubDiv physSubDiv, DigitalPage page, FilePointerMatch match) {
+	private void enrichFulltextData(PhysicalSubDiv physSubDiv, DigitalPage page, FilePointerRef match) {
 		String fileRefSegment = match.reference;
 		Optional<Path> optOCRPath = calculateOCRPath(Path.of(fileRefSegment));
 		if (optOCRPath.isPresent()) {
@@ -196,7 +196,7 @@ public class MetadataStore implements IMetadataStore {
 	 */
 	private Optional<Path> calculateOCRPath(Path path) {
 		Path metsDir = this.handler.getPath().getParent();
-		if (!path.endsWith(".xml")) {
+		if (!path.toString().endsWith(".xml")) {
 			path = Path.of(path.toString() + ".xml");
 		}
 		Path p = metsDir.resolve(Path.of(this.fileGroupOcr)).resolve(path);
@@ -207,20 +207,20 @@ public class MetadataStore implements IMetadataStore {
 		return Optional.empty();
 	}
 
-	private List<FilePointerMatch> getFilePointer(PhysicalSubDiv physSubDiv) {
+	private List<FilePointerRef> getFilePointer(PhysicalSubDiv physSubDiv) {
 		var filePointers = physSubDiv.getChildren();
 		return filePointers.stream().map(Fptr::getFileId).map(this::matchFileGroup).collect(Collectors.toList());
 	}
 
 	/**
 	 * 
-	 * Inspect ALL METS FileGrps, not only "MAX", to match the provided physical
-	 * identifier
+	 * Inspect ALL METS FileGrps to recognize final link segment,
+	 * considered to represent physical local file name
 	 * 
 	 * @param fptrId
 	 * @return
 	 */
-	private FilePointerMatch matchFileGroup(String fptrId) {
+	private FilePointerRef matchFileGroup(String fptrId) {
 		for (FileGrp fileGrp : mets.getFileSec().getFileGroups()) {
 			for (File fileGrpfile : fileGrp.getFileList()) {
 				if (fileGrpfile.getId().equals(fptrId)) {
@@ -228,13 +228,13 @@ public class MetadataStore implements IMetadataStore {
 					if (!link.isBlank()) {
 						String[] linkTokens = link.split("/");
 						String reference = linkTokens[linkTokens.length - 1];
-						return new FilePointerMatch(fileGrp.getUse(), reference);
+						return new FilePointerRef(fileGrp.getUse(), reference);
 					}
 				}
 			}
 		}
 		// dummy return
-		return new FilePointerMatch();
+		return new FilePointerRef();
 	}
 
 	@Override
@@ -276,6 +276,12 @@ public class MetadataStore implements IMetadataStore {
 			DescriptiveDataBuilder builder = new DescriptiveDataBuilder();
 			builder.setMetadataStore(this);
 			descriptiveData = builder.person().access().identifier().title().urn().year().build();
+		} else if(this.xPathIdentifier.isPresent()) {
+			// identifier might have changed just for PDF labelling
+			DescriptiveDataBuilder builder = new DescriptiveDataBuilder();
+			builder.setMetadataStore(this);
+			builder.identifier();
+			descriptiveData.setIdentifier(builder.build().getIdentifier());
 		}
 		return descriptiveData;
 	}
@@ -287,21 +293,21 @@ public class MetadataStore implements IMetadataStore {
 
 	/**
 	 * 
-	 * Carry the knowledge, which res ID belongs to which group, through execution
-	 * time.
+	 * Store knowledge which physical struct file pointer
+	 * references/matches corresponding physical file.
 	 * 
 	 * @author u.hartwig
 	 *
 	 */
-	static class FilePointerMatch {
+	static class FilePointerRef {
 
 		private String fileGroup = IMetadataStore.UNKNOWN;
 		private String reference = IMetadataStore.UNKNOWN;
 
-		public FilePointerMatch() {
+		public FilePointerRef() {
 		}
 
-		public FilePointerMatch(String fileGroup, String reference) {
+		public FilePointerRef(String fileGroup, String reference) {
 			this.fileGroup = fileGroup;
 			this.reference = reference;
 		}

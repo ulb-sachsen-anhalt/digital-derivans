@@ -134,5 +134,5 @@ public interface IMetadataStore {
 	 * 
 	 * @return
 	 */
-	Optional<String> getIdentifierExpression();
+	Optional<String> optionalIdentifierExpression();
 }
