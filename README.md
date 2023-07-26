@@ -2,7 +2,7 @@
 
 ![JDK11 Maven3](https://github.com/ulb-sachsen-anhalt/digital-derivans/workflows/Java%20CI%20with%20Maven/badge.svg)
 
-Java command line tool that creates image derivates with different, configurable sizes and qualities, appends additional image footer and may assemble image files and OCR data to produce searchable pdf files with hidden text layer and an outline.
+Java command line tool that creates image derivates with different, configurable sizes and qualities, appends additional image footer and may assemble image files and OCR data to produce searchable pdf files with hidden text layer and an outline. If derivates can be created independently, like single scaled image variants, it uses parallel execution.
 
 Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling, classical [iText5](https://github.com/itext/itextpdf) to create PDF, [Apache log4j2](https://github.com/apache/logging-log4j2) for logging and a workflow inspired by [OCR-D/Core](https://github.com/OCR-D/core) Workflows.
 
@@ -15,12 +15,13 @@ Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handli
 
 ## Features
 
-Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max sizes. For details see [configuration section](#configuration).
+Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max sizes.  
+For details see [configuration section](#configuration).
 
 If METS/MODS-information is available, the following will be taken into account:
 
-* Attribute `mets:div[@ORDER]` for file containers as defined in the METS physical structMap forms the PDF outline
-* Attribute `mets:div[@CONTENTIDS]` (granular URN) will be used for each individual page if image footer will be generated
+* Attribute `mets:div[@ORDER]` for file containers as defined in the METS physical structMap to create a PDF outline
+* Attribute `mets:div[@CONTENTIDS]` (granular URN) will be rendered for each page if footer shall be appended to each page image
 
 ## Installation
 
@@ -50,12 +51,12 @@ In local mode, a recent OpenJRE is required.
 
 The tool expects a project folder containing an image directory (default: `MAX`) and optional OCR-data directory (default: `FULLTEXT`').
 
-The default name of the generated pdf is derived from the project folder name.
+The *default name* of the generated pdf is derived from the project folder name.
 
 A sample folder structure:
 
 ```bash
-test/
+my_print/
 ├── FULLTEXT
 │   ├── 0002.xml
 │   ├── 0021.xml
@@ -69,21 +70,22 @@ test/
 Running
 
 ```bash
-java -jar <PATH>./target/digital-derivans-<version>.jar test/`
+java -jar <PATH>./target/digital-derivans-<version>.jar <path-to-my_print>`
 ```
 
-will produce a pdf `test.pdf` in the `test/` directory from above with specified layout.  
-For more information concerning CLI-Usage, [please see](#cli-parameter).
+will produce a file named `my_print.pdf` in the `my_print` directory from above with specified layout.  
+For more information concerning CLI-Usage, please [consult CLI docs](#cli-parameter).
 
 ## Configuration
 
-Although Derivans can be run without separate configuration file, it's strongly recommended because many flags, especially if metadata must be taken into account, are using defaults tied to digitalization workflows of ULB Sachsen-Anhalt that *might* not fit your custom requirements.
+Although Derivans can be run without configuration, it's strongly recommended. Many flags, especially if metadata must be taken into account, are using defaults tied to digitalization workflows of ULB Sachsen-Anhalt that *might* not fit your custom requirements.
 
 ### Configure Sections
 
 Configuration options can be bundled into sections and customized with a INI-file.
 
-Some params can be set on global level in section `[]` . Each section in a `*.ini`- file matching `[derivate_<n>]` represents a single derivate section for intermediate or resulting derivates.
+Some params can be set on global level, like quality and poolsize.  
+Each section in a `*.ini`- file matching `[derivate_<n>]` represents a single derivate section for intermediate or final derivates.
 
 Order of execution is determined by pairs of input-output paths, whereas numbering of derivate sections determines order at parse-time.
 
@@ -122,12 +124,13 @@ PDF:
 
 ### Minimal working Example
 
-The following example configuration contains global settings and 3 subsequent steps.
+The following example configuration contains global settings and subsequent generation steps.  
+(Example directory and file layout like from [Usage section](#usage) assumed.)
+
 On global level, it sets the default JPG-quality to `75`, the number of parallel executors to `4` (recommended if at least 4 CPUs available) and determines the file for the logging-configuration.
 
-1. Create new JPGs from project workdir subdirectory `DEFAULT` with compression rate 95 and footer data and store them in dir `IMAGE_FOOTER`.
-2. Create new JPGs from directory `IMAGE_FOOTER` with compression rate 75, max dimension 1000 and store them in dir `IMAGE_75`.
-3. Create new PDF with images from `IMAGE_75`, add some metadata and store in current dir.
+1. Create JPGs from images in subdirectory `MAX` with compression rate 75, scale to maximal dimension 1000px and store in sub dir `IMAGE_75`.
+2. Create PDF with images from `IMAGE_75`, add some PDF metadata and store file as `my_print.pdf` in current dir.
 
 ```ini
 default_quality = 75
@@ -135,7 +138,7 @@ default_poolsize = 4
 logger_configuration_file = derivans_logging.xml
 
 [derivate_01]
-input_dir = DEFAULT
+input_dir = MAX
 output_dir = IMAGE_75
 maximal = 1000
 
