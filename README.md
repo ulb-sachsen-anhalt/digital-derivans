@@ -142,7 +142,7 @@ input_dir = MAX
 output_dir = IMAGE_75
 maximal = 1000
 
-[derivate_03]
+[derivate_02]
 type = pdf
 input_dir = IMAGE_75
 output_dir = .
