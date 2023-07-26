@@ -15,13 +15,12 @@ Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handli
 
 ## Features
 
-Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max sizes.  
-For details see [configuration section](#configuration).
+Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max sizes. For details see [configuration section](#configuration).
 
 If METS/MODS-information is available, the following will be taken into account:
 
-* Attribute `mets:div[@ORDER]` for file containers as defined in the METS physical structMap to shape the PDF outline
-* Attribute `mets:div[@CONTENTIDS]` (granular URN) will be rendered for each page if image footer shall be appended
+* Attribute `mets:div[@ORDER]` for file containers as defined in the METS physical structMap forms the PDF outline
+* Attribute `mets:div[@CONTENTIDS]` (granular URN) will be used for each individual page if image footer will be generated
 
 ## Installation
 
@@ -35,7 +34,7 @@ Digital Derivans is a Java 11+ project build with [Apache Maven](https://github.
 
 ### Pull and compile
 
-Clone the repository and call Maven to trigger the build process.
+Clone the repository and call Maven to trigger the build process, but be aware, that a recent OpenJDK is required.
 
 ```shell
 git clone git@github.com:ulb-sachsen-anhalt/digital-derivans.git
@@ -53,8 +52,6 @@ The tool expects a project folder containing an image directory (default: `MAX`)
 
 The default name of the generated pdf is derived from the project folder name.
 
-*(Attention: `)*
-
 A sample folder structure:
 
 ```bash
@@ -69,20 +66,20 @@ test/
 │   ├── 0332.tif
 ```
 
-Running 
+Running
 
 ```bash
 java -jar <PATH>./target/digital-derivans-<version>.jar test/`
 ```
 
 will produce a pdf `test.pdf` in the `test/` directory from above with specified layout.  
-For more information concerning CLI-Usage, [please see here](#cli_parameter).
+For more information concerning CLI-Usage, [please see](#cli-parameter).
 
 ## Configuration
 
-Although Derivans can be run without configuration, it's strongly recommended. Many flags, especially if metadata must be taken into account, are using defaults tied to digitalization workflows of ULB Sachsen-Anhalt that *might* not fit your custom requirements.
+Although Derivans can be run without separate configuration file, it's strongly recommended because many flags, especially if metadata must be taken into account, are using defaults tied to digitalization workflows of ULB Sachsen-Anhalt that *might* not fit your custom requirements.
 
-### Sections
+### Configure Sections
 
 Configuration options can be bundled into sections and customized with a INI-file.
 
@@ -110,7 +107,7 @@ Images:
 
 * `quality` : compression rate
 * `poolsize` : parallel workers
-* `maximal` : maximal dimension width or height
+* `maximal` : maximal dimension (affects both width and height)
 * `footer_template` : footer template Path
 * `footer_label_copyright` : additional (static) label for footer
 
@@ -126,25 +123,25 @@ PDF:
 ### Minimal working Example
 
 The following example configuration contains global settings and 3 subsequent steps.
-On global level, it set the default JPG-quality to `80`, the number of parallel executors to `8` and determines the file for the logging-configuration.
+On global level, it sets the default JPG-quality to `75`, the number of parallel executors to `4` (recommended if at least 4 CPUs available) and determines the file for the logging-configuration.
 
-1. Create new JPGs from directory `MAX` with compression rate 95 and footer data and store them in dir `IMAGE_FOOTER`.
-2. Create new JPGs from directory `IMAGE_FOOTER` with compression rate 80, max dimension 1000 and store them in dir `IMAGE_80`.
-3. Create new PDF with images from `IMAGE_80`, add some metadata and store in current dir.
+1. Create new JPGs from project workdir subdirectory `DEFAULT` with compression rate 95 and footer data and store them in dir `IMAGE_FOOTER`.
+2. Create new JPGs from directory `IMAGE_FOOTER` with compression rate 75, max dimension 1000 and store them in dir `IMAGE_75`.
+3. Create new PDF with images from `IMAGE_75`, add some metadata and store in current dir.
 
 ```ini
-default_poolsize = 8
+default_quality = 75
+default_poolsize = 4
 logger_configuration_file = derivans_logging.xml
 
 [derivate_01]
 input_dir = DEFAULT
-output_dir = IMAGE_80
-default_quality = 75
+output_dir = IMAGE_75
 maximal = 1000
 
-[derivate_02]
+[derivate_03]
 type = pdf
-input_dir = IMAGE_80
+input_dir = IMAGE_75
 output_dir = .
 output_type = pdf
 metadata_creator = "<your organization label>"
@@ -153,7 +150,7 @@ metadata_license = "Public Domain Mark 1.0"
 
 ### CLI Parameter
 
-The main parameter for Derivans is the input path, which may be a local directory in local mode or the path to a METS/MODS-file, if using metadata.
+The main parameter for Derivans is the input path, which may be a local directory in local mode or the path to a local METS/MODS-file with sub directories for images and OCR-data, if using metadata.
 
 Additionally, one can also provide via CLI
 
@@ -178,8 +175,7 @@ Derivans depends on standard JDK-components and external Libraries for image pro
 
 ### Metadata
 
-* Derivans [does not accept METS with OCR-D-style](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/38) if it contains extended XML-features like inline namespace declarations. 
-
+* Derivans [does not accept METS with OCR-D-style](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/38) if it contains extended XML-features like inline namespace declarations.
 
 ## License
 
