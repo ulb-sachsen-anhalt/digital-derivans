@@ -15,27 +15,6 @@ env:
 
 jobs:
 
-  maven_test_and_verify:
-
-    runs-on: ubuntu-20.04
-
-    if: ${{ github.event.ref }} == 'refs/heads/develop' || ${{ github.event.ref }} == 'refs/heads/master'
-
-    steps:
-
-      - uses: actions/checkout@v2
-
-      - name: Set up JDK 11-LTS
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-
-      - name: Test and verify package creation
-        run: |
-          git clone --branch ulb/master https://github.com/ulb-sachsen-anhalt/mets-model.git
-          cd mets-model && mvn clean install -DskipTests
-          cd ${{github.workspace}} && mvn clean verify
-
   docker_build_and_deploy:
 
     runs-on: ubuntu-latest
@@ -64,6 +43,18 @@ jobs:
               echo "It does not match: ${{ github.event.ref }}"
               echo "tag_matches=false" >> $GITHUB_OUTPUT
           fi
+
+      - name: Set up JDK 11-LTS
+        id: jdk
+        if: steps.check_tag.outputs.tag_matches == 'true'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: maven build
+        id: maven_build
+        if: steps.check_tag.outputs.tag_matches == 'true'
+        run: mvn clean package
 
       # Workaround: https://github.com/docker/build-push-action/issues/461
       - name: Setup Docker buildx
@@ -94,6 +85,10 @@ jobs:
         id: build_docker
         uses: docker/build-push-action@v4
         with:
+          build-args: |
+            VERSION=${{ steps.meta.outputs.version }}
+            JAR_FILE_NAME="${{ github.event.repository.name }}-${{ steps.meta.outputs.version }}.jar"
+            JAR_FILE="${{ github.workspace }}/target"
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
