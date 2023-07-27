@@ -1,0 +1,25 @@
+read_artifact_id_from_pom_xml() {
+
+    if [ $# -ne 1 ]; then
+        echo "no pom_xml_dir path provided"
+        return 1 # (exitcode)
+    fi
+    local pom_xml_dir="$(realpath "$1")"
+    local pom_xml_file="$pom_xml_dir/pom.xml"
+
+    # Check if package.json exists
+    if [ -f "$pom_xml_file" ]; then
+        # Extract the artifact_id field using pattern matching
+        local artifact_id=$(grep -m 1 -oP '(?<=<artifactId>)[a-z\-\_]+(?=</artifactId>)' "$pom_xml_file")
+        echo "$artifact_id"
+        return 0
+    else
+        echo "Error: pom.xml not found in the directory $pom_xml_dir"
+        return 1
+    fi
+
+}
+
+if [ "$0" = "$BASH_SOURCE" ]; then
+    read_artifact_id_from_pom_xml "$@"
+fi

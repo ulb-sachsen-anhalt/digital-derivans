@@ -23,6 +23,16 @@ If METS/MODS-information is available, the following will be taken into account:
 * Attribute `mets:div[@ORDER]` for file containers as defined in the METS physical structMap to create a PDF outline
 * Attribute `mets:div[@CONTENTIDS]` (granular URN) will be rendered for each page if footer shall be appended to each page image
 
+## Docker Image
+
+### Build Requirements
+
+- built package (.jar) of Digital Derivans
+- make
+- docker
+- docker-compose
+
+
 ## Installation
 
 Digital Derivans is a Java 11+ project build with [Apache Maven](https://github.com/apache/maven).
