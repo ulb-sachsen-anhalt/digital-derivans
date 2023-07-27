@@ -120,8 +120,8 @@ public class TestPDFDerivateer {
 
 	/**
 	 * 
-	 * Create PDFs with differernt size requirements
-	 * but still without additional metadata
+	 * Create PDFs with different size requirements
+	 * but without additional metadata
 	 * 
 	 * @param tempDir
 	 * @throws Exception
@@ -178,7 +178,7 @@ public class TestPDFDerivateer {
 
 	/**
 	 * 
-	 * Create PDF with format PDF/A but still no metadata
+	 * Create PDF with format PDF/A but no metadata
 	 * 
 	 * @param tempDir
 	 * @throws Exception

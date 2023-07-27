@@ -68,6 +68,10 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	public static final float ITEXT_ASSUMES_DPI = 72.0f;
 
+	public static final float ITEXT_FONT_STEP = .5f;
+
+	public static final float MIN_CHAR_SIZE = .75f;
+
 	private int dpi;
 
 	private float dpiScale = 1.0f;
@@ -258,8 +262,8 @@ public class PDFDerivateer extends BaseDerivateer {
 		java.awt.Rectangle b = token.getBox();
 		Rectangle box = toItextBox(token.getBox());
 		float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
-		if (fontSize < .75f) {
-			LOGGER.warn("font too small: '{}'(min:{}) for text '{}' - resist to render", fontSize, .75, text);
+		if (fontSize < MIN_CHAR_SIZE) {
+			LOGGER.warn("font too small: '{}'(min:{}) for text '{}' - resist to render", fontSize, MIN_CHAR_SIZE, text);
 			return;
 		}
 		float x = box.getLeft();
@@ -268,7 +272,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		// font seems to be rendered not from baseline, therefore introduce v
 		// v = y - fontSize * x, with X is were the magic starts: x=1 too low, x=0.5 too
 		// high
-		float v = y - (fontSize * .75f);
+		float v = y - (fontSize * MIN_CHAR_SIZE);
 		if (this.debugRender) {
 			LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);
 		}
@@ -298,7 +302,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		float fontSizeX = sw / 1000.0f * height;
 		Chunk chunk = new Chunk(text, new Font(font, fontSizeX));
 		while (chunk.getWidthPoint() > width) {
-			fontSizeX -= .5f;
+			fontSizeX -= ITEXT_FONT_STEP;
 			chunk = new Chunk(text, new Font(font, fontSizeX));
 		}
 		return fontSizeX;

@@ -193,8 +193,8 @@ class DescriptiveDataBuilder {
 		if (this.primeMods == null) {
 			return null;
 		}
-		if (this.store.getIdentifierExpression().isPresent()) {
-			String xPath = this.store.getIdentifierExpression().get();
+		if (this.store.optionalIdentifierExpression().isPresent()) {
+			String xPath = this.store.optionalIdentifierExpression().get();
 			Element match = this.store.getMetadataHandler().evaluateFirst(xPath);
 			if (match != null) {
 				String textualContent = match.getTextTrim();

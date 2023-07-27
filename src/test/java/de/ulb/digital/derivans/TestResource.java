@@ -21,6 +21,8 @@ public enum TestResource {
 	 * rather small digital object (4 pages only)
 	 */
 	HD_Aa_737429(Path.of("src/test/resources/mets/vls/hd-Aa-737429.mets.xml")),
+	HD_Aa_737429_OCR(Path.of("src/test/resources/mets/vls/hd-Aa-737429-ocr.mets.xml")),
+	OCR_737429(Path.of("src/test/resources/alto/737429")),
 
 	/**
 	 * contains titleInfo but child node title is missing 

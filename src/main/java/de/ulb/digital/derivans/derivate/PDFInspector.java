@@ -17,13 +17,16 @@ import org.w3c.dom.Document;
 
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 
+import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
 import de.ulb.digital.derivans.model.PDFPageformation;
 
 /**
  * 
- * Inspect PDF-Data rather for testing reasons
+ * Inspect PDF-Data for testing reasons
  * 
  * @author hartwig
  *
@@ -31,24 +34,53 @@ import de.ulb.digital.derivans.model.PDFPageformation;
 public class PDFInspector {
 
 	private Path pdfPath;
-	
+
 	private PdfReader pdfReader;
-	
+
+	private PdfReaderContentParser pdfContentParser;
+
 	public PDFInspector(Path pdfPath) throws IOException {
 		this.pdfPath = pdfPath;
-		try(FileInputStream fis=new FileInputStream(pdfPath.toAbsolutePath().toString())) {
+		try (FileInputStream fis = new FileInputStream(pdfPath.toAbsolutePath().toString())) {
 			this.pdfReader = new PdfReader(fis);
+			this.pdfContentParser = new PdfReaderContentParser(pdfReader);
 		}
 	}
-	
+
 	public Path getPdfPath() {
 		return Path.of(pdfPath.toString());
 	}
 
 	/**
 	 * 
-	 * Retrieve information concerning Metadata and from XMP-Data 
-	 * like license or pdf/a-conformance level 
+	 * Simple approach to check if this page contains textual
+	 * data (i.e. text layer), c.f.
+	 * http://stackoverflow.com/questions/33492792/how-can-i-extract-subscript-superscript-properly-from-a-pdf-using-itextsharp
+	 * 
+	 * @param pageNr
+	 * @return
+	 * @throws DigitalDerivansException
+	 */
+	public String getPageText(int pageNr) throws DigitalDerivansException {
+		try {
+			var strategy = new SimpleTextExtractionStrategy();
+			var textListener = this.pdfContentParser.processContent(pageNr, strategy);
+			String text = textListener.getResultantText();
+			if (! text.isEmpty()) {
+				return text.replace('\n', ' ');
+			} else {
+				return text;
+			}
+		} catch (IOException exc) {
+			var msg = "[" + this.pdfPath.toString() + "] Failed to read contents of page " + pageNr;
+			throw new DigitalDerivansException(msg);
+		}
+	}
+
+	/**
+	 * 
+	 * Retrieve information concerning Metadata and from XMP-Data
+	 * like license or pdf/a-conformance level
 	 * 
 	 * @return
 	 * @throws IOException
@@ -74,13 +106,13 @@ public class PDFInspector {
 
 		PDFMetaInformation pmi = new PDFMetaInformation(author, title, metadata, xmpMetadata);
 		String creator = metadata.get("Creator");
-		if(creator != null) {
+		if (creator != null) {
 			pmi.setCreator(Optional.of(creator));
 		}
 
 		return pmi;
 	}
-	
+
 	/**
 	 * 
 	 * Retrieve particular information about the pages
@@ -90,7 +122,7 @@ public class PDFInspector {
 	public List<PDFPageformation> getPageInformation() {
 		List<PDFPageformation> data = new ArrayList<>();
 		int nPage = pdfReader.getNumberOfPages();
-		for (int i=1; i <= nPage; i++) {
+		for (int i = 1; i <= nPage; i++) {
 			Rectangle dim = pdfReader.getPageSize(i);
 			dim.getWidth();
 			data.add(new PDFPageformation(pdfReader, i));
