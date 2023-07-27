@@ -14,6 +14,8 @@ JAR_FILE_NAME="$PROJECT_NAME-$VERSION.jar"
 JAR_FILE="$ROOT_DIR/target/$JAR_FILE_NAME"
 JAR_FILE_RELATIVE_PATH=$(realpath --relative-to="$ROOT_DIR" "$JAR_FILE")
 
+#echo "$JAR_FILE_RELATIVE_PATH"
+
 cd "$ROOT_DIR" || exit 1
 
 if ! [ -f "$JAR_FILE" ]; then

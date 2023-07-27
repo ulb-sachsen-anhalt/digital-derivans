@@ -88,7 +88,7 @@ jobs:
           build-args: |
             VERSION=${{ steps.meta.outputs.version }}
             JAR_FILE_NAME="${{ github.event.repository.name }}-${{ steps.meta.outputs.version }}.jar"
-            JAR_FILE="${{ github.workspace }}/target"
+            JAR_FILE="target/${{ github.event.repository.name }}-${{ steps.meta.outputs.version }}.jar"
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
