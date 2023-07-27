@@ -166,19 +166,23 @@ Additionally, one can also provide via CLI
 
 Derivans depends on standard JDK-components and external Libraries for image processing and PDF generation.
 
+### Step Configuration
+
+* Subsequent derivate steps must not have order gaps, since the parsing is done step by step. Otherwise, any derivate section after the first gap will be ignored, which may lead to unexpected results.
+
 ### Image Processing
 
 * OpenJRE/OpenJDK can't process image data with more than 8bit channel depth ([javax.imageio.IIOException: Illegal band size](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/42)). To overcome this, one needs to reduce channel depth with an external tool.
-* Corrupt or exotic image metadata leads to process errors, since the metadata is copied too, when generating image derivates for proper scaling of PDF ([javax.imageio.IIOException: Unsupported marker](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/33)).
+* Corrupt or exotic image metadata leads to process errors, since metadata must be propagated for proper scaling ([javax.imageio.IIOException: Unsupported marker](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/33)).
 
 ### PDF Generation
 
 * If Derivans is called from within the project folder, the resulting pdf will be called `..pdf`.
-* PDF-Library limits the maximal dimension to 14400 px (weight/height, [Configured max dimension fails for very large Images](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/16)). This may cause trouble if one needs to generate PDF for very large prints like maps, deeds or scrolls.
+* iText PDF-Library limits the maximal page dimension to 14400 px (weight/height, [Configured max dimension fails for very large Images](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/16)). This may cause trouble if one needs to generate PDF for very large prints like maps, deeds or scrolls.
 
 ### Metadata
 
-* Derivans [does not accept METS with OCR-D-style](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/38) if it contains extended XML-features like inline namespace declarations.
+* Derivans [does not accept METS with current OCR-D-style](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/38) nor any other METS which contains extended XML-features like inline namespace declarations.
 
 ## License
 
