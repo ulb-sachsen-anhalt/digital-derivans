@@ -4,6 +4,11 @@
 .project
 .vscode
 .factorypath
+.idea
+.run
+
+# misc
+/temp
 
 # build artifacts
 target
