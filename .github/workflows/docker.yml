@@ -19,7 +19,7 @@ jobs:
 
     runs-on: ubuntu-20.04
 
-    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master'
+    if: ${{ github.event.ref }} == 'refs/heads/develop' || ${{ github.event.ref }} == 'refs/heads/master'
 
     steps:
 
@@ -40,7 +40,7 @@ jobs:
 
     runs-on: ubuntu-latest
     # restrict to master only
-    if: github.ref == 'refs/heads/master'
+    if: ${{ github.event.ref }} == 'refs/heads/master'
 
     permissions:
       contents: read
