@@ -141,13 +141,15 @@ public class Derivans {
                 DescriptiveData descriptiveData = new DescriptiveData();
                 if (this.optMetadataStore.isPresent()) {
                     var store = this.optMetadataStore.get();
+                    String storePath = store.usedStore();
+                    LOGGER.info("use metadata from {}", storePath);
                     // if store present, set additional information
                     pdfStep.getModsIdentifierXPath().ifPresent(store::setIdentifierExpression);
                     store.setFileGroupOCR(pdfStep.getParamOCR());
                     store.setFileGroupImages(pdfStep.getParamImages());
                     descriptiveData = store.getDescriptiveData();
                 } else {
-                    LOGGER.debug("enrich ocr from file system");
+                    LOGGER.info("enrich ocr from file system via {}", pdfStep.getParamOCR());
                     Path ocrPath = this.processDir.resolve(pdfStep.getParamOCR());
                     resolver.enrichOCRFromFilesystem(pages, ocrPath);
                 }

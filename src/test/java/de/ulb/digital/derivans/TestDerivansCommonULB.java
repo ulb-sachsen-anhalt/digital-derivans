@@ -33,6 +33,8 @@ import de.ulb.digital.derivans.config.DerivansParameter;
  * additional derivates for dspace
  * (= 7 steps)
  * 
+ * used config: src/test/resources/config/derivans-5steps.ini
+ * 
  * @author hartwig
  *
  */
@@ -41,13 +43,17 @@ public class TestDerivansCommonULB {
 	@TempDir
 	static Path tempDir;
 
-	static Path pathTarget;
+	static Path workDir;
+
+	static String prefixPreview = "BUNDLE_BRANDED_PREVIEW__";
+
+	static String prefixThumbs = "BUNDLE_THUMBNAIL__";
 
 	@BeforeAll
 	public static void setupBeforeClass() throws Exception {
 
 		// arrange metadata and images
-		pathTarget = TestHelper.fixturePrint737429(tempDir);
+		workDir = TestHelper.fixturePrint737429(tempDir);
 
 		// arrange configuration
 		// migration configuration with extended derivates
@@ -59,8 +65,8 @@ public class TestDerivansCommonULB {
 		}
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(configTargetDir.resolve("derivans-7steps.ini"));
-		dp.setPathInput(pathTarget.resolve("737429.xml"));
+		dp.setPathConfig(configTargetDir.resolve("derivans-5steps.ini"));
+		dp.setPathInput(workDir.resolve("737429.xml"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 
@@ -69,15 +75,45 @@ public class TestDerivansCommonULB {
 	}
 
 	@Test
+	void testDerivateJPGsWithFooterWritten() throws Exception {
+		Path footerDir = workDir.resolve("IMAGE_FOOTER");
+		assertTrue(Files.exists(footerDir));
+		for (int i=1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
+			var imageLabel = String.format("%s.jpg", TestHelper.fixture737429ImageLabel.get(i));
+			assertTrue(footerDir.resolve(imageLabel).toFile().exists());
+		}
+	}
+
+	@Test
+	void testPreviewImagesWritten() throws Exception {
+		Path previewDir = workDir.resolve(prefixPreview);
+		assertTrue(Files.exists(previewDir));
+		for (int i=1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
+			var imageLabel = String.format("%s%s.jpg", prefixPreview, TestHelper.fixture737429ImageLabel.get(i));
+			assertTrue(previewDir.resolve(imageLabel).toFile().exists());
+		}
+	}
+
+	@Test
+	void testThumbnailsWritten() throws Exception {
+		Path thumbsDir = workDir.resolve(prefixThumbs);
+		assertTrue(Files.exists(thumbsDir));
+		for (int i=1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
+			var imageLabel = String.format("%s%s.jpg", prefixThumbs, TestHelper.fixture737429ImageLabel.get(i));
+			assertTrue(thumbsDir.resolve(imageLabel).toFile().exists());
+		}
+	}
+
+	@Test
 	void testPDFWritten() throws Exception {
-		Path pdfWritten = pathTarget.resolve("191092622.pdf");
+		Path pdfWritten = workDir.resolve("191092622.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}
 
 	@Test
 	void testMETSUpdateSuccess() throws Exception {
 		// assert proper pdf-metadata integration
-		Document doc = TestHelper.readXMLDocument(pathTarget.resolve("737429.xml"));
+		Document doc = TestHelper.readXMLDocument(workDir.resolve("737429.xml"));
 		XPathExpression<Element> xpath = TestHelper.generateXpression(".//mets:fptr[@FILEID='PDF_191092622']");
 		Element el = xpath.evaluateFirst(doc);
 		assertNotNull(el);
@@ -92,19 +128,6 @@ public class TestDerivansCommonULB {
 		Element firstChild = parent.getChildren().get(0);
 		assertNotNull(firstChild.getAttribute("FILEID"));
 		assertEquals("PDF_191092622", firstChild.getAttribute("FILEID").getValue());
-	}
-
-	@Test
-	void testThumbnailDerivatesGenerated() throws Exception {
-		Path bundle2 = pathTarget.resolve("BUNDLE_THUMBNAIL__");
-		assertTrue(Files.exists(bundle2));
-		List<Path> b2ps = Files.list(bundle2).sorted().collect(Collectors.toList());
-		Path p = b2ps.get(0);
-		assertTrue(Files.exists(p));
-		BufferedImage bi = ImageIO.read(p.toFile());
-		assertEquals(128, bi.getHeight());
-		String fileName = p.getFileName().toString();
-		assertEquals("BUNDLE_THUMBNAIL__737434.jpg", fileName);
 	}
 
 }

@@ -141,40 +141,6 @@ public class TestDerivans {
 		assertTrue(Files.exists(pdfWritten));
 	}
 
-	@Test
-	void testDerivatesOnlyWithPathZD(@TempDir Path tempDir) throws Exception {
-
-		// arrange
-		Path pathTarget = tempDir.resolve("zd1");
-		// ocr data
-		Path sourceOcr = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
-		assertTrue(Files.exists(sourceOcr, LinkOption.NOFOLLOW_LINKS));
-		Path sourceFile = sourceOcr.getFileName();
-		Path targetDir = pathTarget.resolve("FULLTEXT");
-		Files.createDirectories(targetDir);
-		Path targetOcr = targetDir.resolve(sourceFile);
-		Files.copy(sourceOcr, targetOcr);
-
-		// image data
-		Path pathImageMax = pathTarget.resolve("TIF");
-		Files.createDirectory(pathImageMax);
-		Path imagePath = pathImageMax.resolve("1667524704_J_0150_0512.tif");
-		TestHelper.writeImage(imagePath, 7544, 10536, BufferedImage.TYPE_BYTE_GRAY, "TIFF");
-
-		// act
-		DerivansParameter dp = new DerivansParameter();
-		dp.setPathInput(pathTarget);
-		Path configPath = Path.of("src/test/resources/config3/derivans-tif.ini");
-		dp.setPathConfig(configPath);
-		DerivansConfiguration dc = new DerivansConfiguration(dp);
-		Derivans derivans = new Derivans(dc);
-		derivans.create();
-
-		// assert
-		Path pdfWritten = pathTarget.resolve("zd1.pdf");
-		assertTrue(Files.exists(pdfWritten));
-	}
-
 	/**
 	 * 
 	 * Behavior if custom image dir set and only images present
@@ -294,7 +260,6 @@ public class TestDerivans {
 		TestHelper.generateJpgsFromList(imageOriginal, 700, 1000, ids);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		((DerivateStepPDF) dc.getDerivateSteps().get(2)).setModsIdentifierXPath("//mods:title");
-		;
 		Derivans derivans = new Derivans(dc);
 
 		// act

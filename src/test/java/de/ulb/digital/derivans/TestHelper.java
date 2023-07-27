@@ -107,6 +107,8 @@ public class TestHelper {
 		return builder.compileWith(XPathFactory.instance());
 	}
 
+	public static List<String> fixture737429ImageLabel = List.of("737434", "737436", "737437", "737438");
+
 	public static Path fixturePrint737429(Path tempDir, Path srcMets) throws IOException {
 		Path pathTarget = tempDir.resolve("737429");
 		if (Files.exists(pathTarget)) {
@@ -117,7 +119,7 @@ public class TestHelper {
 		Path metsTarget = pathTarget.resolve("737429.xml");
 		Files.copy(srcMets, metsTarget);
 		Path imagePath = pathTarget.resolve("MAX");
-		generateJpgsFromList(imagePath, 475, 750, List.of("737434", "737436", "737437", "737438"));
+		generateJpgsFromList(imagePath, 475, 750, fixture737429ImageLabel);
 		return pathTarget;
 	}
 

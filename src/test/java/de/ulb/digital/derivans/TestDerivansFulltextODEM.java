@@ -17,6 +17,8 @@ import de.ulb.digital.derivans.model.step.DerivateStepImage;
 
 /**
  * 
+ * Used config: src/test/resources/config/derivans.ini
+ * 
  * @author hartwig
  *
  */
@@ -25,7 +27,11 @@ public class TestDerivansFulltextODEM {
 	@TempDir
 	static Path tempDir;
 
+	static Path workDir;
+
 	static Path pdfPath;
+
+	static int nImages = 17;
 
 	@BeforeAll
 	public static void setupBeforeClass() throws Exception {
@@ -37,10 +43,10 @@ public class TestDerivansFulltextODEM {
 			Files.delete(configTargetDir);
 		}
 		TestHelper.copyTree(configSourceDir, configTargetDir);
-		Path pathTarget = tempDir.resolve("148811035");
+		workDir = tempDir.resolve("148811035");
 
 		// use existing images
-		Path pathImageMax = pathTarget.resolve("MAX");
+		Path pathImageMax = workDir.resolve("MAX");
 		Files.createDirectories(pathImageMax);
 		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
 		TestHelper.copyTree(sourceImageDir, pathImageMax);
@@ -51,10 +57,10 @@ public class TestDerivansFulltextODEM {
 		// generateJpgsFromList(pathImageMax, 2164, 2448, ids);
 
 		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
-		Path targetMets = pathTarget.resolve(Path.of("mets.xml"));
+		Path targetMets = workDir.resolve(Path.of("mets.xml"));
 		Files.copy(sourceMets, targetMets);
 		Path sourceOcr = Path.of("src/test/resources/alto/148811035/FULLTEXT");
-		Path targetOcr = pathTarget.resolve("FULLTEXT");
+		Path targetOcr = workDir.resolve("FULLTEXT");
 		TestHelper.copyTree(sourceOcr, targetOcr);
 
 		DerivansParameter dp = new DerivansParameter();
@@ -72,28 +78,48 @@ public class TestDerivansFulltextODEM {
 
 		// act
 		derivans.create();
-		pdfPath = pathTarget.resolve("148811035.pdf");
+		pdfPath = workDir.resolve("148811035.pdf");
+	}
+
+	@Test
+	void testDerivateJPGsWithFooterWritten() throws Exception {
+		Path footerDir = workDir.resolve("IMAGE_FOOTER");
+		assertTrue(Files.exists(footerDir));
+		for (int i = 1; i < nImages; i++) {
+			var imageLabel = String.format("%08d.jpg", i);
+			assertTrue(footerDir.resolve(imageLabel).toFile().exists());
+		}
+	}
+
+	@Test
+	void testDerivatesForPDFWritten() throws Exception {
+		Path image80Dir = workDir.resolve("IMAGE_80");
+		assertTrue(Files.exists(image80Dir));
+		for (int i = 1; i < nImages; i++) {
+			var imageLabel = String.format("%08d.jpg", i);
+			assertTrue(image80Dir.resolve(imageLabel).toFile().exists());
+		}
 	}
 
 	@Test
 	void testPDFWritten() {
 		assertTrue(Files.exists(pdfPath));
 	}
-	
+
 	@Test
 	void testPage01NoContents() throws Exception {
 		assertEquals("", TestHelper.getText(pdfPath, 1));
 	}
-	
+
 	@Test
 	void testPage07ContainsText() throws Exception {
 		var textPage07 = TestHelper.getText(pdfPath, 7);
 		assertTrue(textPage07.contains("an den Grantzen des Hertzogthums Florentz"));
 	}
-	
+
 	/**
 	 * 
-	 * Test total length of resultant text including whitespaces 
+	 * Test total length of resultant text including whitespaces
 	 * 
 	 * @throws Exception
 	 */

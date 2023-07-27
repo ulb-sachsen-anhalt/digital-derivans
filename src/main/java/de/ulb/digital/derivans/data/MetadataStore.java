@@ -203,6 +203,8 @@ public class MetadataStore implements IMetadataStore {
 		if (Files.exists(p, LinkOption.NOFOLLOW_LINKS)) {
 			LOGGER.debug("found ocr data file '{}'", p);
 			return Optional.of(p);
+		} else {
+			LOGGER.warn("missing ocr data '{}'!", p);
 		}
 		return Optional.empty();
 	}
