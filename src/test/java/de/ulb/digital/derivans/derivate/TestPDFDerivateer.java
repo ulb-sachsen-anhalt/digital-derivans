@@ -336,8 +336,10 @@ public class TestPDFDerivateer {
 				pdfMetaInformation.getAuthor());
 		assertEquals("[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Qu. Cod. 77, Fragment 1]",
 				pdfMetaInformation.getTitle());
-		assertEquals("169683404X", pdfMetaInformation.getXmpMetadata().getElementsByTagNameNS("*", "recordIdentifier")
-				.item(0).getChildNodes().item(1).getTextContent());
+		var optRecordData = pdfMetaInformation.getFromXmpMetadataBy( "recordIdentifier");
+		assertTrue(optRecordData.isPresent());
+		var recordData = optRecordData.get();
+		assertEquals("169683404X", recordData.getChildren().get(0).getValue());
 	}
 
 	/**

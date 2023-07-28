@@ -3,7 +3,9 @@ package de.ulb.digital.derivans.model;
 import java.util.Map;
 import java.util.Optional;
 
-import org.w3c.dom.Document;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.filter.ElementFilter;
 
 import de.ulb.digital.derivans.data.IMetadataStore;
 
@@ -57,28 +59,22 @@ public class PDFMetaInformation {
 		this.metadata = metadata;
 	}
 
-	public org.w3c.dom.Document getXmpMetadata() {
-		return this.xmpMetadata;
+	public Optional<Element> getFromXmpMetadataBy(String elementLabel) {
+		var it = this.xmpMetadata.getDescendants(new ElementFilter(elementLabel));
+		if (it.hasNext()) {
+			return Optional.of(it.next());
+		}
+		return Optional.empty();
 	}
 
-	public void setXmpMetadata(org.w3c.dom.Document xmpMetadata) {
+	public void setXmpMetadata(Document xmpMetadata) {
 		this.xmpMetadata = xmpMetadata;
-	}
-
-	public PDFMetaInformation metadata(Map<String, String> metadata) {
-		this.metadata = metadata;
-		return this;
-	}
-
-	public PDFMetaInformation xmpMetadata(Document xmpMetadata) {
-		this.xmpMetadata = xmpMetadata;
-		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "{ metadata='" + getMetadata()
-				+ "'" + ", xmpMetadata='" + getXmpMetadata() + "'" + "}";
+				+ "'" + ", xmpMetadata='" + xmpMetadata + "'" + "}";
 	}
 
 	public Optional<String> getCreator() {

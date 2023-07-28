@@ -4,12 +4,9 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingInt;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -24,21 +21,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.Map.Entry;
 
-import javax.xml.XMLConstants;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.filter.ElementFilter;
-import org.jdom2.filter.Filters;
-import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
 import org.jdom2.util.IteratorIterable;
-import org.jdom2.xpath.XPathBuilder;
-import org.jdom2.xpath.XPathFactory;
 import org.mycore.mets.model.Mets;
 import org.mycore.mets.model.sections.DmdSec;
 import org.mycore.mets.model.struct.SmLink;
@@ -78,59 +67,34 @@ public class MetadataHandler {
 
 	private Document document;
 
+	private XMLHandler handler;
+
 	private Mets mets;
 
 	private Element primaryMods;
 
 	public MetadataHandler(Path pathFile) throws DigitalDerivansException {
 		this.pathFile = pathFile;
+		this.handler = new XMLHandler(pathFile);
+		this.document = handler.getDocument();
 		try {
-			this.mets = read();
-			this.primaryMods = setPrimaryMods();
-		} catch (JDOMException | IOException | IllegalArgumentException | DigitalDerivansException e) {
+			this.mets = new Mets(this.document);
+		} catch (IllegalArgumentException e) {
 			throw new DigitalDerivansException(e);
 		}
+		this.primaryMods = setPrimaryMods();
 	}
 
 	public Mets getMets() {
 		return this.mets;
 	}
 
-	private Mets read() throws JDOMException, IOException, IllegalArgumentException {
-		File f = new File(this.pathFile.toString());
-		SAXBuilder builder = new SAXBuilder();
-		// please sonarqube "Disable XML external entity (XXE) processing"
-		builder.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-		this.document = builder.build(f);
-		return new Mets(this.document);
-	}
-
-	/**
-	 * Evaluate XPath expressions on underlying {@link Document document instance}
-	 * @param xpathStr
-	 * @return {@link Element}
-	 * @throws DigitalDerivansException If any internal Exceptions occour
-	 */
 	public Element evaluateFirst(String xpathStr) throws DigitalDerivansException {
-		try {
-			XPathBuilder<Element> builder = new XPathBuilder<>(xpathStr, Filters.element());
-			builder.setNamespace(NS_METS);
-			builder.setNamespace(NS_MODS);
-			var xpr = builder.compileWith(XPathFactory.instance());
-			return xpr.evaluateFirst(this.document);
-		} catch (Exception exc) {
-			throw new DigitalDerivansException(exc.getMessage());
-		}
+		return this.handler.evaluateFirst(xpathStr, List.of(NS_METS, NS_MODS));
 	}
 
 	public boolean write() {
-		try (OutputStream metsOut = Files.newOutputStream(this.pathFile)) {
-			XMLOutputter xout = new XMLOutputter(Format.getPrettyFormat());
-			xout.output(this.document, metsOut);
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
+		return this.handler.write(this.pathFile);
 	}
 
 	public String enrichAgent(String fileId) {

@@ -44,8 +44,7 @@ public class App {
 			derivans.create();
 		} catch (DigitalDerivansException e) {
 			Derivans.LOGGER.error(e.getLocalizedMessage());
-			e.printStackTrace();
-			System.exit(1);
+			throw new DigitalDerivansException(e);
 		}
 	}
 }

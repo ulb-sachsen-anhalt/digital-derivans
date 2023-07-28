@@ -1,6 +1,5 @@
 package de.ulb.digital.derivans.derivate;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -9,11 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
+import org.jdom2.Document;
 
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfReader;
@@ -21,6 +16,7 @@ import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.data.XMLHandler;
 import de.ulb.digital.derivans.model.PDFMetaInformation;
 import de.ulb.digital.derivans.model.PDFPageformation;
 
@@ -89,27 +85,18 @@ public class PDFInspector {
 		Map<String, String> metadata = pdfReader.getInfo();
 		String author = metadata.get("Author");
 		String title = metadata.get("Title");
-
-		byte[] xmpMetadataBytes = pdfReader.getMetadata();
 		Document xmpMetadata = null;
 		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setNamespaceAware(true);
-			// please sonarqube "Disable XML external entity (XXE) processing"
-			factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			builder.setErrorHandler(null);
-			xmpMetadata = builder.parse(new ByteArrayInputStream(xmpMetadataBytes));
+			XMLHandler xmlHandler = new XMLHandler(pdfReader.getMetadata());
+			xmpMetadata = xmlHandler.getDocument();
 		} catch (Exception e) {
 			// no xmpMetadata is fine. so setting it to null.
 		}
-
 		PDFMetaInformation pmi = new PDFMetaInformation(author, title, metadata, xmpMetadata);
 		String creator = metadata.get("Creator");
 		if (creator != null) {
 			pmi.setCreator(Optional.of(creator));
 		}
-
 		return pmi;
 	}
 
