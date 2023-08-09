@@ -157,7 +157,9 @@ public class Derivans {
                 Path pdfPath = resolver.calculatePDFPath(descriptiveData, step);
                 LOGGER.info("calculate local pdf derivate path '{}'", pdfPath);
                 output.setPath(pdfPath);
-                var pdfDerivateer = new PDFDerivateer(input, output, pages, pdfStep);
+				// required for proper resolving with kitodo2
+				var pdfInput = new DerivansData(input.getPath(), DerivateType.JPG);
+                var pdfDerivateer = new PDFDerivateer(pdfInput, output, pages, pdfStep);
                 if (this.optMetadataStore.isPresent()) {
                     pdfDerivateer.setMetadataStore(optMetadataStore);
                 }

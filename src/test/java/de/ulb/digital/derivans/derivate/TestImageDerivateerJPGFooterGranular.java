@@ -93,7 +93,7 @@ class TestImageDerivateerJPGFooterGranular {
 		
 		// enrich target path
 		DerivansPathResolver resolver = new DerivansPathResolver();
-		pages = resolver.enrichWithPath(pages, sourcePath);
+		pages = resolver.enrichData(pages, input);
 
 		// act
 		IDerivateer derivateerGranular = new ImageDerivateerJPGFooterGranular(input, output, 95, footer, pages);
@@ -146,7 +146,7 @@ class TestImageDerivateerJPGFooterGranular {
 		
 		// enrich target path
 		DerivansPathResolver resolver = new DerivansPathResolver();
-		pages = resolver.enrichWithPath(pages, sourcePath);
+		pages = resolver.enrichData(pages, input);
 		
 		IDerivateer jpgs = new ImageDerivateerJPGFooterGranular(input, output, 95, footer, pages);
 

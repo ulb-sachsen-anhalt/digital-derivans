@@ -18,6 +18,7 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
+import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.ocr.OCRData;
@@ -178,19 +179,24 @@ public class DerivansPathResolver {
 	 * @param nextDir
 	 * @return
 	 */
-	public List<DigitalPage> enrichWithPath(List<DigitalPage> pages, Path nextDir) {
+	public List<DigitalPage> enrichData(List<DigitalPage> pages, DerivansData inputData) {
+		Path nextDir = inputData.getPath();
+		DerivateType inputType = inputData.getType();
 		for (DigitalPage page : pages) {
 			Path prevPath = page.getImagePath();
 			if (!prevPath.isAbsolute()) {
 				Path filePath = prevPath.getFileName();
 				// inspect file extension
 				String fileName = filePath.toString();
-				// if no jpg ext and also no tif .. guess jpg
+				// probably due workflow changed extension
+				if(isJPG(inputType) && fileName.endsWith(".tif")) {
+					fileName = fileName.replace(".tif", ".jpg");
+				}
+				// if no extension guess jpg
 				if (!fileName.endsWith(".jpg") && !fileName.endsWith(".tif")) {
 					fileName = fileName + ".jpg";
-					filePath = Path.of(fileName);
 				}
-				Path nextPath = nextDir.resolve(filePath);
+				Path nextPath = nextDir.resolve(fileName);
 				page.setImagePath(nextPath);
 			}
 		}
@@ -224,7 +230,8 @@ public class DerivansPathResolver {
 		Path nextDir = derivateer.getOutput().getPath();
 
 		// respect type
-		if (type == DerivateType.JPG || type == DerivateType.JPG_FOOTER) {
+//		if (type == DerivateType.JPG || type == DerivateType.JPG_FOOTER) {
+		if (isJPG(type)) {
 			fileName += ".jpg";
 		}
 
@@ -251,6 +258,10 @@ public class DerivansPathResolver {
 		return page;
 	}
 
+	private static boolean isJPG(DerivateType type) {
+		return (type == DerivateType.JPG || type == DerivateType.JPG_FOOTER);
+	}
+	
 	public Path calculatePDFPath(DescriptiveData dd, DerivateStep step) throws DigitalDerivansException {
 		Path pdfPath = step.getOutputPath();
 		if (!Files.isDirectory(pdfPath, LinkOption.NOFOLLOW_LINKS)) {
@@ -287,6 +298,7 @@ public class DerivansPathResolver {
 			page.setImagePath(inputPath.resolve(page.getImagePath()));
 		}
 	}
+	
 }
 
 class PredicateFileJPGorTIF implements Predicate<Path> {
