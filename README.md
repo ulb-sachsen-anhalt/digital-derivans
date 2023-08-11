@@ -3,7 +3,7 @@
 ![JDK11 Maven3](https://github.com/ulb-sachsen-anhalt/digital-derivans/workflows/Java%20CI%20with%20Maven/badge.svg)
 
 Java command line tool that creates image derivates with different, configurable sizes and qualities, appends additional
-image footer and may assemble image files and OCR data to produce searchable pdf files with hidden text layer and an
+image footer and may assemble image files and OCR data to produce searchable PDF files with hidden text layer and an
 outline. If derivates can be created independently, like single scaled image variants, it uses parallel execution.
 
 Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling,
@@ -20,7 +20,7 @@ by [OCR-D/Core](https://github.com/OCR-D/core) Workflows.
 
 ## Features
 
-Create JPG or PDF from TIF or JPG with optional Footer appended and custom constraints on compression rate and max
+Create JPEG or PDF from TIFF or JPEG with optional Footer appended and custom constraints on compression rate and max
 sizes.  
 For details see [configuration section](#configuration).
 
@@ -86,7 +86,7 @@ In local mode, a recent OpenJRE is required.
 The tool expects a project folder containing an image directory (default: `MAX`) and optional OCR-data directory (
 default: `FULLTEXT`').
 
-The *default name* of the generated pdf is derived from the project folder name.
+The *default name* of the generated PDF is derived from the project folder name.
 
 A sample folder structure:
 
@@ -114,7 +114,7 @@ For more information concerning CLI-Usage, please [consult CLI docs](#cli-parame
 ## Configuration
 
 Although Derivans can be run without configuration, it's strongly recommended. Many flags, especially if metadata must
-be taken into account, are using defaults tied to digitalization workflows of ULB Sachsen-Anhalt that *might* not fit
+be taken into account, are using defaults tied to digitization workflows of ULB Sachsen-Anhalt that *might* not fit
 your custom requirements.
 
 ### Configure Sections
@@ -168,10 +168,10 @@ PDF:
 The following example configuration contains global settings and subsequent generation steps.  
 (Example directory and file layout like from [Usage section](#usage) assumed.)
 
-On global level, it sets the default JPG-quality to `75`, the number of parallel executors to `4` (recommended if at
+On global level, it sets the default JPEG-quality to `75`, the number of parallel executors to `4` (recommended if at
 least 4 CPUs available) and determines the file for the logging-configuration.
 
-1. Create JPGs from images in subdirectory `MAX` with compression rate 75, scale to maximal dimension 1000px and store
+1. Create JPEG images from images in sub directory `MAX` with compression rate 75, scale to maximal dimension 1000px and store
    in sub dir `IMAGE_75`.
 2. Create PDF with images from `IMAGE_75`, add some PDF metadata and store file as `my_print.pdf` in current dir.
 
@@ -204,11 +204,11 @@ Additionally, one can also provide via CLI
 * path to custom configuration INI-file
 * set labels for OCR and input-image (will overwrite configuration)  
   If metadata present, both will be used as filegroup names;
-  For images they will also be used as input directory for inital image processing
+  For images they will also be used as input directory for initial image processing
 
 ## Limitations
 
-Derivans depends on standard JDK-components and external Libraries for image processing and PDF generation.
+Derivans depends on standard JDK11-components and external components for image processing and PDF generation.
 
 ### Step Configuration
 
@@ -232,11 +232,11 @@ Derivans depends on standard JDK-components and external Libraries for image pro
 
 ### Metadata
 
-*
-
-Derivans [does not accept METS with current OCR-D-style](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/38)
+* Derivans [does not accept METS with current OCR-D-style](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/38)
 nor any other METS which contains extended XML-features like inline namespace declarations.
 
 ## License
 
-Licensed under terms of the [GNU Affero General Public License v3.0](https://spdx.org/licenses/AGPL-3.0-or-later.html).
+This project's source code is licensed under terms of the [MIT license](https://opensource.org/licenses/MIT).
+
+NOTE: This project depends on components that may use different license terms.
