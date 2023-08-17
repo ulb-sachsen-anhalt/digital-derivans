@@ -4,15 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.imageio.ImageIO;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
