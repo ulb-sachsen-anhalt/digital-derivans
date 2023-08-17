@@ -105,13 +105,13 @@ class TestMetadataStoreVLSMultivolumes {
 
 		// assert
 		for (DigitalPage page : pages) {
-			assertTrue(page.getIdentifier().isPresent());
+			assertTrue(page.optIdentifier().isPresent());
 		}
 
 		String urn1 = "urn:nbn:de:gbv:3:1-2085-p0001-3";
 		String urn2 = "urn:nbn:de:gbv:3:1-2085-p0004-9";
-		assertEquals(urn1, pages.get(0).getIdentifier().get());
-		assertEquals(urn2, pages.get(3).getIdentifier().get());
+		assertEquals(urn1, pages.get(0).optIdentifier().get());
+		assertEquals(urn2, pages.get(3).optIdentifier().get());
 		assertEquals("MAX/61196.jpg", pages.get(0).getImageFile());
 		assertEquals("MAX/61201.jpg", pages.get(3).getImageFile());
 	}

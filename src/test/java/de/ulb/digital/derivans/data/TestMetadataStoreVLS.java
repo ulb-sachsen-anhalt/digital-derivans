@@ -88,13 +88,13 @@ class TestMetadataStoreVLS {
 
 		// assert
 		for (DigitalPage page : pages) {
-			assertTrue(page.getIdentifier().isPresent());
+			assertTrue(page.optIdentifier().isPresent());
 		}
 
 		String urn1 = "urn:nbn:de:gbv:3:3-21437-p0001-0";
 		String urn2 = "urn:nbn:de:gbv:3:3-21437-p0004-6";
-		assertEquals(urn1, pages.get(0).getIdentifier().get());
-		assertEquals(urn2, pages.get(3).getIdentifier().get());
+		assertEquals(urn1, pages.get(0).optIdentifier().get());
+		assertEquals(urn2, pages.get(3).optIdentifier().get());
 		assertEquals("MAX/737434.jpg", pages.get(0).getImageFile());
 		assertEquals("MAX/737436.jpg", pages.get(1).getImageFile());
 		assertEquals("MAX/737437.jpg", pages.get(2).getImageFile());

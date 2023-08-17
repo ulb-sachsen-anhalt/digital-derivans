@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -8,6 +9,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -18,6 +20,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.model.step.DerivateStep;
 
 /**
  * 
@@ -44,6 +48,10 @@ public class TestDerivansCommonULB {
 
 	static String prefixThumbs = "BUNDLE_THUMBNAIL__";
 
+	static List<DerivateStep> steps;
+
+	static List<IDerivateer> derivateers;
+
 	@BeforeAll
 	public static void setupBeforeClass() throws Exception {
 
@@ -67,6 +75,41 @@ public class TestDerivansCommonULB {
 
 		// act
 		derivans.create();
+		derivateers = derivans.getDerivateers();
+		steps = derivans.getSteps();
+	}
+
+	@Test
+	void testNumberOfParsedDerivansSteps() throws Exception {
+		assertEquals(5, steps.size());
+	}
+
+	@Test
+	void testTypesOfDerivansSteps() throws Exception {
+		assertEquals("DerivateStepImageFooter", steps.get(0).getClass().getSimpleName());
+		assertEquals("DerivateStepImage", steps.get(1).getClass().getSimpleName());
+		assertEquals("DerivateStepPDF", steps.get(2).getClass().getSimpleName());
+	}
+
+	@Test
+	void testNumberOfCreatedDerivateers() throws Exception {
+		assertEquals(5, derivateers.size());
+	}
+
+	/**
+	 * 
+	 * Due Bug "Fail to render granular URN #51"
+	 * https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/51
+	 * extended tests for clazz names
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testTypesOfDerivateers() throws Exception {
+		assertEquals("PDFDerivateer", derivateers.get(2).getClass().getSimpleName());
+		assertEquals("ImageDerivateerJPG", derivateers.get(1).getClass().getSimpleName());
+		assertNotEquals("ImageDerivateerJPGFooter", derivateers.get(0).getClass().getSimpleName());
+		assertEquals("ImageDerivateerJPGFooterGranular", derivateers.get(0).getClass().getSimpleName());
 	}
 
 	@Test

@@ -92,6 +92,14 @@ public enum TestResource {
 	 * 
 	*/
 	K2_PRES_SLUB_321094271(Path.of("src/test/resources/mets/kitodo_pres/slub-dresden-db-id-321094271.xml")),
+	
+	/**
+	 * 
+	 * Contains Issue with deep logical structs
+	 * 
+	*/
+	METS_ZD_ISSUE_182327845018001101(Path.of("src/test/resources/mets/zdp-182327845018001101.xml")),
+	
 	;
 	
 	private Path path;

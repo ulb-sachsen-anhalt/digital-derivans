@@ -58,7 +58,7 @@ class TestMetadataStoreKitodo2 {
 	void testDigitalPagesWithoutGranularUrn143074601() throws DigitalDerivansException {
 		List<DigitalPage> pages = mds143074601.getDigitalPagesInOrder();
 		for (DigitalPage page : pages) {
-			assertTrue(page.getIdentifier().isEmpty());
+			assertTrue(page.optIdentifier().isEmpty());
 		}
 	}
 

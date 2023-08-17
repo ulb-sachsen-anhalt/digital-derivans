@@ -193,7 +193,7 @@ class TestMetadataStoreSLUB {
 		// assert
 		for (DigitalPage page : pages) {
 			// no granular URN present
-			assertFalse(page.getIdentifier().isPresent());
+			assertFalse(page.optIdentifier().isPresent());
 		}
 		assertEquals(188, pages.size());
 		assertEquals("ORIGINAL/00000001.tif.original.jpg", pages.get(0).getImageFile());
