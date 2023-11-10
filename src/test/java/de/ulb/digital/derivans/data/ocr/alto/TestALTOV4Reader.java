@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.data.ocr.ALTOReader;
 import de.ulb.digital.derivans.data.ocr.Type;
 import de.ulb.digital.derivans.data.ocr.ValidTextPredicate;
@@ -96,7 +97,7 @@ public class TestALTOV4Reader {
 		assertEquals(8, line001.getBox().height);
 		assertEquals(25, line635.getBox().height);
 	}
-	
+
 	@Test
 	void testALTOV3fromZD1() throws Exception {
 
@@ -167,5 +168,28 @@ public class TestALTOV4Reader {
 				.filter(predicate)
 				.collect(Collectors.toList());
 		assertEquals(27, filtered.size());
+	}
+
+	/**
+	 * Read ALTO V4 Data to ensure even right-to-left
+	 * gets properly parsed - compare also first
+	 * and last token of parsed line
+	 */
+	@Test
+	void testALTOV4fromRahbar() throws Exception {
+		// arrange
+		Path rahbar88120 = TestResource.SHARE_IT_RAHBAR_88120.get();
+		ALTOReader reader = new ALTOReader(Type.ALTO_V4);
+
+		// act
+		var actual = reader.get(rahbar88120);
+
+		// assert
+		assertNotNull(actual);
+		assertEquals(30, actual.getTextlines().size());
+		OCRData.Textline line2 = actual.getTextlines().get(1);
+		assertEquals("کرده اند مثلاً انوری حافظ قصائدو غزلپائی بفتند رفتند پس از آبان", line2.getText());
+		assertEquals("کرده", line2.getTokens().get(0).getText());
+		assertEquals("آبان", line2.getTokens().get(line2.getTokens().size()-1).getText());
 	}
 }

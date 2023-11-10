@@ -51,23 +51,36 @@ public class PDFInspector {
 		return Path.of(pdfPath.toString());
 	}
 
+	public String getPageTextLinebreaksReplaced(int pageNr) throws DigitalDerivansException {
+		return getPageText(pageNr, "\n", " ");
+	}
+
 	/**
 	 * 
-	 * Simple approach to check if this page contains textual
-	 * data (i.e. text layer), c.f.
+	 * Simple approach to check if page contains textual data,
+	 * i.e. a text layer and how it is represented
+	 * 
+	 * Please note:
+	 * 	page copunt starts by "1", therefore is "1" the very first page.
+	 * 
+	 * c.f.
 	 * http://stackoverflow.com/questions/33492792/how-can-i-extract-subscript-superscript-properly-from-a-pdf-using-itextsharp
 	 * 
 	 * @param pageNr
 	 * @return
 	 * @throws DigitalDerivansException
 	 */
-	public String getPageText(int pageNr) throws DigitalDerivansException {
+	public String getPageText(int pageNr, String replaceToken, String replacement) throws DigitalDerivansException {
 		try {
 			var strategy = new SimpleTextExtractionStrategy();
 			var textListener = this.pdfContentParser.processContent(pageNr, strategy);
 			String text = textListener.getResultantText();
 			if (! text.isEmpty()) {
-				return text.replace('\n', ' ');
+				if (replaceToken != null && ! replaceToken.isEmpty()) {
+					return text.replace(replaceToken, replacement);
+				} else {
+					return text;
+				}
 			} else {
 				return text;
 			}

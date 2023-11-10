@@ -24,7 +24,6 @@ import org.jdom2.xpath.XPathBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
-
 import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.derivate.PDFInspector;
 
@@ -124,22 +123,16 @@ public class TestHelper {
 	}
 
 	public static Path fixturePrint737429(Path tempDir) throws IOException {
-		return fixturePrint737429(tempDir,TestResource.HD_Aa_737429.get());
+		return fixturePrint737429(tempDir, TestResource.HD_Aa_737429.get());
 	}
 
-
-	/**
-	 * 
-	 * Please note numbering starts with "1",
-	 * with "1" being the very first page.
-	 * 
-	 * @param writtenData
-	 * @param pageNr
-	 * @return
-	 * @throws Exception
-	 */
 	public static String getText(Path writtenData, int pageNr) throws Exception {
 		PDFInspector inspector = new PDFInspector(writtenData);
-		return inspector.getPageText(pageNr);
+		return inspector.getPageText(pageNr, "", "");
+	}
+
+	public static String getTextAsSingleLine(Path writtenData, int pageNr) throws Exception {
+		PDFInspector inspector = new PDFInspector(writtenData);
+		return inspector.getPageTextLinebreaksReplaced(pageNr);
 	}
 }

@@ -4,11 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -337,7 +335,7 @@ public class TestDerivans {
 
 		// assert
 		assertTrue(Files.exists(pdfWritten));
-		var textPageOne = TestHelper.getText(pdfWritten, 1);
+		var textPageOne = TestHelper.getTextAsSingleLine(pdfWritten, 1);
 		assertFalse(textPageOne.isBlank());
 		assertTrue(textPageOne.contains("SOLEMNI PANEGYRI AVGVSTISSIMO"));
 	}
