@@ -61,6 +61,8 @@ public enum TestResource {
 	K2_Hau_1748529021(Path.of("./src/test/resources/mets/kitodo2/1748529021.xml")),
 	// FID MENA
 	K2_Aa_1186819316(Path.of("./src/test/resources/mets/kitodo2/1186819316.xml")),
+	// Periodical
+	K2_AB_16740608619039(Path.of("src/test/resources/mets/kitodo2/16740608619039.k2x.xml")),
 	
 	/**
 	 * Kitodo 3

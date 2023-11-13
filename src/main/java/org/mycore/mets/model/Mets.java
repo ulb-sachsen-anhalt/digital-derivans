@@ -327,6 +327,13 @@ public class Mets {
 			// ULB Halle END
             LogicalDiv lsd = new LogicalDiv(logSubDiv.getAttributeValue("ID"), logSubDiv.getAttributeValue("TYPE"),
                 logSubDiv.getAttributeValue("LABEL"));
+			// ULB Halle START
+			String logType = logSubDiv.getAttributeValue("TYPE");
+			String logDMDID = logSubDiv.getAttributeValue("DMDID");
+			if (logType.equals("volume") && logDMDID != null) {
+				lsd.setDmdId(logDMDID);
+			}
+			// ULB Halle END
             logDivContainer.add(lsd);
 
             processLogicalChildren(logSubDiv.getChildren(), lsd);
