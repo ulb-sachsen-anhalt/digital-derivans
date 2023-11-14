@@ -219,9 +219,9 @@ Derivans depends on standard JDK11-components and external components for image 
 
 * OpenJRE/OpenJDK can't process image data with more than 8bit channel
   depth ([javax.imageio.IIOException: Illegal band size](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/42)).
-  To overcome this, one needs to reduce channel depth with an external tool.
-* Corrupt or exotic image metadata leads to process errors, since metadata must be propagated for proper
-  scaling ([javax.imageio.IIOException: Unsupported marker](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/33)).
+  To overcome this, reduce channels with external tool.
+* Rather exotic metadata results in process errors ([javax.imageio.IIOException: Unsupported marker](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/33)).   
+* Integral dimension metadata is required for proper scaling ([javax.imageio.metadata.IIOInvalidTreeException: Xdensity attribute out of range](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/53)). 
 
 ### PDF Generation
 
