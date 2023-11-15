@@ -365,8 +365,8 @@ class StructureMapper {
 		if (optMapping.isPresent()) {
 			return optMapping.get();
 		} else {
-			LOGGER.warn("no translation mapping for logical struct_type: '{}'", logicalStructType);
-			return null;
+			LOGGER.warn("no mapping for logical struct_type: '{}'", logicalStructType);
+			return UNSET;
 		}
 	}
 }
