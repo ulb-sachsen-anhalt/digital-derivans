@@ -67,7 +67,8 @@ public enum TestResource {
 	/**
 	 * Kitodo 3
 	 */
-	K3_ZD2_1021634069(Path.of("src/test/resources/mets/kitodo3/zd2-1021634069-18680621/1021634069-18680621.xml")),
+	K3_ZD2_1021634069(Path.of("src/test/resources/mets/kitodo3/zd2-1021634069-18680621.xml")),
+	K3_ZD2_253780594(Path.of("src/test/resources/mets/kitodo3/zd2-253780594-18920720.xml")),
 
 	/**
 	 * Image Processing
@@ -103,6 +104,12 @@ public enum TestResource {
 	*/
 	METS_ZD_ISSUE_182327845018001101(Path.of("src/test/resources/mets/zdp-182327845018001101.xml")),
 	
+	/**
+	 * 
+	 * Test XSDs
+	 * 
+	 */
+	METS_1_12_XSD(Path.of("src/test/resources/mets/mets_1_12.xsd")),
 	;
 	
 	private Path path;

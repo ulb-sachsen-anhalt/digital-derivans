@@ -148,7 +148,7 @@ public class TestDerivansConfiguration {
 		Path pathInput = tempDir.resolve("default_local");
 		Path pathImageMax = pathInput.resolve(imgDir);
 		Files.createDirectories(pathImageMax);
-		TestHelper.generateJpgs(pathImageMax, 620, 877, 6);
+		TestHelper.generateImages(pathImageMax, 620, 877, 6,"%04d.jpg");
 		var params = new DerivansParameter();
 		params.setPathInput(pathInput);
 
@@ -191,7 +191,7 @@ public class TestDerivansConfiguration {
 		Path pathInput = tempDir.resolve("default_local");
 		Path pathImageMax = pathInput.resolve(customImageSubDir);
 		Files.createDirectories(pathImageMax);
-		TestHelper.generateJpgs(pathImageMax, 620, 877, 6);
+		TestHelper.generateImages(pathImageMax, 620, 877, 6, "%04d.jpg");
 		var params = new DerivansParameter();
 		params.setPathInput(pathInput);
 		params.setImages(customImageSubDir);
@@ -233,7 +233,7 @@ public class TestDerivansConfiguration {
 		Files.createDirectory(pathInput);
 		Path pathImageMax = tempDir.resolve(customImageSubDir);
 		Files.createDirectories(pathImageMax);
-		TestHelper.generateJpgs(pathImageMax, 620, 877, 6);
+		TestHelper.generateImages(pathImageMax, 620, 877, 6, "%04d.jpg");
 		var params = new DerivansParameter();
 		params.setPathInput(pathInput);
 		params.setImages(pathImageMax.toString());

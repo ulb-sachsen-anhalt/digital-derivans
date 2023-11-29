@@ -133,10 +133,27 @@ public class MetadataHandler {
 		return true;
 	}
 
+	/**
+	 * 
+	 * 2023-11-29
+	 * 
+	 * Due conflicts with Kitodo3 Export XML ensure
+	 * that agent is inserted as very first element
+	 * if no other agent tags present or as last
+	 * agent entry
+	 * 
+	 * @param fileId
+	 * @return
+	 */
 	public String enrichAgent(String fileId) {
 		Element agent = createAgentSection(fileId);
 		Element hdrSection = getMetsHdr();
-		hdrSection.addContent(agent);
+		var agents = hdrSection.getChildren("agent", NS_METS);
+		if (agents.isEmpty()) {
+			hdrSection.addContent(0, agent);
+		} else {
+			hdrSection.addContent(agents.size()-1, agent);
+		}
 		return agent.getChildText("note", NS_METS);
 	}
 

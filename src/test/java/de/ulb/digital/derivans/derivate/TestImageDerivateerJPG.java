@@ -37,12 +37,10 @@ class TestImageDerivateerJPG {
 	@BeforeAll
 	public static void setupBeforeClass() throws IOException {
 		Path imageDir = sharedTempDir.resolve("IMAGE");
-
 		int width = 3500;
 		int height = 5500;
 		int number = 8;
-
-		TestHelper.generateJpgs(imageDir, width, height, number);
+		TestHelper.generateImages(imageDir, width, height, number, "%04d.jpg");
 	}
 
 	@Test

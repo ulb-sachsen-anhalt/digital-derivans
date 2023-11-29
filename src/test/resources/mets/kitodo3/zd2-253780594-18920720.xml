@@ -1,0 +1,261 @@
+<mets:mets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:xlink="http://www.w3.org/1999/xlink"
+           xmlns:kitodo="http://meta.kitodo.org/v1/"
+           xmlns:mets="http://www.loc.gov/METS/"
+           xmlns:dv="http://dfg-viewer.de/"
+           xmlns:mods="http://www.loc.gov/mods/v3">
+   <mets:metsHdr CREATEDATE="2023-07-06T10:27:05.944+02:00"
+                 LASTMODDATE="2023-11-28T15:24:55.918+01:00">
+      <mets:metsDocumentID>31527</mets:metsDocumentID>
+   </mets:metsHdr>
+   <mets:dmdSec ID="uuid-0bfd8180-e0d9-3ac0-b918-11a88b1f474b">
+      <mets:mdWrap MDTYPE="MODS">
+         <mets:xmlData>
+            <mods:mods xmlns:zvdd="https:/zvdd" xmlns:ulb="https://bibliothek.uni-halle.de">
+               <mods:typeOfResource>text</mods:typeOfResource>
+               <mods:originInfo eventType="publication">
+                  <mods:publisher>Angerstein</mods:publisher>
+                  <mods:dateIssued encoding="iso8601">1892-07-20</mods:dateIssued>
+               </mods:originInfo>
+               <mods:originInfo eventType="digitization">
+                  <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+                  <mods:place>
+                     <mods:placeTerm type="text">Halle (Saale)</mods:placeTerm>
+                  </mods:place>
+                  <mods:dateCaptured encoding="iso8601">2023</mods:dateCaptured>
+               </mods:originInfo>
+               <mods:identifier type="urn">urn:nbn:de:gbv:3:3-171133730-25378059418920720-17</mods:identifier>
+               <mods:recordInfo>
+                  <mods:recordIdentifier source="kxp-ppn">25378059418920720</mods:recordIdentifier>
+                  <mods:recordCreationDate encoding="marc">28-01-99</mods:recordCreationDate>
+                  <mods:recordChangeDate encoding="marc">13-04-23</mods:recordChangeDate>
+               </mods:recordInfo>
+               <mods:titleInfo>
+                  <mods:title>Der Harz-Bote</mods:title>
+               </mods:titleInfo>
+               <mods:relatedItem type="host">
+                  <mods:recordInfo>
+                     <mods:recordIdentifier source="kxp-ppn">782174345</mods:recordIdentifier>
+                  </mods:recordInfo>
+                  <mods:identifier type="zdb">2764718-3</mods:identifier>
+                  <mods:relatedItem type="original">
+                     <mods:identifier type="zdb">1460486-3</mods:identifier>
+                     <mods:recordInfo>
+                        <mods:recordIdentifier source="kxp-ppn">253780594</mods:recordIdentifier>
+                     </mods:recordInfo>
+                  </mods:relatedItem>
+                  <mods:titleInfo>
+                     <mods:title>Der Harz-Bote</mods:title>
+                  </mods:titleInfo>
+               </mods:relatedItem>
+               <mods:language>
+                  <mods:languageTerm type="code" authority="iso639-2b">ger</mods:languageTerm>
+                  <mods:scriptTerm type="code" authority="iso15924">Latf</mods:scriptTerm>
+               </mods:language>
+               <mods:extension>
+                  <ulb:externalType recordSyntax="pica">AZ</ulb:externalType>
+                  <ulb:collection>1516514412012/159341</ulb:collection>
+               </mods:extension>
+               <mods:location>
+                  <mods:physicalLocation>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:physicalLocation>
+                  <mods:shelfLocator>Pon Ya 4795, 2°</mods:shelfLocator>
+               </mods:location>
+               <mods:part order="18920720">
+                  <mods:detail type="volume">
+                     <mods:number>1892.</mods:number>
+                  </mods:detail>
+                  <mods:detail type="issue">
+                     <mods:number>Nr. 58.</mods:number>
+                  </mods:detail>
+               </mods:part>
+               <mods:accessCondition type="use and reproduction"
+                                     xlink:href="https://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</mods:accessCondition>
+            </mods:mods>
+         </mets:xmlData>
+      </mets:mdWrap>
+   </mets:dmdSec>
+   <mets:dmdSec ID="uuid-c804a0bd-df02-39e9-8fc1-b1fcf8719ef9">
+      <mets:mdWrap MDTYPE="MODS">
+         <mets:xmlData>
+            <mods:mods xmlns:zvdd="https:/zvdd" xmlns:ulb="https://bibliothek.uni-halle.de"/>
+         </mets:xmlData>
+      </mets:mdWrap>
+   </mets:dmdSec>
+   <mets:amdSec ID="admd1">
+      <mets:rightsMD ID="uuid-85bf1f4b-dd70-375d-9137-b6b743a15ee5">
+         <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVRIGHTS">
+            <mets:xmlData>
+               <dv:rights xmlns:zvdd="https:/zvdd" xmlns:ulb="https://bibliothek.uni-halle.de">
+                  <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+                  <dv:ownerLogo>Share_it</dv:ownerLogo>
+                  <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+                  <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+               </dv:rights>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:rightsMD>
+      <mets:digiprovMD ID="uuid-f931731a-ce3b-32a9-9545-6e7b4efc8629">
+         <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS">
+            <mets:xmlData>
+               <dv:links xmlns:zvdd="https:/zvdd" xmlns:ulb="https://bibliothek.uni-halle.de">
+                  <dv:reference>https://lhhal.gbv.de/DB=1/XMLPRS=N/PPN?PPN=253780594</dv:reference>
+                  <dv:presentation>https://opendata.uni-halle.de/simple-search?query=25378059418920720</dv:presentation>
+               </dv:links>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:digiprovMD>
+   </mets:amdSec>
+   <mets:fileSec>
+      <mets:fileGrp USE="DEFAULT">
+         <mets:file ID="uuid-780a9bbd-2b43-4bf1-9291-83151da6b30c" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000001.jpg"/>
+         </mets:file>
+         <mets:file ID="uuid-265840c6-352e-4596-a0ee-590fe64079bf" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000002.jpg"/>
+         </mets:file>
+         <mets:file ID="uuid-bc5a200e-96b3-4864-8454-d94e8ac710e5" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000003.jpg"/>
+         </mets:file>
+         <mets:file ID="uuid-264c1426-c121-44f3-b0ea-a1c5cc465bd7" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000004.jpg"/>
+         </mets:file>
+         <mets:file ID="uuid-b316eda5-8913-4051-b2a7-6485ac561103" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000005.jpg"/>
+         </mets:file>
+         <mets:file ID="uuid-54e5178d-dfec-4ae1-8619-8cf2aed2375d" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000006.jpg"/>
+         </mets:file>
+         <mets:file ID="uuid-8b7ca488-b327-458d-a558-f1c09b13a221" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000007.jpg"/>
+         </mets:file>
+      </mets:fileGrp>
+      <mets:fileGrp USE="MAX">
+         <mets:file ID="uuid-f1deb03b-90a8-4eb9-8f81-38b6c0d705c0" MIMETYPE="image/tiff">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000001.tif"/>
+         </mets:file>
+         <mets:file ID="uuid-3c0e5a66-7051-4464-b739-367cfaa71227" MIMETYPE="image/tiff">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000002.tif"/>
+         </mets:file>
+         <mets:file ID="uuid-8a0b5ac7-b3c8-4115-b0cd-c2b4b9d1ebe7" MIMETYPE="image/tiff">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000003.tif"/>
+         </mets:file>
+         <mets:file ID="uuid-2e81c795-7753-4f8c-91be-1c53aaeacece" MIMETYPE="image/tiff">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000004.tif"/>
+         </mets:file>
+         <mets:file ID="uuid-a43299e5-aeb1-4b3f-8a6d-d9d5684f750a" MIMETYPE="image/tiff">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000005.tif"/>
+         </mets:file>
+         <mets:file ID="uuid-a23d3725-709d-4ffc-b9bb-804158df2f5f" MIMETYPE="image/tiff">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000006.tif"/>
+         </mets:file>
+         <mets:file ID="uuid-afa5c45c-b859-4db9-a0cc-73485fd96af5" MIMETYPE="image/tiff">
+            <mets:FLocat LOCTYPE="URL" xlink:href="00000007.tif"/>
+         </mets:file>
+      </mets:fileGrp>
+   </mets:fileSec>
+   <mets:structMap TYPE="PHYSICAL">
+      <mets:div TYPE="physSequence" ID="uuid-225ee47f-8658-4f7b-b1e9-af1a9f41a2b1">
+         <mets:div ID="uuid-17e934e4-ae59-456a-99f7-0d4ce1b2b028"
+                   TYPE="page"
+                   ORDER="1"
+                   ORDERLABEL="[Seite 1]">
+            <mets:fptr FILEID="uuid-f1deb03b-90a8-4eb9-8f81-38b6c0d705c0"/>
+            <mets:fptr FILEID="uuid-780a9bbd-2b43-4bf1-9291-83151da6b30c"/>
+         </mets:div>
+         <mets:div ID="uuid-0038804a-ab7d-42ca-8b35-01639b2ca0af"
+                   TYPE="page"
+                   ORDER="2"
+                   ORDERLABEL="[Seite 2]">
+            <mets:fptr FILEID="uuid-3c0e5a66-7051-4464-b739-367cfaa71227"/>
+            <mets:fptr FILEID="uuid-265840c6-352e-4596-a0ee-590fe64079bf"/>
+         </mets:div>
+         <mets:div ID="uuid-79c6d0af-cf74-488b-a189-6130529d8d43"
+                   TYPE="page"
+                   ORDER="3"
+                   ORDERLABEL="[Seite 3]">
+            <mets:fptr FILEID="uuid-8a0b5ac7-b3c8-4115-b0cd-c2b4b9d1ebe7"/>
+            <mets:fptr FILEID="uuid-bc5a200e-96b3-4864-8454-d94e8ac710e5"/>
+         </mets:div>
+         <mets:div ID="uuid-539df0f6-94db-4834-8806-6d087dd71468"
+                   TYPE="page"
+                   ORDER="4"
+                   ORDERLABEL="[Seite 4]">
+            <mets:fptr FILEID="uuid-2e81c795-7753-4f8c-91be-1c53aaeacece"/>
+            <mets:fptr FILEID="uuid-264c1426-c121-44f3-b0ea-a1c5cc465bd7"/>
+         </mets:div>
+         <mets:div ID="uuid-54d34a05-7a1e-430e-92c0-00257b27c516"
+                   TYPE="page"
+                   ORDER="5"
+                   ORDERLABEL="[Seite 5]">
+            <mets:fptr FILEID="uuid-a43299e5-aeb1-4b3f-8a6d-d9d5684f750a"/>
+            <mets:fptr FILEID="uuid-b316eda5-8913-4051-b2a7-6485ac561103"/>
+         </mets:div>
+         <mets:div ID="uuid-a643bf14-99ab-451a-8f1f-e317bb85ea3a"
+                   TYPE="page"
+                   ORDER="6"
+                   ORDERLABEL="[Seite 6]">
+            <mets:fptr FILEID="uuid-a23d3725-709d-4ffc-b9bb-804158df2f5f"/>
+            <mets:fptr FILEID="uuid-54e5178d-dfec-4ae1-8619-8cf2aed2375d"/>
+         </mets:div>
+         <mets:div ID="uuid-d261f1ad-5df0-4002-82da-37572f10e9c0"
+                   TYPE="page"
+                   ORDER="7"
+                   ORDERLABEL="[Colorchecker]">
+            <mets:fptr FILEID="uuid-afa5c45c-b859-4db9-a0cc-73485fd96af5"/>
+            <mets:fptr FILEID="uuid-8b7ca488-b327-458d-a558-f1c09b13a221"/>
+         </mets:div>
+      </mets:div>
+   </mets:structMap>
+   <mets:structMap TYPE="LOGICAL">
+      <mets:div ID="uuid-6298393c-6b39-4c2b-a19d-9b4340e97d60" TYPE="newspaper">
+         <mets:mptr LOCTYPE="URL" xlink:href="253780594"/>
+         <mets:div ID="uuid-cd000cf4-6bdb-489c-8758-cd4a7e0ae2f4"
+                   TYPE="year"
+                   ORDERLABEL="1892"
+                   LABEL="1892">
+            <mets:mptr LOCTYPE="URL" xlink:href="253780594-1892"/>
+            <mets:div TYPE="month"
+                      ORDERLABEL="1892-07"
+                      ID="uuid-21433317-5921-4343-914b-47641d3666a5"
+                      ADMID="uuid-f931731a-ce3b-32a9-9545-6e7b4efc8629 uuid-85bf1f4b-dd70-375d-9137-b6b743a15ee5">
+               <mets:div TYPE="day"
+                         ID="uuid-bab79d22-4757-4e93-aa78-ff3c013207e0"
+                         ORDERLABEL="1892-07-20">
+                  <mets:div ID="uuid-109c9e49-dc88-4996-b173-1c9848d5b148"
+                            DMDID="uuid-0bfd8180-e0d9-3ac0-b918-11a88b1f474b"
+                            TYPE="issue"
+                            ORDER="1"
+                            LABEL="Nr. 58.">
+                     <mets:div ADMID="admd1"
+                               ID="uuid-918bd9e1-16ba-460b-bef2-79d6498aff6c"
+                               DMDID="uuid-c804a0bd-df02-39e9-8fc1-b1fcf8719ef9"
+                               TYPE="additional"
+                               ORDER="1"
+                               LABEL="Feuilleton-Beilage. Nr. 20."/>
+                  </mets:div>
+               </mets:div>
+            </mets:div>
+         </mets:div>
+      </mets:div>
+   </mets:structMap>
+   <mets:structLink>
+      <mets:smLink xlink:to="uuid-17e934e4-ae59-456a-99f7-0d4ce1b2b028"
+                   xlink:from="uuid-109c9e49-dc88-4996-b173-1c9848d5b148"/>
+      <mets:smLink xlink:to="uuid-0038804a-ab7d-42ca-8b35-01639b2ca0af"
+                   xlink:from="uuid-109c9e49-dc88-4996-b173-1c9848d5b148"/>
+      <mets:smLink xlink:to="uuid-79c6d0af-cf74-488b-a189-6130529d8d43"
+                   xlink:from="uuid-109c9e49-dc88-4996-b173-1c9848d5b148"/>
+      <mets:smLink xlink:to="uuid-539df0f6-94db-4834-8806-6d087dd71468"
+                   xlink:from="uuid-109c9e49-dc88-4996-b173-1c9848d5b148"/>
+      <mets:smLink xlink:to="uuid-d261f1ad-5df0-4002-82da-37572f10e9c0"
+                   xlink:from="uuid-109c9e49-dc88-4996-b173-1c9848d5b148"/>
+      <mets:smLink xlink:to="uuid-54d34a05-7a1e-430e-92c0-00257b27c516"
+                   xlink:from="uuid-109c9e49-dc88-4996-b173-1c9848d5b148"/>
+      <mets:smLink xlink:to="uuid-a643bf14-99ab-451a-8f1f-e317bb85ea3a"
+                   xlink:from="uuid-109c9e49-dc88-4996-b173-1c9848d5b148"/>
+      <mets:smLink xlink:to="uuid-54d34a05-7a1e-430e-92c0-00257b27c516"
+                   xlink:from="uuid-918bd9e1-16ba-460b-bef2-79d6498aff6c"/>
+      <mets:smLink xlink:to="uuid-a643bf14-99ab-451a-8f1f-e317bb85ea3a"
+                   xlink:from="uuid-918bd9e1-16ba-460b-bef2-79d6498aff6c"/>
+   </mets:structLink>
+</mets:mets>

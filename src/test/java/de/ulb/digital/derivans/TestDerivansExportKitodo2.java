@@ -126,6 +126,13 @@ public class TestDerivansExportKitodo2 {
 	}
 
 
+	@Test
+	void testResultXMLvalid() throws Exception {
+		var resultXML = workDir.resolve("058141367.xml");
+		var pathMETSXSD = TestResource.METS_1_12_XSD.get();
+		assertTrue(TestHelper.validateXML(resultXML, pathMETSXSD));
+	}
+
 	public static Path fixtureMetadataTIFK2(Path tempDir, Path srcMets) throws IOException {
 		Path pathTarget = tempDir.resolve("058141367");
 		if (Files.exists(pathTarget)) {

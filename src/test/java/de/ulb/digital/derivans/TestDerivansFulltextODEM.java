@@ -128,4 +128,11 @@ public class TestDerivansFulltextODEM {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
 		assertEquals(1328, textPage07.length());
 	}
+
+	@Test
+	void testResultXMLvalid() throws Exception {
+		var resultXML = workDir.resolve("mets.xml");
+		var pathMETSXSD = TestResource.METS_1_12_XSD.get();
+		assertTrue(TestHelper.validateXML(resultXML, pathMETSXSD));
+	}
 }

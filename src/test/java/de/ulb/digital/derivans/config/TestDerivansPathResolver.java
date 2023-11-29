@@ -28,7 +28,7 @@ public class TestDerivansPathResolver {
 		Path pathTarget = tempDir.resolve("only_images");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-		TestHelper.generateJpgs(pathImageMax, 1240, 1754, 6);
+		TestHelper.generateImages(pathImageMax, 1240, 1754, 6, "%04d.jpg");
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
