@@ -62,7 +62,7 @@ docker run \
 ```
 
 *Please note*:  
-With this layout the logging configuration is assumend to resides inside the config dir.
+Logging configuration must not be outside config dir.
 
 ## Installation
 
