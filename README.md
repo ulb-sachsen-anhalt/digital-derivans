@@ -228,10 +228,10 @@ Derivans depends on standard JDK11-components and external components for image 
 *Please note*:  
 To overcome `javax.imageio` errors, it's recommended to fix them using an external image processing application.
 
-* Images with more than 8bit channel depth can't be processed [javax.imageio.IIOException: Illegal band size](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/42)
+* Images with more than 8bit channel depth can't be processed  [javax.imageio.IIOException: Illegal band size](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/42)
 * Uncommon image metadata can't be processed  
 [javax.imageio.IIOException: Unsupported marker](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/33)
-* Integral dimension values required for proper scaling [javax.imageio.metadata.IIOInvalidTreeException: Xdensity attribute out of range](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/53)
+* Integral dimension values required for proper scaling  [javax.imageio.metadata.IIOInvalidTreeException: Xdensity attribute out of range](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/53)
 
 ### PDF Generation
 
