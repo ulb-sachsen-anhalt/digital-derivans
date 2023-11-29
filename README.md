@@ -48,13 +48,21 @@ or build it your own locally:
 ./scripts/build_docker_image.sh
 ```
 
-For using the docker image it is the same like described in [Usage](#usage) section, except you has to pass your work
-dir
-folder and the config folder if you use a config file. For example:
+For using the docker image it is the same like described in [Usage](#usage) section, except you has to pass all required directories / files as mapped volumes.
+
+For example:
 
 ```bash
-docker run --mount type=bind,source=<work-dir>,target=/data-print --mount type=bind,source=<config-dir>,target=/data-config ghcr.io/ulb-sachsen-anhalt/digital-derivans /data-print -c /data-config/derivans.ini  
+docker run \
+  --mount type=bind,source=<host-work-dir>,target=/data-print \
+  --mount type=bind,source=<host-config-dir>,target=/data-config \
+  --mount type=bind,source=<host-log-dir>,target=/data-log \
+  ghcr.io/ulb-sachsen-anhalt/digital-derivans \ 
+  <print-dir|mets-file> -c /data-config/derivans.ini  
 ```
+
+*Please note*:  
+With this layout the logging configuration is assumend to resides inside the config dir.
 
 ## Installation
 
@@ -217,11 +225,13 @@ Derivans depends on standard JDK11-components and external components for image 
 
 ### Image Processing
 
-* OpenJRE/OpenJDK can't process image data with more than 8bit channel
-  depth ([javax.imageio.IIOException: Illegal band size](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/42)).
-  To overcome this, reduce channels with external tool.
-* Rather exotic metadata results in process errors ([javax.imageio.IIOException: Unsupported marker](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/33)).   
-* Integral dimension metadata is required for proper scaling ([javax.imageio.metadata.IIOInvalidTreeException: Xdensity attribute out of range](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/53)). 
+*Please note*:  
+To overcome `javax.imageio` errors, it's recommended to fix them using an external image processing application.
+
+* Images with more than 8bit channel depth can't be processed [javax.imageio.IIOException: Illegal band size](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/42)
+* Uncommon image metadata can't be processed  
+[javax.imageio.IIOException: Unsupported marker](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/33)
+* Integral dimension values required for proper scaling [javax.imageio.metadata.IIOInvalidTreeException: Xdensity attribute out of range](https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/53)
 
 ### PDF Generation
 
