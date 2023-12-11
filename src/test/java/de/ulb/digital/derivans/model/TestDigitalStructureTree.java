@@ -29,7 +29,29 @@ public class TestDigitalStructureTree {
 	}
 
 	@Test
-	void testCommonInstancesNotEquals() throws CmdLineException {
+	void testCommonInstancesDifferValue() throws CmdLineException {
+
+		// arrange
+		var s1 = new DigitalStructureTree(6, "[Seite 8]");
+		var s2 = new DigitalStructureTree(7, "[Seite 8]");
+
+		// act
+		assertNotEquals(s1, s2);
+	}
+
+	@Test
+	void testCommonInstancesDifferLabel() throws CmdLineException {
+
+		// arrange
+		var s1 = new DigitalStructureTree(6, "[Seite 8]");
+		var s2 = new DigitalStructureTree(6, "[Tabelle]");
+
+		// act
+		assertNotEquals(s1, s2);
+	}
+
+	@Test
+	void testCommonInstancesDifferBoth() throws CmdLineException {
 
 		// arrange
 		var s1 = new DigitalStructureTree(6, "[Seite 8]");

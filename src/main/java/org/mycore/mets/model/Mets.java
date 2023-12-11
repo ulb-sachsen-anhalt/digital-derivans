@@ -320,8 +320,20 @@ public class Mets {
             logDivContainerElem.getAttributeValue("ADMID"), logDivContainerElem.getAttributeValue("DMDID"));
 
         for (Element logSubDiv : logDivContainerElem.getChildren()) {
+			// ULB Halle START
+			if (logSubDiv.getAttributeValue("ID") == null){
+				continue;
+			}
+			// ULB Halle END
             LogicalDiv lsd = new LogicalDiv(logSubDiv.getAttributeValue("ID"), logSubDiv.getAttributeValue("TYPE"),
                 logSubDiv.getAttributeValue("LABEL"));
+			// ULB Halle START
+			String logType = logSubDiv.getAttributeValue("TYPE");
+			String logDMDID = logSubDiv.getAttributeValue("DMDID");
+			if (logType.equals("volume") && logDMDID != null) {
+				lsd.setDmdId(logDMDID);
+			}
+			// ULB Halle END
             logDivContainer.add(lsd);
 
             processLogicalChildren(logSubDiv.getChildren(), lsd);
@@ -351,11 +363,6 @@ public class Mets {
 
                     processLogicalChildren(child.getChildren(), lsd);
                     break;
-
-                // ULB Hartwig Start
-                default:
-                    return;
-                // ULB Hartwig Start
             }
         }
     }

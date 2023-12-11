@@ -66,7 +66,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 		try {
 			// keep track of granularity
 			String urn = "";
-			var optUrn = page.getIdentifier();
+			var optUrn = page.optIdentifier();
 			if (optUrn.isPresent()) {
 				urn = optUrn.get();
 			} else {

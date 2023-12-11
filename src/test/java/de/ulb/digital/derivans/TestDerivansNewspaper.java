@@ -107,7 +107,7 @@ public class TestDerivansNewspaper {
 	@Test
 	void testPDFContainsText() throws Exception {
 		Path pdfWritten = workDir.resolve("zd1.pdf");
-		assertEquals(25525, TestHelper.getText(pdfWritten, 1).length());
+		assertEquals(25525, TestHelper.getTextAsSingleLine(pdfWritten, 1).length());
 	}
 
 }

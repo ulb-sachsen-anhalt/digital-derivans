@@ -58,7 +58,7 @@ class TestMetadataStoreKitodo2 {
 	void testDigitalPagesWithoutGranularUrn143074601() throws DigitalDerivansException {
 		List<DigitalPage> pages = mds143074601.getDigitalPagesInOrder();
 		for (DigitalPage page : pages) {
-			assertTrue(page.getIdentifier().isEmpty());
+			assertTrue(page.optIdentifier().isEmpty());
 		}
 	}
 
@@ -115,8 +115,6 @@ class TestMetadataStoreKitodo2 {
 	 * 
 	 * BUGFIX
 	 * 
-	 * see:
-	 * 
 	 */
 	@Test
 	void testEnsureIdentifierPPNMatches() throws DigitalDerivansException {
@@ -127,5 +125,24 @@ class TestMetadataStoreKitodo2 {
 		var dd1186819316 = mds1186819316.getDescriptiveData();
 		assertNotNull(dd143074601);
 		assertEquals("1186819316", dd1186819316.getIdentifier());
+	}
+
+	/**
+	 * 
+	 * BUGFIX https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/55
+	 * 
+	 */
+	@Test
+	void testFindRecordIdentifierPeriodicalVolume() throws DigitalDerivansException {
+		// arrange
+		var mds = new MetadataStore(TestResource.K2_AB_16740608619039.get());
+		var primeMods = mds.getMetadataHandler().getPrimaryMods();
+		var metsAnchestor = primeMods.getParentElement().getParentElement().getParentElement();
+		assertEquals("DMDLOG_0001", metsAnchestor.getAttributeValue("ID"));
+
+		// act
+		var dd = mds.getDescriptiveData();
+		assertNotNull(dd);
+		assertEquals("16740608619039", dd.getIdentifier());
 	}
 }

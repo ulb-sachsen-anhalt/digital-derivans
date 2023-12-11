@@ -14,6 +14,16 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -23,7 +33,7 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
-
+import org.xml.sax.SAXException;
 
 import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.derivate.PDFInspector;
@@ -36,15 +46,17 @@ import de.ulb.digital.derivans.derivate.PDFInspector;
  */
 public class TestHelper {
 
-	public static void generateJpgs(Path imageDir, int width, int height, int number) throws IOException {
+	public static void generateImages(Path imageDir, int width, int height, int number, String labelFormat)
+			throws IOException {
 		if (Files.exists(imageDir)) {
 			Files.delete(imageDir);
 		}
 		Files.createDirectory(imageDir);
+		var imageFormat = labelFormat.substring(labelFormat.lastIndexOf('.') + 1).toUpperCase();
 		for (int i = 1; i <= number; i++) {
-			String imagePath = String.format("%04d.jpg", i);
-			Path jpgFile = imageDir.resolve(imagePath);
-			writeImage(jpgFile, width, height, BufferedImage.TYPE_3BYTE_BGR, "JPG");
+			String imageLabel = String.format(labelFormat, i);
+			Path imagePath = imageDir.resolve(imageLabel);
+			writeImage(imagePath, width, height, BufferedImage.TYPE_3BYTE_BGR, imageFormat);
 		}
 	}
 
@@ -124,22 +136,40 @@ public class TestHelper {
 	}
 
 	public static Path fixturePrint737429(Path tempDir) throws IOException {
-		return fixturePrint737429(tempDir,TestResource.HD_Aa_737429.get());
+		return fixturePrint737429(tempDir, TestResource.HD_Aa_737429.get());
 	}
 
+	public static String getText(Path writtenData, int pageNr) throws Exception {
+		PDFInspector inspector = new PDFInspector(writtenData);
+		return inspector.getPageText(pageNr, "", "");
+	}
+
+	public static String getTextAsSingleLine(Path writtenData, int pageNr) throws Exception {
+		PDFInspector inspector = new PDFInspector(writtenData);
+		return inspector.getPageTextLinebreaksReplaced(pageNr);
+	}
 
 	/**
 	 * 
-	 * Please note numbering starts with "1",
-	 * with "1" being the very first page.
+	 * In case of invalid Documents {@link org.xml.sax.SAXParseException}
+	 * will be thrown.
+	 * In case of valid Documents, nothing is thrown but "true" returned.
 	 * 
-	 * @param writtenData
-	 * @param pageNr
-	 * @return
-	 * @throws Exception
 	 */
-	public static String getText(Path writtenData, int pageNr) throws Exception {
-		PDFInspector inspector = new PDFInspector(writtenData);
-		return inspector.getPageText(pageNr);
+	public static boolean validateXML(Path xmlPath, Path xsdPath) throws SAXException, IOException,
+			ParserConfigurationException {
+		var dbf = DocumentBuilderFactory.newInstance();
+		String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+		String METS_SCHEMA = "http://www.loc.gov/METS/";
+		dbf.setAttribute(JAXP_SCHEMA_LANGUAGE, METS_SCHEMA);
+		dbf.setNamespaceAware(true);
+		DocumentBuilder parser = dbf.newDocumentBuilder();
+		org.w3c.dom.Document document = parser.parse(xmlPath.toFile());
+		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		Source schemaFile = new StreamSource(xsdPath.toFile());
+		Schema schema = factory.newSchema(schemaFile);
+		Validator validator = schema.newValidator();
+		validator.validate(new DOMSource(document));
+		return true;
 	}
 }

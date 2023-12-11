@@ -37,6 +37,9 @@ class StructureMapper {
 	// linked to the top-most logical entity
 	public static final String STRUCT_PHYSICAL_ROOT = "physroot";
 
+	// mark newspaper structures
+	public static final List<String> NEWSPAPER_STRUCTS = List.of("newspaper", "year", "month", "day");
+
 	// mark missing data
 	public static final String UNSET = "n.a.";
 
@@ -269,8 +272,10 @@ class StructureMapper {
 
 	/**
 	 * 
-	 * Try to map a logical structure to the order of the corresponding physical
-	 * structure. This way the start page of a logical structure
+	 * Map logical structure to order of 
+	 * corresponding physical structure
+	 * to determine the start page of a 
+	 * logical structure.
 	 * 
 	 * @param ld
 	 * @return pageNumber (default: 1)
@@ -327,9 +332,8 @@ class StructureMapper {
 		}
 		LOGGER.warn("No phys struct maps logical struct '{}'!", logId);
 		// maybe type is newspaper related
-		String logicalStructType = ld.getType();
-		if ("year".equalsIgnoreCase(logicalStructType)) {
-			LOGGER.info("Deal with type '{}', therefore map to page '1'.", logicalStructType);
+		if (isNewspaperStruct(ld)) {
+			LOGGER.info("Deal with type '{}', therefore map '{}' to page '1'.",  ld.getType(), ld.getLabel());
 			var rootLeaf = new MapLeafs();
 			rootLeaf.order = 1;
 			return rootLeaf;
@@ -344,6 +348,11 @@ class StructureMapper {
 		return tops.stream().anyMatch(t -> t.equals(theType));
 	}
 
+	private static boolean isNewspaperStruct(LogicalDiv logicalDiv) {
+		String logicalStructType = logicalDiv.getType();
+		return NEWSPAPER_STRUCTS.stream().anyMatch(t -> t.equalsIgnoreCase(logicalStructType));
+	}
+
 	/**
 	 * 
 	 * Get german Translation for PDF outline
@@ -356,8 +365,8 @@ class StructureMapper {
 		if (optMapping.isPresent()) {
 			return optMapping.get();
 		} else {
-			LOGGER.warn("no translation mapping for logical struct_type: '{}'", logicalStructType);
-			return null;
+			LOGGER.warn("no mapping for logical struct_type: '{}'", logicalStructType);
+			return UNSET;
 		}
 	}
 }

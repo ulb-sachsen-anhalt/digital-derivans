@@ -61,11 +61,14 @@ public enum TestResource {
 	K2_Hau_1748529021(Path.of("./src/test/resources/mets/kitodo2/1748529021.xml")),
 	// FID MENA
 	K2_Aa_1186819316(Path.of("./src/test/resources/mets/kitodo2/1186819316.xml")),
+	// Periodical
+	K2_AB_16740608619039(Path.of("src/test/resources/mets/kitodo2/16740608619039.k2x.xml")),
 	
 	/**
 	 * Kitodo 3
 	 */
-	K3_ZD2_1021634069(Path.of("src/test/resources/mets/kitodo3/zd2-1021634069-18680621/1021634069-18680621.xml")),
+	K3_ZD2_1021634069(Path.of("src/test/resources/mets/kitodo3/zd2-1021634069-18680621.xml")),
+	K3_ZD2_253780594(Path.of("src/test/resources/mets/kitodo3/zd2-253780594-18920720.xml")),
 
 	/**
 	 * Image Processing
@@ -85,6 +88,7 @@ public enum TestResource {
 	VD18_Aa_VD18_MIG(Path.of("src/test/resources/mets/vls/vd18-Aa-16372279.mets.xml")),
 
 	SHARE_IT_VD18_43053(Path.of("src/test/resources/mets/share_it/1981185920_43053.xml")),
+	SHARE_IT_RAHBAR_88120(Path.of("src/test/resources/alto/1981185920_88120/1981185920_88120_00000010.xml")),
 
 	/**
 	 * 
@@ -92,6 +96,20 @@ public enum TestResource {
 	 * 
 	*/
 	K2_PRES_SLUB_321094271(Path.of("src/test/resources/mets/kitodo_pres/slub-dresden-db-id-321094271.xml")),
+	
+	/**
+	 * 
+	 * Contains Issue with deep logical structs
+	 * 
+	*/
+	METS_ZD_ISSUE_182327845018001101(Path.of("src/test/resources/mets/zdp-182327845018001101.xml")),
+	
+	/**
+	 * 
+	 * Test XSDs
+	 * 
+	 */
+	METS_1_12_XSD(Path.of("src/test/resources/mets/mets_1_12.xsd")),
 	;
 	
 	private Path path;

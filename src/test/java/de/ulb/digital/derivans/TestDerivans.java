@@ -4,11 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -100,7 +98,7 @@ public class TestDerivans {
 		Path pathTarget = tempDir.resolve("only_images");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-		TestHelper.generateJpgs(pathImageMax, 1240, 1754, 6);
+		TestHelper.generateImages(pathImageMax, 1240, 1754, 6, "%04d.jpg");
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
@@ -156,7 +154,7 @@ public class TestDerivans {
 		Path pathTarget = tempDir.resolve("conf_images");
 		Path pathImageMax = pathTarget.resolve(imgDir);
 		Files.createDirectories(pathImageMax);
-		TestHelper.generateJpgs(pathImageMax, 620, 877, 6);
+		TestHelper.generateImages(pathImageMax, 620, 877, 6, "%04d.jpg");
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
 		dp.setImages(imgDir);
@@ -316,7 +314,7 @@ public class TestDerivans {
 		String pdfName = "General-Anzeiger_f\u00FCr_Halle_und_den_Saalkreis.pdf";
 		Path pdfWritten = pathTarget.resolve(pdfName);
 		assertFalse(Files.exists(pdfWritten));
-		assertTrue(excResult.getMessage().startsWith("No images for IMAGE"));
+		assertTrue(excResult.getMessage().startsWith("No images for "));
 	}
 
 	@Test
@@ -337,7 +335,7 @@ public class TestDerivans {
 
 		// assert
 		assertTrue(Files.exists(pdfWritten));
-		var textPageOne = TestHelper.getText(pdfWritten, 1);
+		var textPageOne = TestHelper.getTextAsSingleLine(pdfWritten, 1);
 		assertFalse(textPageOne.isBlank());
 		assertTrue(textPageOne.contains("SOLEMNI PANEGYRI AVGVSTISSIMO"));
 	}

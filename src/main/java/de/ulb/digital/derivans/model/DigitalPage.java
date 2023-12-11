@@ -87,7 +87,7 @@ public class DigitalPage {
 		}
 	}
 
-	public Optional<String> getIdentifier() {
+	public Optional<String> optIdentifier() {
 		return this.uniqueIdentifier;
 	}
 

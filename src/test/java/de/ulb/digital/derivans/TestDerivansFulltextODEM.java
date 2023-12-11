@@ -108,12 +108,12 @@ public class TestDerivansFulltextODEM {
 
 	@Test
 	void testPage01NoContents() throws Exception {
-		assertEquals("", TestHelper.getText(pdfPath, 1));
+		assertEquals("", TestHelper.getTextAsSingleLine(pdfPath, 1));
 	}
 
 	@Test
 	void testPage07ContainsText() throws Exception {
-		var textPage07 = TestHelper.getText(pdfPath, 7);
+		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
 		assertTrue(textPage07.contains("an den Grantzen des Hertzogthums Florentz"));
 	}
 
@@ -125,7 +125,14 @@ public class TestDerivansFulltextODEM {
 	 */
 	@Test
 	void testPage07HasCertainLength() throws Exception {
-		var textPage07 = TestHelper.getText(pdfPath, 7);
+		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
 		assertEquals(1328, textPage07.length());
+	}
+
+	@Test
+	void testResultXMLvalid() throws Exception {
+		var resultXML = workDir.resolve("mets.xml");
+		var pathMETSXSD = TestResource.METS_1_12_XSD.get();
+		assertTrue(TestHelper.validateXML(resultXML, pathMETSXSD));
 	}
 }

@@ -97,10 +97,27 @@ public class MetadataHandler {
 		return this.handler.write(this.pathFile);
 	}
 
+	/**
+	 * 
+	 * 2023-11-29
+	 * 
+	 * Due conflicts with Kitodo3 Export XML ensure
+	 * that agent is inserted as very first element
+	 * if no other agent tags present or as last
+	 * agent entry
+	 * 
+	 * @param fileId
+	 * @return
+	 */
 	public String enrichAgent(String fileId) {
 		Element agent = createAgentSection(fileId);
 		Element hdrSection = getMetsHdr();
-		hdrSection.addContent(agent);
+		var agents = hdrSection.getChildren("agent", NS_METS);
+		if (agents.isEmpty()) {
+			hdrSection.addContent(0, agent);
+		} else {
+			hdrSection.addContent(agents.size()-1, agent);
+		}
 		return agent.getChildText("note", NS_METS);
 	}
 
@@ -294,12 +311,12 @@ public class MetadataHandler {
 	}
 
 	private Optional<String> getSimple() {
-		var optElement = this.mets.getLogicalStructMap().asElement().getContent(new TypeFilter()).stream().findFirst();
-		if (optElement.isPresent()) {
-			var el = optElement.get();
-			if (el.getAttribute(DMD_ID) != null) {
-				return Optional.of(el.getAttributeValue(DMD_ID));
-			}
+		var descInterator = this.mets.getLogicalStructMap().asElement().getDescendants(new TypeFilter());
+		if (descInterator.hasNext()) {
+			var nextMatch = descInterator.next();
+				if (nextMatch.getAttribute(DMD_ID) != null) {
+					return Optional.of(nextMatch.getAttributeValue(DMD_ID));
+				}
 		}
 		return Optional.empty();
 	}
@@ -468,6 +485,7 @@ class ModsFilter extends ElementFilter {
  * 
  * Get mets:div Containers with types
  * like 'monography', 'volume', ... , etc
+ * with the first match as winner
  * 
  * @author u.hartwig
  *
@@ -477,12 +495,12 @@ class TypeFilter extends ElementFilter {
 
 	static final String[] TYPES = {
 		StructureDFGViewer.MONOGRAPH.getLabel(),
-		StructureDFGViewer.VOLUME.getLabel(),
 		StructureDFGViewer.MANUSCRIPT.getLabel(),
+		StructureDFGViewer.MAP.getLabel(),
+		StructureDFGViewer.ATLAS.getLabel(),
+		StructureDFGViewer.VOLUME.getLabel(),
 		StructureDFGViewer.ISSUE.getLabel(),
 		StructureDFGViewer.ADDITIONAL.getLabel(),
-		StructureDFGViewer.ATLAS.getLabel(),
-		StructureDFGViewer.MAP.getLabel(),
 	};
 
 	@Override

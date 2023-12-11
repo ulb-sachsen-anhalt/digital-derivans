@@ -37,6 +37,8 @@ public class Derivans {
 
     List<DerivateStep> steps;
 
+	List<IDerivateer> derivateers;
+
     private Path processDir;
 
     private Path pathMetsFile;
@@ -92,14 +94,14 @@ public class Derivans {
     }
 
     /**
-     * Examine and tranform given steps into correspondig derivateer-instances
+     * Transform given steps into corresponding derivateers
      *
      * @param steps
      * @return
      * @throws DigitalDerivansException
      */
     public List<IDerivateer> init(List<DerivateStep> steps) throws DigitalDerivansException {
-        List<IDerivateer> derivateers = new ArrayList<>();
+        this.derivateers = new ArrayList<>();
         List<DigitalPage> pages = initDigitalPages(steps);
 
         for (DerivateStep step : steps) {
@@ -127,10 +129,17 @@ public class Derivans {
                 DigitalFooter footer = new DigitalFooter(footerLabel, getIdentifier(), pathTemplate);
                 Integer quality = stepFooter.getQuality();
                 ImageDerivateerJPGFooter d = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
-                boolean containsGranularUrns = isGranularIdentifierPresent(pages);
-                if (containsGranularUrns) {
-                    d = new ImageDerivateerJPGFooterGranular(d, quality);
-                }
+				if (this.optMetadataStore.isPresent()) {
+					var store = this.optMetadataStore.get();
+					var mdsPages = store.getDigitalPagesInOrder();
+					var storeLabel = store.usedStore();
+					if (isGranularIdentifierPresent(mdsPages)) {
+						LOGGER.debug("detected granular URN at {}", storeLabel);
+						var enrichedPages = enrichGranularURN(pages, mdsPages);
+						d = new ImageDerivateerJPGFooterGranular(d, quality);
+						d.setDigitalPages(enrichedPages);
+					}
+				}
                 d.setResolver(this.resolver);
                 derivateers.add(d);
 
@@ -157,7 +166,9 @@ public class Derivans {
                 Path pdfPath = resolver.calculatePDFPath(descriptiveData, step);
                 LOGGER.info("calculate local pdf derivate path '{}'", pdfPath);
                 output.setPath(pdfPath);
-                var pdfDerivateer = new PDFDerivateer(input, output, pages, pdfStep);
+				// required for proper resolving with kitodo2
+				var pdfInput = new DerivansData(input.getPath(), DerivateType.JPG);
+                var pdfDerivateer = new PDFDerivateer(pdfInput, output, pages, pdfStep);
                 if (this.optMetadataStore.isPresent()) {
                     pdfDerivateer.setMetadataStore(optMetadataStore);
                 }
@@ -180,8 +191,35 @@ public class Derivans {
         return this.resolver.resolveFromStep(step0);
     }
 
+	/**
+	 * 
+	 * Enrich page-wise URN from first matching filename
+	 * 
+	 * @param targets
+	 * @param sources
+	 * @return
+	 */
+	private List<DigitalPage> enrichGranularURN(List<DigitalPage> targets, List<DigitalPage> sources) {
+		List<DigitalPage> enriched = new ArrayList<>();
+		for(DigitalPage target: targets) {
+			for(DigitalPage src: sources) {
+				var targetFile = target.getImagePath().getFileName();
+				var sourceFile = src.getImagePath().getFileName();
+				if (targetFile.equals(sourceFile)) {
+					Optional<String> optIdent = src.optIdentifier();
+					if(optIdent.isPresent()) {
+						target.setIdentifier(optIdent.get());
+						enriched.add(0, target);
+						break;
+					}
+				}
+			}
+		}
+		return enriched;
+	}
+
     public void create() throws DigitalDerivansException {
-        List<IDerivateer> derivateers = this.init(steps);
+        this.init(steps);
 
         // run derivateers
         for (IDerivateer derivateer : derivateers) {
@@ -209,8 +247,8 @@ public class Derivans {
 
     private boolean isGranularIdentifierPresent(List<DigitalPage> pages) {
         return pages.stream()
-                .filter(page -> page.getIdentifier().isPresent())
-                .map(page -> page.getIdentifier().get())
+                .filter(page -> page.optIdentifier().isPresent())
+                .map(page -> page.optIdentifier().get())
                 .findAny().isPresent();
     }
 
@@ -222,8 +260,23 @@ public class Derivans {
         return IMetadataStore.UNKNOWN;
     }
 
+	/**
+	 * 
+	 * Access member just for testing purposes
+	 * 
+	 * @return
+	 */
     public List<DerivateStep> getSteps() {
         return this.steps;
     }
 
+	/**
+	 * 
+	 * Access member just for testing purposes
+	 * 
+	 * @return
+	 */
+	public List<IDerivateer> getDerivateers() {
+		return this.derivateers;
+	}
 }

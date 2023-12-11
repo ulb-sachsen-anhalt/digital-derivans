@@ -411,7 +411,7 @@ public class PDFDerivateer extends BaseDerivateer {
 	public int create() throws DigitalDerivansException {
 
 		// resolve image paths
-		resolver.enrichWithPath(getDigitalPages(), this.getInput().getPath());
+		resolver.enrichData(getDigitalPages(), this.getInput());
 
 		// get dimension of first page
 		Image image = null;
