@@ -1,6 +1,8 @@
 #!/bin/bash
 
 
+TIMEZONE=Europe/Berlin
+
 THIS_SCRIPT=$(realpath "${BASH_SOURCE[0]}")
 THIS_SCRIPT_DIR="$(dirname "$THIS_SCRIPT")"
 ROOT_DIR=$(realpath "$THIS_SCRIPT_DIR/..")
@@ -26,6 +28,7 @@ docker build \
     --build-arg VERSION="$VERSION" \
     --build-arg JAR_FILE_NAME="$JAR_FILE_NAME" \
     --build-arg JAR_FILE="$JAR_FILE_RELATIVE_PATH" \
+    --build-arg TIMEZONE="$TIMEZONE" \
     -t "$IMAGE_NAME" .
 
 docker tag "$IMAGE_NAME" "$IMAGE_NAME_LATEST"
