@@ -68,6 +68,7 @@ public class TestDerivansFulltextRahbar {
 		int maximal = 2339; // scale A4 with 200 DPI
 		((DerivateStepImage) dc.getDerivateSteps().get(1)).setMaximal(maximal);
 		((DerivateStepPDF) dc.getDerivateSteps().get(2)).setRenderModus("visible");
+		((DerivateStepPDF) dc.getDerivateSteps().get(2)).setDebugRender(true);
 		Derivans derivans = new Derivans(dc);
 
 		// act
