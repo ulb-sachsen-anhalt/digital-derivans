@@ -84,6 +84,9 @@ public class TestHelper {
 		for (int i = 0; i < labels.size(); i++) {
 			Path jpgFile = imageDir.resolve(labels.get(i) + ".jpg");
 			BufferedImage bi2 = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+			Graphics2D g2d = (Graphics2D) bi2.getGraphics();
+			g2d.setColor(Color.LIGHT_GRAY);
+			g2d.fillRect(0, 0, width, height);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
 		}
 	}

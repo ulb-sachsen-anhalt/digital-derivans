@@ -16,6 +16,7 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
+import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
  * 
@@ -32,12 +33,13 @@ public class TestDerivansFulltextRahbar {
 	static Path workDir;
 
 	static Path pdfPath;
-	
+
 	static String rahbar88120_p10 = "1981185920_88120_00000010";
 
 	/**
 	 * Fixture with common configuration and just a start
 	 * directory
+	 * 
 	 * @throws Exception
 	 */
 	@BeforeAll
@@ -65,6 +67,7 @@ public class TestDerivansFulltextRahbar {
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		int maximal = 2339; // scale A4 with 200 DPI
 		((DerivateStepImage) dc.getDerivateSteps().get(1)).setMaximal(maximal);
+		((DerivateStepPDF) dc.getDerivateSteps().get(2)).setRenderModus("visible");
 		Derivans derivans = new Derivans(dc);
 
 		// act
@@ -84,6 +87,14 @@ public class TestDerivansFulltextRahbar {
 		assertTrue(Files.exists(pdfPath));
 	}
 
+	/**
+	 * Please note:
+	 * This test is *not really* valuable with it's current
+	 * TextExtractionStrategy because this hides that
+	 * the chars order inside the PDF does *not* comply
+	 * 
+	 * @throws Exception
+	 */
 	@Test
 	void testPage01ContentsFirstLine() throws Exception {
 		var textTokens = TestHelper.getText(pdfPath, 1).split("\n");
