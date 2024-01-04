@@ -257,29 +257,29 @@ public class TestPDFDerivateer {
 			DigitalPage e = new DigitalPage(i, imageName);
 
 			// create some ocr data
-			List<OCRData.Text> texts1 = new ArrayList<>();
-			texts1.add(new OCRData.Text("Hello", new Rectangle(100, 100, 100, 50)));
-			texts1.add(new OCRData.Text("World", new Rectangle(300, 100, 100, 50)));
-			List<OCRData.Text> texts4 = new ArrayList<>();
-			texts4.add(new OCRData.Text("BELLA", new Rectangle(50, 200, 50, 30)));
-			texts4.add(new OCRData.Text("CHIAO", new Rectangle(150, 200, 50, 30)));
-			texts4.add(new OCRData.Text("(DELLE", new Rectangle(200, 200, 50, 30)));
-			texts4.add(new OCRData.Text("MODINE)", new Rectangle(250, 200, 50, 30)));
-			List<OCRData.Text> texts2 = new ArrayList<>();
-			texts2.add(new OCRData.Text("Alla", new Rectangle(100, 250, 50, 25)));
-			texts2.add(new OCRData.Text("matina,", new Rectangle(150, 250, 50, 25)));
-			texts2.add(new OCRData.Text("appena", new Rectangle(200, 250, 50, 25)));
-			texts2.add(new OCRData.Text("alzata", new Rectangle(250, 250, 50, 25)));
-			List<OCRData.Text> texts3 = new ArrayList<>();
-			texts3.add(new OCRData.Text("o", new Rectangle(10, 300, 10, 15)));
-			texts3.add(new OCRData.Text("bella", new Rectangle(30, 300, 50, 15)));
-			texts3.add(new OCRData.Text("chiao,", new Rectangle(100, 300, 50, 15)));
-			texts3.add(new OCRData.Text("bella", new Rectangle(160, 300, 50, 15)));
-			texts3.add(new OCRData.Text("chiao,", new Rectangle(240, 300, 50, 15)));
-			texts3.add(new OCRData.Text("bella", new Rectangle(300, 300, 50, 15)));
-			texts3.add(new OCRData.Text("chiao", new Rectangle(360, 300, 50, 15)));
-			texts3.add(new OCRData.Text("chiao", new Rectangle(420, 300, 50, 15)));
-			texts3.add(new OCRData.Text("chiao!", new Rectangle(480, 300, 50, 15)));
+			List<OCRData.Word> texts1 = new ArrayList<>();
+			texts1.add(new OCRData.Word("Hello", new Rectangle(100, 100, 100, 50)));
+			texts1.add(new OCRData.Word("World", new Rectangle(300, 100, 100, 50)));
+			List<OCRData.Word> texts4 = new ArrayList<>();
+			texts4.add(new OCRData.Word("BELLA", new Rectangle(50, 200, 50, 30)));
+			texts4.add(new OCRData.Word("CHIAO", new Rectangle(150, 200, 50, 30)));
+			texts4.add(new OCRData.Word("(DELLE", new Rectangle(200, 200, 50, 30)));
+			texts4.add(new OCRData.Word("MODINE)", new Rectangle(250, 200, 50, 30)));
+			List<OCRData.Word> texts2 = new ArrayList<>();
+			texts2.add(new OCRData.Word("Alla", new Rectangle(100, 250, 50, 25)));
+			texts2.add(new OCRData.Word("matina,", new Rectangle(150, 250, 50, 25)));
+			texts2.add(new OCRData.Word("appena", new Rectangle(200, 250, 50, 25)));
+			texts2.add(new OCRData.Word("alzata", new Rectangle(250, 250, 50, 25)));
+			List<OCRData.Word> texts3 = new ArrayList<>();
+			texts3.add(new OCRData.Word("o", new Rectangle(10, 300, 10, 15)));
+			texts3.add(new OCRData.Word("bella", new Rectangle(30, 300, 50, 15)));
+			texts3.add(new OCRData.Word("chiao,", new Rectangle(100, 300, 50, 15)));
+			texts3.add(new OCRData.Word("bella", new Rectangle(160, 300, 50, 15)));
+			texts3.add(new OCRData.Word("chiao,", new Rectangle(240, 300, 50, 15)));
+			texts3.add(new OCRData.Word("bella", new Rectangle(300, 300, 50, 15)));
+			texts3.add(new OCRData.Word("chiao", new Rectangle(360, 300, 50, 15)));
+			texts3.add(new OCRData.Word("chiao", new Rectangle(420, 300, 50, 15)));
+			texts3.add(new OCRData.Word("chiao!", new Rectangle(480, 300, 50, 15)));
 			List<OCRData.Textline> lines = List.of(
 					new OCRData.Textline(texts1),
 					new OCRData.Textline(texts4),
@@ -305,7 +305,7 @@ public class TestPDFDerivateer {
 		pdfMeta.setImageDpi(144);
 		pdfMeta.mergeDescriptiveData(dd);
 		IDerivateer handler = new PDFDerivateer(input, output, pages, pdfMeta);
-		((PDFDerivateer)handler).setStructure(get());
+		((PDFDerivateer) handler).setStructure(get());
 
 		// act
 		int result = handler.create();
@@ -336,7 +336,7 @@ public class TestPDFDerivateer {
 				pdfMetaInformation.getAuthor());
 		assertEquals("[Halle (Saale), Universitäts- und Landesbibliothek Sachsen-Anhalt, Qu. Cod. 77, Fragment 1]",
 				pdfMetaInformation.getTitle());
-		var optRecordData = pdfMetaInformation.getFromXmpMetadataBy( "recordIdentifier");
+		var optRecordData = pdfMetaInformation.getFromXmpMetadataBy("recordIdentifier");
 		assertTrue(optRecordData.isPresent());
 		var recordData = optRecordData.get();
 		assertEquals("169683404X", recordData.getChildren().get(0).getValue());
@@ -475,7 +475,6 @@ public class TestPDFDerivateer {
 		// assert
 		assertTrue(thrown.getMessage().contains("invalid dpi: '1'"));
 	}
-
 
 	/**
 	 * 

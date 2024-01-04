@@ -63,11 +63,12 @@ public class PAGEReader implements OCRReader {
 				var texts = words.parallelStream()
 						.filter(e -> VALID_TEXT.test(e.getChild(PAGE_TEXT_EQUIV, getType().toNS())
 								.getChild(PAGE_UNICODE, getType().toNS()).getTextTrim()))
-						.map(this::toText).filter(OCRData.Text::hasPrintableChars).collect(Collectors.toList());
+						.map(this::toText).filter(OCRData.Word::hasPrintableChars).collect(Collectors.toList());
 				OCRData.Textline line = new OCRData.Textline(texts);
 				ocrLines.add(line);
 			} else {
-				String transcription = el.getChild(PAGE_TEXT_EQUIV, getType().toNS()).getChild(PAGE_UNICODE, getType().toNS()).getTextTrim();
+				String transcription = el.getChild(PAGE_TEXT_EQUIV, getType().toNS())
+						.getChild(PAGE_UNICODE, getType().toNS()).getTextTrim();
 				if (VALID_TEXT.test(transcription)) {
 					var ocrData = this.toText(el);
 					if (ocrData.hasPrintableChars()) {
@@ -79,7 +80,7 @@ public class PAGEReader implements OCRReader {
 		return ocrLines;
 	}
 
-	OCRData.Text toText(Element textElement) {
+	OCRData.Word toText(Element textElement) {
 		String content = textElement
 				.getChild(PAGE_TEXT_EQUIV, getType().toNS())
 				.getChild(PAGE_UNICODE, getType().toNS())
@@ -93,7 +94,7 @@ public class PAGEReader implements OCRReader {
 			polygon.addPoint(x, y);
 		}
 		Rectangle rect = polygon.getBounds();
-		return new OCRData.Text(content, rect);
+		return new OCRData.Word(content, rect);
 	}
 
 	@Override

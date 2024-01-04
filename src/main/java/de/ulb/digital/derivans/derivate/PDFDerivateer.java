@@ -23,8 +23,10 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Header;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.ICC_Profile;
 import com.itextpdf.text.pdf.PdfAConformanceLevel;
 import com.itextpdf.text.pdf.PdfAWriter;
@@ -229,7 +231,7 @@ public class PDFDerivateer extends BaseDerivateer {
 				if (this.renderLevel.equalsIgnoreCase(DefaultConfiguration.DEFAULT_RENDER_LEVEL)) {
 					render(font, (int) currentImageHeight, cb, line);
 				} else if (this.renderLevel.equalsIgnoreCase("word")) {
-					List<OCRData.Text> tokens = line.getTokens();
+					List<OCRData.Word> tokens = line.getTokens();
 					for (var word : tokens) {
 						render(font, (int) currentImageHeight, cb, word);
 					}
@@ -259,7 +261,6 @@ public class PDFDerivateer extends BaseDerivateer {
 	 */
 	private void render(BaseFont font, int pageHeight, PdfContentByte cb, OCRToken token) {
 		String text = token.getText();
-		java.awt.Rectangle b = token.getBox();
 		Rectangle box = toItextBox(token.getBox());
 		float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
 		if (fontSize < MIN_CHAR_SIZE) {
@@ -274,16 +275,43 @@ public class PDFDerivateer extends BaseDerivateer {
 		// high
 		float v = y - (fontSize * MIN_CHAR_SIZE);
 		if (this.debugRender) {
-			LOGGER.trace("put '{}' at {}x{}(x:{},w:{}) (fontsize:{})", text, x, v, b.x, b.width, fontSize);
+			LOGGER.trace("put '{}' at {}x{} (fontsize:{})", text, x, v, fontSize);
 		}
 		// propably hide text layer font
 		if (this.renderModus.equalsIgnoreCase("invisible")) {
 			cb.setTextRenderingMode(PdfContentByte.TEXT_RENDER_MODE_INVISIBLE);
 		}
-		cb.beginText();
-		cb.setFontAndSize(font, fontSize);
-		cb.showTextAligned(Element.ALIGN_BOTTOM, text, x, v, 0);
-		cb.endText();
+		// rendering depends on text orientation
+		if (token.isLTR()) {
+			cb.beginText();
+			cb.setFontAndSize(font, fontSize);
+			cb.showTextAligned(Element.ALIGN_BOTTOM, text, x, v, 0);
+			cb.endText();
+		} else {
+			Font f = new Font(font, fontSize);
+			ColumnText ct = new ColumnText(cb);
+			java.awt.Rectangle b = token.getBox();
+			// List<Point2D.Float> points = asPoints(b);
+			float llx = x;
+			float lly = y;
+			// float urx = (float) x + b.width;
+			// float ury = (float) y + b.height;
+			// float urx = points.get(1).x;
+			// float ury = points.get(1).y;
+			float urx = box.getRight();
+			float ury = pageHeight - box.getTop();
+			float leading = fontSize * .2f;
+			ct.setSimpleColumn(llx, lly, urx, ury);
+			ct.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+			ct.setAlignment(Element.ALIGN_RIGHT);
+			ct.setLeading(leading); // cf. https://de.wikipedia.org/wiki/Zeilendurchschuss
+			ct.addElement(new Paragraph(leading, text, f)); // pass leading otherwise many words missing
+			try {
+				ct.go();
+			} catch (DocumentException e) {
+				LOGGER.error(e.getMessage());
+			}
+		}
 	}
 
 	/**
@@ -332,7 +360,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		PdfContentByte cb2 = writer.getDirectContent();
 		cb2.saveState();
 		for (OCRData.Textline line : ocrLines) {
-			for (OCRData.Text txt : line.getTokens()) {
+			for (OCRData.Word txt : line.getTokens()) {
 				drawOutline(txt, cb2, theHeight, c2, .25f);
 			}
 			drawOutline(line, cb2, theHeight, c1, .5f);

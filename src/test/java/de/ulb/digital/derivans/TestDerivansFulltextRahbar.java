@@ -30,9 +30,11 @@ public class TestDerivansFulltextRahbar {
 	@TempDir
 	static Path tempDir;
 
-	static Path workDir;
+	static Path workDirWord;
 
-	static Path pdfPath;
+	static Path pdfPathWord;
+
+	static Path pdfPathLine;
 
 	static String rahbar88120_p10 = "1981185920_88120_00000010";
 
@@ -52,7 +54,26 @@ public class TestDerivansFulltextRahbar {
 			Files.delete(configTargetDir);
 		}
 		TestHelper.copyTree(configSourceDir, configTargetDir);
-		workDir = tempDir.resolve(rahbar88120);
+
+		// arange 01
+		String word = "1981185920_88120_word";
+		workDirWord = setWorkdir(tempDir, word);
+		var dConf = configure(configTargetDir, workDirWord, "word");
+		Derivans derivansWordLevel = new Derivans(dConf);
+		pdfPathWord = workDirWord.resolve(word + ".pdf");
+		derivansWordLevel.create();
+
+		// arrange 02
+		String line = "1981185920_88120_line";
+		var workDirLine = setWorkdir(tempDir, line);
+		var dConfLine = configure(configTargetDir, workDirLine, "line");
+		Derivans derivansLineLevel = new Derivans(dConfLine);
+		pdfPathLine = workDirLine.resolve(line + ".pdf");
+		derivansLineLevel.create();
+	}
+
+	static Path setWorkdir(Path root, String subDir) throws Exception {
+		Path workDir = root.resolve(subDir);
 		Path pathImageMax = workDir.resolve("MAX");
 		Files.createDirectories(pathImageMax);
 		TestHelper.generateJpgsFromList(pathImageMax, 2289, 3173, List.of(rahbar88120_p10));
@@ -61,57 +82,96 @@ public class TestDerivansFulltextRahbar {
 		Files.createDirectories(targetOcrDir);
 		Path targetOcr = targetOcrDir.resolve(sourceOcr.getFileName());
 		Files.copy(sourceOcr, targetOcr);
-		DerivansParameter dp = new DerivansParameter();
-		dp.setPathInput(workDir);
-		dp.setPathConfig(configTargetDir.resolve("derivans.ini"));
-		DerivansConfiguration dc = new DerivansConfiguration(dp);
-		int maximal = 2339; // scale A4 with 200 DPI
-		((DerivateStepImage) dc.getDerivateSteps().get(1)).setMaximal(maximal);
-		((DerivateStepPDF) dc.getDerivateSteps().get(2)).setRenderModus("visible");
-		((DerivateStepPDF) dc.getDerivateSteps().get(2)).setDebugRender(true);
-		Derivans derivans = new Derivans(dc);
+		return workDir;
+	}
 
-		// act
-		derivans.create();
-		pdfPath = workDir.resolve("1981185920_88120.pdf");
+	static DerivansConfiguration configure(Path configDir, Path workDir, String renderLevel) throws Exception {
+		DerivansParameter dParams = new DerivansParameter();
+		dParams.setPathInput(workDir);
+		dParams.setPathConfig(configDir.resolve("derivans.ini"));
+		DerivansConfiguration dConf = new DerivansConfiguration(dParams);
+		int maximal = 2339; // scale A4 with 200 DPI
+		((DerivateStepImage) dConf.getDerivateSteps().get(1)).setMaximal(maximal);
+		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setRenderModus("visible");
+		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setDebugRender(true);
+		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setRenderLevel(renderLevel);
+		return dConf;
 	}
 
 	@Test
 	void testDerivatesForPDFWritten() throws Exception {
-		Path image80Dir = workDir.resolve("IMAGE_80");
+		Path image80Dir = workDirWord.resolve("IMAGE_80");
 		assertTrue(Files.exists(image80Dir));
 		assertTrue(image80Dir.resolve(rahbar88120_p10 + ".jpg").toFile().exists());
 	}
 
 	@Test
-	void testPDFWritten() {
-		assertTrue(Files.exists(pdfPath));
+	void testPDFWordLevelWritten() {
+		assertTrue(Files.exists(pdfPathWord));
 	}
 
 	/**
 	 * Please note:
-	 * This test is *not really* valuable with it's current
-	 * TextExtractionStrategy because this hides that
-	 * the chars order inside the PDF does *not* comply
+	 * This test is *not really* valuable with current
+	 * TextExtractionStrategy because it shadows the
+	 * fact that the characters order is okay
+	 * therefore "ﻪﭼ" is actually "چه"
+	 * ﻪﭼ
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	void testPage01ContentsFirstLine() throws Exception {
-		var textTokens = TestHelper.getText(pdfPath, 1).split("\n");
-		assertEquals("دیبا", textTokens[0]);
-		assertEquals("چه", textTokens[1]);
+	void testWordLevelPage01Contents() throws Exception {
+		var textTokens = TestHelper.getText(pdfPathWord, 1).split("\n");
+		assertEquals("ﻪﭼ", textTokens[1]);
 	}
 
 	/**
 	 * 
 	 * Test total length of resultant text including whitespaces
 	 * 
+	 * Please note:
+	 * test ref value changed 1578 to 1619 due
+	 * refactoring of rendering for right-to-left fonts
+	 * 
 	 * @throws Exception
 	 */
 	@Test
-	void testPage01TextLength() throws Exception {
-		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 1);
-		assertEquals(1612, textPage07.length());
+	void testWordLevelPage01TextLength() throws Exception {
+		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathWord, 1);
+		assertEquals(1619, textPage07.length());
+	}
+
+	@Test
+	void testPDFLineLevelWritten() {
+		assertTrue(Files.exists(pdfPathLine));
+	}
+
+	/**
+	 * 
+	 * Ordering seems to be broken but is valid
+	 * cf. {@link #testWordLevelPage01Contents()}
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testLineLevelPage01ContentsFirstLine() throws Exception {
+		var textTokens = TestHelper.getText(pdfPathLine, 1).split("\n");
+		assertEquals("ﻪﭼ ﺎﺒﯾﺩ", textTokens[0]);
+	}
+
+	/**
+	 * 
+	 * Test total length of resultant text including whitespaces
+	 * 
+	 * Please note:
+	 * test result differs slightly from word level
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void testLineLevelPage01TextLength() throws Exception {
+		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathLine, 1);
+		assertEquals(1610, textPage07.length());
 	}
 }

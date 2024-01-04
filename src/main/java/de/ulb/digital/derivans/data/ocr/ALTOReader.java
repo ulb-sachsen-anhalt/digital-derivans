@@ -27,7 +27,7 @@ public class ALTOReader implements OCRReader {
 	private XMLHandler handler;
 
 	public static final Predicate<String> VALID_TEXT = new ValidTextPredicate();
-	
+
 	protected Type type;
 
 	public ALTOReader(Type type) {
@@ -57,9 +57,9 @@ public class ALTOReader implements OCRReader {
 			var texts = strings.parallelStream()
 					.filter(e -> VALID_TEXT.test(e.getAttributeValue("CONTENT")))
 					.map(ALTOReader::toText)
-					.filter(OCRData.Text::hasPrintableChars)
+					.filter(OCRData.Word::hasPrintableChars)
 					.collect(Collectors.toList());
-			if (!texts.isEmpty()) { 
+			if (!texts.isEmpty()) {
 				OCRData.Textline line = new OCRData.Textline(texts);
 				lines.add(line);
 			}
@@ -67,14 +67,14 @@ public class ALTOReader implements OCRReader {
 		return lines;
 	}
 
-	static OCRData.Text toText(Element word) {
+	static OCRData.Word toText(Element word) {
 		String content = word.getAttributeValue("CONTENT");
 		int x = Integer.parseInt(word.getAttributeValue("HPOS"));
 		int y = Integer.parseInt(word.getAttributeValue("VPOS"));
 		int width = Integer.parseInt(word.getAttributeValue("WIDTH"));
 		int height = Integer.parseInt(word.getAttributeValue("HEIGHT"));
 		Rectangle rect = new Rectangle(x, y, width, height);
-		return new OCRData.Text(content, rect);
+		return new OCRData.Word(content, rect);
 	}
 
 	@Override

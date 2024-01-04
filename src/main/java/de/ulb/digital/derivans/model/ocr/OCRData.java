@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-
 /**
  * 
- * Domain specific model of OCR-Data organized as lists of {@link Textline lines} 
- * which are itself composed each of a list of {@link Text textual tokens}. 
+ * Domain specific model of OCR-Data organized as lists of {@link Textline
+ * lines}
+ * which are itself composed each of a list of {@link Word textual tokens}.
  * 
  * @author u.hartwig
  *
  */
 public class OCRData {
-	
+
 	private Dimension dimension;
 
 	private List<Textline> textlines;
@@ -31,11 +31,11 @@ public class OCRData {
 	public List<Textline> getTextlines() {
 		return this.textlines;
 	}
-	
+
 	/**
 	 * 
 	 * The Height of the original image which passed actual OCR-creation.
-	 * Need to remember, since of derivans scaling abilities the actual 
+	 * Need to remember, since of derivans scaling abilities the actual
 	 * image from which the PDF later on is being created <b>will be different</b>.
 	 * 
 	 * @return
@@ -45,8 +45,8 @@ public class OCRData {
 	}
 
 	public void scale(float ratio) {
-		for(Textline line : textlines) {
-			for(Text txt : line.getTokens()) {
+		for (Textline line : textlines) {
+			for (Word txt : line.getTokens()) {
 				txt.rect.x = Math.round(txt.rect.x * ratio);
 				txt.rect.y = Math.round(txt.rect.y * ratio);
 				txt.rect.width = Math.round(txt.rect.width * ratio);
@@ -58,7 +58,7 @@ public class OCRData {
 		int height = Math.round(dimension.height * ratio);
 		this.dimension = new Dimension(widht, height);
 	}
-	
+
 	/**
 	 * 
 	 * Represents a single line of textual tokens that form a conceptual unit.
@@ -67,41 +67,41 @@ public class OCRData {
 	 *
 	 */
 	public static class Textline implements OCRToken {
-		private List<Text> texts;
+		private List<Word> texts;
 		private String actualText;
 		private Area area;
 
-		public Textline(List<Text> texts) {
+		public Textline(List<Word> texts) {
 			this.texts = texts;
 			this.calculateArea();
 			this.actualText = String.join(" ",
-					texts.stream().map(Text::getText).filter(Objects::nonNull).collect(Collectors.toList()));
+					texts.stream().map(Word::getText).filter(Objects::nonNull).collect(Collectors.toList()));
 		}
 
 		private void calculateArea() {
-			List<Rectangle> boxes = texts.stream().map(Text::getBox).collect(Collectors.toList());
+			List<Rectangle> boxes = texts.stream().map(Word::getBox).collect(Collectors.toList());
 			this.area = new Area();
-			for(Rectangle r : boxes) {
+			for (Rectangle r : boxes) {
 				this.area.add(new Area(r));
 			}
 		}
-		
+
 		public String getText() {
 			return this.actualText;
 		}
-		
+
 		public Area getArea() {
 			return this.area;
 		}
-		
+
 		public Rectangle getBox() {
 			return this.area.getBounds();
 		}
-		
-		public List<Text> getTokens() {
+
+		public List<Word> getTokens() {
 			return new ArrayList<>(this.texts);
 		}
-		
+
 		public String getLabel() {
 			return "TextLine";
 		}
@@ -112,24 +112,25 @@ public class OCRData {
 			var shape = this.area.getBounds();
 			Double w = Double.valueOf(shape.getWidth());
 			Double h = Double.valueOf(shape.getHeight());
-			builder.append('[').append(w).append('x').append(h).
-			append(']').append(this.actualText);
+			builder.append('[').append(w).append('x').append(h).append(']').append(this.actualText);
 			return builder.toString();
 		}
+
 	}
 
 	/**
 	 * 
-	 * Single textual token, i.e. word, abbreviation or alike.
+	 * Single textual token, i.e. word, abbreviation or alike
+	 * which does *not* contain any whitespace characters
 	 * 
 	 * @author u.hartwig
 	 *
 	 */
-	public static class Text implements OCRToken {
+	public static class Word implements OCRToken {
 		private String actualText;
 		private Rectangle rect;
 
-		public Text(String actualText, Rectangle box) {
+		public Word(String actualText, Rectangle box) {
 			this.actualText = actualText;
 			this.rect = box;
 		}
@@ -145,24 +146,23 @@ public class OCRData {
 		public float getHeight() {
 			return this.rect.height;
 		}
-		
+
 		public boolean hasPrintableChars() {
 			return (this.actualText != null) && (!this.actualText.isBlank());
 		}
 
 		public String getLabel() {
-			return "Text";
+			return "Word";
 		}
 
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
-			var oldString = super.toString(); 
-			var hash = oldString.substring(oldString.indexOf('@')+1);
+			var oldString = super.toString();
+			var hash = oldString.substring(oldString.indexOf('@') + 1);
 			Double w = Double.valueOf(rect.getWidth());
 			Double h = Double.valueOf(rect.getHeight());
-			builder.append(hash).append('[').append(w).append('x').append(h).
-			append(']').append(actualText);
+			builder.append(hash).append('[').append(w).append('x').append(h).append(']').append(actualText);
 			return builder.toString();
 		}
 	}
