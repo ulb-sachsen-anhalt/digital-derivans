@@ -104,7 +104,7 @@ public class DerivansParameter {
 		return debugPdfRender;
 	}
 
-	public void setDebugPdfRender(boolean isDebug) {
-		this.debugPdfRender = isDebug;
+	public void setDebugPdfRender(boolean isRequired) {
+		this.debugPdfRender = isRequired;
 	}
 }

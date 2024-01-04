@@ -240,7 +240,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			cb.restoreState();
 			// optional: render ocr data outlines for debugging visualization
 			if (this.debugRender) {
-				this.renderOutlines(writer, ocrLines, currentImageHeight);
+				this.renderOcrOutlines(writer, ocrLines, currentImageHeight);
 			}
 			// increment number of ocr-ed pages for each PDF
 			nPagesWithOCR.getAndIncrement();
@@ -264,7 +264,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		Rectangle box = toItextBox(token.getBox());
 		float fontSize = calculateFontSize(font, text, box.getWidth(), box.getHeight());
 		if (fontSize < MIN_CHAR_SIZE) {
-			LOGGER.warn("font too small: '{}'(min:{}) for text '{}' - resist to render", fontSize, MIN_CHAR_SIZE, text);
+			LOGGER.warn("font too small: '{}'(min:{}) resist to render text '{}'", fontSize, MIN_CHAR_SIZE, text);
 			return;
 		}
 		float x = box.getLeft();
@@ -288,24 +288,24 @@ public class PDFDerivateer extends BaseDerivateer {
 			cb.showTextAligned(Element.ALIGN_BOTTOM, text, x, v, 0);
 			cb.endText();
 		} else {
+			// fontSize = box.getHeight() * .62f;
 			Font f = new Font(font, fontSize);
+			float leading = .0f;
 			ColumnText ct = new ColumnText(cb);
-			java.awt.Rectangle b = token.getBox();
-			// List<Point2D.Float> points = asPoints(b);
 			float llx = x;
-			float lly = y;
-			// float urx = (float) x + b.width;
-			// float ury = (float) y + b.height;
-			// float urx = points.get(1).x;
-			// float ury = points.get(1).y;
+			float lly = v;
 			float urx = box.getRight();
 			float ury = pageHeight - box.getTop();
-			float leading = fontSize * .2f;
+			BaseColor c3 = new BaseColor(.0f, 0.5f, .0f, .6f);
+			java.awt.Rectangle r = new java.awt.Rectangle((int) llx, (int) box.getBottom(),
+					(int) (urx - llx),
+					(int) (box.getTop() - box.getBottom()));
+			drawOutline(r, cb, (float) pageHeight, c3, 0.3f);
 			ct.setSimpleColumn(llx, lly, urx, ury);
 			ct.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
-			ct.setAlignment(Element.ALIGN_RIGHT);
+			ct.setAlignment(Element.ALIGN_BOTTOM);
 			ct.setLeading(leading); // cf. https://de.wikipedia.org/wiki/Zeilendurchschuss
-			ct.addElement(new Paragraph(leading, text, f)); // pass leading otherwise many words missing
+			ct.addElement(new Paragraph(leading, text, f)); // pass leading otherwise data loss
 			try {
 				ct.go();
 			} catch (DocumentException e) {
@@ -354,28 +354,26 @@ public class PDFDerivateer extends BaseDerivateer {
 		return true;
 	}
 
-	private void renderOutlines(PdfWriter writer, List<OCRData.Textline> ocrLines, float theHeight) {
-		BaseColor c1 = new BaseColor(.12f, 0.0f, .5f, .6f); // dark blue
-		BaseColor c2 = new BaseColor(.5f, 0.0f, .12f, .6f);
+	private void renderOcrOutlines(PdfWriter writer, List<OCRData.Textline> ocrLines, float theHeight) {
+		BaseColor c1 = new BaseColor(.2f, 0.0f, .5f, .6f); // dark blue
+		BaseColor c2 = new BaseColor(.5f, 0.0f, .2f, .6f); // dark red
 		PdfContentByte cb2 = writer.getDirectContent();
 		cb2.saveState();
 		for (OCRData.Textline line : ocrLines) {
 			for (OCRData.Word txt : line.getTokens()) {
-				drawOutline(txt, cb2, theHeight, c2, .25f);
+				drawOutline(txt.getBox(), cb2, theHeight, c2, .25f);
 			}
-			drawOutline(line, cb2, theHeight, c1, .5f);
+			drawOutline(line.getBox(), cb2, theHeight, c1, .5f);
 		}
 		cb2.restoreState();
 	}
 
-	private void drawOutline(OCRToken tkn, PdfContentByte cb, float pageHeight, BaseColor c, float lineWidth) {
-		List<Point2D.Float> points = asPoints(tkn.getBox());
-
+	private void drawOutline(java.awt.Rectangle rectangle, PdfContentByte cb, float pageHeight, BaseColor c,
+			float lineWidth) {
+		List<Point2D.Float> points = asPoints(rectangle);
 		cb.setColorStroke(c);
 		cb.setLineWidth(lineWidth);
-		LOGGER.info("draw outline for {}({}) with {} ({})", tkn, points, c, lineWidth);
-
-		// move to end, then draw the lines
+		// move to end, then draw lines
 		Point2D.Float pLast = points.get(points.size() - 1);
 		cb.moveTo(pLast.x, pageHeight - pLast.y);
 		for (int i = 0; i < points.size(); i++) {

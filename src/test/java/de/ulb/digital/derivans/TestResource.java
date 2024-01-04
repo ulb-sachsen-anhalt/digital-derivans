@@ -11,12 +11,11 @@ import java.nio.file.Path;
  */
 public enum TestResource {
 
-	
 	/**
 	 * rather large digital object (+2.000 pages, complex structure)
 	 */
 	HD_Aa_201517(Path.of("src/test/resources/mets/vls/hd-Aa-201517.xml")),
-	
+
 	/**
 	 * rather small digital object (4 pages only)
 	 */
@@ -25,20 +24,20 @@ public enum TestResource {
 	OCR_737429(Path.of("src/test/resources/alto/737429")),
 
 	/**
-	 * contains titleInfo but child node title is missing 
+	 * contains titleInfo but child node title is missing
 	 */
 	HD_Aa_5175671(Path.of("src/test/resources/mets/vls/5175671.mets.xml")),
 
 	/**
-	 * contains logical links to non-existing physical structures 
+	 * contains logical links to non-existing physical structures
 	 */
 	HD_Aa_226134857_LEGACY(Path.of("src/test/resources/mets/vls/hd-Aa-226134857.prep.xml")),
-	
+
 	MENA_Af_1237560(Path.of("src/test/resources/mets/vls/mena-Af-1237560.ulb.xml")),
-	
+
 	VD17_Af_19788(Path.of("src/test/resources/mets/vls/vd17-Af-19788.ulb.xml")),
 	VD17_AF_11250807(Path.of("src/test/resources/mets/vls/vd17-AF-11250807.ulb.xml")),
-	
+
 	VD18_Af_9427337(Path.of("src/test/resources/mets/vls/vd18-Af-9427337.ulb.xml")),
 	VD18_Aa_9989442(Path.of("src/test/resources/mets/vls/vd18-9989442.ulb.xml")),
 
@@ -46,7 +45,7 @@ public enum TestResource {
 	 * contains duplicated logical structure
 	 */
 	VD18P_14163614(Path.of("src/test/resources/mets/vls/vd18p-14163614.mets.xml")),
-			
+
 	/**
 	 * Kitodo 2
 	 */
@@ -63,7 +62,7 @@ public enum TestResource {
 	K2_Aa_1186819316(Path.of("./src/test/resources/mets/kitodo2/1186819316.xml")),
 	// Periodical
 	K2_AB_16740608619039(Path.of("src/test/resources/mets/kitodo2/16740608619039.k2x.xml")),
-	
+
 	/**
 	 * Kitodo 3
 	 */
@@ -79,9 +78,10 @@ public enum TestResource {
 	IMG_TIF_ZD1_RGB(Path.of("src/test/resources/images/1681875195_J_0001_0008x128.tif")),
 	IMG_JPG_ZD2_GREY(Path.of("src/test/resources/images/1667522809_J_0025_0001x128.jpg")),
 	IMG_JPG_ZERO(Path.of("src/test/resources/images/00000020.jpg")),
+	IMG_JPG_RAHBAR_10(Path.of("src/test/resources/images/1981185920_88120_00000010.jpg")),
 
 	/**
-	 * opendata 
+	 * opendata
 	 * both METS belong together, they describe the same digital object
 	 */
 	SHARE_IT_VD18_MIG(Path.of("src/test/resources/mets/share_it/1981185920_79009.xml")),
@@ -92,18 +92,18 @@ public enum TestResource {
 
 	/**
 	 * 
-	 * SLUB 
+	 * SLUB
 	 * 
-	*/
+	 */
 	K2_PRES_SLUB_321094271(Path.of("src/test/resources/mets/kitodo_pres/slub-dresden-db-id-321094271.xml")),
-	
+
 	/**
 	 * 
 	 * Contains Issue with deep logical structs
 	 * 
-	*/
+	 */
 	METS_ZD_ISSUE_182327845018001101(Path.of("src/test/resources/mets/zdp-182327845018001101.xml")),
-	
+
 	/**
 	 * 
 	 * Test XSDs
@@ -111,13 +111,13 @@ public enum TestResource {
 	 */
 	METS_1_12_XSD(Path.of("src/test/resources/mets/mets_1_12.xsd")),
 	;
-	
+
 	private Path path;
 
 	private TestResource(Path path) {
 		this.path = path;
 	}
-	
+
 	public Path get() {
 		return this.path;
 	}

@@ -55,32 +55,38 @@ public class TestDerivansFulltextRahbar {
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 
 		// arange 01
-		String word = "1981185920_88120_word";
-		workDirWord = setWorkdir(tempDir, word);
-		var dConf = configure(configTargetDir, workDirWord, "word");
-		Derivans derivansWordLevel = new Derivans(dConf);
-		pdfPathWord = workDirWord.resolve(word + ".pdf");
-		derivansWordLevel.create();
-
-		// arrange 02
 		String line = "1981185920_88120_line";
 		var workDirLine = setWorkdir(tempDir, line);
 		var dConfLine = configure(configTargetDir, workDirLine, "line");
 		Derivans derivansLineLevel = new Derivans(dConfLine);
 		pdfPathLine = workDirLine.resolve(line + ".pdf");
 		derivansLineLevel.create();
+
+		// arrange 02
+		String word = "1981185920_88120_word";
+		workDirWord = setWorkdir(tempDir, word);
+		var dConf = configure(configTargetDir, workDirWord, "word");
+		Derivans derivansWordLevel = new Derivans(dConf);
+		pdfPathWord = workDirWord.resolve(word + ".pdf");
+		derivansWordLevel.create();
 	}
 
 	static Path setWorkdir(Path root, String subDir) throws Exception {
 		Path workDir = root.resolve(subDir);
 		Path pathImageMax = workDir.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-		TestHelper.generateJpgsFromList(pathImageMax, 2289, 3173, List.of(rahbar88120_p10));
 		Path sourceOcr = TestResource.SHARE_IT_RAHBAR_88120.get();
+		assertTrue(Files.exists(sourceOcr));
 		Path targetOcrDir = workDir.resolve("FULLTEXT");
 		Files.createDirectories(targetOcrDir);
 		Path targetOcr = targetOcrDir.resolve(sourceOcr.getFileName());
 		Files.copy(sourceOcr, targetOcr);
+		Path sourceImg = Path.of("src/test/resources/images/1981185920_88120_00000010.jpg");
+		// Path sourceImg = TestResource.IMG_JPG_RAHBAR_10.get();
+		assertTrue(Files.exists(sourceImg));
+		Files.copy(sourceImg, pathImageMax.resolve(sourceImg.getFileName()));
+		// TestHelper.generateJpgsFromList(pathImageMax, 2289, 3173,
+		// List.of(rahbar88120_p10));
 		return workDir;
 	}
 
@@ -130,7 +136,7 @@ public class TestDerivansFulltextRahbar {
 	 * Test total length of resultant text including whitespaces
 	 * 
 	 * Please note:
-	 * test ref value changed 1578 to 1619 due
+	 * test ref value changed from 1578 to 1616 due
 	 * refactoring of rendering for right-to-left fonts
 	 * 
 	 * @throws Exception
@@ -138,7 +144,7 @@ public class TestDerivansFulltextRahbar {
 	@Test
 	void testWordLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathWord, 1);
-		assertEquals(1619, textPage07.length());
+		assertEquals(1616, textPage07.length());
 	}
 
 	@Test

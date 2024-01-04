@@ -110,12 +110,11 @@ public class OCRData {
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			var shape = this.area.getBounds();
-			Double w = Double.valueOf(shape.getWidth());
-			Double h = Double.valueOf(shape.getHeight());
+			double w = shape.getWidth();
+			double h = shape.getHeight();
 			builder.append('[').append(w).append('x').append(h).append(']').append(this.actualText);
 			return builder.toString();
 		}
-
 	}
 
 	/**
@@ -160,8 +159,8 @@ public class OCRData {
 			StringBuilder builder = new StringBuilder();
 			var oldString = super.toString();
 			var hash = oldString.substring(oldString.indexOf('@') + 1);
-			Double w = Double.valueOf(rect.getWidth());
-			Double h = Double.valueOf(rect.getHeight());
+			double w = rect.getWidth();
+			double h = rect.getHeight();
 			builder.append(hash).append('[').append(w).append('x').append(h).append(']').append(actualText);
 			return builder.toString();
 		}
