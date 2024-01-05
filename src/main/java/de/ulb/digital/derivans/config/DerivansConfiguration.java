@@ -49,6 +49,8 @@ public class DerivansConfiguration {
 
 	private Path pathConfigFile;
 
+	private boolean debugPdfRender;
+
 	private Optional<String> paramImages = Optional.empty();
 
 	private Optional<String> paramOCR = Optional.empty();
@@ -82,11 +84,16 @@ public class DerivansConfiguration {
 			input = input.toAbsolutePath();
 		}
 
+		// determine if debug render fpr pdf required
+		if (params.getDebugPdfRender()) {
+			this.debugPdfRender = Boolean.TRUE;
+		}
+
 		// take care of args for input images/ocr
-		if(params.getImages() != null) {
+		if (params.getImages() != null) {
 			this.paramImages = Optional.of(params.getImages());
 		}
-		if(params.getOcr() != null) {
+		if (params.getOcr() != null) {
 			this.paramOCR = Optional.of(params.getOcr());
 		}
 
@@ -521,6 +528,7 @@ public class DerivansConfiguration {
 
 	/**
 	 * For testing purposes only
+	 * 
 	 * @return
 	 */
 	public String getParamImages() {
@@ -533,6 +541,7 @@ public class DerivansConfiguration {
 
 	/**
 	 * For testing purposes only
+	 * 
 	 * @return
 	 */
 	public String getParamOCR() {
@@ -554,5 +563,16 @@ public class DerivansConfiguration {
 	 */
 	public List<String> getDerivatePrefixes() {
 		return this.derivatePrefixes;
+	}
+
+	/**
+	 * 
+	 * Render more information concerning
+	 * PDF Textlayer
+	 * 
+	 * @return
+	 */
+	public boolean isDebugPdfRender() {
+		return this.debugPdfRender;
 	}
 }

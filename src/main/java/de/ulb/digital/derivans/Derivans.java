@@ -37,7 +37,7 @@ public class Derivans {
 
     List<DerivateStep> steps;
 
-	List<IDerivateer> derivateers;
+    List<IDerivateer> derivateers;
 
     private Path processDir;
 
@@ -129,17 +129,17 @@ public class Derivans {
                 DigitalFooter footer = new DigitalFooter(footerLabel, getIdentifier(), pathTemplate);
                 Integer quality = stepFooter.getQuality();
                 ImageDerivateerJPGFooter d = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
-				if (this.optMetadataStore.isPresent()) {
-					var store = this.optMetadataStore.get();
-					var mdsPages = store.getDigitalPagesInOrder();
-					var storeLabel = store.usedStore();
-					if (isGranularIdentifierPresent(mdsPages)) {
-						LOGGER.debug("detected granular URN at {}", storeLabel);
-						var enrichedPages = enrichGranularURN(pages, mdsPages);
-						d = new ImageDerivateerJPGFooterGranular(d, quality);
-						d.setDigitalPages(enrichedPages);
-					}
-				}
+                if (this.optMetadataStore.isPresent()) {
+                    var store = this.optMetadataStore.get();
+                    var mdsPages = store.getDigitalPagesInOrder();
+                    var storeLabel = store.usedStore();
+                    if (isGranularIdentifierPresent(mdsPages)) {
+                        LOGGER.debug("detected granular URN at {}", storeLabel);
+                        var enrichedPages = enrichGranularURN(pages, mdsPages);
+                        d = new ImageDerivateerJPGFooterGranular(d, quality);
+                        d.setDigitalPages(enrichedPages);
+                    }
+                }
                 d.setResolver(this.resolver);
                 derivateers.add(d);
 
@@ -147,6 +147,7 @@ public class Derivans {
                 DerivateStepPDF pdfStep = (DerivateStepPDF) step;
                 String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
                 pdfStep.setConformanceLevel(pdfALevel);
+                pdfStep.setDebugRender(config.isDebugPdfRender());
                 DescriptiveData descriptiveData = new DescriptiveData();
                 if (this.optMetadataStore.isPresent()) {
                     var store = this.optMetadataStore.get();
@@ -166,8 +167,8 @@ public class Derivans {
                 Path pdfPath = resolver.calculatePDFPath(descriptiveData, step);
                 LOGGER.info("calculate local pdf derivate path '{}'", pdfPath);
                 output.setPath(pdfPath);
-				// required for proper resolving with kitodo2
-				var pdfInput = new DerivansData(input.getPath(), DerivateType.JPG);
+                // required for proper resolving with kitodo2
+                var pdfInput = new DerivansData(input.getPath(), DerivateType.JPG);
                 var pdfDerivateer = new PDFDerivateer(pdfInput, output, pages, pdfStep);
                 if (this.optMetadataStore.isPresent()) {
                     pdfDerivateer.setMetadataStore(optMetadataStore);
@@ -191,32 +192,32 @@ public class Derivans {
         return this.resolver.resolveFromStep(step0);
     }
 
-	/**
-	 * 
-	 * Enrich page-wise URN from first matching filename
-	 * 
-	 * @param targets
-	 * @param sources
-	 * @return
-	 */
-	private List<DigitalPage> enrichGranularURN(List<DigitalPage> targets, List<DigitalPage> sources) {
-		List<DigitalPage> enriched = new ArrayList<>();
-		for(DigitalPage target: targets) {
-			for(DigitalPage src: sources) {
-				var targetFile = target.getImagePath().getFileName();
-				var sourceFile = src.getImagePath().getFileName();
-				if (targetFile.equals(sourceFile)) {
-					Optional<String> optIdent = src.optIdentifier();
-					if(optIdent.isPresent()) {
-						target.setIdentifier(optIdent.get());
-						enriched.add(0, target);
-						break;
-					}
-				}
-			}
-		}
-		return enriched;
-	}
+    /**
+     * 
+     * Enrich page-wise URN from first matching filename
+     * 
+     * @param targets
+     * @param sources
+     * @return
+     */
+    private List<DigitalPage> enrichGranularURN(List<DigitalPage> targets, List<DigitalPage> sources) {
+        List<DigitalPage> enriched = new ArrayList<>();
+        for (DigitalPage target : targets) {
+            for (DigitalPage src : sources) {
+                var targetFile = target.getImagePath().getFileName();
+                var sourceFile = src.getImagePath().getFileName();
+                if (targetFile.equals(sourceFile)) {
+                    Optional<String> optIdent = src.optIdentifier();
+                    if (optIdent.isPresent()) {
+                        target.setIdentifier(optIdent.get());
+                        enriched.add(0, target);
+                        break;
+                    }
+                }
+            }
+        }
+        return enriched;
+    }
 
     public void create() throws DigitalDerivansException {
         this.init(steps);
@@ -260,23 +261,23 @@ public class Derivans {
         return IMetadataStore.UNKNOWN;
     }
 
-	/**
-	 * 
-	 * Access member just for testing purposes
-	 * 
-	 * @return
-	 */
+    /**
+     * 
+     * Access member just for testing purposes
+     * 
+     * @return
+     */
     public List<DerivateStep> getSteps() {
         return this.steps;
     }
 
-	/**
-	 * 
-	 * Access member just for testing purposes
-	 * 
-	 * @return
-	 */
-	public List<IDerivateer> getDerivateers() {
-		return this.derivateers;
-	}
+    /**
+     * 
+     * Access member just for testing purposes
+     * 
+     * @return
+     */
+    public List<IDerivateer> getDerivateers() {
+        return this.derivateers;
+    }
 }
