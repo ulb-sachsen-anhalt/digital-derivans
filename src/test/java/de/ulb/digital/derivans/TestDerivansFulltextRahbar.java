@@ -46,7 +46,6 @@ public class TestDerivansFulltextRahbar {
 	 */
 	@BeforeAll
 	public static void setupBeforeClass() throws Exception {
-		var rahbar88120 = "1981185920_88120";
 		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
@@ -89,11 +88,11 @@ public class TestDerivansFulltextRahbar {
 		DerivansParameter dParams = new DerivansParameter();
 		dParams.setPathInput(workDir);
 		dParams.setPathConfig(configDir.resolve("derivans.ini"));
+		dParams.setDebugPdfRender(true);
 		DerivansConfiguration dConf = new DerivansConfiguration(dParams);
 		int maximal = 2339; // scale A4 with 200 DPI
 		((DerivateStepImage) dConf.getDerivateSteps().get(1)).setMaximal(maximal);
 		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setRenderModus("visible");
-		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setDebugRender(true);
 		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setRenderLevel(renderLevel);
 		return dConf;
 	}

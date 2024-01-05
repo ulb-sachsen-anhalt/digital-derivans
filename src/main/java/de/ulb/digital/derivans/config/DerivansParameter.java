@@ -20,50 +20,39 @@ import static de.ulb.digital.derivans.data.IMetadataStore.*;
  */
 public class DerivansParameter {
 
-	@Argument(index = 0, required = true, 
-		usage = "Path to input data (required).\n" +
+	@Argument(index = 0, required = true, usage = "Path to input data (required).\n" +
 			"Stands for a path to metadata file (i.e., METS-file), or\n" +
 			"path to a locale directory with subdirectories (locale mode)\n" +
 			"for images (required) and fulltext data (optional)." +
-			"(no default: required)"
-	)
+			"(no default: required)")
 	private Path pathInput;
 
-	@Option(name = "-c", aliases = {"--config-path" }, 
-		required = false, 
-		usage = "Path to Derivans configuration file.\n" +
-			"If not present, search configuration at default location.\n" +
-			"(default:'./config/" + DEFAULT_CONFIG_FILE_LABEL +"')"
-	)
+	@Option(name = "-c", aliases = {
+			"--config-path" }, required = false, usage = "Path to Derivans configuration file.\n" +
+					"If not present, search configuration at default location.\n" +
+					"(default:'./config/" + DEFAULT_CONFIG_FILE_LABEL + "')")
 	private Path pathConfig;
 
-	@Option(name = "-i", aliases = { "--images" }, 
-		required = false,
-		usage = "Identify images, depending on context.\n" +
+	@Option(name = "-i", aliases = { "--images" }, required = false, usage = "Identify images, depending on context.\n"
+			+
 			"If in local mode, stands for directory containing images.\n" +
-			"If metadata present, stands for required image fileGroup label.\n" + 
-			"which defaults to '" + DEFAULT_INPUT_IMAGES + "'.\n" + 
-			"If no metadata present, defaults to '" + DEFAULT_INPUT_IMAGES + "'.\n"
-	)
+			"If metadata present, stands for required image fileGroup label.\n" +
+			"which defaults to '" + DEFAULT_INPUT_IMAGES + "'.\n" +
+			"If no metadata present, defaults to '" + DEFAULT_INPUT_IMAGES + "'.\n")
 	private String images;
-	
-	@Option(name = "-o", aliases = { "--ocr" }, 
-		required = false,
-		usage = "Identify OCR-Data, depending on context.\n" + 
+
+	@Option(name = "-o", aliases = { "--ocr" }, required = false, usage = "Identify OCR-Data, depending on context.\n" +
 			"If in local mode, stands for directory containing ocr files.\n" +
-			"If metadata present, stands for required ocr fileGroup label,\n" + 
-			"which defaults otherwise to '" + DEFAULT_INPUT_FULLTEXT + "'.\n" + 
-			"If no metadata present, defaults to '" + DEFAULT_INPUT_FULLTEXT + "'.\n"
-	)
+			"If metadata present, stands for required ocr fileGroup label,\n" +
+			"which defaults otherwise to '" + DEFAULT_INPUT_FULLTEXT + "'.\n" +
+			"If no metadata present, defaults to '" + DEFAULT_INPUT_FULLTEXT + "'.\n")
 	private String ocr;
-	
-	@Option(name = "-d", aliases = {"--debug-render" }, 
-		required = false, 
-		usage = "Render PDF-Layers for debugging if OCR-Data present.\n" + 
-			"(default: false)"
-	)
-	private Boolean debugRender;
-	
+
+	@Option(name = "-d", aliases = {
+			"--debug-pdf-render" }, required = false, usage = "Render PDF-Layers for debugging if OCR-Data present.\n" +
+					"(default: false)")
+	private Boolean debugPdfRender;
+
 	/**
 	 * 
 	 * Set specific Parser Information
@@ -108,10 +97,14 @@ public class DerivansParameter {
 		return this.ocr;
 	}
 
-	public Boolean getDebugRender() {
-		if (debugRender == null) {
-			debugRender = Boolean.FALSE;
+	public Boolean getDebugPdfRender() {
+		if (debugPdfRender == null) {
+			debugPdfRender = Boolean.FALSE;
 		}
-		return debugRender;
+		return debugPdfRender;
+	}
+
+	public void setDebugPdfRender(boolean isDebug) {
+		this.debugPdfRender = isDebug;
 	}
 }
