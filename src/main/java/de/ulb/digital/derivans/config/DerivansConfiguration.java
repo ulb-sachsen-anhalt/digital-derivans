@@ -55,6 +55,8 @@ public class DerivansConfiguration {
 
 	private Optional<String> paramOCR = Optional.empty();
 
+	private Optional<String> paramNamePDF = Optional.empty();
+
 	private Integer quality = DefaultConfiguration.DEFAULT_QUALITY;
 
 	private Integer poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
@@ -123,6 +125,10 @@ public class DerivansConfiguration {
 				LOGGER.info("found config file at default location '{}'", defaultConfigLocation);
 				this.initConfigurationFromFile();
 			}
+		}
+		// inspect pdf name present
+		if(params.getNamePDF() != null) {
+			this.paramNamePDF = Optional.of(params.getNamePDF());
 		}
 
 		// take care if no config provided
@@ -574,5 +580,9 @@ public class DerivansConfiguration {
 	 */
 	public boolean isDebugPdfRender() {
 		return this.debugPdfRender;
+	}
+
+	public Optional<String> getNamePDF() { 
+		return this.paramNamePDF;
 	}
 }

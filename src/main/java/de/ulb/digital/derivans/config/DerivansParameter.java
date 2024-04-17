@@ -37,21 +37,25 @@ public class DerivansParameter {
 			+
 			"If in local mode, stands for directory containing images.\n" +
 			"If metadata present, stands for required image fileGroup label.\n" +
-			"which defaults to '" + DEFAULT_INPUT_IMAGES + "'.\n" +
-			"If no metadata present, defaults to '" + DEFAULT_INPUT_IMAGES + "'.\n")
+			"(default: '" + DEFAULT_INPUT_IMAGES + "').\n")
 	private String images;
 
 	@Option(name = "-o", aliases = { "--ocr" }, required = false, usage = "Identify OCR-Data, depending on context.\n" +
 			"If in local mode, stands for directory containing ocr files.\n" +
-			"If metadata present, stands for required ocr fileGroup label,\n" +
-			"which defaults otherwise to '" + DEFAULT_INPUT_FULLTEXT + "'.\n" +
-			"If no metadata present, defaults to '" + DEFAULT_INPUT_FULLTEXT + "'.\n")
+			"If metadata present, stands for required ocr fileGroup label.\n" +
+			"(default: '" + DEFAULT_INPUT_FULLTEXT + "').\n")
 	private String ocr;
 
 	@Option(name = "-d", aliases = {
 			"--debug-pdf-render" }, required = false, usage = "Render PDF-Layers for debugging if OCR-Data present.\n" +
 					"(default: false)")
 	private Boolean debugPdfRender;
+
+	@Option(name = "-n", aliases = { "--name-pdf" }, required = false, usage = "Name resulting PDF.\n" +
+			"Determine name of resulting PDF-file, if created by current workflow.\n" +
+			"Overwrites default naming logics from METS (if present) and directory.\n" +
+			"(No default).\n")
+	private String namePDF;
 
 	/**
 	 * 
@@ -95,6 +99,14 @@ public class DerivansParameter {
 
 	public String getOcr() {
 		return this.ocr;
+	}
+
+	public String getNamePDF() {
+		return namePDF;
+	}
+
+	public void setNamePDF(String namePDF) {
+		this.namePDF = namePDF;
 	}
 
 	public Boolean getDebugPdfRender() {

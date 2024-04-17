@@ -148,6 +148,7 @@ public class Derivans {
                 String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
                 pdfStep.setConformanceLevel(pdfALevel);
                 pdfStep.setDebugRender(config.isDebugPdfRender());
+                pdfStep.setNamePDF(this.config.getNamePDF());
                 DescriptiveData descriptiveData = new DescriptiveData();
                 if (this.optMetadataStore.isPresent()) {
                     var store = this.optMetadataStore.get();
@@ -164,7 +165,7 @@ public class Derivans {
                     resolver.enrichOCRFromFilesystem(pages, ocrPath);
                 }
                 // calculate identifier
-                Path pdfPath = resolver.calculatePDFPath(descriptiveData, step);
+                Path pdfPath = resolver.calculatePDFPath(descriptiveData, pdfStep);
                 LOGGER.info("calculate local pdf derivate path '{}'", pdfPath);
                 output.setPath(pdfPath);
                 // required for proper resolving with kitodo2
