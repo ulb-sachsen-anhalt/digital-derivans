@@ -31,6 +31,7 @@ public class DerivateStepPDF extends DerivateStep {
 	private Optional<String> optCreator = Optional.empty();
 	private Optional<String> optLicense = Optional.empty();
 	private Optional<String> optKeywords = Optional.empty();
+	private Optional<String> optNamePDF = Optional.empty();
 
 	public boolean isEnrichMetadata() {
 		return enrichMetadata;
@@ -150,6 +151,14 @@ public class DerivateStepPDF extends DerivateStep {
 
 	public void setParamOCR(String fileGroupOCR) {
 		this.paramOCR = fileGroupOCR;
+	}
+
+	public Optional<String> getNamePDF() {
+		return this.optNamePDF;
+	}
+
+	public void setNamePDF(Optional<String> optNamePDF) {
+		this.optNamePDF = optNamePDF;
 	}
 
 	/**
