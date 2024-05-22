@@ -3,6 +3,7 @@ package de.ulb.digital.derivans.data.ocr.alto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.Rectangle;
 import java.nio.file.Path;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.data.ocr.ALTOReader;
 import de.ulb.digital.derivans.data.ocr.Type;
@@ -190,6 +192,28 @@ public class TestALTOV4Reader {
 		OCRData.Textline line2 = actual.getTextlines().get(1);
 		assertEquals("کرده اند مثلاً انوری حافظ قصائدو غزلپائی بفتند رفتند پس از آبان", line2.getText());
 		assertEquals("کرده", line2.getTokens().get(0).getText());
-		assertEquals("آبان", line2.getTokens().get(line2.getTokens().size()-1).getText());
+		assertEquals("آبان", line2.getTokens().get(line2.getTokens().size() - 1).getText());
+	}
+
+	/**
+	 * Ensure empty ALTO data can be handled
+	 * 
+	 * DigitalDerivansException:
+	 * No Page data: src/test/resources/alto/1981185920_94220/00000805.xml
+	 */
+	@Test
+	void testALTOV4EmptyFromRahbar() throws Exception {
+		// arrange
+		Path rahbar88120 = TestResource.SHARE_IT_RAHBAR_94220.get();
+		ALTOReader reader = new ALTOReader(Type.ALTO_V4);
+
+		// act
+		var actual = assertThrows(DigitalDerivansException.class,
+				() -> reader.get(rahbar88120));
+
+		// assert
+		assertNotNull(actual);
+		assertEquals("No Page data: src/test/resources/alto/1981185920_94220/00000805.xml",
+				actual.getMessage());
 	}
 }
