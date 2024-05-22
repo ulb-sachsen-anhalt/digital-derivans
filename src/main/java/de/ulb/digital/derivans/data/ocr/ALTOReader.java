@@ -37,13 +37,18 @@ public class ALTOReader implements OCRReader {
 	@Override
 	public OCRData get(Path pathOcr) throws DigitalDerivansException {
 		this.handler = new XMLHandler(pathOcr);
-		var lines = extractTextLines();
 		var dim = extractPageDimension();
+		var lines = extractTextLines();
 		return new OCRData(lines, dim);
 	}
 
-	private Dimension extractPageDimension() {
-		Element page = this.handler.extractElements("Page").get(0);
+	private Dimension extractPageDimension() throws DigitalDerivansException{
+		List<Element> pages = this.handler.extractElements("Page");
+		if (pages.isEmpty()) {
+			var filePath = this.handler.getFilePath();
+			throw new DigitalDerivansException("No Page data: " + filePath);
+		}
+		var page = pages.get(0);
 		int w = Integer.parseInt(page.getAttributeValue("WIDTH"));
 		int h = Integer.parseInt(page.getAttributeValue("HEIGHT"));
 		return new Dimension(w, h);

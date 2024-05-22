@@ -35,6 +35,7 @@ import de.ulb.digital.derivans.DigitalDerivansException;
  */
 public class XMLHandler {
 
+	protected Path pathFile;
 	protected final Document document;
 
 	public XMLHandler(byte[] bytes) throws DigitalDerivansException {
@@ -42,6 +43,7 @@ public class XMLHandler {
 	}
 
 	public XMLHandler(Path pathFile) throws DigitalDerivansException {
+		this.pathFile = pathFile;
 		try {
 			this.document = this.parseBytes(Files.readAllBytes(pathFile));
 		} catch (IOException e) {
@@ -63,6 +65,10 @@ public class XMLHandler {
 
 	public Document getDocument() {
 		return this.document;
+	}
+
+	public Path getFilePath() {
+		return this.pathFile;
 	}
 
 	public List<Element> extractElements(String elementName) {
