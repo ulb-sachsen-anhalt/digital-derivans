@@ -190,7 +190,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		// push ocr if any
 		Optional<OCRData> optOcr = page.getOcrData();
 		if (optOcr.isPresent()) {
-			LOGGER.debug("handle optional ocr for {}", page.getImagePath());
+			LOGGER.debug("handle optional ocr for {} (render: {})", page.getImagePath(), this.debugRender);
 			OCRData ocrData = optOcr.get();
 			// get to know current image dimensions
 			// most likely to differ due subsequent scaling derivation steps
@@ -239,7 +239,10 @@ public class PDFDerivateer extends BaseDerivateer {
 			}
 			cb.restoreState();
 			// optional: render ocr data outlines for debugging visualization
+			// *must not* be done if PDF A Conformance requested - doesn't
+			// permit Transparency
 			if (this.debugRender) {
+				LOGGER.debug("render ocr outlines {} (height: {})", ocrLines, currentImageHeight);
 				this.renderOcrOutlines(writer, ocrLines, currentImageHeight);
 			}
 			// increment number of ocr-ed pages for each PDF
@@ -270,8 +273,8 @@ public class PDFDerivateer extends BaseDerivateer {
 		float x = box.getLeft();
 		float y = pageHeight - box.getBottom();
 		// looks like we need to go down a bit because
-		// font seems to be rendered not from baseline, therefore introduce v
-		// v = y - fontSize * x, with X is were the magic starts: x=1 too low, x=0.5 too
+		// font seems to be rendered not from bottom, therefore introduce v
+		// v = y - fontSize * MIN_CHAR_SIZE x, with X is were the magic starts: x=1 too low, x=0.5 too
 		// high
 		float v = y - (fontSize * MIN_CHAR_SIZE);
 		if (this.debugRender) {
@@ -300,7 +303,9 @@ public class PDFDerivateer extends BaseDerivateer {
 			java.awt.Rectangle r = new java.awt.Rectangle((int) llx, (int) box.getBottom(),
 					(int) (urx - llx),
 					(int) (box.getTop() - box.getBottom()));
-			drawOutline(r, cb, (float) pageHeight, c3, 0.3f);
+			if(this.debugRender) {
+				drawOutline(r, cb, (float) pageHeight, c3, 0.3f);
+			}
 			ct.setSimpleColumn(llx, lly, urx, ury);
 			ct.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
 			ct.setAlignment(Element.ALIGN_BOTTOM);
