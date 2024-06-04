@@ -84,7 +84,7 @@ public class DerivansConfiguration {
 			input = input.toAbsolutePath();
 		}
 
-		// determine if debug render fpr pdf required
+		// determine if debug render for PDF required
 		if (params.getDebugPdfRender()) {
 			this.debugPdfRender = Boolean.TRUE;
 		}
