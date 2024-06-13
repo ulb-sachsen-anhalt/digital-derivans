@@ -91,7 +91,7 @@ public class Mets {
     private static final Logger LOGGER = LogManager.getLogger();
 
     // thread-safe
-    private static Schema SCHEMA;
+    public static Schema SCHEMA;
 
     private Map<String, DmdSec> dmdsecs;
 

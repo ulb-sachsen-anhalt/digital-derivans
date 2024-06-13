@@ -19,6 +19,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.xml.validation.Validator;
+
 import java.util.Map.Entry;
 
 
@@ -27,10 +30,12 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.ElementFilter;
+import org.jdom2.transform.JDOMSource;
 import org.jdom2.util.IteratorIterable;
 import org.mycore.mets.model.Mets;
 import org.mycore.mets.model.sections.DmdSec;
 import org.mycore.mets.model.struct.SmLink;
+import org.xml.sax.SAXException;
 
 import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -78,8 +83,14 @@ public class MetadataHandler {
 		this.handler = new XMLHandler(pathFile);
 		this.document = handler.getDocument();
 		try {
+			Validator validator = Mets.SCHEMA.newValidator();
+            validator.validate(new JDOMSource(this.document));
 			this.mets = new Mets(this.document);
 		} catch (IllegalArgumentException e) {
+			throw new DigitalDerivansException(e);
+		} catch (SAXException e) {
+			throw new DigitalDerivansException(e);
+		} catch (IOException e) {
 			throw new DigitalDerivansException(e);
 		}
 		this.primaryMods = setPrimaryMods();

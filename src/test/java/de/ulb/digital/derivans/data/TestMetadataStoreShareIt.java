@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -56,4 +57,19 @@ public class TestMetadataStoreShareIt {
 		// assert
 		assertEquals("No physical struct linked from 'log1646693@section(Abschnitt)'!", actualExc.getMessage());
     }
+
+	/**
+	 * Catch rather tricky case with SAXException due
+	 * for 1981185920_38841
+	 */
+	@Test
+	void testStructureODEM_01() throws DigitalDerivansException {
+        // actsert
+		var actualExc = assertThrows(DigitalDerivansException.class, 
+			() -> new MetadataStore(TestResource.SHARE_IT_VD18_38841.get()));
+
+		// assert
+		assertTrue(actualExc.getMessage().contains("Encountered a SAX exception"));
+    }
+
 }

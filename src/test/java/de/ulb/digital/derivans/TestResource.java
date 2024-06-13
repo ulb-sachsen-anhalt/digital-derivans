@@ -90,6 +90,7 @@ public enum TestResource {
 	SHARE_IT_VD18_43053(Path.of("src/test/resources/mets/share_it/1981185920_43053.xml")),
 	SHARE_IT_RAHBAR_88120(Path.of("src/test/resources/alto/1981185920_88120/1981185920_88120_00000010.xml")),
 	SHARE_IT_RAHBAR_94220(Path.of("src/test/resources/alto/1981185920_94220/00000805.xml")),
+	SHARE_IT_VD18_38841(Path.of("src/test/resources/mets/share_it/1981185920_38841.xml")),
 
 	/**
 	 * 
