@@ -83,14 +83,8 @@ public class MetadataHandler {
 		this.handler = new XMLHandler(pathFile);
 		this.document = handler.getDocument();
 		try {
-			Validator validator = Mets.SCHEMA.newValidator();
-            validator.validate(new JDOMSource(this.document));
 			this.mets = new Mets(this.document);
 		} catch (IllegalArgumentException e) {
-			throw new DigitalDerivansException(e);
-		} catch (SAXException e) {
-			throw new DigitalDerivansException(e);
-		} catch (IOException e) {
 			throw new DigitalDerivansException(e);
 		}
 		this.primaryMods = setPrimaryMods();
