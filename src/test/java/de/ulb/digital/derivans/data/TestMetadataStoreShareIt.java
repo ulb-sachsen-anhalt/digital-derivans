@@ -69,7 +69,7 @@ public class TestMetadataStoreShareIt {
 			() -> new MetadataStore(TestResource.SHARE_IT_VD18_38841.get()));
 
 		// assert
-		assertTrue(actualExc.getMessage().contains("Encountered a SAX exception"));
+		assertTrue(actualExc.getMessage().contains("not a valid mets document"));
     }
 
 }
