@@ -48,7 +48,8 @@ public class BaseDerivateer implements IDerivateer {
 		return this.resolver;
 	}
 	
-	protected DerivansData getInput() {
+	@Override
+	public DerivansData getInput() {
 		return this.input;
 	}
 

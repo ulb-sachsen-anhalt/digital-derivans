@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate;
+package de.ulb.digital.derivans.derivate.pdf;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -16,7 +16,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
-import de.ulb.digital.derivans.derivate.PDFDerivateer;
+import de.ulb.digital.derivans.derivate.pdf.PDFDerivateer;
 
 /**
  * 

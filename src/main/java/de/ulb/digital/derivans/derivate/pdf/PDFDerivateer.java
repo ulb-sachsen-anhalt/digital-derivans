@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate;
+package de.ulb.digital.derivans.derivate.pdf;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,6 +41,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;

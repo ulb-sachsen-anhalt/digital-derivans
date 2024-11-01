@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate;
+package de.ulb.digital.derivans.derivate.pdf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -29,6 +29,7 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.data.DerivansPathResolver;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;

@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate;
+package de.ulb.digital.derivans.derivate.image;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

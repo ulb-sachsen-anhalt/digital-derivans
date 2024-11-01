@@ -36,7 +36,7 @@ import org.jdom2.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 
 import de.ulb.digital.derivans.data.IMetadataStore;
-import de.ulb.digital.derivans.derivate.PDFInspector;
+import de.ulb.digital.derivans.derivate.pdf.PDFInspector;
 
 /**
  * 
