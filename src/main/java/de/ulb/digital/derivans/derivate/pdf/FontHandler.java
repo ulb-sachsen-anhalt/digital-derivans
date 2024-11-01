@@ -69,9 +69,7 @@ public class FontHandler {
 	public BaseFont forPDF(String path) throws DigitalDerivansException {
 		try {
 			String resPath = this.storeAsTempfile(path);
-			BaseFont baseFont = BaseFont.createFont(resPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-			com.itextpdf.text.Font f = new com.itextpdf.text.Font(baseFont, 12.0f);
-			return f.getBaseFont();
+			return BaseFont.createFont(resPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 		} catch (DocumentException | IOException e) {
 			throw new DigitalDerivansException(e);
 		}
@@ -90,7 +88,6 @@ public class FontHandler {
 		if (cl.getResource(resPath) != null && cl.getResource(resPath).getProtocol().equals("jar")) {
 			try (InputStream input = cl.getResourceAsStream(resPath)) {
 				File file = File.createTempFile("derivans-tmp-font-", ".ttf");
-				
 				try(OutputStream out = new FileOutputStream(file)) {
 					int read;
 					byte[] bytes = new byte[1024];
@@ -98,7 +95,6 @@ public class FontHandler {
 						out.write(bytes, 0, read);
 					}
 				}
-
 				file.deleteOnExit();
 				return file.toString();
 			} catch (IOException e) {
