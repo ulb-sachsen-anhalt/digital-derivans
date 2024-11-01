@@ -23,6 +23,7 @@ import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 import de.ulb.digital.derivans.model.step.DerivateStep;
+import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
@@ -262,7 +263,7 @@ public class DerivansPathResolver {
 		return (type == DerivateType.JPG || type == DerivateType.JPG_FOOTER);
 	}
 	
-	public Path calculatePDFPath(DescriptiveData dd, DerivateStep step) throws DigitalDerivansException {
+	public Path calculatePDFPath(DescriptiveData dd, DerivateStepPDF step) throws DigitalDerivansException {
 		Path pdfPath = step.getOutputPath();
 		if (!Files.isDirectory(pdfPath, LinkOption.NOFOLLOW_LINKS)) {
 			pdfPath = step.getOutputPath().getParent().resolve(pdfPath);
@@ -280,8 +281,15 @@ public class DerivansPathResolver {
 				identifier = pdfPath.getFileName().toString();
 				LOGGER.warn("invalid descriptive data, use filename '{}' to name PDF-file", identifier);
 			}
+			if(step.getNamePDF().isPresent()) {
+				var namePDF = step.getNamePDF().get();
+				identifier = namePDF;
+			}
 			LOGGER.info("use '{}' to name PDF-file", identifier);
-			String fileName = identifier + ".pdf";
+			String fileName = identifier;
+			if (! identifier.endsWith(".pdf")) {
+				fileName = fileName +  ".pdf";
+			}
 			String prefix = step.getOutputPrefix();
 			if (prefix != null && (!prefix.isBlank())) {
 				fileName = prefix.concat(fileName);
