@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.model;
+package de.ulb.digital.derivans.model.pdf;
 
 import java.util.Map;
 import java.util.Optional;
@@ -18,17 +18,17 @@ import de.ulb.digital.derivans.data.IMetadataStore;
  * @author hartwig
  *
  */
-public class PDFMetaInformation {
+public class PDFMetadata {
 
 	private String author = IMetadataStore.UNKNOWN;
 	private String title = IMetadataStore.UNKNOWN;
 	private Map<String, String> metadata;
 	private Document xmpMetadata;
 	private Optional<String> optCreator = Optional.empty();
-	public PDFMetaInformation() {
+	public PDFMetadata() {
 	}
 
-	public PDFMetaInformation(String author, String title, Map<String, String> metadata, Document xmpMetadata) {
+	public PDFMetadata(String author, String title, Map<String, String> metadata, Document xmpMetadata) {
 		this.author = author;
 		this.title = title;
 		this.metadata = metadata;

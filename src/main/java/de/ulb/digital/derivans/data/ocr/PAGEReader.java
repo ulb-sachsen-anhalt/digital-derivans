@@ -14,7 +14,8 @@ import org.jdom2.Element;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.XMLHandler;
 import de.ulb.digital.derivans.model.ocr.OCRData;
-import de.ulb.digital.derivans.model.ocr.OCRData.Textline;
+import de.ulb.digital.derivans.model.text.Textline;
+import de.ulb.digital.derivans.model.text.Word;
 
 /**
  * 
@@ -55,7 +56,7 @@ public class PAGEReader implements OCRReader {
 	}
 
 	protected List<Textline> extractTextLines() {
-		List<OCRData.Textline> ocrLines = new ArrayList<>();
+		List<Textline> ocrLines = new ArrayList<>();
 		List<Element> pgLines = this.handler.extractElements("TextLine");
 		for (Element el : pgLines) {
 			List<Element> words = el.getChildren("Word", getType().toNS());
@@ -63,8 +64,8 @@ public class PAGEReader implements OCRReader {
 				var texts = words.parallelStream()
 						.filter(e -> VALID_TEXT.test(e.getChild(PAGE_TEXT_EQUIV, getType().toNS())
 								.getChild(PAGE_UNICODE, getType().toNS()).getTextTrim()))
-						.map(this::toText).filter(OCRData.Word::hasPrintableChars).collect(Collectors.toList());
-				OCRData.Textline line = new OCRData.Textline(texts);
+						.map(this::toText).filter(Word::hasPrintableChars).collect(Collectors.toList());
+				Textline line = new Textline(texts);
 				ocrLines.add(line);
 			} else {
 				String transcription = el.getChild(PAGE_TEXT_EQUIV, getType().toNS())
@@ -72,7 +73,7 @@ public class PAGEReader implements OCRReader {
 				if (VALID_TEXT.test(transcription)) {
 					var ocrData = this.toText(el);
 					if (ocrData.hasPrintableChars()) {
-						ocrLines.add(new OCRData.Textline(List.of(ocrData)));
+						ocrLines.add(new Textline(List.of(ocrData)));
 					}
 				}
 			}
@@ -80,7 +81,7 @@ public class PAGEReader implements OCRReader {
 		return ocrLines;
 	}
 
-	OCRData.Word toText(Element textElement) {
+	Word toText(Element textElement) {
 		String content = textElement
 				.getChild(PAGE_TEXT_EQUIV, getType().toNS())
 				.getChild(PAGE_UNICODE, getType().toNS())
@@ -94,7 +95,7 @@ public class PAGEReader implements OCRReader {
 			polygon.addPoint(x, y);
 		}
 		Rectangle rect = polygon.getBounds();
-		return new OCRData.Word(content, rect);
+		return new Word(content, rect);
 	}
 
 	@Override

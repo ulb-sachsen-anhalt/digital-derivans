@@ -1,23 +1,18 @@
-package de.ulb.digital.derivans.model.ocr;
+package de.ulb.digital.derivans.model;
 
 import java.awt.Rectangle;
 
 /**
  * Mark character tokens with planar representation
  */
-public interface OCRToken {
+public interface ICharacterToken {
 
     /**
-     * Get textual representation
+     * Get textual UTF-8 representation
      * 
      * @return
      */
     String getText();
-
-    /**
-     * Get complete planar representation
-     */
-    // Float getShape();
 
     /**
      * 
@@ -29,7 +24,8 @@ public interface OCRToken {
 
     /**
      * 
-     * Descriptive Label
+     * Descriptive Label may be used for aggregated tokens
+     * like text lines which lack inherent textual content  
      * 
      * @return
      */
@@ -40,7 +36,7 @@ public interface OCRToken {
      * Distinguish between western european
      * and arabic/persian/hebrew
      * left (LTR) or right (RTL) text orientation
-     * by inspecting the very FIRST character.
+     * by inspecting the very *FIRST* character.
      * 
      * Please note:
      * Proper recognition only with UTF-16 chars,
@@ -48,7 +44,7 @@ public interface OCRToken {
      * arabic math (U+1ee00 ARABIC MATHEMATICAL ALEF)
      * pahlavi (U+10b60 INSCRIPTIONAL PAHLAVI LETTER ALEPH)
      * 
-     * @return
+     * @return boolean
      */
     default boolean isLTR() {
         if (!this.getText().isEmpty()) {
@@ -72,4 +68,12 @@ public interface OCRToken {
         }
         return true;
     }
+
+    /**
+     * 
+     * Scale bounding box by ratio from upper left
+     * 
+     * @param ratio
+     */
+	void scale(float ratio);
 }

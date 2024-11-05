@@ -27,7 +27,7 @@ import de.ulb.digital.derivans.data.ImageMetadata;
  * @author hartwig
  *
  */
-class ImageProcessor {
+public class ImageProcessor {
 
 	/**
 	 * Percentage image quality

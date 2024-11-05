@@ -16,7 +16,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
-import de.ulb.digital.derivans.derivate.pdf.PDFDerivateer;
+import de.ulb.digital.derivans.model.IPDFProcessor;
 
 /**
  * 
@@ -100,7 +100,7 @@ public class TestDerivansNewspaper {
 	 * 
 	 * Ensure there are lots of characters in the textlayer
 	 * Total would be 25.630, but due downscaling some
-	 * chars dropped below render threshold {@link PDFDerivateer#MIN_CHAR_SIZE})
+	 * chars dropped below render threshold {@link IPDFProcessor#MIN_CHAR_SIZE})
 	 * 
 	 * @throws Exception
 	 */

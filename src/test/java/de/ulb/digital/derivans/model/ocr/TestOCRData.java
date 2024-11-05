@@ -9,6 +9,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import de.ulb.digital.derivans.model.text.Textline;
+import de.ulb.digital.derivans.model.text.Word;
+
 /**
  * @author u.hartwig
  */
@@ -22,9 +25,9 @@ public class TestOCRData {
 	@Test
 	void testTextOrientationTextLine() {
 		// arrange
-		var w1 = new OCRData.Word("hello", new Rectangle(0, 0, 100, 20));
-		List<OCRData.Word> words = Arrays.asList(w1);
-		OCRData.Textline line = new OCRData.Textline(words);
+		var w1 = new Word("hello", new Rectangle(0, 0, 100, 20));
+		List<Word> words = Arrays.asList(w1);
+		Textline line = new Textline(words);
 
 		// act
 		assertTrue(line.isLTR());
@@ -33,9 +36,9 @@ public class TestOCRData {
 	@Test
 	void testTextOrientationForPersianWord() {
 		// arrange
-		var w1 = new OCRData.Word("چه", new Rectangle(0, 0, 100, 20));
-		List<OCRData.Word> words = Arrays.asList(w1);
-		OCRData.Textline line = new OCRData.Textline(words);
+		var w1 = new Word("چه", new Rectangle(0, 0, 100, 20));
+		List<Word> words = Arrays.asList(w1);
+		Textline line = new Textline(words);
 
 		// act
 		assertFalse(line.isLTR());
@@ -44,9 +47,9 @@ public class TestOCRData {
 	@Test
 	void testTextOrientationForHebrewWord() {
 		// arrange
-		var w1 = new OCRData.Word("א", new Rectangle(0, 0, 100, 20));
-		List<OCRData.Word> words = Arrays.asList(w1);
-		OCRData.Textline line = new OCRData.Textline(words);
+		var w1 = new Word("א", new Rectangle(0, 0, 100, 20));
+		List<Word> words = Arrays.asList(w1);
+		Textline line = new Textline(words);
 
 		// act
 		assertFalse(line.isLTR());

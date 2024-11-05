@@ -314,7 +314,7 @@ public class TestDerivans {
 		String pdfName = "General-Anzeiger_f\u00FCr_Halle_und_den_Saalkreis.pdf";
 		Path pdfWritten = pathTarget.resolve(pdfName);
 		assertFalse(Files.exists(pdfWritten));
-		assertTrue(excResult.getMessage().startsWith("No images for "));
+		assertTrue(excResult.getMessage().startsWith("No pages for PDF "));
 	}
 
 	@Test

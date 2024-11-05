@@ -16,7 +16,7 @@ import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.data.ocr.ALTOReader;
 import de.ulb.digital.derivans.data.ocr.Type;
 import de.ulb.digital.derivans.data.ocr.ValidTextPredicate;
-import de.ulb.digital.derivans.model.ocr.OCRData;
+import de.ulb.digital.derivans.model.text.Textline;
 
 /**
  * 
@@ -41,7 +41,7 @@ public class TestALTOV4Reader {
 		// assert
 		assertNotNull(actual);
 		assertEquals(29, actual.getTextlines().size());
-		OCRData.Textline line12 = actual.getTextlines().get(11);
+		Textline line12 = actual.getTextlines().get(11);
 		assertEquals("[1979.0x128.0]AVGVSTISSIMO AC POTENTISSIMO", line12.toString());
 		assertEquals("AVGVSTISSIMO AC POTENTISSIMO", line12.getText());
 		assertEquals("AVGVSTISSIMO", line12.getTokens().get(0).getText());
@@ -81,10 +81,10 @@ public class TestALTOV4Reader {
 		var actual = reader.get(input);
 		int originalPageHeigt = actual.getPageHeight();
 		assertEquals(10536, originalPageHeigt);
-		OCRData.Textline line001 = actual.getTextlines().get(0);
+		Textline line001 = actual.getTextlines().get(0);
 		int originalHeightLine001 = line001.getBox().height;
 		assertEquals(17, originalHeightLine001);
-		OCRData.Textline line635 = actual.getTextlines().get(634);
+		Textline line635 = actual.getTextlines().get(634);
 		int originalHeightLine646 = line635.getBox().height;
 		assertEquals(57, originalHeightLine646);
 
@@ -109,10 +109,10 @@ public class TestALTOV4Reader {
 		var actual = reader.get(input);
 		int originalPageHeigt = actual.getPageHeight();
 		assertEquals(10808, originalPageHeigt);
-		OCRData.Textline line001 = actual.getTextlines().get(0);
+		Textline line001 = actual.getTextlines().get(0);
 		int originalHeightLine001 = line001.getBox().height;
 		assertEquals(95, originalHeightLine001);
-		OCRData.Textline lastLine = actual.getTextlines().get(319);
+		Textline lastLine = actual.getTextlines().get(319);
 		assertEquals(94, lastLine.getBox().height);
 
 		// act
@@ -166,7 +166,7 @@ public class TestALTOV4Reader {
 		// assert
 		assertEquals(27, actual.getTextlines().size());
 		var filtered = actual.getTextlines().stream()
-				.map(OCRData.Textline::getText)
+				.map(Textline::getText)
 				.filter(predicate)
 				.collect(Collectors.toList());
 		assertEquals(27, filtered.size());
@@ -189,7 +189,7 @@ public class TestALTOV4Reader {
 		// assert
 		assertNotNull(actual);
 		assertEquals(30, actual.getTextlines().size());
-		OCRData.Textline line2 = actual.getTextlines().get(1);
+		Textline line2 = actual.getTextlines().get(1);
 		assertEquals("کرده اند مثلاً انوری حافظ قصائدو غزلپائی بفتند رفتند پس از آبان", line2.getText());
 		assertEquals("کرده", line2.getTokens().get(0).getText());
 		assertEquals("آبان", line2.getTokens().get(line2.getTokens().size() - 1).getText());

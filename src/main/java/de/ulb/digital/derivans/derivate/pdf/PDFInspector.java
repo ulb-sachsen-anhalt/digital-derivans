@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.derivate.pdf;
 
+import java.awt.Dimension;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,8 +18,8 @@ import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.XMLHandler;
-import de.ulb.digital.derivans.model.PDFMetaInformation;
-import de.ulb.digital.derivans.model.PDFPageformation;
+import de.ulb.digital.derivans.model.pdf.PDFMetadata;
+import de.ulb.digital.derivans.model.pdf.PDFPage;
 
 /**
  * 
@@ -94,7 +95,7 @@ public class PDFInspector {
 	 * @return
 	 * @throws IOException
 	 */
-	public PDFMetaInformation getPDFMetaInformation() throws IOException {
+	public PDFMetadata getPDFMetaInformation() throws IOException {
 		Map<String, String> metadata = pdfReader.getInfo();
 		String author = metadata.get("Author");
 		String title = metadata.get("Title");
@@ -105,7 +106,7 @@ public class PDFInspector {
 		} catch (Exception e) {
 			// no xmpMetadata is fine. so setting it to null.
 		}
-		PDFMetaInformation pmi = new PDFMetaInformation(author, title, metadata, xmpMetadata);
+		PDFMetadata pmi = new PDFMetadata(author, title, metadata, xmpMetadata);
 		String creator = metadata.get("Creator");
 		if (creator != null) {
 			pmi.setCreator(Optional.of(creator));
@@ -119,13 +120,15 @@ public class PDFInspector {
 	 * 
 	 * @return
 	 */
-	public List<PDFPageformation> getPageInformation() {
-		List<PDFPageformation> data = new ArrayList<>();
+	public List<PDFPage> getPageInformation() {
+		List<PDFPage> data = new ArrayList<>();
 		int nPage = pdfReader.getNumberOfPages();
 		for (int i = 1; i <= nPage; i++) {
 			Rectangle dim = pdfReader.getPageSize(i);
 			dim.getWidth();
-			data.add(new PDFPageformation(pdfReader, i));
+			Rectangle r = pdfReader.getPageSize(i);
+			var dimension = new Dimension((int) r.getWidth(), (int) r.getHeight());
+			data.add(new PDFPage(dimension, i));
 		}
 		return data;
 	}

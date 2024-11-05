@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.data.ocr.PAGEReader;
 import de.ulb.digital.derivans.data.ocr.Type;
-import de.ulb.digital.derivans.model.ocr.OCRData;
+import de.ulb.digital.derivans.model.text.Textline;
 
 /**
  * 
@@ -35,7 +35,7 @@ public class TestPage2019Reader {
 		// assert
 		assertNotNull(actual);
 		assertEquals(10, actual.getTextlines().size());
-		OCRData.Textline loi = actual.getTextlines().get(3);
+		Textline loi = actual.getTextlines().get(3);
 		assertEquals("[1126.0x63.0]So Guth als Blut für Ihn zu geben!", loi.toString());
 		assertEquals("So Guth als Blut für Ihn zu geben!", loi.getText());
 		assertEquals("Guth", loi.getTokens().get(1).getText());
@@ -66,7 +66,7 @@ public class TestPage2019Reader {
 
 		// assert
 		assertEquals(10, actual.getTextlines().size());
-		OCRData.Textline loi = actual.getTextlines().get(3);
+		Textline loi = actual.getTextlines().get(3);
 		assertEquals("[1337.0x81.0]So Guth als Blut für Ihn zu geben! ===", loi.toString());
 		assertEquals("So Guth als Blut für Ihn zu geben! ===", loi.getText());
 		// geometric data

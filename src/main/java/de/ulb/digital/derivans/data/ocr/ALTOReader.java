@@ -13,7 +13,8 @@ import org.jdom2.Element;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.XMLHandler;
 import de.ulb.digital.derivans.model.ocr.OCRData;
-import de.ulb.digital.derivans.model.ocr.OCRData.Textline;
+import de.ulb.digital.derivans.model.text.Textline;
+import de.ulb.digital.derivans.model.text.Word;
 
 /**
  * 
@@ -55,31 +56,31 @@ public class ALTOReader implements OCRReader {
 	}
 
 	protected List<Textline> extractTextLines() {
-		List<OCRData.Textline> lines = new ArrayList<>();
+		List<Textline> lines = new ArrayList<>();
 		List<Element> altoLines = this.handler.extractElements("TextLine");
 		for (Element el : altoLines) {
 			List<Element> strings = el.getChildren("String", getType().toNS());
 			var texts = strings.parallelStream()
 					.filter(e -> VALID_TEXT.test(e.getAttributeValue("CONTENT")))
 					.map(ALTOReader::toText)
-					.filter(OCRData.Word::hasPrintableChars)
+					.filter(Word::hasPrintableChars)
 					.collect(Collectors.toList());
 			if (!texts.isEmpty()) {
-				OCRData.Textline line = new OCRData.Textline(texts);
+				Textline line = new Textline(texts);
 				lines.add(line);
 			}
 		}
 		return lines;
 	}
 
-	static OCRData.Word toText(Element word) {
+	static Word toText(Element word) {
 		String content = word.getAttributeValue("CONTENT");
 		int x = Integer.parseInt(word.getAttributeValue("HPOS"));
 		int y = Integer.parseInt(word.getAttributeValue("VPOS"));
 		int width = Integer.parseInt(word.getAttributeValue("WIDTH"));
 		int height = Integer.parseInt(word.getAttributeValue("HEIGHT"));
 		Rectangle rect = new Rectangle(x, y, width, height);
-		return new OCRData.Word(content, rect);
+		return new Word(content, rect);
 	}
 
 	@Override

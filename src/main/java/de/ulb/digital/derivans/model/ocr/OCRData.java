@@ -1,12 +1,12 @@
 package de.ulb.digital.derivans.model.ocr;
 
 import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.geom.Area;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
+import de.ulb.digital.derivans.model.ICharacterToken;
+import de.ulb.digital.derivans.model.text.Textline;
+import de.ulb.digital.derivans.model.text.Word;
 
 /**
  * 
@@ -46,11 +46,8 @@ public class OCRData {
 
 	public void scale(float ratio) {
 		for (Textline line : textlines) {
-			for (Word txt : line.getTokens()) {
-				txt.rect.x = Math.round(txt.rect.x * ratio);
-				txt.rect.y = Math.round(txt.rect.y * ratio);
-				txt.rect.width = Math.round(txt.rect.width * ratio);
-				txt.rect.height = Math.round(txt.rect.height * ratio);
+			for (ICharacterToken txt : line.getTokens()) {
+				txt.scale(ratio);
 			}
 			line.calculateArea();
 		}
@@ -59,110 +56,4 @@ public class OCRData {
 		this.dimension = new Dimension(widht, height);
 	}
 
-	/**
-	 * 
-	 * Represents a single line of textual tokens that form a conceptual unit.
-	 * 
-	 * @author u.hartwig
-	 *
-	 */
-	public static class Textline implements OCRToken {
-		private List<Word> texts;
-		private String actualText;
-		private Area area;
-
-		public Textline(List<Word> texts) {
-			this.texts = texts;
-			this.calculateArea();
-			this.actualText = String.join(" ",
-					texts.stream().map(Word::getText).filter(Objects::nonNull).collect(Collectors.toList()));
-		}
-
-		private void calculateArea() {
-			List<Rectangle> boxes = texts.stream().map(Word::getBox).collect(Collectors.toList());
-			this.area = new Area();
-			for (Rectangle r : boxes) {
-				this.area.add(new Area(r));
-			}
-		}
-
-		public String getText() {
-			return this.actualText;
-		}
-
-		public Area getArea() {
-			return this.area;
-		}
-
-		public Rectangle getBox() {
-			return this.area.getBounds();
-		}
-
-		public List<Word> getTokens() {
-			return new ArrayList<>(this.texts);
-		}
-
-		public String getLabel() {
-			return "TextLine";
-		}
-
-		@Override
-		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			var shape = this.area.getBounds();
-			double w = shape.getWidth();
-			double h = shape.getHeight();
-			builder.append('[').append(w).append('x').append(h).append(']').append(this.actualText);
-			return builder.toString();
-		}
-	}
-
-	/**
-	 * 
-	 * Single textual token, i.e. word, abbreviation or alike
-	 * which does *not* contain any whitespace characters
-	 * 
-	 * @author u.hartwig
-	 *
-	 */
-	public static class Word implements OCRToken {
-		private String actualText;
-		private Rectangle rect;
-
-		public Word(String actualText, Rectangle box) {
-			this.actualText = actualText;
-			this.rect = box;
-		}
-
-		public String getText() {
-			return this.actualText;
-		}
-
-		public Rectangle getBox() {
-			return this.rect.getBounds();
-		}
-
-		public float getHeight() {
-			return this.rect.height;
-		}
-
-		public boolean hasPrintableChars() {
-			return (this.actualText != null) && (!this.actualText.isBlank());
-		}
-
-		public String getLabel() {
-			return "Word";
-		}
-
-		@Override
-		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			var oldString = super.toString();
-			var hash = oldString.substring(oldString.indexOf('@') + 1);
-			double w = rect.getWidth();
-			double h = rect.getHeight();
-			builder.append(hash).append('[').append(w).append('x').append(h).append(']').append(actualText);
-			return builder.toString();
-		}
-	}
 }
