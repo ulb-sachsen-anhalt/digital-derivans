@@ -36,7 +36,7 @@ public class TestDerivansFulltextRahbar {
 
 	static Path pdfPathLine;
 
-	static String rahbar88120_p10 = "1981185920_88120_00000010";
+	static String rahbar88120Page10 = "1981185920_88120_00000010";
 
 	/**
 	 * Fixture with common configuration and just a start
@@ -82,11 +82,8 @@ public class TestDerivansFulltextRahbar {
 		Path targetOcr = targetOcrDir.resolve(sourceOcr.getFileName());
 		Files.copy(sourceOcr, targetOcr);
 		Path sourceImg = Path.of("src/test/resources/images/1981185920_88120_00000010.jpg");
-		// Path sourceImg = TestResource.IMG_JPG_RAHBAR_10.get();
 		assertTrue(Files.exists(sourceImg));
 		Files.copy(sourceImg, pathImageMax.resolve(sourceImg.getFileName()));
-		// TestHelper.generateJpgsFromList(pathImageMax, 2289, 3173,
-		// List.of(rahbar88120_p10));
 		return workDir;
 	}
 
@@ -100,14 +97,15 @@ public class TestDerivansFulltextRahbar {
 		((DerivateStepImage) dConf.getDerivateSteps().get(1)).setMaximal(maximal);
 		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setRenderModus("visible");
 		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setRenderLevel(renderLevel);
+		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setDebugRender(true);
 		return dConf;
 	}
 
 	@Test
-	void testDerivatesForPDFWritten() throws Exception {
+	void testDerivatesForPDFWritten() {
 		Path image80Dir = workDirWord.resolve("IMAGE_80");
 		assertTrue(Files.exists(image80Dir));
-		assertTrue(image80Dir.resolve(rahbar88120_p10 + ".jpg").toFile().exists());
+		assertTrue(image80Dir.resolve(rahbar88120Page10 + ".jpg").toFile().exists());
 	}
 
 	@Test
