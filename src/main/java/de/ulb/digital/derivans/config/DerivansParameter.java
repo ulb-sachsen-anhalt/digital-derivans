@@ -109,11 +109,8 @@ public class DerivansParameter {
 		this.namePDF = namePDF;
 	}
 
-	public Boolean getDebugPdfRender() {
-		if (debugPdfRender == null) {
-			debugPdfRender = Boolean.FALSE;
-		}
-		return debugPdfRender;
+	public Boolean isDebugPdfRender() {
+		return debugPdfRender != null;
 	}
 
 	public void setDebugPdfRender(boolean isRequired) {

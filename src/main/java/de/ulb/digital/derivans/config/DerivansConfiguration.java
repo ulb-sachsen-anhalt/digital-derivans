@@ -87,7 +87,7 @@ public class DerivansConfiguration {
 		}
 
 		// determine if debug render for PDF required
-		if (params.getDebugPdfRender()) {
+		if (Boolean.TRUE.equals(params.isDebugPdfRender())) {
 			this.debugPdfRender = Boolean.TRUE;
 		}
 

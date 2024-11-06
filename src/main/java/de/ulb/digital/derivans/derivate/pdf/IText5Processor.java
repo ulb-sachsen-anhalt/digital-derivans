@@ -326,8 +326,8 @@ public class IText5Processor implements IPDFProcessor {
 		if (this.debugRender) {
 			LOGGER.trace("put '{}' at {}x{} (fontsize:{})", text, x, v, fontSize);
 		}
-		// propably hide text layer font
-		if (this.renderModus.equalsIgnoreCase("invisible")) {
+		// hide text layer if configured and *not* in debugMode
+		if ((!this.debugRender) && this.renderModus.equalsIgnoreCase("invisible")) {
 			cb.setTextRenderingMode(PdfContentByte.TEXT_RENDER_MODE_INVISIBLE);
 		}
 		// rendering depends on text orientation
