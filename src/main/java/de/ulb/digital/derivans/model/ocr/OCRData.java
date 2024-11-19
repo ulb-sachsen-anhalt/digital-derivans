@@ -2,9 +2,8 @@ package de.ulb.digital.derivans.model.ocr;
 
 import java.awt.Dimension;
 import java.util.List;
-import java.util.Optional;
 
-import de.ulb.digital.derivans.model.ICharacterToken;
+import de.ulb.digital.derivans.model.IVisualElement;
 import de.ulb.digital.derivans.model.text.Textline;
 import de.ulb.digital.derivans.model.text.Word;
 
@@ -44,9 +43,13 @@ public class OCRData {
 		return dimension.height;
 	}
 
+	public int getPageWidth() {
+		return dimension.width;
+	}
+
 	public void scale(float ratio) {
 		for (Textline line : textlines) {
-			for (ICharacterToken txt : line.getTokens()) {
+			for (IVisualElement txt : line.getWords()) {
 				txt.scale(ratio);
 			}
 			line.calculateArea();

@@ -102,12 +102,16 @@ public class TestDerivansNewspaper {
 	 * Total would be 25.630, but due downscaling some
 	 * chars dropped below render threshold {@link IPDFProcessor#MIN_CHAR_SIZE})
 	 * 
+	 * iText5    25.525 
+	 * iText8    25.636
+	 * PDFBox 3x  5.964
+	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testPDFContainsText() throws Exception {
 		Path pdfWritten = workDir.resolve("zd1.pdf");
-		assertEquals(25525, TestHelper.getTextAsSingleLine(pdfWritten, 1).length());
+		assertEquals(5964, TestHelper.getTextAsSingleLine(pdfWritten, 1).length());
 	}
 
 }

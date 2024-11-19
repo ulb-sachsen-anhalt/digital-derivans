@@ -12,7 +12,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.data.DerivansPathResolver;
+import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DigitalPage;
 
 /**

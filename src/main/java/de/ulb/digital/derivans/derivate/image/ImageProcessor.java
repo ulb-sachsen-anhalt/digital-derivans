@@ -18,7 +18,7 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
-import de.ulb.digital.derivans.data.ImageMetadata;
+import de.ulb.digital.derivans.data.image.ImageMetadata;
 
 /**
  * 

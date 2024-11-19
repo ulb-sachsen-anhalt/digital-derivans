@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import org.jdom2.Element;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.XMLHandler;
+import de.ulb.digital.derivans.data.xml.XMLHandler;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 import de.ulb.digital.derivans.model.text.Textline;
 import de.ulb.digital.derivans.model.text.Word;

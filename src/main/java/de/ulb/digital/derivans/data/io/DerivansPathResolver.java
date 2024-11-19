@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.data.io;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,12 +16,13 @@ import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
+import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
-import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.ocr.OCRData;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
@@ -263,7 +264,7 @@ public class DerivansPathResolver {
 		return (type == DerivateType.JPG || type == DerivateType.JPG_FOOTER);
 	}
 	
-	public Path calculatePDFPath(DescriptiveData dd, DerivateStepPDF step) throws DigitalDerivansException {
+	public Path calculatePDFPath(DescriptiveMetadata dd, DerivateStepPDF step) throws DigitalDerivansException {
 		Path pdfPath = step.getOutputPath();
 		if (!Files.isDirectory(pdfPath, LinkOption.NOFOLLOW_LINKS)) {
 			pdfPath = step.getOutputPath().getParent().resolve(pdfPath);

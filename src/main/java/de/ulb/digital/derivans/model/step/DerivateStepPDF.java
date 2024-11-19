@@ -6,7 +6,8 @@ import static de.ulb.digital.derivans.data.IMetadataStore.UNKNOWN;
 import java.util.Optional;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
-import de.ulb.digital.derivans.model.DescriptiveData;
+import de.ulb.digital.derivans.config.TypeConfiguration;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * Specific PDF Derivate Generation Step
@@ -19,10 +20,10 @@ public class DerivateStepPDF extends DerivateStep {
 	protected boolean enrichMetadata = true;
 	protected String paramOCR = DEFAULT_INPUT_FULLTEXT;
 	protected String paramImages = DEFAULT_INPUT_IMAGES;
-	private int imageDpi = DefaultConfiguration.PDF_IMAGE_DPI;
+	private int imageDpi = DefaultConfiguration.DEFAULT_IMAGE_DPI;
 	private Boolean debugRender = Boolean.FALSE;
-	private String renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
-	private String renderModus = DefaultConfiguration.DEFAULT_RENDER_VISIBILTY;
+	private TypeConfiguration renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
+	private TypeConfiguration renderModus = DefaultConfiguration.DEFAULT_RENDER_VISIBILTY;
 	private Optional<String> modsIdentifierXPath = Optional.empty();
 	private String conformanceLevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
 	private String author = UNKNOWN;
@@ -57,19 +58,19 @@ public class DerivateStepPDF extends DerivateStep {
 		this.debugRender = debugRender;
 	}
 
-	public String getRenderLevel() {
+	public TypeConfiguration getRenderLevel() {
 		return this.renderLevel;
 	}
 
-	public void setRenderLevel(String level) {
+	public void setRenderLevel(TypeConfiguration level) {
 		this.renderLevel = level;
 	}
 
-	public String getRenderModus() {
+	public TypeConfiguration getRenderModus() {
 		return this.renderModus;
 	}
 
-	public void setRenderModus(String modus) {
+	public void setRenderModus(TypeConfiguration modus) {
 		this.renderModus = modus;
 	}
 
@@ -163,14 +164,14 @@ public class DerivateStepPDF extends DerivateStep {
 
 	/**
 	 * 
-	 * Enrich information from {@link DescriptiveData descriptive metadata (dmd)}.
+	 * Enrich information from {@link DescriptiveMetadata descriptive metadata (dmd)}.
 	 * 
 	 * _Attention_:
 	 * Overrides license from configuration, if present.
 	 * 
 	 * @param dd
 	 */
-	public void mergeDescriptiveData(DescriptiveData dd) {
+	public void mergeDescriptiveData(DescriptiveMetadata dd) {
 		Optional<String> optMetaLicense = dd.getLicense();
 		if (optMetaLicense.isPresent()) {
 			this.setLicense(optMetaLicense);

@@ -8,9 +8,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -25,6 +27,13 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.io.RandomAccessReadBufferedFile;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.common.PDMetadata;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -36,15 +45,20 @@ import org.jdom2.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 
 import de.ulb.digital.derivans.data.IMetadataStore;
-import de.ulb.digital.derivans.derivate.pdf.PDFInspector;
+import de.ulb.digital.derivans.data.xml.XMLHandler;
+import de.ulb.digital.derivans.model.pdf.MetadataType;
+import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 
 /**
  * 
- * Some little test helpers assembled adhere
+ * Little test helpers assembled adhere
  * 
  * @author u.hartwig
  */
 public class TestHelper {
+
+	static String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+	static String METS_SCHEMA = "http://www.loc.gov/METS/";
 
 	public static void generateImages(Path imageDir, int width, int height, int number, String labelFormat)
 			throws IOException {
@@ -144,7 +158,7 @@ public class TestHelper {
 
 	public static String getText(Path writtenData, int pageNr) throws Exception {
 		PDFInspector inspector = new PDFInspector(writtenData);
-		return inspector.getPageText(pageNr, "", "");
+		return inspector.getPageText(pageNr);
 	}
 
 	public static String getTextAsSingleLine(Path writtenData, int pageNr) throws Exception {
@@ -162,8 +176,6 @@ public class TestHelper {
 	public static boolean validateXML(Path xmlPath, Path xsdPath) throws SAXException, IOException,
 			ParserConfigurationException {
 		var dbf = DocumentBuilderFactory.newInstance();
-		String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
-		String METS_SCHEMA = "http://www.loc.gov/METS/";
 		dbf.setAttribute(JAXP_SCHEMA_LANGUAGE, METS_SCHEMA);
 		dbf.setNamespaceAware(true);
 		DocumentBuilder parser = dbf.newDocumentBuilder();
@@ -174,5 +186,76 @@ public class TestHelper {
 		Validator validator = schema.newValidator();
 		validator.validate(new DOMSource(document));
 		return true;
+	}
+
+	public static class PDFInspector {
+
+		private Path pdfPath;
+
+		public PDFInspector(Path pdfPath) {
+			this.pdfPath = pdfPath;
+		}
+
+		public Path getPdfPath() {
+			return pdfPath;
+		}
+
+		public String getPageTextLinebreaksReplaced(int pageNr) throws DigitalDerivansException {
+			var someText = getPageText(pageNr);
+			if (!someText.isEmpty()) {
+				return someText.replace("\n", " ");
+			}
+			return someText;
+		}
+
+		/**
+		 * 
+		 * Simple approach to check if page contains any textual data
+		 * Please note: Page count starts by "1", this is the very first page.
+		 * Textual representation is actually not 1:1 identical
+		 * 
+		 * @param pageNr
+		 * @return
+		 * @throws DigitalDerivansException
+		 */
+		public String getPageText(int pageNr) throws DigitalDerivansException {
+			try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfPath))) {
+				var stripper = new PDFTextStripper();
+				stripper.setStartPage(pageNr);
+				stripper.setEndPage(pageNr + 1);
+				return stripper.getText(document);
+			} catch (IOException e) {
+				var msg = this.pdfPath + ": " + e.getMessage();
+				throw new DigitalDerivansException(msg);
+			}
+		}
+
+		/**
+		 * 
+		 *  Retrive information concerning PDF Metadata
+		 * 
+		 * @return
+		 * @throws IOException
+		 */
+		public PDFMetadata getPDFMetaInformation() throws IOException,
+				DigitalDerivansException {
+			try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfPath))) {
+				PDDocumentInformation pdfInfo = document.getDocumentInformation();
+				String author = pdfInfo.getAuthor();
+				String title = pdfInfo.getTitle();
+				String creator = pdfInfo.getCreator();
+				EnumMap<MetadataType, String> mdMap = new EnumMap<>(MetadataType.class);
+				mdMap.put(MetadataType.AUTHOR, author);
+				mdMap.put(MetadataType.TITLE, title);
+				mdMap.put(MetadataType.CREATOR, creator);
+				PDDocumentCatalog catalog = document.getDocumentCatalog();
+				PDMetadata meta = catalog.getMetadata();
+				InputStream xmpStream = meta.exportXMPMetadata();
+				var handler = new XMLHandler(xmpStream);
+				var pdfMeta = new PDFMetadata(mdMap);
+				pdfMeta.setXmpMetadata(handler.getDocument());
+				return pdfMeta;
+			}
+		}
 	}
 }

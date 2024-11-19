@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.model.pdf.PDFDocument;
+import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
@@ -16,7 +16,7 @@ import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 public interface IPDFProcessor {
 	
 	/*
-	 * Minimal font size in points
+	 * Minimal font size in points(?)
 	 */
 	float MIN_CHAR_SIZE = .75f;
 
@@ -44,13 +44,13 @@ public interface IPDFProcessor {
 	/**
 	 * 
 	 * Write PDF file to given file descriptor
-	 * Return {@link PDFDocument}-instance for
+	 * Return {@link PDFResult}-instance for
 	 * introspection
 	 * 
 	 * @param fileDescriptor
 	 * @return
 	 * @throws DigitalDerivansException
 	 */
-	PDFDocument write(File fileDescriptor) throws DigitalDerivansException;
+	PDFResult write(File fileDescriptor) throws DigitalDerivansException;
 	
 }

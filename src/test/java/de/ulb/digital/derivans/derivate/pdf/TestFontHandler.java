@@ -8,7 +8,9 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
-import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.kernel.font.PdfFont;
+
+// import com.itextpdf.text.pdf.BaseFont;
 
 
 /**
@@ -40,7 +42,7 @@ public class TestFontHandler {
 	@Test
 	void testLoadFontDejaVuSansForPDF() throws Exception {
 		String path = "src/main/resources/ttf/DejaVuSans.ttf";
-		BaseFont baseFont = new FontHandler().forPDF(path);
+		PdfFont baseFont = new FontHandler().forPDF(path);
 		assertNotNull(baseFont);
 	}
 }

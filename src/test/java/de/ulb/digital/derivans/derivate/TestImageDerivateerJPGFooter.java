@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.DerivansPathResolver;
+import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPGFooter;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalFooter;

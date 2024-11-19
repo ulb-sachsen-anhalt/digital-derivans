@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.data.mets;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingInt;
@@ -19,26 +19,22 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.xml.validation.Validator;
-
 import java.util.Map.Entry;
-
 
 import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.ElementFilter;
-import org.jdom2.transform.JDOMSource;
 import org.jdom2.util.IteratorIterable;
+
 import org.mycore.mets.model.Mets;
 import org.mycore.mets.model.sections.DmdSec;
 import org.mycore.mets.model.struct.SmLink;
-import org.xml.sax.SAXException;
 
 import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.data.xml.XMLHandler;
 
 /**
  * 
@@ -47,7 +43,7 @@ import de.ulb.digital.derivans.DigitalDerivansException;
  * @author hartwig
  *
  */
-public class MetadataHandler {
+public class METSHandler {
 
 	private static final String METS_STRUCTMAP_TYPE_LOGICAL = "LOGICAL";
 	static final String METS_STRUCTMAP_TYPE = "TYPE";
@@ -78,7 +74,7 @@ public class MetadataHandler {
 
 	private Element primaryMods;
 
-	public MetadataHandler(Path pathFile) throws DigitalDerivansException {
+	public METSHandler(Path pathFile) throws DigitalDerivansException {
 		this.pathFile = pathFile;
 		this.handler = new XMLHandler(pathFile);
 		this.document = handler.getDocument();
@@ -430,7 +426,7 @@ class LogSubContainers extends ElementFilter {
 	/**
 	 * 
 	 * Construct a different filter which includes also
-	 * _all_ elements that have an {@link MetadataHandler.ID} 
+	 * _all_ elements that have an {@link de.ulb.digital.derivans.data.mets.ID} 
 	 * attribute set.
 	 * 
 	 * Be aware: 
@@ -446,14 +442,14 @@ class LogSubContainers extends ElementFilter {
 	public Element filter(Object content) {
 		if (content instanceof Element) {
 			Element el = (Element) content;
-			if (!MetadataHandler.METS_CONTAINER.equals(el.getName())) {
+			if (!METSHandler.METS_CONTAINER.equals(el.getName())) {
 				return null;
 			}
-			if (!MetadataHandler.NS_METS.equals(el.getNamespace())) {
+			if (!METSHandler.NS_METS.equals(el.getNamespace())) {
 				return null;
 			}
-			boolean hasDMDID = el.getAttribute(MetadataHandler.DMD_ID) != null;
-			boolean hasID = el.getAttribute(MetadataHandler.METS_CONTAINER_ID) != null;
+			boolean hasDMDID = el.getAttribute(METSHandler.DMD_ID) != null;
+			boolean hasID = el.getAttribute(METSHandler.METS_CONTAINER_ID) != null;
 			if (hasDMDID || hasID) {
 				return el;
 			}
@@ -499,20 +495,20 @@ class ModsFilter extends ElementFilter {
 class TypeFilter extends ElementFilter {
 
 	static final String[] TYPES = {
-		StructureDFGViewer.MONOGRAPH.getLabel(),
-		StructureDFGViewer.MANUSCRIPT.getLabel(),
-		StructureDFGViewer.MAP.getLabel(),
-		StructureDFGViewer.ATLAS.getLabel(),
-		StructureDFGViewer.VOLUME.getLabel(),
-		StructureDFGViewer.ISSUE.getLabel(),
-		StructureDFGViewer.ADDITIONAL.getLabel(),
+		METSContainerType.MONOGRAPH.getLabel(),
+		METSContainerType.MANUSCRIPT.getLabel(),
+		METSContainerType.MAP.getLabel(),
+		METSContainerType.ATLAS.getLabel(),
+		METSContainerType.VOLUME.getLabel(),
+		METSContainerType.ISSUE.getLabel(),
+		METSContainerType.ADDITIONAL.getLabel(),
 	};
 
 	@Override
 	public Element filter(Object content) {
 		if (content instanceof Element) {
 			Element el = (Element) content;
-			String elType = el.getAttributeValue(MetadataHandler.METS_TYPE);
+			String elType = el.getAttributeValue(METSHandler.METS_TYPE);
 			for (String t : TYPES) {
 				if (t.equals(elType)) {
 					return el;
@@ -531,7 +527,7 @@ class MetsDivFilter extends ElementFilter {
 	public Element filter(Object content) {
 		if (content instanceof Element) {
 			Element el = (Element) content;
-			if (MetadataHandler.METS_CONTAINER.equals(el.getName())) {
+			if (METSHandler.METS_CONTAINER.equals(el.getName())) {
 				return el;
 			}
 		}

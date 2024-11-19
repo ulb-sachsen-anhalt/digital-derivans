@@ -16,9 +16,10 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.model.DescriptiveData;
+import de.ulb.digital.derivans.data.mets.MetadataStore;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
@@ -31,15 +32,15 @@ class TestMetadataStoreVLS {
 
 	static IMetadataStore mds737429;
 
-	static DescriptiveData dd737429;
+	static DescriptiveMetadata dd737429;
 
 	static IMetadataStore mds201517;
 
-	static DescriptiveData dd201517;
+	static DescriptiveMetadata dd201517;
 
 	static IMetadataStore mds5175671;
 
-	static DescriptiveData dd5175671;
+	static DescriptiveMetadata dd5175671;
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {

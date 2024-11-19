@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.data.mets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +14,19 @@ import org.jdom2.Element;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
-import de.ulb.digital.derivans.model.DescriptiveData;
+import de.ulb.digital.derivans.data.IDescriptiveMetadataBuilder;
+import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
- * Builder for descriptive Metadata from METS/MODS
+ * Implementation of {@link IDescriptiveMetadataBuilder Descriptive metadata builder} 
+ * from METS/MODS information
  * 
  * @author u.hartwig
  *
  */
-class DescriptiveDataBuilder {
+public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 
 	private String urn = IMetadataStore.UNKNOWN;
 
@@ -41,40 +44,47 @@ class DescriptiveDataBuilder {
 
 	private Element primeMods;
 
-	private static final Logger LOGGER = LogManager.getLogger(DescriptiveDataBuilder.class);
+	private static final Logger LOGGER = LogManager.getLogger(DescriptiveMetadataBuilder.class);
 
-	DescriptiveDataBuilder urn() {
+	@Override
+	public IDescriptiveMetadataBuilder urn() {
 		this.urn = getURN();
 		return this;
 	}
 
-	DescriptiveDataBuilder person() {
+	@Override
+	public IDescriptiveMetadataBuilder person() {
 		this.person = getPerson();
 		return this;
 	}
 
-	DescriptiveDataBuilder identifier() throws DigitalDerivansException {
+	@Override
+	public IDescriptiveMetadataBuilder identifier() throws DigitalDerivansException {
 		this.identifier = loadIdentifier();
 		return this;
 	}
 
-	DescriptiveDataBuilder title() {
+	@Override
+	public IDescriptiveMetadataBuilder title() {
 		this.title = getTitle();
 		return this;
 	}
 
-	DescriptiveDataBuilder access() {
+	@Override
+	public IDescriptiveMetadataBuilder access() {
 		accessCondition = getAccessCondition();
 		return this;
 	}
 
-	DescriptiveDataBuilder year() {
+	@Override
+	public IDescriptiveMetadataBuilder year() {
 		year = getYear();
 		return this;
 	}
 
-	DescriptiveData build() {
-		DescriptiveData dd = new DescriptiveData();
+	@Override
+	public DescriptiveMetadata build() {
+		DescriptiveMetadata dd = new DescriptiveMetadata();
 		dd.setUrn(urn);
 		dd.setIdentifier(identifier);
 		dd.setTitle(title);
@@ -85,22 +95,22 @@ class DescriptiveDataBuilder {
 		return dd;
 	}
 
-	String getPerson() {
+	public String getPerson() {
 		if (this.primeMods != null) {
 			List<Element> nameSubtrees = this.primeMods.getChildren("name", IMetadataStore.NS_MODS);
 
 			// collect proper name relations
-			Map<MARCRelator, List<Element>> properRelations = getDesiredRelations(nameSubtrees);
+			Map<MODSRelator, List<Element>> properRelations = getDesiredRelations(nameSubtrees);
 			if (properRelations.isEmpty()) {
 				LOGGER.warn("found no proper related persons!");
 				return IMetadataStore.UNKNOWN;
 			}
 
 			// assume we have pbl's or aut's candidates
-			if (properRelations.containsKey(MARCRelator.AUTHOR)) {
-				return getSomeName(properRelations.get(MARCRelator.AUTHOR));
-			} else if (properRelations.containsKey(MARCRelator.PUBLISHER)) {
-				return getSomeName(properRelations.get(MARCRelator.PUBLISHER));
+			if (properRelations.containsKey(MODSRelator.AUTHOR)) {
+				return getSomeName(properRelations.get(MODSRelator.AUTHOR));
+			} else if (properRelations.containsKey(MODSRelator.PUBLISHER)) {
+				return getSomeName(properRelations.get(MODSRelator.PUBLISHER));
 			}
 
 		}
@@ -135,14 +145,14 @@ class DescriptiveDataBuilder {
 		return IMetadataStore.UNKNOWN;
 	}
 
-	private Map<MARCRelator, List<Element>> getDesiredRelations(List<Element> nameSubtrees) {
-		Map<MARCRelator, List<Element>> map = new TreeMap<>();
+	private Map<MODSRelator, List<Element>> getDesiredRelations(List<Element> nameSubtrees) {
+		Map<MODSRelator, List<Element>> map = new TreeMap<>();
 		for (Element e : nameSubtrees) {
 			for (Element f : e.getChildren("role", IMetadataStore.NS_MODS)) {
 				for (Element g : f.getChildren("roleTerm", IMetadataStore.NS_MODS)) {
 					if ("code".equals(g.getAttributeValue("type"))) {
 						String code = g.getTextNormalize();
-						MARCRelator rel = MARCRelator.forCode(code);
+						MODSRelator rel = MODSRelator.forCode(code);
 						switch (rel) {
 							case AUTHOR:
 							case PUBLISHER:
@@ -292,6 +302,7 @@ class DescriptiveDataBuilder {
 		return IMetadataStore.UNKNOWN;
 	}
 
+	@Override
 	public void setMetadataStore(MetadataStore store) {
 		this.store = store;
 		this.primeMods = store.getMetadataHandler().getPrimaryMods();
@@ -310,7 +321,6 @@ class PredicateEventTypePublication implements Predicate<Element> {
 
 	@Override
 	public boolean test(Element el) {
-
 		if (el.getAttribute("eventType") != null) {
 			String val = el.getAttributeValue("eventType");
 			return val.equalsIgnoreCase("publication");
@@ -318,37 +328,4 @@ class PredicateEventTypePublication implements Predicate<Element> {
 		return false;
 	}
 
-}
-
-/**
- * 
- * Map MARC relator codes with enum
- * 
- * @author u.hartwig
- *
- */
-enum MARCRelator {
-
-	AUTHOR("aut"),
-	ASSIGNED_NAME("asn"),
-	CONTRIBUTOR("ctb"),
-	OTHER("oth"),
-	PUBLISHER("pbl"),
-	PRINTER("prt"),
-	UNKNOWN("n.a.");
-
-	private String code;
-
-	private MARCRelator(String code) {
-		this.code = code;
-	}
-
-	public static MARCRelator forCode(String code) {
-		for (MARCRelator e : values()) {
-			if (e.code.equals(code)) {
-				return e;
-			}
-		}
-		return UNKNOWN;
-	}
 }

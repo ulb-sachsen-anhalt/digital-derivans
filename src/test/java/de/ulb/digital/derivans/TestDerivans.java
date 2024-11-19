@@ -317,6 +317,15 @@ public class TestDerivans {
 		assertTrue(excResult.getMessage().startsWith("No pages for PDF "));
 	}
 
+	/**
+	 * 
+	 * Changed due usage of PDFBox
+	 * iText5 "SOLEMNI PANEGYRI AVGVSTISSIMO"
+	 * PDFBox "SOLEMNI PANEGYRIAVGVSTISSIMO""
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	void test737429EnforcePDFTextlayer(@TempDir Path tempDir) throws Exception {
 
@@ -337,6 +346,6 @@ public class TestDerivans {
 		assertTrue(Files.exists(pdfWritten));
 		var textPageOne = TestHelper.getTextAsSingleLine(pdfWritten, 1);
 		assertFalse(textPageOne.isBlank());
-		assertTrue(textPageOne.contains("SOLEMNI PANEGYRI AVGVSTISSIMO"));
+		assertTrue(textPageOne.contains("SOLEMNI PANEGYRIAVGVSTISSIMO"));
 	}
 }

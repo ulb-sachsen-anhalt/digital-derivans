@@ -19,7 +19,7 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
-import de.ulb.digital.derivans.model.pdf.PDFDocument;
+import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
@@ -34,7 +34,7 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  */
 class TestPDFImagesDiffer {
 
-	static PDFDocument resultDoc;
+	static PDFResult resultDoc;
 
 	@BeforeAll
 	static void initAll(@TempDir Path tempDir) throws Exception {
@@ -71,7 +71,7 @@ class TestPDFImagesDiffer {
 
 		// act
 		handler.create();
-		resultDoc = handler.getPDFDocument();
+		resultDoc = handler.getPDFResult();
 	}
 	
 	@Test
@@ -101,12 +101,14 @@ class TestPDFImagesDiffer {
 	}
 
 	/**
-	 * Image dimension greatly reduced by rendering since iText
-	 * assumes we input 72 DPI data, but for real we handle
+	 * Image dimension depends on actual
+	 * PDF rendering backend
+	 * 
+	 * iText5 assumed input 72 DPI data, even for
 	 * 300 DPI scanner data
 	 * 
-	 * 168: was 700
-	 * 144: was 600
+	 * 168 vs. 700
+	 * 144 vs. 600
 	 */
 	@Test
 	void inspectPageOneDimension() {
@@ -117,8 +119,8 @@ class TestPDFImagesDiffer {
 
 	/**
 	 * cf. {@link #inspectPageOneDimension()}
-	 * 240: was 1000
-	 * 144: was 600
+	 * 240 vs. 1000
+	 * 144 vs. 600
 	 */
 	@Test
 	void inspectPageTwoDimension() {

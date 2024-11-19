@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.model;
+package de.ulb.digital.derivans.model.pdf;
 
 import java.util.Optional;
 
@@ -26,7 +26,7 @@ import de.ulb.digital.derivans.data.IMetadataStore;
  * @author u.hartwig
  *
  */
-public class DescriptiveData {
+public class DescriptiveMetadata {
 
 	private String urn = IMetadataStore.UNKNOWN;
 

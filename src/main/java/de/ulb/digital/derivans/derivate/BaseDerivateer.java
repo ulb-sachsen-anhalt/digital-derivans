@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.DerivansPathResolver;
+import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.step.DerivateType;

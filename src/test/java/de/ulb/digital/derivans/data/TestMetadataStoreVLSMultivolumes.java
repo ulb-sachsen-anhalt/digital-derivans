@@ -17,9 +17,10 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.model.DescriptiveData;
+import de.ulb.digital.derivans.data.mets.MetadataStore;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
@@ -32,15 +33,15 @@ class TestMetadataStoreVLSMultivolumes {
 
 	static IMetadataStore mds19788;
 
-	static DescriptiveData dd19788;
+	static DescriptiveMetadata dd19788;
 
 	static IMetadataStore mds11250807;
 
-	static DescriptiveData dd11250807;
+	static DescriptiveMetadata dd11250807;
 
 	static IMetadataStore mds9427337;
 
-	static DescriptiveData dd9427337;
+	static DescriptiveMetadata dd9427337;
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
@@ -85,7 +86,7 @@ class TestMetadataStoreVLSMultivolumes {
 		IMetadataStore mds = new MetadataStore(TestResource.MENA_Af_1237560.get());
 
 		// act
-		DescriptiveData dd = mds.getDescriptiveData();
+		DescriptiveMetadata dd = mds.getDescriptiveData();
 
 		// assert
 		assertEquals("385228910", dd.getIdentifier());

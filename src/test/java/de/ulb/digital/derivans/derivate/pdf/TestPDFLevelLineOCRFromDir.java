@@ -17,11 +17,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.data.DerivansPathResolver;
+import de.ulb.digital.derivans.config.TypeConfiguration;
+import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
-import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.pdf.PDFDocument;
+import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
@@ -33,9 +33,9 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  * @author hartwig
  *
  */
-class TestPDFNewspaperWithOCRFromDir {
+class TestPDFLevelLineOCRFromDir {
 
-	static PDFDocument resultDoc;
+	static PDFResult resultDoc;
 
 	@BeforeAll
 	static void initAll(@TempDir Path tempDir) throws Exception {
@@ -66,15 +66,17 @@ class TestPDFNewspaperWithOCRFromDir {
 		DerivateStepPDF step = new DerivateStepPDF();
 		step.setOutputPath(pathTarget);
 		step.setInputPath(pathImageMax);
-		DescriptiveData dd = new DescriptiveData();
+		step.setDebugRender(true);
+		step.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
+		// DescriptiveData dd = new DescriptiveData();
 		List<DigitalPage> pages = resolver.resolveFromStep(step);
 		resolver.enrichOCRFromFilesystem(pages, targetDir);
-		step.mergeDescriptiveData(dd);
+		// step.mergeDescsriptiveData(dd);
 		PDFDerivateer handler = new PDFDerivateer(input, output, pages, step);
 	
 		// act
 		handler.create();
-		resultDoc = handler.getPDFDocument();
+		resultDoc = handler.getPDFResult();
 	}
 	
 	@Test
@@ -104,9 +106,14 @@ class TestPDFNewspaperWithOCRFromDir {
 	}
 
 	/**
-	 * Image dimension greatly reduced by rendering since iText
-	 * assumes we input 72 DPI data, but for real we handle
-	 * 300 DPI scanner data, therefore scale by 72/300
+	 * Image dimension depends on actual
+	 * PDF rendering backend
+	 * 
+	 * iText5 assumed input 72 DPI data, even for
+	 * 300 DPI scanner data
+	 * 
+	 * 180 vs. 754
+	 * 252 vs. 1053
 	 */
 	@Test
 	void inspectPageOneDimensions() {
@@ -118,14 +125,14 @@ class TestPDFNewspaperWithOCRFromDir {
 	/**
 	 * 
 	 * Applied pretty low scale due original page was 8.000 x 10.000
-	 * and now only 750 x 1.000 (tenth in each dimension) and again
+	 * and now approx. 750 x 1.000 (tenth in each dimension) and again
 	 * due 72 DPI vs. 300 DPI issue scaled even more (approx 1/42)
 	 * 
 	 */
 	@Test
 	void inspectScale() {
 		float scale = resultDoc.getPdfPages().get(0).getScale();
-		assertEquals(0.0239, scale, 0.01);
+		assertEquals(0.023, scale, 0.01);
 	}
 
 	/**
@@ -134,17 +141,21 @@ class TestPDFNewspaperWithOCRFromDir {
 	 */
 	@Test
 	void inspectPageOne01stLine() {
-		var firstLine = resultDoc.getPdfPages().get(0).getlines().get(0);
+		var optFirstLine = resultDoc.getPdfPages().get(0).getTextcontent();
+		assertTrue(optFirstLine.isPresent());
+		var firstLine = optFirstLine.get().get(0);
 		assertFalse(firstLine.isPrinted());
 	}
 
 	@Test
 	void inspectPageOne02ndLine() {
-		var firstLine = resultDoc.getPdfPages().get(0).getlines().get(1);
+		var optFirstLine = resultDoc.getPdfPages().get(0).getTextcontent();
+		assertTrue(optFirstLine.isPresent());
+		var firstLine = optFirstLine.get().get(1);
 		assertTrue(firstLine.isPrinted());
 		assertEquals("Nr. 296 Seite 2",firstLine.getText());
 		assertEquals(2, Math.round(firstLine.getFontSize()));
-		assertEquals(17, firstLine.getBox().x);
-		assertEquals(8, firstLine.getBox().y);
+		assertEquals(17, (int)firstLine.getBox().getX());
+		assertEquals(241, (int)firstLine.getBox().getY());
 	}
 }

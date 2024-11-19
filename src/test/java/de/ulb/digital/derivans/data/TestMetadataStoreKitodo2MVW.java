@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.model.DescriptiveData;
+import de.ulb.digital.derivans.data.mets.MetadataStore;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
@@ -32,7 +33,7 @@ class TestMetadataStoreKitodo2MVW {
 		IMetadataStore mds = new MetadataStore(TestResource.K2_Af_140257772.get());
 		
 		// act
-		DescriptiveData dd140257772 = mds.getDescriptiveData();
+		DescriptiveMetadata dd140257772 = mds.getDescriptiveData();
 		
 		// assert
 		assertEquals("140257772", dd140257772.getIdentifier());
@@ -62,7 +63,7 @@ class TestMetadataStoreKitodo2MVW {
 		IMetadataStore mds = new MetadataStore(TestResource.K2_Af_030745780.get());
 		
 		// act
-		DescriptiveData dd = mds.getDescriptiveData();
+		DescriptiveMetadata dd = mds.getDescriptiveData();
 		
 		// assert
 		assertEquals("030745780", dd.getIdentifier());

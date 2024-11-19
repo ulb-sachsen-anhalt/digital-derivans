@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.data.mets;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,9 +29,9 @@ import de.ulb.digital.derivans.model.DigitalStructureTree;
  * @author hartwig
  *
  */
-class StructureMapper {
+public class METSStructLogical {
 
-	private static final Logger LOGGER = LogManager.getLogger(StructureMapper.class);
+	private static final Logger LOGGER = LogManager.getLogger(METSStructLogical.class);
 
 	// special case, where the complete physical section is
 	// linked to the top-most logical entity
@@ -49,7 +49,7 @@ class StructureMapper {
 
 	private boolean renderPlainLeafes;
 
-	public StructureMapper(Mets mets, String title) {
+	public METSStructLogical(Mets mets, String title) {
 		this(mets, title, true);
 	}
 
@@ -64,7 +64,7 @@ class StructureMapper {
 	 * @param title
 	 * @param renderPlainLeafes
 	 */
-	public StructureMapper(Mets mets, String title, boolean renderPlainLeafes) {
+	public METSStructLogical(Mets mets, String title, boolean renderPlainLeafes) {
 		this.mets = mets;
 		this.title = title;
 		this.renderPlainLeafes = renderPlainLeafes;
@@ -212,7 +212,7 @@ class StructureMapper {
 		// if any exists and if this is required
 		if (this.renderPlainLeafes) {
 			for (var leaf : mapedLeafs.leafs) {
-				String leafLabel = StructureMapper.getLabel(leaf);
+				String leafLabel = METSStructLogical.getLabel(leaf);
 				var leafStruct = new DigitalStructureTree(leaf.getOrder(), leafLabel);
 				leafStruct.setParentStructure(currentNode);
 				currentNode.addSubStructure(leafStruct);
@@ -361,7 +361,7 @@ class StructureMapper {
 	 * @return
 	 */
 	private static String mapLogicalType(String logicalStructType) {
-		Optional<String> optMapping = StructureDFGViewer.getTranslation(logicalStructType);
+		Optional<String> optMapping = METSContainerType.getTranslation(logicalStructType);
 		if (optMapping.isPresent()) {
 			return optMapping.get();
 		} else {

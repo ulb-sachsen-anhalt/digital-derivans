@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
-import de.ulb.digital.derivans.model.DescriptiveData;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
@@ -34,7 +34,7 @@ class TestPDFDerivateer {
 		// arrange mwe
 		DerivansData input = new DerivansData(Path.of("."), DerivateType.JPG);
 		DerivansData output = new DerivansData(Path.of("."), DerivateType.PDF);
-		DescriptiveData dd = new DescriptiveData();
+		DescriptiveMetadata dd = new DescriptiveMetadata();
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.mergeDescriptiveData(dd);
 

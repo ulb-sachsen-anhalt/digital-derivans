@@ -11,8 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.model.DescriptiveData;
+import de.ulb.digital.derivans.data.mets.MetadataStore;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
@@ -25,11 +26,11 @@ class TestMetadataStoreKitodo2 {
 
 	static IMetadataStore mds143074601;
 
-	static DescriptiveData dd143074601;
+	static DescriptiveMetadata dd143074601;
 
 	static IMetadataStore mds147573602;
 	
-	static DescriptiveData dd147573602;
+	static DescriptiveMetadata dd147573602;
 
 	@BeforeAll
 	static void setup() throws Exception {

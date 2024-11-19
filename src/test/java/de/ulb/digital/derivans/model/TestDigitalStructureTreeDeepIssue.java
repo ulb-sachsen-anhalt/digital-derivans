@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.data.MetadataStore;
+import de.ulb.digital.derivans.data.mets.MetadataStore;
 
 /**
  * 

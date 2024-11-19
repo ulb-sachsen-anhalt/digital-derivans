@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 
 /**
@@ -15,7 +16,7 @@ import de.ulb.digital.derivans.model.pdf.PDFMetadata;
  * @author hartwig
  *
  */
-class TestPDFInspector {
+class TestPDFMetadata {
 
 	/**
 	 * 
@@ -27,7 +28,7 @@ class TestPDFInspector {
 	void testReadMetaInformationFromPDF01() throws Exception {
 		// act
 		Path pdfPath = Paths.get("src/test/resources/pdf/169683404X.pdf");
-		PDFInspector inspector = new PDFInspector(pdfPath);
+		var inspector = new TestHelper.PDFInspector(pdfPath);
 		PDFMetadata pdfMetaInformation = inspector.getPDFMetaInformation();
 
 		// assert

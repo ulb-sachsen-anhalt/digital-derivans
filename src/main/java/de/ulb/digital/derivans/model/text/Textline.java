@@ -1,13 +1,14 @@
 package de.ulb.digital.derivans.model.text;
 
-import java.awt.Rectangle;
 import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import de.ulb.digital.derivans.model.ICharacterToken;
+import de.ulb.digital.derivans.model.ITextElement;
+import de.ulb.digital.derivans.model.IVisualElement;
 
 /**
  * 
@@ -16,28 +17,33 @@ import de.ulb.digital.derivans.model.ICharacterToken;
  * @author u.hartwig
  *
  */
-public class Textline implements ICharacterToken {
+public class Textline implements IVisualElement, ITextElement {
 	
 	private List<Word> textTokens = new ArrayList<>();
-	
+
 	private String actualText = "";
 	
 	private Area area;
+
+	private Rectangle2D rect;
 
 	public Textline() {
 	}
 	
 	public Textline(List<Word> texts) {
-		this.textTokens = texts;
+		for (Word w : texts) {
+			w.setParent(this);
+		}
+		this.textTokens.addAll(texts);
 		this.calculateArea();
 		this.actualText = String.join(" ",
-				texts.stream().map(ICharacterToken::getText).filter(Objects::nonNull).collect(Collectors.toList()));
+				texts.stream().map(ITextElement::getText).filter(Objects::nonNull).collect(Collectors.toList()));
 	}
 
 	public void calculateArea() {
-		List<Rectangle> wordBoxes = textTokens.stream().map(ICharacterToken::getBox).collect(Collectors.toList());
+		List<Rectangle2D> wordBoxes = textTokens.stream().map(IVisualElement::getBox).collect(Collectors.toList());
 		this.area = new Area();
-		for (Rectangle r : wordBoxes) {
+		for (Rectangle2D r : wordBoxes) {
 			this.area.add(new Area(r));
 		}
 	}
@@ -50,16 +56,17 @@ public class Textline implements ICharacterToken {
 		return this.area;
 	}
 
-	public Rectangle getBox() {
-		return this.area.getBounds();
+	@Override
+	public Rectangle2D getBox() {
+		if (this.rect != null) {
+			return this.rect;
+		}
+		return this.area.getBounds2D();
 	}
 
-	public List<ICharacterToken> getTokens() {
-		return new ArrayList<>(this.textTokens);
-	}
-
-	public String getLabel() {
-		return "TextLine";
+	@Override
+	public void setBox(Rectangle2D rectangle) {
+		this.rect = rectangle;
 	}
 
 	@Override
@@ -72,9 +79,12 @@ public class Textline implements ICharacterToken {
 		return builder.toString();
 	}
 
-	@Override
-	public void scale(float ratio) {
-		// TODO Auto-generated method stub
-		
+	public void add(Word textElement) {
+		this.textTokens.add(textElement);
 	}
+
+	public List<Word> getWords() {
+		return this.textTokens;
+	}
+
 }

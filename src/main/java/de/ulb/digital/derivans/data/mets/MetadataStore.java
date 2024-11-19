@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.data.mets;
 
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -20,11 +20,13 @@ import org.mycore.mets.model.struct.PhysicalStructMap;
 import org.mycore.mets.model.struct.PhysicalSubDiv;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.data.IDescriptiveMetadataBuilder;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
-import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.ocr.OCRData;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
@@ -37,9 +39,9 @@ public class MetadataStore implements IMetadataStore {
 
 	private static final Logger LOGGER = LogManager.getLogger(MetadataStore.class);
 
-	private DescriptiveData descriptiveData;
+	private DescriptiveMetadata descriptiveData;
 
-	private MetadataHandler handler;
+	private METSHandler handler;
 
 	private Mets mets;
 
@@ -67,7 +69,7 @@ public class MetadataStore implements IMetadataStore {
 	 */
 	public MetadataStore(Path filePath) throws DigitalDerivansException {
 		this.storePath = Optional.of(filePath.toString());
-		this.handler = new MetadataHandler(filePath);
+		this.handler = new METSHandler(filePath);
 		this.mets = handler.getMets();
 		LOGGER.info("created new metadatastore from '{}'", filePath);
 	}
@@ -94,7 +96,7 @@ public class MetadataStore implements IMetadataStore {
 
 	@Override
 	public DigitalStructureTree getStructure() throws DigitalDerivansException {
-		StructureMapper creator = new StructureMapper(mets, getDescriptiveData().getTitle());
+		METSStructLogical creator = new METSStructLogical(mets, getDescriptiveData().getTitle());
 		return creator.build();
 	}
 
@@ -138,7 +140,7 @@ public class MetadataStore implements IMetadataStore {
 		return pages;
 	}
 
-	public MetadataHandler getMetadataHandler() {
+	public METSHandler getMetadataHandler() {
 		return this.handler;
 	}
 
@@ -273,14 +275,14 @@ public class MetadataStore implements IMetadataStore {
 	}
 
 	@Override
-	public DescriptiveData getDescriptiveData() throws DigitalDerivansException {
+	public DescriptiveMetadata getDescriptiveData() throws DigitalDerivansException {
 		if (descriptiveData == null) {
-			DescriptiveDataBuilder builder = new DescriptiveDataBuilder();
+			IDescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
 			builder.setMetadataStore(this);
 			descriptiveData = builder.person().access().identifier().title().urn().year().build();
 		} else if(this.xPathIdentifier.isPresent()) {
 			// identifier might have changed just for PDF labelling
-			DescriptiveDataBuilder builder = new DescriptiveDataBuilder();
+			IDescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
 			builder.setMetadataStore(this);
 			builder.identifier();
 			descriptiveData.setIdentifier(builder.build().getIdentifier());

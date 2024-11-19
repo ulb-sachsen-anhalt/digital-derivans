@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.data.mets;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * @author hartwig
  * 
  */
-public enum StructureDFGViewer {
+public enum METSContainerType {
 
 	SECTION("section", "Abschnitt"),
 	FILE("file", "Akte"),
@@ -106,7 +106,7 @@ public enum StructureDFGViewer {
 	DEDICATION("dedication", "Widmung"),
 	NEWSPAPER("newspaper", "Zeitung");
 
-	private StructureDFGViewer(String label, String translation) {
+	private METSContainerType(String label, String translation) {
 		this.label = label;
 		this.translation = translation;
 	}
@@ -115,7 +115,7 @@ public enum StructureDFGViewer {
 	private String translation;
 
 	public static Optional<String> getTranslation(String label) {
-		Optional<StructureDFGViewer> optMatch = Arrays.stream(StructureDFGViewer.values())
+		Optional<METSContainerType> optMatch = Arrays.stream(METSContainerType.values())
 				.filter(struct -> struct.label.equals(label))
 				.findFirst();
 		if (optMatch.isPresent()) {

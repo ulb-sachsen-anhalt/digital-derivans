@@ -41,9 +41,7 @@ public class DefaultConfiguration {
 	 */
 	public static final String PDFA_CONFORMANCE_LEVEL = "PDF_A_1B";
 	
-	public static final int PDF_IMAGE_DPI = 300;
-
-	public static final String DEFAULT_FONT = "./src/test/resources/ttf/FreeMonoBold.ttf";
+	public static final int DEFAULT_IMAGE_DPI = 300;
 
 	public static final String DEFAULT_INPUT_TYPE = "jpg";
 	
@@ -71,9 +69,9 @@ public class DefaultConfiguration {
 
 	public static final String DEFAULT_CONFIG_FILE_LABEL = "derivans.ini";
 
-	public static final String DEFAULT_RENDER_LEVEL = "line";
+	public static final TypeConfiguration DEFAULT_RENDER_LEVEL = TypeConfiguration.RENDER_LEVEL_LINE;
 
-	public static final String DEFAULT_RENDER_VISIBILTY = "invisible";
+	public static final TypeConfiguration DEFAULT_RENDER_VISIBILTY = TypeConfiguration.RENDER_MODUS_HIDE;
 	
 	private DefaultConfiguration() {
 	}

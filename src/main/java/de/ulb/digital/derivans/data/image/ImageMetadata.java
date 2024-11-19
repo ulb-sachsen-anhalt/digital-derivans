@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.data.image;
 
 import java.io.File;
 import java.io.IOException;

@@ -17,7 +17,7 @@ import de.ulb.digital.derivans.model.text.Textline;
  * @author u.hartwig
  *
  */
-public class TestPage2019Reader {
+class TestPage2019Reader {
 
 	/**
 	 * Read ALTO V4 Data produced by ocrd_formatconverter from resulting PAGE 2019
@@ -38,7 +38,7 @@ public class TestPage2019Reader {
 		Textline loi = actual.getTextlines().get(3);
 		assertEquals("[1126.0x63.0]So Guth als Blut für Ihn zu geben!", loi.toString());
 		assertEquals("So Guth als Blut für Ihn zu geben!", loi.getText());
-		assertEquals("Guth", loi.getTokens().get(1).getText());
+		assertEquals("Guth", loi.getWords().get(1).getText());
 		// geometric data
 		var line15Shape = loi.getArea();
 		assertEquals(new Rectangle(362, 1764, 1126, 63), line15Shape.getBounds());

@@ -2,18 +2,18 @@ package de.ulb.digital.derivans;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
-import de.ulb.digital.derivans.data.DerivansPathResolver;
 import de.ulb.digital.derivans.data.IMetadataStore;
-import de.ulb.digital.derivans.data.MetadataStore;
+import de.ulb.digital.derivans.data.io.DerivansPathResolver;
+import de.ulb.digital.derivans.data.mets.MetadataStore;
 import de.ulb.digital.derivans.derivate.*;
 import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPG;
 import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPGFooter;
 import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPGFooterGranular;
 import de.ulb.digital.derivans.derivate.pdf.PDFDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
-import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 import de.ulb.digital.derivans.model.step.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -153,7 +153,7 @@ public class Derivans {
                 pdfStep.setConformanceLevel(pdfALevel);
                 pdfStep.setDebugRender(config.isDebugPdfRender());
                 pdfStep.setNamePDF(this.config.getNamePDF());
-                DescriptiveData descriptiveData = new DescriptiveData();
+                DescriptiveMetadata descriptiveData = new DescriptiveMetadata();
                 if (this.optMetadataStore.isPresent()) {
                     var store = this.optMetadataStore.get();
                     String storePath = store.usedStore();

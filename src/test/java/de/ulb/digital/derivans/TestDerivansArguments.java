@@ -1,7 +1,6 @@
 package de.ulb.digital.derivans;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -80,11 +79,10 @@ public class TestDerivansArguments {
 		// act
 		derivans.create();
 		derivateers = derivans.getDerivateers();
-		// steps = derivans.getSteps();
 	}
 
 	@Test
-	void testPDFWritten() throws Exception {
+	void testPDFWritten() {
 		Path pdfWritten = workDir.resolve(NAME_PDF_FILE);
 		assertTrue(Files.exists(pdfWritten));
 	}

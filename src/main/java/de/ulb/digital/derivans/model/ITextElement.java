@@ -1,11 +1,12 @@
 package de.ulb.digital.derivans.model;
 
-import java.awt.Rectangle;
-
 /**
- * Mark character tokens with planar representation
+ * Basic textual/character token
+ * 
+ * @author hartwig
+ * 
  */
-public interface ICharacterToken {
+public interface ITextElement {
 
     /**
      * Get textual UTF-8 representation
@@ -13,23 +14,6 @@ public interface ICharacterToken {
      * @return
      */
     String getText();
-
-    /**
-     * 
-     * Get simplified rectangular shape of token
-     * 
-     * @return
-     */
-    Rectangle getBox();
-
-    /**
-     * 
-     * Descriptive Label may be used for aggregated tokens
-     * like text lines which lack inherent textual content  
-     * 
-     * @return
-     */
-    String getLabel();
 
     /**
      * 
@@ -69,11 +53,4 @@ public interface ICharacterToken {
         return true;
     }
 
-    /**
-     * 
-     * Scale bounding box by ratio from upper left
-     * 
-     * @param ratio
-     */
-	void scale(float ratio);
 }

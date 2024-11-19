@@ -13,23 +13,24 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.data.DerivansPathResolver;
+import de.ulb.digital.derivans.config.TypeConfiguration;
+import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.pdf.PDFDocument;
+import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
- * introspect rahbar print
+ * introspect rahbar farsi PDF result
  * 
  * @author hartwig
  *
  */
 public class TestPDFRahbarOCRWords {
 
-	static PDFDocument resultDoc;
+	static PDFResult wordLvlResult;
 
 	@TempDir
 	static Path tempDir;
@@ -66,34 +67,61 @@ public class TestPDFRahbarOCRWords {
 		step.setInputPath(pathImageMax);
 		List<DigitalPage> pages = resolver.resolveFromStep(step);
 		resolver.enrichOCRFromFilesystem(pages, targetOcrDir);
-		step.setRenderLevel("word");
-		PDFDerivateer handler = new PDFDerivateer(input, output, pages, step);
+		step.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
+		step.setDebugRender(true);
+		PDFDerivateer wordLvlDerivateer = new PDFDerivateer(input, output, pages, step);
 	
 		// act
-		handler.create();
-		resultDoc = handler.getPDFDocument();
+		wordLvlDerivateer.create();
+		wordLvlResult = wordLvlDerivateer.getPDFResult();
 	}
 
 	@Test
 	void testPDFWordLevelWritten() {
 		assertTrue(Files.exists(pdfPathWord));
+		assertTrue(Files.exists(wordLvlResult.getPath()));
 	}
 
+	/**
+	 * 
+	 * Original ALTO/OCR 
+	 * 	line x:1017, y:342, w: 697, h:51
+	 * 		word0001 x: 1061, y: 342, w: 60, h: 48, content: "دیبا"
+	 * 		word0002 x: 1019, y: 350, w: 30, h: 40, content: "چه"
+	 * image: 3173 x 2289 300 DPI => 
+	 */
+	@Test
+	void testWordLevelPage01Line01ElementCoords() {
+		var optLine01 = wordLvlResult.getPdfPages().get(0).getTextcontent();
+		assertTrue(optLine01.isPresent());
+		var line01 = optLine01.get().get(0);
+		var baseline01 = line01.getBaseline();
+		assertEquals(244.0, baseline01.getX1());
+		assertEquals(410.0, baseline01.getX2());
+		assertEquals(667.5, baseline01.getY1());
+		assertEquals(678, line01.getBox().getMaxY());
+		assertEquals(baseline01.getY1(), baseline01.getY2());
+		assertEquals(166, baseline01.length());
+
+		var word01 = line01.getChildren().get(0);
+		var word02 = line01.getChildren().get(1);
+		assertEquals(word01.getBox().getMaxY(), word02.getBox().getMaxY()); // same bottom line
+	}
+	
 	/**
 	 * Please note:
 	 * This test is *not really* valuable with current
 	 * TextExtractionStrategy because it shadows the
 	 * fact that the characters order is okay
 	 * therefore "ﻪﭼ" is actually "چه"
-	 * ﻪﭼ
-	 * 
 	 */
 	@Test
-	void testWordLevelPage01Contents() {
-		var lineword01 = resultDoc.getPdfPages().get(0).getlines().get(0).getText();
-		assertEquals("دیبا", lineword01);
-		var lineword02 = resultDoc.getPdfPages().get(0).getlines().get(1).getText();
-		assertEquals("چه", lineword02);
+	void testWordLevelPage01Line01Text() {
+		var optLine01 = wordLvlResult.getPdfPages().get(0).getTextcontent();
+		assertTrue(optLine01.isPresent());
+		var line01 = optLine01.get().get(0);
+		assertEquals("٨‏", line01.getChildren().get(0).getText());
+		assertEquals("ديباجه", line01.getChildren().get(1).getText());
 	}
 
 	/**
@@ -109,7 +137,7 @@ public class TestPDFRahbarOCRWords {
 	@Test
 	void testWordLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathWord, 1);
-		assertEquals(1616, textPage07.length());
+		assertEquals(1568, textPage07.length());
 	}
 
 }

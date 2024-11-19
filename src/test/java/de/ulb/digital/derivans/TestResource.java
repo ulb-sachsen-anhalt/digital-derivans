@@ -9,6 +9,7 @@ import java.nio.file.Path;
  * @author u.hartwig
  *
  */
+@SuppressWarnings("squid:S115")
 public enum TestResource {
 
 	/**
@@ -45,6 +46,13 @@ public enum TestResource {
 	 * contains duplicated logical structure
 	 */
 	VD18P_14163614(Path.of("src/test/resources/mets/vls/vd18p-14163614.mets.xml")),
+
+
+	/**
+	 * OCR formats
+	 */
+	VD_18_ALTO3(Path.of("src/test/resources/alto/148811035/FULLTEXT/320808.xml")),
+	VD_18_ALTO4(Path.of("src/test/resources/alto/148811035/FULLTEXT/320811.xml")),
 
 	/**
 	 * Kitodo 2
@@ -88,6 +96,7 @@ public enum TestResource {
 	VD18_Aa_VD18_MIG(Path.of("src/test/resources/mets/vls/vd18-Aa-16372279.mets.xml")),
 
 	SHARE_IT_VD18_43053(Path.of("src/test/resources/mets/share_it/1981185920_43053.xml")),
+	SHARE_IT_RAHBAR_88120_LEGACY(Path.of("src/test/resources/alto/1981185920_88120/1981185920_88120_00000010_legacy.xml")),
 	SHARE_IT_RAHBAR_88120(Path.of("src/test/resources/alto/1981185920_88120/1981185920_88120_00000010.xml")),
 	SHARE_IT_RAHBAR_94220(Path.of("src/test/resources/alto/1981185920_94220/00000805.xml")),
 	SHARE_IT_VD18_38841(Path.of("src/test/resources/mets/share_it/1981185920_38841.xml")),

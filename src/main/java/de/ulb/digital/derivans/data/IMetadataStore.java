@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.jdom2.Namespace;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.model.DescriptiveData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
@@ -49,10 +49,10 @@ public interface IMetadataStore {
 	 * May contain information about title, author, 
 	 * URN of the digital object and alike.
 	 * 
-	 * @return {@link DescriptiveData}
+	 * @return {@link DescriptiveMetadata}
 	 * @throws {@link DigitalDerivansException}
 	 */
-	DescriptiveData getDescriptiveData() throws DigitalDerivansException;
+	DescriptiveMetadata getDescriptiveData() throws DigitalDerivansException;
 
 	/**
 	 * 

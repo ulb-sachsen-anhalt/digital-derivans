@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.derivate.image;
 
+import static de.ulb.digital.derivans.data.image.ImageMetadata.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -20,8 +21,7 @@ import org.w3c.dom.NodeList;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.data.ImageMetadata;
-import static de.ulb.digital.derivans.data.ImageMetadata.*;
+import de.ulb.digital.derivans.data.image.ImageMetadata;
 
 /**
  * 

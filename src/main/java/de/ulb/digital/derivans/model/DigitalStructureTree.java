@@ -31,6 +31,13 @@ public class DigitalStructureTree {
 		this(value, label, new LinkedList<>());
 	}
 
+	/**
+	 * Number of page.
+	 * 
+	 * Please note: Valid order starts from "1"
+	 * 
+	 * @return pageNumber
+	 */
 	public int getPage() {
 		return page;
 	}

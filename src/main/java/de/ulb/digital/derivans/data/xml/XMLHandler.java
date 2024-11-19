@@ -1,7 +1,8 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.data.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,6 +41,15 @@ public class XMLHandler {
 
 	public XMLHandler(byte[] bytes) throws DigitalDerivansException {
 		this.document = this.parseBytes(bytes);
+	}
+
+	public XMLHandler(InputStream is) throws DigitalDerivansException {
+		try {
+			byte[] bArray = is.readAllBytes();
+			this.document = this.parseBytes(bArray);
+		} catch (IOException e) {
+			throw new DigitalDerivansException(e);
+		}
 	}
 
 	public XMLHandler(Path pathFile) throws DigitalDerivansException {

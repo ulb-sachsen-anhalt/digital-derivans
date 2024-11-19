@@ -15,7 +15,7 @@ import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.IPDFProcessor;
-import de.ulb.digital.derivans.model.pdf.PDFDocument;
+import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
@@ -41,8 +41,7 @@ public class PDFDerivateer extends BaseDerivateer {
 	
 	private IPDFProcessor pdfProcessor;
 
-	// usefull for testing purposes
-	private PDFDocument pdfDocument;
+	private PDFResult pdfResult;
 
 	/**
 	 * 
@@ -62,7 +61,7 @@ public class PDFDerivateer extends BaseDerivateer {
 		}
 		this.digitalPages = pages;
 		this.derivateStep = derivateStep;
-		this.pdfProcessor =  new IText5Processor();
+		this.pdfProcessor = new ITextProcessor();
 	}
 
 	public DerivateStepPDF getConfig() {
@@ -82,12 +81,6 @@ public class PDFDerivateer extends BaseDerivateer {
 		}
 	}
 
-	/**
-	 * 
-	 * Usefull for testing purposes
-	 * 
-	 * @param processor
-	 */
 	public void setPDFProcessor(IPDFProcessor processor) {
 		this.pdfProcessor = processor;
 	}
@@ -99,17 +92,18 @@ public class PDFDerivateer extends BaseDerivateer {
 		if (Files.isDirectory(pathToPDF)) {
 			pathToPDF = pathToPDF.resolve(pathToPDF.getFileName() + ".pdf");
 		}
-		// resolve image paths
 		if (getDigitalPages().isEmpty()) {
 			var msg = "No pages for PDF "+pathToPDF;
 			throw new DigitalDerivansException(msg);
 		}
 		this.resolver.enrichData(getDigitalPages(), this.getInput());
+
+		// forward pdf generation
 		this.pdfProcessor.init(this.derivateStep, digitalPages, structure);
-		this.pdfProcessor.addMetadata();
-		this.pdfDocument = this.pdfProcessor.write(pathToPDF.toFile());
-		var nPagesAdded = this.pdfDocument.getPdfPages().size();
-		var hasOutlineAdded = this.pdfDocument.getOutline().size() > 0;
+		this.pdfResult = this.pdfProcessor.write(pathToPDF.toFile());
+		this.pdfResult.setPath(pathToPDF);
+		var nPagesAdded = this.pdfResult.getPdfPages().size();
+		var hasOutlineAdded = this.pdfResult.getOutline().size() > 0;
 		LOGGER.info("created pdf '{}' with {} pages (outline:{})", pathToPDF, nPagesAdded,
 				hasOutlineAdded);
 
@@ -139,13 +133,20 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	/*
 	 * Set structure data for testing purposes
-	 * independent when no *real* metadata present
+	 * when no *real* metadata present
 	 */
 	public void setStructure(DigitalStructureTree tree) {
 		this.structure = tree;
 	}
 
-	public PDFDocument getPDFDocument() {
-		return this.pdfDocument;
+	/**
+	 * 
+	 * Gather insights how processing was done
+	 * usefull for testing purposes
+	 * 
+	 * @return
+	 */
+	public PDFResult getPDFResult() {
+		return this.pdfResult;
 	}
 }

@@ -23,7 +23,7 @@ import de.ulb.digital.derivans.model.text.Textline;
  * @author u.hartwig
  *
  */
-public class TestALTOV4Reader {
+class TestALTOV4Reader {
 
 	/**
 	 * Read ALTO V4 Data produced by ocrd_formatconverter from resulting PAGE 2019
@@ -44,7 +44,7 @@ public class TestALTOV4Reader {
 		Textline line12 = actual.getTextlines().get(11);
 		assertEquals("[1979.0x128.0]AVGVSTISSIMO AC POTENTISSIMO", line12.toString());
 		assertEquals("AVGVSTISSIMO AC POTENTISSIMO", line12.getText());
-		assertEquals("AVGVSTISSIMO", line12.getTokens().get(0).getText());
+		assertEquals("AVGVSTISSIMO", line12.getWords().get(0).getText());
 		// geometric data
 		var line15Shape = line12.getArea();
 		assertEquals(new Rectangle(222, 1055, 1979, 128), line15Shape.getBounds());
@@ -82,10 +82,10 @@ public class TestALTOV4Reader {
 		int originalPageHeigt = actual.getPageHeight();
 		assertEquals(10536, originalPageHeigt);
 		Textline line001 = actual.getTextlines().get(0);
-		int originalHeightLine001 = line001.getBox().height;
+		int originalHeightLine001 = (int)line001.getBox().getHeight();
 		assertEquals(17, originalHeightLine001);
 		Textline line635 = actual.getTextlines().get(634);
-		int originalHeightLine646 = line635.getBox().height;
+		int originalHeightLine646 = (int)line635.getBox().getHeight();
 		assertEquals(57, originalHeightLine646);
 
 		// act
@@ -96,8 +96,8 @@ public class TestALTOV4Reader {
 		// assert
 		assertEquals(maximal, actual.getPageHeight());
 		assertNotEquals(originalPageHeigt, actual.getPageHeight());
-		assertEquals(8, line001.getBox().height);
-		assertEquals(25, line635.getBox().height);
+		assertEquals(8, (int)line001.getBox().getHeight());
+		assertEquals(25, (int)line635.getBox().getHeight());
 	}
 
 	@Test
@@ -110,10 +110,10 @@ public class TestALTOV4Reader {
 		int originalPageHeigt = actual.getPageHeight();
 		assertEquals(10808, originalPageHeigt);
 		Textline line001 = actual.getTextlines().get(0);
-		int originalHeightLine001 = line001.getBox().height;
+		int originalHeightLine001 = (int)line001.getBox().getHeight();
 		assertEquals(95, originalHeightLine001);
 		Textline lastLine = actual.getTextlines().get(319);
-		assertEquals(94, lastLine.getBox().height);
+		assertEquals(94, (int)lastLine.getBox().getHeight());
 
 		// act
 		int maximal = 4678;
@@ -123,27 +123,27 @@ public class TestALTOV4Reader {
 		// assert
 		assertEquals(maximal, actual.getPageHeight());
 		assertNotEquals(originalPageHeigt, actual.getPageHeight());
-		assertEquals(41, line001.getBox().height);
-		assertEquals(40, lastLine.getBox().height);
+		assertEquals(41, (int)line001.getBox().getHeight());
+		assertEquals(40, (int)lastLine.getBox().getHeight());
 	}
 
 	@Test
 	void testALTOfromVLS320808() throws Exception {
 
 		// arrange
-		Path input = Path.of("src/test/resources/alto/148811035/FULLTEXT/320808.xml");
+		Path input = TestResource.VD_18_ALTO4.get();
 		ALTOReader reader = new ALTOReader(Type.ALTO_V4);
 
 		// act
 		var actual = reader.get(input);
 
 		// assert
-		assertEquals(25, actual.getTextlines().size());
+		assertEquals(34, actual.getTextlines().size());
 		Rectangle r01 = actual.getTextlines().get(0).getArea().getBounds();
-		assertEquals(600, r01.x);
-		assertEquals(751, r01.y);
-		assertEquals(1125, r01.width);
-		assertEquals(88, r01.height);
+		assertEquals(1123, r01.x);
+		assertEquals(270, r01.y);
+		assertEquals(74, r01.width);
+		assertEquals(48, r01.height);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class TestALTOV4Reader {
 	@Test
 	void testALTOV4fromRahbar() throws Exception {
 		// arrange
-		Path rahbar88120 = TestResource.SHARE_IT_RAHBAR_88120.get();
+		Path rahbar88120 = TestResource.SHARE_IT_RAHBAR_88120_LEGACY.get();
 		ALTOReader reader = new ALTOReader(Type.ALTO_V4);
 
 		// act
@@ -191,8 +191,8 @@ public class TestALTOV4Reader {
 		assertEquals(30, actual.getTextlines().size());
 		Textline line2 = actual.getTextlines().get(1);
 		assertEquals("کرده اند مثلاً انوری حافظ قصائدو غزلپائی بفتند رفتند پس از آبان", line2.getText());
-		assertEquals("کرده", line2.getTokens().get(0).getText());
-		assertEquals("آبان", line2.getTokens().get(line2.getTokens().size() - 1).getText());
+		assertEquals("کرده", line2.getWords().get(0).getText());
+		assertEquals("آبان", line2.getWords().get(line2.getWords().size() - 1).getText());
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class TestALTOV4Reader {
 	 * No Page data: src/test/resources/alto/1981185920_94220/00000805.xml
 	 */
 	@Test
-	void testALTOV4EmptyFromRahbar() throws Exception {
+	void testALTOV4EmptyFromRahbar() {
 		// arrange
 		Path rahbar88120 = TestResource.SHARE_IT_RAHBAR_94220.get();
 		ALTOReader reader = new ALTOReader(Type.ALTO_V4);

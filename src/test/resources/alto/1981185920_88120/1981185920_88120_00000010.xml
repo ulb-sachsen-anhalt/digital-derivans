@@ -1,740 +1,548 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd" SCHEMAVERSION="4.2">
-  <Description>
-    <MeasurementUnit>pixel</MeasurementUnit>
-    <sourceImageInformation>
-      <fileName>00000010.jpg</fileName>
-    </sourceImageInformation>
-  </Description>
-  <Styles/>
-  <Tags/>
-  <Layout>
-    <Page ID="p00000010" PHYSICAL_IMG_NR="0" PAGECLASS="content" WIDTH="2289" HEIGHT="3173">
-      <PrintSpace HEIGHT="2815" WIDTH="2070" HPOS="69" VPOS="140">
-        <TextBlock ID="region0000" HEIGHT="51" WIDTH="698" HPOS="1017" VPOS="342">
-          <TextLine ID="region0000_line0001" HEIGHT="51" WIDTH="697" HPOS="1017" VPOS="342">
-            <SP/>
-            <String ID="region0000_line0001_word0001" HEIGHT="48" WIDTH="60" HPOS="1061" VPOS="342" CONTENT="دیبا"/>
-            <SP/>
-            <String ID="region0000_line0001_word0002" HEIGHT="40" WIDTH="30" HPOS="1019" VPOS="350" CONTENT="چه"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock ID="region0001" HEIGHT="2338" WIDTH="1327" HPOS="392" VPOS="440">
-          <TextLine ID="region0001_line0002" HEIGHT="84" WIDTH="1326" HPOS="393" VPOS="442">
-            <String ID="region0001_line0002_word0000" HEIGHT="57" WIDTH="90" HPOS="1624" VPOS="450" CONTENT="کرده"/>
-            <SP/>
-            <String ID="region0001_line0002_word0001" HEIGHT="33" WIDTH="40" HPOS="1566" VPOS="460" CONTENT="اند"/>
-            <SP/>
-            <String ID="region0001_line0002_word0002" HEIGHT="54" WIDTH="63" HPOS="1478" VPOS="442" CONTENT="مثلاً"/>
-            <SP/>
-            <String ID="region0001_line0002_word0003" HEIGHT="44" WIDTH="91" HPOS="1370" VPOS="459" CONTENT="انوری"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0002_word0005" HEIGHT="46" WIDTH="229" HPOS="1232" VPOS="457" CONTENT="حافظ"/>
-            <SP/>
-            <String ID="region0001_line0002_word0006" HEIGHT="42" WIDTH="123" HPOS="1074" VPOS="456" CONTENT="قصائدو"/>
-            <SP/>
-            <String ID="region0001_line0002_word0007" HEIGHT="50" WIDTH="144" HPOS="907" VPOS="452" CONTENT="غزلپائی"/>
-            <SP/>
-            <String ID="region0001_line0002_word0008" HEIGHT="24" WIDTH="91" HPOS="787" VPOS="462" CONTENT="بفتند"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0002_word0010" HEIGHT="37" WIDTH="123" HPOS="635" VPOS="459" CONTENT="رفتند"/>
-            <SP/>
-            <String ID="region0001_line0002_word0011" HEIGHT="38" WIDTH="57" HPOS="547" VPOS="464" CONTENT="پس"/>
-            <SP/>
-            <String ID="region0001_line0002_word0012" HEIGHT="37" WIDTH="27" HPOS="493" VPOS="457" CONTENT="از"/>
-            <SP/>
-            <String ID="region0001_line0002_word0013" HEIGHT="37" WIDTH="67" HPOS="398" VPOS="457" CONTENT="آبان"/>
-          </TextLine>
-          <TextLine ID="region0001_line0003" HEIGHT="44" WIDTH="90" HPOS="478" VPOS="522">
-            <String ID="region0001_line0003_word0000" HEIGHT="19" WIDTH="45" HPOS="487" VPOS="544" CONTENT="۱۶۲"/>
-          </TextLine>
-          <TextLine ID="region0001_line0004" HEIGHT="86" WIDTH="1326" HPOS="393" VPOS="535">
-            <String ID="region0001_line0004_word0000" HEIGHT="36" WIDTH="106" HPOS="1602" VPOS="558" CONTENT="چندین"/>
-            <SP/>
-            <String ID="region0001_line0004_word0001" HEIGHT="44" WIDTH="59" HPOS="1518" VPOS="550" CONTENT="قرن"/>
-            <SP/>
-            <String ID="region0001_line0004_word0002" HEIGHT="53" WIDTH="64" HPOS="1431" VPOS="541" CONTENT="است"/>
-            <SP/>
-            <String ID="region0001_line0004_word0003" HEIGHT="54" WIDTH="40" HPOS="1381" VPOS="540" CONTENT="که"/>
-            <SP/>
-            <String ID="region0001_line0004_word0004" HEIGHT="31" WIDTH="77" HPOS="1289" VPOS="553" CONTENT="دسته"/>
-            <SP/>
-            <String ID="region0001_line0004_word0005" HEIGHT="25" WIDTH="77" HPOS="1196" VPOS="554" CONTENT="دسته"/>
-            <SP/>
-            <String ID="region0001_line0004_word0006" HEIGHT="36" WIDTH="87" HPOS="1091" VPOS="550" CONTENT="دریف"/>
-            <SP/>
-            <String ID="region0001_line0004_word0007" HEIGHT="53" WIDTH="78" HPOS="993" VPOS="546" CONTENT="غارت"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0004_word0009" HEIGHT="63" WIDTH="92" HPOS="841" VPOS="536" CONTENT="باراج"/>
-            <SP/>
-            <String ID="region0001_line0004_word0010" HEIGHT="58" WIDTH="85" HPOS="730" VPOS="535" CONTENT="معاق"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0004_word0012" HEIGHT="55" WIDTH="124" HPOS="549" VPOS="538" CONTENT="تعبیراب"/>
-            <SP/>
-            <String ID="region0001_line0004_word0013" HEIGHT="37" WIDTH="120" HPOS="405" VPOS="539" CONTENT="آات"/>
-          </TextLine>
-          <TextLine ID="region0001_line0005" HEIGHT="91" WIDTH="1326" HPOS="393" VPOS="622">
-            <String ID="region0001_line0005_word0000" HEIGHT="40" WIDTH="90" HPOS="1612" VPOS="643" CONTENT="افتاده"/>
-            <SP/>
-            <String ID="region0001_line0005_word0001" HEIGHT="52" WIDTH="109" HPOS="1482" VPOS="633" CONTENT="هکن"/>
-            <SP/>
-            <String ID="region0001_line0005_word0002" HEIGHT="43" WIDTH="139" HPOS="1328" VPOS="640" CONTENT="بفراخور"/>
-            <SP/>
-            <String ID="region0001_line0005_word0003" HEIGHT="42" WIDTH="54" HPOS="1245" VPOS="638" CONTENT="قوه"/>
-            <SP/>
-            <String ID="region0001_line0005_word0004" HEIGHT="51" WIDTH="52" HPOS="1135" VPOS="639" CONTENT="هم"/>
-            <SP/>
-            <String ID="region0001_line0005_word0005" HEIGHT="33" WIDTH="63" HPOS="1053" VPOS="643" CONTENT="ود"/>
-            <SP/>
-            <String ID="region0001_line0005_word0006" HEIGHT="46" WIDTH="116" HPOS="920" VPOS="638" CONTENT="تغیيري"/>
-            <SP/>
-            <String ID="region0001_line0005_word0007" HEIGHT="27" WIDTH="40" HPOS="860" VPOS="648" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0005_word0008" HEIGHT="55" WIDTH="61" HPOS="785" VPOS="622" CONTENT="آها"/>
-            <SP/>
-            <String ID="region0001_line0005_word0009" HEIGHT="35" WIDTH="72" HPOS="695" VPOS="632" CONTENT="داده"/>
-            <SP/>
-            <String ID="region0001_line0005_word0010" HEIGHT="59" WIDTH="68" HPOS="600" VPOS="630" CONTENT="باسم"/>
-            <SP/>
-            <String ID="region0001_line0005_word0011" HEIGHT="39" WIDTH="70" HPOS="516" VPOS="637" CONTENT="خود"/>
-            <SP/>
-            <String ID="region0001_line0005_word0012" HEIGHT="53" WIDTH="96" HPOS="401" VPOS="628" CONTENT="خواند"/>
-          </TextLine>
-          <TextLine ID="region0001_line0006" HEIGHT="105" WIDTH="1327" HPOS="392" VPOS="716">
-            <String ID="region0001_line0006_word0000" HEIGHT="47" WIDTH="89" HPOS="1616" VPOS="745" CONTENT="سلاح"/>
-            <SP/>
-            <String ID="region0001_line0006_word0001" HEIGHT="40" WIDTH="155" HPOS="1433" VPOS="739" CONTENT="سخنوران"/>
-            <SP/>
-            <String ID="region0001_line0006_word0002" HEIGHT="41" WIDTH="81" HPOS="1319" VPOS="741" CONTENT="اخیر"/>
-            <SP/>
-            <String ID="region0001_line0006_word0003" HEIGHT="18" WIDTH="40" HPOS="1254" VPOS="756" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0006_word0004" HEIGHT="41" WIDTH="106" HPOS="1113" VPOS="737" CONTENT="میدان"/>
-            <SP/>
-            <String ID="region0001_line0006_word0005" HEIGHT="31" WIDTH="61" HPOS="1019" VPOS="747" CONTENT="زور"/>
-            <SP/>
-            <String ID="region0001_line0006_word0006" HEIGHT="69" WIDTH="125" HPOS="879" VPOS="727" CONTENT="آزمائي"/>
-            <SP/>
-            <String ID="region0001_line0006_word0007" HEIGHT="37" WIDTH="70" HPOS="774" VPOS="734" CONTENT="ادف"/>
-            <SP/>
-            <String ID="region0001_line0006_word0008" HEIGHT="36" WIDTH="70" HPOS="673" VPOS="743" CONTENT="همان"/>
-            <SP/>
-            <String ID="region0001_line0006_word0009" HEIGHT="50" WIDTH="71" HPOS="567" VPOS="728" CONTENT="اوك"/>
-            <SP/>
-            <String ID="region0001_line0006_word0010" HEIGHT="62" WIDTH="122" HPOS="399" VPOS="721" CONTENT="مژگان"/>
-          </TextLine>
-          <TextLine ID="region0001_line0007" HEIGHT="89" WIDTH="1326" HPOS="392" VPOS="815">
-            <String ID="region0001_line0007_word0000" HEIGHT="38" WIDTH="43" HPOS="1659" VPOS="841" CONTENT="یار"/>
-            <SP/>
-            <String ID="region0001_line0007_word0001" HEIGHT="58" WIDTH="94" HPOS="1554" VPOS="821" CONTENT="وکان"/>
-            <SP/>
-            <String ID="region0001_line0007_word0002" HEIGHT="47" WIDTH="107" HPOS="1429" VPOS="832" CONTENT="اروي"/>
-            <SP/>
-            <String ID="region0001_line0007_word0003" HEIGHT="30" WIDTH="64" HPOS="1351" VPOS="850" CONTENT="نمار"/>
-            <SP/>
-            <String ID="region0001_line0007_word0004" HEIGHT="69" WIDTH="238" HPOS="1095" VPOS="815" CONTENT="وکندگسوی"/>
-            <SP/>
-            <String ID="region0001_line0007_word0005" HEIGHT="51" WIDTH="92" HPOS="987" VPOS="829" CONTENT="دلدار"/>
-            <SP/>
-            <String ID="region0001_line0007_word0006" HEIGHT="59" WIDTH="68" HPOS="905" VPOS="824" CONTENT="هیقد"/>
-            <SP/>
-            <String ID="region0001_line0007_word0007" HEIGHT="51" WIDTH="48" HPOS="846" VPOS="832" CONTENT="مین"/>
-            <SP/>
-            <String ID="region0001_line0007_word0008" HEIGHT="37" WIDTH="60" HPOS="763" VPOS="829" CONTENT="است"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0007_word0010" HEIGHT="25" WIDTH="26" HPOS="685" VPOS="838" CONTENT="نه"/>
-            <SP/>
-            <String ID="region0001_line0007_word0011" HEIGHT="49" WIDTH="62" HPOS="611" VPOS="825" CONTENT="فقط"/>
-            <SP/>
-            <String ID="region0001_line0007_word0012" HEIGHT="48" WIDTH="48" HPOS="535" VPOS="829" CONTENT="اوا"/>
-            <String ID="region0001_line0007_word0012_p1" HPOS="583" VPOS="829" WIDTH="16" HEIGHT="48" CONTENT="-"/>
-            <SP/>
-            <String ID="region0001_line0007_word0013" HEIGHT="35" WIDTH="52" HPOS="472" VPOS="827" CONTENT="ط۸"/>
-            <SP/>
-            <String ID="region0001_line0007_word0014" HEIGHT="45" WIDTH="51" HPOS="402" VPOS="824" CONTENT="آن"/>
-          </TextLine>
-          <TextLine ID="region0001_line0009" HEIGHT="89" WIDTH="1326" HPOS="392" VPOS="903">
-            <String ID="region0001_line0009_word0000" HEIGHT="42" WIDTH="125" HPOS="1575" VPOS="923" CONTENT="پاغبانان"/>
-            <SP/>
-            <String ID="region0001_line0009_word0001" HEIGHT="34" WIDTH="28" HPOS="1524" VPOS="926" CONTENT="از"/>
-            <SP/>
-            <String ID="region0001_line0009_word0002" HEIGHT="33" WIDTH="104" HPOS="1394" VPOS="931" CONTENT="درخت"/>
-            <SP/>
-            <String ID="region0001_line0009_word0003" HEIGHT="54" WIDTH="68" HPOS="1314" VPOS="915" CONTENT="کهن"/>
-            <SP/>
-            <String ID="region0001_line0009_word0004" HEIGHT="25" WIDTH="62" HPOS="1226" VPOS="924" CONTENT="سال"/>
-            <SP/>
-            <String ID="region0001_line0009_word0005" HEIGHT="20" WIDTH="104" HPOS="1096" VPOS="939" CONTENT="برات"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0009_word0007" HEIGHT="26" WIDTH="64" HPOS="956" VPOS="936" CONTENT="بري"/>
-            <SP/>
-            <String ID="region0001_line0009_word0008" HEIGHT="40" WIDTH="112" HPOS="821" VPOS="920" CONTENT="نروئید"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0009_word0010" HEIGHT="39" WIDTH="36" HPOS="730" VPOS="929" CONTENT="بو"/>
-            <SP/>
-            <String ID="region0001_line0009_word0011" HEIGHT="46" WIDTH="162" HPOS="633" VPOS="915" CONTENT="اسطه"/>
-            <SP/>
-            <String ID="region0001_line0009_word0012" HEIGHT="45" WIDTH="53" HPOS="552" VPOS="912" CONTENT="آن"/>
-            <SP/>
-            <String ID="region0001_line0009_word0013" HEIGHT="55" WIDTH="121" HPOS="398" VPOS="903" CONTENT="وارنان"/>
-          </TextLine>
-          <TextLine ID="region0001_line0012" HEIGHT="100" WIDTH="1326" HPOS="392" VPOS="990">
-            <String ID="region0001_line0012_word0000" HEIGHT="37" WIDTH="143" HPOS="1556" VPOS="1011" CONTENT="باندوختۀ"/>
-            <SP/>
-            <String ID="region0001_line0012_word0001" HEIGHT="26" WIDTH="91" HPOS="1437" VPOS="1026" CONTENT="پیش"/>
-            <SP/>
-            <String ID="region0001_line0012_word0002" HEIGHT="28" WIDTH="96" HPOS="1319" VPOS="1028" CONTENT="چیزی"/>
-            <SP/>
-            <String ID="region0001_line0012_word0003" HEIGHT="41" WIDTH="103" HPOS="1185" VPOS="1014" CONTENT="افزوده"/>
-            <SP/>
-            <String ID="region0001_line0012_word0004" HEIGHT="23" WIDTH="58" HPOS="1093" VPOS="1015" CONTENT="نشد"/>
-            <SP/>
-            <String ID="region0001_line0012_word0005" HEIGHT="32" WIDTH="78" HPOS="991" VPOS="1005" CONTENT="بلکه"/>
-            <SP/>
-            <String ID="region0001_line0012_word0006" HEIGHT="32" WIDTH="81" HPOS="879" VPOS="1026" CONTENT="روح"/>
-            <SP/>
-            <String ID="region0001_line0012_word0007" HEIGHT="39" WIDTH="109" HPOS="733" VPOS="1008" CONTENT="خواند"/>
-            <SP/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0012_word0010" HEIGHT="61" WIDTH="180" HPOS="398" VPOS="990" CONTENT="شوندگان"/>
-          </TextLine>
-          <TextLine ID="region0001_line0013" HEIGHT="84" WIDTH="1326" HPOS="392" VPOS="1091">
-            <String ID="region0001_line0013_word0000" HEIGHT="34" WIDTH="72" HPOS="1627" VPOS="1116" CONTENT="خود"/>
-            <SP/>
-            <String ID="region0001_line0013_word0001" HEIGHT="40" WIDTH="28" HPOS="1581" VPOS="1108" CONTENT="را"/>
-            <SP/>
-            <String ID="region0001_line0013_word0002" HEIGHT="40" WIDTH="26" HPOS="1536" VPOS="1108" CONTENT="از"/>
-            <SP/>
-            <String ID="region0001_line0013_word0003" HEIGHT="56" WIDTH="136" HPOS="1388" VPOS="1100" CONTENT="مکزرات"/>
-            <SP/>
-            <String ID="region0001_line0013_word0004" HEIGHT="49" WIDTH="109" HPOS="1257" VPOS="1105" CONTENT="افسرده"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0013_word0006" HEIGHT="60" WIDTH="83" HPOS="1117" VPOS="1095" CONTENT="خسته"/>
-            <SP/>
-            <String ID="region0001_line0013_word0007" HEIGHT="59" WIDTH="92" HPOS="1017" VPOS="1096" CONTENT="کردند"/>
-            <SP/>
-            <String ID="region0001_line0013_word0008" HEIGHT="41" WIDTH="70" HPOS="916" VPOS="1110" CONTENT="هیان"/>
-            <SP/>
-            <String ID="region0001_line0013_word0009" HEIGHT="61" WIDTH="112" HPOS="792" VPOS="1093" CONTENT="طبیعتی"/>
-            <SP/>
-            <String ID="region0001_line0013_word0010" HEIGHT="51" WIDTH="46" HPOS="732" VPOS="1091" CONTENT="که"/>
-            <SP/>
-            <String ID="region0001_line0013_word0011" HEIGHT="32" WIDTH="40" HPOS="667" VPOS="1113" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0013_word0012" HEIGHT="33" WIDTH="64" HPOS="587" VPOS="1113" CONTENT="عمهد"/>
-            <SP/>
-            <String ID="region0001_line0013_word0013" HEIGHT="57" WIDTH="171" HPOS="397" VPOS="1093" CONTENT="سلجوقیان"/>
-          </TextLine>
-          <TextLine ID="region0001_line0014" HEIGHT="92" WIDTH="1326" HPOS="393" VPOS="1184">
-            <String ID="region0001_line0014_word0000" HEIGHT="37" WIDTH="66" HPOS="1632" VPOS="1203" CONTENT="ذوق"/>
-            <SP/>
-            <String ID="region0001_line0014_word0001" HEIGHT="60" WIDTH="73" HPOS="1542" VPOS="1195" CONTENT="سلیم"/>
-            <SP/>
-            <String ID="region0001_line0014_word0002" HEIGHT="53" WIDTH="135" HPOS="1388" VPOS="1204" CONTENT="دربرخي"/>
-            <SP/>
-            <String ID="region0001_line0014_word0003" HEIGHT="41" WIDTH="28" HPOS="1346" VPOS="1198" CONTENT="از"/>
-            <SP/>
-            <String ID="region0001_line0014_word0004" HEIGHT="60" WIDTH="88" HPOS="1239" VPOS="1197" CONTENT="طباع"/>
-            <SP/>
-            <String ID="region0001_line0014_word0005" HEIGHT="34" WIDTH="81" HPOS="1142" VPOS="1209" CONTENT="مردم"/>
-            <SP/>
-            <String ID="region0001_line0014_word0006" HEIGHT="56" WIDTH="50" HPOS="1078" VPOS="1185" CONTENT="آن"/>
-            <SP/>
-            <String ID="region0001_line0014_word0007" HEIGHT="42" WIDTH="83" HPOS="978" VPOS="1198" CONTENT="زمان"/>
-            <SP/>
-            <String ID="region0001_line0014_word0008" HEIGHT="37" WIDTH="107" HPOS="853" VPOS="1206" CONTENT="بودیعه"/>
-            <SP/>
-            <String ID="region0001_line0014_word0009" HEIGHT="51" WIDTH="57" HPOS="764" VPOS="1190" CONTENT="هاد"/>
-            <SP/>
-            <String ID="region0001_line0014_word0010" HEIGHT="48" WIDTH="106" HPOS="634" VPOS="1192" CONTENT="دراین"/>
-            <SP/>
-            <String ID="region0001_line0014_word0011" HEIGHT="48" WIDTH="91" HPOS="508" VPOS="1193" CONTENT="قرون"/>
-            <SP/>
-            <String ID="region0001_line0014_word0012" HEIGHT="54" WIDTH="81" HPOS="398" VPOS="1188" CONTENT="آاخیر"/>
-          </TextLine>
-          <TextLine ID="region0001_line0015" HEIGHT="88" WIDTH="1326" HPOS="393" VPOS="1274">
-            <String ID="region0001_line0015_word0000" HEIGHT="55" WIDTH="45" HPOS="1655" VPOS="1277" CONTENT="یز"/>
-            <SP/>
-            <String ID="region0001_line0015_word0001" HEIGHT="44" WIDTH="48" HPOS="1589" VPOS="1280" CONTENT="بل"/>
-            <SP/>
-            <String ID="region0001_line0015_word0002" HEIGHT="38" WIDTH="44" HPOS="1514" VPOS="1291" CONTENT="نور"/>
-            <SP/>
-            <String ID="region0001_line0015_word0003" HEIGHT="31" WIDTH="79" HPOS="1419" VPOS="1296" CONTENT="زیده"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0015_word0005" HEIGHT="33" WIDTH="67" HPOS="1242" VPOS="1293" CONTENT="خود"/>
-            <SP/>
-            <String ID="region0001_line0015_word0006" HEIGHT="37" WIDTH="27" HPOS="1200" VPOS="1286" CONTENT="را"/>
-            <SP/>
-            <String ID="region0001_line0015_word0007" HEIGHT="42" WIDTH="31" HPOS="1146" VPOS="1283" CONTENT="ار"/>
-            <SP/>
-            <String ID="region0001_line0015_word0008" HEIGHT="24" WIDTH="28" HPOS="1097" VPOS="1289" CONTENT="ما"/>
-            <SP/>
-            <String ID="region0001_line0015_word0009" HEIGHT="48" WIDTH="73" HPOS="1007" VPOS="1290" CONTENT="دریغ"/>
-            <SP/>
-            <String ID="region0001_line0015_word0010" HEIGHT="37" WIDTH="108" HPOS="882" VPOS="1290" CONTENT="ننموده"/>
-            <SP/>
-            <String ID="region0001_line0015_word0011" HEIGHT="41" WIDTH="73" HPOS="787" VPOS="1278" CONTENT="است"/>
-            <SP/>
-            <String ID="region0001_line0015_word0012" HEIGHT="45" WIDTH="111" HPOS="659" VPOS="1282" CONTENT="هزارها"/>
-            <SP/>
-            <String ID="region0001_line0015_word0013" HEIGHT="37" WIDTH="69" HPOS="572" VPOS="1291" CONTENT="بوده"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0015_word0015" HEIGHT="28" WIDTH="101" HPOS="401" VPOS="1285" CONTENT="هستند"/>
-          </TextLine>
-          <TextLine ID="region0001_line0016" HEIGHT="90" WIDTH="1326" HPOS="393" VPOS="1363">
-            <String ID="region0001_line0016_word0000" HEIGHT="34" WIDTH="95" HPOS="1605" VPOS="1376" CONTENT="که"/>
-            <SP/>
-            <String ID="region0001_line0016_word0001" HEIGHT="45" WIDTH="98" HPOS="1474" VPOS="1373" CONTENT="دارای"/>
-            <SP/>
-            <String ID="region0001_line0016_word0002" HEIGHT="59" WIDTH="68" HPOS="1389" VPOS="1374" CONTENT="طبع"/>
-            <SP/>
-            <String ID="region0001_line0016_word0003" HEIGHT="48" WIDTH="99" HPOS="1254" VPOS="1368" CONTENT="مستعک"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0016_word0005" HEIGHT="45" WIDTH="144" HPOS="1052" VPOS="1373" CONTENT="سرشاری"/>
-            <SP/>
-            <String ID="region0001_line0016_word0006" HEIGHT="46" WIDTH="132" HPOS="896" VPOS="1375" CONTENT="میباشند"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0016_word0008" HEIGHT="31" WIDTH="52" HPOS="773" VPOS="1376" CONTENT="همه"/>
-            <SP/>
-            <String ID="region0001_line0016_word0009" HEIGHT="39" WIDTH="44" HPOS="698" VPOS="1381" CONTENT="نیز"/>
-            <SP/>
-            <String ID="region0001_line0016_word0010" HEIGHT="47" WIDTH="145" HPOS="506" VPOS="1373" CONTENT="چندیر"/>
-            <String ID="region0001_line0016_word0010_p1" HPOS="651" VPOS="1373" WIDTH="29" HEIGHT="47" CONTENT="."/>
-            <SP/>
-            <String ID="region0001_line0016_word0011" HEIGHT="48" WIDTH="79" HPOS="401" VPOS="1366" CONTENT="هزار"/>
-          </TextLine>
-          <TextLine ID="region0001_line0017" HEIGHT="92" WIDTH="1327" HPOS="392" VPOS="1442">
-            <String ID="region0001_line0017_word0000" HEIGHT="28" WIDTH="72" HPOS="1627" VPOS="1481" CONTENT="بی"/>
-            <SP/>
-            <String ID="region0001_line0017_word0001" HEIGHT="39" WIDTH="30" HPOS="1567" VPOS="1467" CONTENT="از"/>
-            <SP/>
-            <String ID="region0001_line0017_word0002" HEIGHT="68" WIDTH="75" HPOS="1466" VPOS="1452" CONTENT="خود"/>
-            <SP/>
-            <String ID="region0001_line0017_word0003" HEIGHT="68" WIDTH="155" HPOS="1285" VPOS="1452" CONTENT="گذاشتند"/>
-            <SP/>
-            <String ID="region0001_line0017_word0004" HEIGHT="50" WIDTH="55" HPOS="1215" VPOS="1457" CONTENT="ولی"/>
-            <SP/>
-            <String ID="region0001_line0017_word0005" HEIGHT="67" WIDTH="125" HPOS="1066" VPOS="1447" CONTENT="جلکی"/>
-            <SP/>
-            <String ID="region0001_line0017_word0006" HEIGHT="49" WIDTH="27" HPOS="1009" VPOS="1457" CONTENT="از"/>
-            <SP/>
-            <String ID="region0001_line0017_word0007" HEIGHT="52" WIDTH="105" HPOS="886" VPOS="1461" CONTENT="فتحمی"/>
-            <SP/>
-            <String ID="region0001_line0017_word0008" HEIGHT="77" WIDTH="68" HPOS="794" VPOS="1442" CONTENT="شاء"/>
-            <SP/>
-            <String ID="region0001_line0017_word0009" HEIGHT="64" WIDTH="173" HPOS="678" VPOS="1451" CONTENT="گرفته"/>
-            <SP/>
-            <String ID="region0001_line0017_word0010" HEIGHT="41" WIDTH="20" HPOS="626" VPOS="1459" CONTENT="نا"/>
-            <SP/>
-            <String ID="region0001_line0017_word0011" HEIGHT="69" WIDTH="27" HPOS="577" VPOS="1442" CONTENT="قا"/>
-            <SP/>
-            <String ID="region0001_line0017_word0012" HEIGHT="76" WIDTH="55" HPOS="515" VPOS="1442" CONTENT="آنی"/>
-            <SP/>
-            <String ID="region0001_line0017_word0013" HEIGHT="30" WIDTH="81" HPOS="400" VPOS="1467" CONTENT="مانند"/>
-          </TextLine>
-          <TextLine ID="region0001_line0018" HEIGHT="91" WIDTH="1326" HPOS="392" VPOS="1530">
-            <String ID="region0001_line0018_word0000" HEIGHT="31" WIDTH="135" HPOS="1565" VPOS="1559" CONTENT="درویشها"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0018_word0002" HEIGHT="36" WIDTH="68" HPOS="1414" VPOS="1550" CONTENT="قلند"/>
-            <SP/>
-            <String ID="region0001_line0018_word0003" HEIGHT="40" WIDTH="115" HPOS="1273" VPOS="1551" CONTENT="ارتب"/>
-            <SP/>
-            <String ID="region0001_line0018_word0004" HEIGHT="40" WIDTH="118" HPOS="1126" VPOS="1552" CONTENT="کور"/>
-            <SP/>
-            <String ID="region0001_line0018_word0005" HEIGHT="47" WIDTH="159" HPOS="936" VPOS="1547" CONTENT="کورانه"/>
-            <SP/>
-            <String ID="region0001_line0018_word0006" HEIGHT="51" WIDTH="95" HPOS="816" VPOS="1543" CONTENT="بتقلید"/>
-            <SP/>
-            <String ID="region0001_line0018_word0007" HEIGHT="64" WIDTH="104" HPOS="688" VPOS="1530" CONTENT="مرشد"/>
-            <SP/>
-            <String ID="region0001_line0018_word0008" HEIGHT="41" WIDTH="84" HPOS="569" VPOS="1544" CONTENT="اوراد"/>
-            <SP/>
-            <String ID="region0001_line0018_word0009" HEIGHT="50" WIDTH="136" HPOS="400" VPOS="1541" CONTENT="واذکار"/>
-          </TextLine>
-          <TextLine ID="region0001_line0019" HEIGHT="82" WIDTH="1326" HPOS="392" VPOS="1631">
-            <String ID="region0001_line0019_word0000" HEIGHT="61" WIDTH="94" HPOS="1615" VPOS="1639" CONTENT="گرفته"/>
-            <SP/>
-            <String ID="region0001_line0019_word0001" HEIGHT="47" WIDTH="155" HPOS="1429" VPOS="1644" CONTENT="بتگرار"/>
-            <SP/>
-            <String ID="region0001_line0019_word0002" HEIGHT="49" WIDTH="77" HPOS="1318" VPOS="1642" CONTENT="هزار"/>
-            <SP/>
-            <String ID="region0001_line0019_word0003" HEIGHT="46" WIDTH="38" HPOS="1260" VPOS="1640" CONTENT="بار"/>
-            <SP/>
-            <String ID="region0001_line0019_word0004" HEIGHT="32" WIDTH="44" HPOS="1185" VPOS="1657" CONTENT="هو"/>
-            <SP/>
-            <String ID="region0001_line0019_word0005" HEIGHT="42" WIDTH="59" HPOS="1104" VPOS="1651" CONTENT="حق"/>
-            <SP/>
-            <String ID="region0001_line0019_word0006" HEIGHT="38" WIDTH="48" HPOS="1031" VPOS="1641" CONTENT="دل"/>
-            <SP/>
-            <String ID="region0001_line0019_word0007" HEIGHT="43" WIDTH="69" HPOS="931" VPOS="1647" CONTENT="خود"/>
-            <SP/>
-            <String ID="region0001_line0019_word0008" HEIGHT="51" WIDTH="29" HPOS="875" VPOS="1637" CONTENT="را"/>
-            <SP/>
-            <String ID="region0001_line0019_word0009" HEIGHT="47" WIDTH="90" HPOS="758" VPOS="1644" CONTENT="خوش"/>
-            <SP/>
-            <String ID="region0001_line0019_word0010" HEIGHT="50" WIDTH="151" HPOS="580" VPOS="1641" CONTENT="گردند"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0019_word0012" HEIGHT="55" WIDTH="116" HPOS="402" VPOS="1631" CONTENT="بلت"/>
-          </TextLine>
-          <TextLine ID="region0001_line0020" HEIGHT="38" WIDTH="123" HPOS="821" VPOS="1712">
-            <String ID="region0001_line0020_word0000" HEIGHT="18" WIDTH="34" HPOS="859" VPOS="1732" CONTENT="کص"/>
-          </TextLine>
-          <TextLine ID="region0001_line0021" HEIGHT="93" WIDTH="1326" HPOS="392" VPOS="1717">
-            <String ID="region0001_line0021_word0000" HEIGHT="47" WIDTH="135" HPOS="1564" VPOS="1731" CONTENT="مکزرات"/>
-            <SP/>
-            <String ID="region0001_line0021_word0001" HEIGHT="28" WIDTH="88" HPOS="1462" VPOS="1748" CONTENT="بیمزه"/>
-            <SP/>
-            <String ID="region0001_line0021_word0002" HEIGHT="51" WIDTH="55" HPOS="1389" VPOS="1731" CONTENT="اسم"/>
-            <SP/>
-            <String ID="region0001_line0021_word0003" HEIGHT="48" WIDTH="94" HPOS="1279" VPOS="1734" CONTENT="قصیده"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0021_word0005" HEIGHT="49" WIDTH="75" HPOS="1145" VPOS="1732" CONTENT="غزل"/>
-            <SP/>
-            <String ID="region0001_line0021_word0006" HEIGHT="48" WIDTH="99" HPOS="1022" VPOS="1724" CONTENT="هادند"/>
-            <SP/>
-            <String ID="region0001_line0021_word0007" HEIGHT="46" WIDTH="93" HPOS="897" VPOS="1735" CONTENT="برخي"/>
-            <SP/>
-            <String ID="region0001_line0021_word0008" HEIGHT="43" WIDTH="110" HPOS="763" VPOS="1728" CONTENT="۵ات"/>
-            <SP/>
-            <String ID="region0001_line0021_word0009" HEIGHT="57" WIDTH="132" HPOS="608" VPOS="1717" CONTENT="میکنند"/>
-            <SP/>
-            <String ID="region0001_line0021_word0010" HEIGHT="46" WIDTH="72" HPOS="501" VPOS="1727" CONTENT="که"/>
-            <SP/>
-            <String ID="region0001_line0021_word0011" HEIGHT="31" WIDTH="79" HPOS="398" VPOS="1742" CONTENT="سب"/>
-          </TextLine>
-          <TextLine ID="region0001_line0023" HEIGHT="87" WIDTH="1326" HPOS="392" VPOS="1814">
-            <String ID="region0001_line0023_word0000" HEIGHT="43" WIDTH="47" HPOS="1649" VPOS="1827" CONTENT="این"/>
-            <SP/>
-            <String ID="region0001_line0023_word0001" HEIGHT="49" WIDTH="122" HPOS="1511" VPOS="1814" CONTENT="انحطاط"/>
-            <SP/>
-            <String ID="region0001_line0023_word0002" HEIGHT="58" WIDTH="99" HPOS="1392" VPOS="1822" CONTENT="اوضاع"/>
-            <SP/>
-            <String ID="region0001_line0023_word0003" HEIGHT="40" WIDTH="81" HPOS="1295" VPOS="1827" CONTENT="زمان"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0023_word0005" HEIGHT="34" WIDTH="140" HPOS="1105" VPOS="1825" CONTENT="مقتضات"/>
-            <SP/>
-            <String ID="region0001_line0023_word0006" HEIGHT="56" WIDTH="48" HPOS="1047" VPOS="1825" CONTENT="این"/>
-            <SP/>
-            <String ID="region0001_line0023_word0007" HEIGHT="43" WIDTH="221" HPOS="863" VPOS="1825" CONTENT="عصرجدید"/>
-            <SP/>
-            <String ID="region0001_line0023_word0008" HEIGHT="48" WIDTH="72" HPOS="769" VPOS="1822" CONTENT="باشد"/>
-            <SP/>
-            <String ID="region0001_line0023_word0009" HEIGHT="47" WIDTH="88" HPOS="628" VPOS="1820" CONTENT="وان"/>
-            <SP/>
-            <String ID="region0001_line0023_word0010" HEIGHT="54" WIDTH="92" HPOS="514" VPOS="1816" CONTENT="اشتباء"/>
-            <SP/>
-            <String ID="region0001_line0023_word0011" HEIGHT="39" WIDTH="96" HPOS="397" VPOS="1829" CONTENT="زرلی"/>
-          </TextLine>
-          <TextLine ID="region0001_line0024" HEIGHT="89" WIDTH="1326" HPOS="392" VPOS="1895">
-            <String ID="region0001_line0024_word0000" HEIGHT="31" WIDTH="68" HPOS="1631" VPOS="1918" CONTENT="است"/>
-            <SP/>
-            <String ID="region0001_line0024_word0001" HEIGHT="29" WIDTH="48" HPOS="1568" VPOS="1930" CONTENT="چه"/>
-            <SP/>
-            <String ID="region0001_line0024_word0002" HEIGHT="42" WIDTH="84" HPOS="1468" VPOS="1916" CONTENT="ایران"/>
-            <SP/>
-            <String ID="region0001_line0024_word0003" HEIGHT="47" WIDTH="185" HPOS="1270" VPOS="1912" CONTENT="هنوزدارای"/>
-            <SP/>
-            <String ID="region0001_line0024_word0004" HEIGHT="49" WIDTH="82" HPOS="1177" VPOS="1907" CONTENT="ذفی"/>
-            <SP/>
-            <String ID="region0001_line0024_word0005" HEIGHT="51" WIDTH="44" HPOS="1123" VPOS="1901" CONTENT="که"/>
-            <SP/>
-            <String ID="region0001_line0024_word0006" HEIGHT="60" WIDTH="64" HPOS="1050" VPOS="1905" CONTENT="آنرا"/>
-            <SP/>
-            <String ID="region0001_line0024_word0007" HEIGHT="74" WIDTH="66" HPOS="970" VPOS="1895" CONTENT="بکلی"/>
-            <SP/>
-            <String ID="region0001_line0024_word0008" HEIGHT="68" WIDTH="177" HPOS="864" VPOS="1897" CONTENT="مادی"/>
-            <SP/>
-            <String ID="region0001_line0024_word0009" HEIGHT="53" WIDTH="77" HPOS="773" VPOS="1904" CONTENT="کوده"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0024_word0011" HEIGHT="44" WIDTH="30" HPOS="688" VPOS="1909" CONTENT="از"/>
-            <SP/>
-            <String ID="region0001_line0024_word0012" HEIGHT="44" WIDTH="139" HPOS="536" VPOS="1913" CONTENT="معنویات"/>
-            <SP/>
-            <String ID="region0001_line0024_word0013" HEIGHT="45" WIDTH="119" HPOS="401" VPOS="1910" CONTENT="منصرف"/>
-          </TextLine>
-          <TextLine ID="region0001_line0025" HEIGHT="88" WIDTH="1326" HPOS="393" VPOS="1989">
-            <String ID="region0001_line0025_word0000" HEIGHT="27" WIDTH="99" HPOS="1602" VPOS="2010" CONTENT="ساخته"/>
-            <SP/>
-            <String ID="region0001_line0025_word0001" HEIGHT="40" WIDTH="70" HPOS="1516" VPOS="2010" CONTENT="باشد"/>
-            <SP/>
-            <String ID="region0001_line0025_word0002" HEIGHT="27" WIDTH="86" HPOS="1412" VPOS="2020" CONTENT="نیست"/>
-            <SP/>
-            <String ID="region0001_line0025_word0003" HEIGHT="24" WIDTH="39" HPOS="1356" VPOS="2020" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0025_word0004" HEIGHT="37" WIDTH="71" HPOS="1264" VPOS="2010" CONTENT="خود"/>
-            <SP/>
-            <String ID="region0001_line0025_word0005" HEIGHT="52" WIDTH="107" HPOS="1140" VPOS="2000" CONTENT="اروپاي"/>
-            <SP/>
-            <String ID="region0001_line0025_word0006" HEIGHT="50" WIDTH="115" HPOS="1008" VPOS="1994" CONTENT="ممدن"/>
-            <SP/>
-            <String ID="region0001_line0025_word0007" HEIGHT="70" WIDTH="77" HPOS="916" VPOS="1989" CONTENT="آهم"/>
-            <SP/>
-            <String ID="region0001_line0025_word0008" HEIGHT="29" WIDTH="40" HPOS="858" VPOS="2016" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0025_word0009" HEIGHT="56" WIDTH="97" HPOS="748" VPOS="1994" CONTENT="علکی"/>
-            <SP/>
-            <String ID="region0001_line0025_word0010" HEIGHT="41" WIDTH="62" HPOS="667" VPOS="2002" CONTENT="مثل"/>
-            <SP/>
-            <String ID="region0001_line0025_word0011" HEIGHT="50" WIDTH="99" HPOS="551" VPOS="1998" CONTENT="فرانه"/>
-            <SP/>
-            <String ID="region0001_line0025_word0012" HEIGHT="31" WIDTH="41" HPOS="491" VPOS="2013" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0025_word0013" HEIGHT="43" WIDTH="69" HPOS="407" VPOS="2001" CONTENT="همن"/>
-          </TextLine>
-          <TextLine ID="region0001_line0026" HEIGHT="94" WIDTH="1326" HPOS="393" VPOS="2069">
-            <String ID="region0001_line0026_word0000" HEIGHT="52" WIDTH="170" HPOS="1528" VPOS="2082" CONTENT="روزگاران"/>
-            <SP/>
-            <String ID="region0001_line0026_word0001" HEIGHT="37" WIDTH="131" HPOS="1384" VPOS="2097" CONTENT="خودمان"/>
-            <SP/>
-            <String ID="region0001_line0026_word0002" HEIGHT="38" WIDTH="81" HPOS="1290" VPOS="2096" CONTENT="شاعی"/>
-            <SP/>
-            <String ID="region0001_line0026_word0003" HEIGHT="46" WIDTH="105" HPOS="1167" VPOS="2083" CONTENT="بزرگ"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0026_word0005" HEIGHT="34" WIDTH="129" HPOS="985" VPOS="2098" CONTENT="زبردسق"/>
-            <SP/>
-            <String ID="region0001_line0026_word0006" HEIGHT="34" WIDTH="64" HPOS="905" VPOS="2092" CONTENT="مثل"/>
-            <SP/>
-            <String ID="region0001_line0026_word0007" HEIGHT="53" WIDTH="112" HPOS="775" VPOS="2081" CONTENT="وبکتور"/>
-            <SP/>
-            <String ID="region0001_line0026_word0008" HEIGHT="62" WIDTH="86" HPOS="678" VPOS="2074" CONTENT="هوکو"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0026_word0010" HEIGHT="28" WIDTH="64" HPOS="461" VPOS="2098" CONTENT="م)"/>
-            <String ID="region0001_line0026_word0010_p1" HPOS="525" VPOS="2098" WIDTH="32" HEIGHT="28" CONTENT="("/>
-            <SP/>
-            <String ID="region0001_line0026_word0011" HEIGHT="53" WIDTH="47" HPOS="404" VPOS="2073" CONTENT="که"/>
-          </TextLine>
-          <TextLine ID="region0001_line0027" HEIGHT="43" WIDTH="104" HPOS="464" VPOS="2160">
-            <String ID="region0001_line0027_word0000" HEIGHT="33" WIDTH="48" HPOS="473" VPOS="2169" CONTENT="۰۰"/>
-          </TextLine>
-          <TextLine ID="region0001_line0028" HEIGHT="84" WIDTH="1327" HPOS="392" VPOS="2172">
-            <String ID="region0001_line0028_word0000" HEIGHT="54" WIDTH="94" HPOS="1602" VPOS="2185" CONTENT="اسعش"/>
-            <SP/>
-            <String ID="region0001_line0028_word0001" HEIGHT="37" WIDTH="49" HPOS="1538" VPOS="2194" CONTENT="تهام"/>
-            <SP/>
-            <String ID="region0001_line0028_word0002" HEIGHT="31" WIDTH="56" HPOS="1458" VPOS="2189" CONTENT="دنیا"/>
-            <SP/>
-            <String ID="region0001_line0028_word0003" HEIGHT="49" WIDTH="29" HPOS="1405" VPOS="2182" CONTENT="را"/>
-            <SP/>
-            <String ID="region0001_line0028_word0004" HEIGHT="70" WIDTH="47" HPOS="1344" VPOS="2172" CONTENT="فرا"/>
-            <SP/>
-            <String ID="region0001_line0028_word0005" HEIGHT="69" WIDTH="87" HPOS="1235" VPOS="2172" CONTENT="گرفته"/>
-            <SP/>
-            <String ID="region0001_line0028_word0006" HEIGHT="39" WIDTH="70" HPOS="1150" VPOS="2182" CONTENT="است"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0028_word0008" HEIGHT="37" WIDTH="44" HPOS="1052" VPOS="2196" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0028_word0009" HEIGHT="47" WIDTH="172" HPOS="953" VPOS="2182" CONTENT="چپل"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0028_word0011" HEIGHT="31" WIDTH="42" HPOS="857" VPOS="2193" CONTENT="دو"/>
-            <SP/>
-            <String ID="region0001_line0028_word0012" HEIGHT="38" WIDTH="54" HPOS="787" VPOS="2179" CONTENT="سال"/>
-            <SP/>
-            <String ID="region0001_line0028_word0013" HEIGHT="47" WIDTH="59" HPOS="709" VPOS="2188" CONTENT="پیش"/>
-            <SP/>
-            <String ID="region0001_line0028_word0014" HEIGHT="50" WIDTH="32" HPOS="648" VPOS="2176" CONTENT="از"/>
-            <SP/>
-            <String ID="region0001_line0028_word0015" HEIGHT="46" WIDTH="48" HPOS="578" VPOS="2177" CONTENT="ان"/>
-            <SP/>
-            <String ID="region0001_line0028_word0016" HEIGHT="31" WIDTH="40" HPOS="515" VPOS="2194" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0028_word0017" HEIGHT="33" WIDTH="95" HPOS="402" VPOS="2187" CONTENT="ندشت"/>
-          </TextLine>
-          <TextLine ID="region0001_line0029" HEIGHT="93" WIDTH="1326" HPOS="392" VPOS="2250">
-            <String ID="region0001_line0029_word0000" HEIGHT="33" WIDTH="97" HPOS="1600" VPOS="2289" CONTENT="بوجود"/>
-            <SP/>
-            <String ID="region0001_line0029_word0001" HEIGHT="58" WIDTH="60" HPOS="1524" VPOS="2264" CONTENT="آمد"/>
-            <SP/>
-            <String ID="region0001_line0029_word0002" HEIGHT="60" WIDTH="140" HPOS="1348" VPOS="2263" CONTENT="وأگنون"/>
-            <SP/>
-            <String ID="region0001_line0029_word0003" HEIGHT="26" WIDTH="40" HPOS="1291" VPOS="2287" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0029_word0004" HEIGHT="38" WIDTH="172" HPOS="1104" VPOS="2274" CONTENT="هندوستان"/>
-            <SP/>
-            <String ID="region0001_line0029_word0005" HEIGHT="42" WIDTH="83" HPOS="1003" VPOS="2273" CONTENT="شاعی"/>
-            <SP/>
-            <String ID="region0001_line0029_word0006" HEIGHT="47" WIDTH="78" HPOS="908" VPOS="2274" CONTENT="شهبر"/>
-            <SP/>
-            <String ID="region0001_line0029_word0007" HEIGHT="73" WIDTH="96" HPOS="799" VPOS="2251" CONTENT="بتگالی"/>
-            <SP/>
-            <String ID="region0001_line0029_word0008" HEIGHT="67" WIDTH="115" HPOS="638" VPOS="2256" CONTENT=")اگور"/>
-            <String ID="region0001_line0029_word0008_p1" HPOS="753" VPOS="2256" WIDTH="23" HEIGHT="67" CONTENT="("/>
-            <SP/>
-            <String ID="region0001_line0029_word0009" HEIGHT="65" WIDTH="40" HPOS="576" VPOS="2257" CONTENT="که"/>
-            <SP/>
-            <String ID="region0001_line0029_word0010" HEIGHT="32" WIDTH="37" HPOS="524" VPOS="2285" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0029_word0011" HEIGHT="52" WIDTH="50" HPOS="458" VPOS="2269" CONTENT="هیه"/>
-            <SP/>
-            <String ID="region0001_line0029_word0012" HEIGHT="54" WIDTH="41" HPOS="398" VPOS="2268" CONTENT="جا"/>
-          </TextLine>
-          <TextLine ID="region0001_line0030" HEIGHT="86" WIDTH="1326" HPOS="392" VPOS="2350">
-            <String ID="region0001_line0030_word0000" HEIGHT="57" WIDTH="89" HPOS="1616" VPOS="2352" CONTENT="آوازۀ"/>
-            <SP/>
-            <String ID="region0001_line0030_word0001" HEIGHT="39" WIDTH="30" HPOS="1572" VPOS="2365" CONTENT="او"/>
-            <SP/>
-            <String ID="region0001_line0030_word0002" HEIGHT="38" WIDTH="120" HPOS="1444" VPOS="2377" CONTENT="پیچیده"/>
-            <SP/>
-            <String ID="region0001_line0030_word0003" HEIGHT="43" WIDTH="69" HPOS="1361" VPOS="2361" CONTENT="است"/>
-            <SP/>
-            <String ID="region0001_line0030_word0004" HEIGHT="24" WIDTH="40" HPOS="1306" VPOS="2378" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0030_word0005" HEIGHT="44" WIDTH="92" HPOS="1204" VPOS="2365" CONTENT="حیات"/>
-            <SP/>
-            <String ID="region0001_line0030_word0006" HEIGHT="45" WIDTH="73" HPOS="1118" VPOS="2358" CONTENT="است"/>
-            <SP/>
-            <String ID="region0001_line0030_word0007" HEIGHT="46" WIDTH="30" HPOS="1048" VPOS="2357" CONTENT="از"/>
-            <SP/>
-            <String ID="region0001_line0030_word0008" HEIGHT="45" WIDTH="42" HPOS="993" VPOS="2357" CONTENT="ان"/>
-            <SP/>
-            <String ID="region0001_line0030_word0009" HEIGHT="53" WIDTH="81" HPOS="898" VPOS="2360" CONTENT="قبیل"/>
-            <SP/>
-            <String ID="region0001_line0030_word0010" HEIGHT="57" WIDTH="124" HPOS="764" VPOS="2356" CONTENT="مثالپای"/>
-            <SP/>
-            <String ID="region0001_line0030_word0011" HEIGHT="37" WIDTH="72" HPOS="682" VPOS="2365" CONTENT="زنده"/>
-            <SP/>
-            <String ID="region0001_line0030_word0012" HEIGHT="27" WIDTH="39" HPOS="629" VPOS="2375" CONTENT="در"/>
-            <SP/>
-            <String ID="region0001_line0030_word0013" HEIGHT="49" WIDTH="76" HPOS="534" VPOS="2354" CONTENT="اروبا"/>
-            <SP/>
-            <String ID="region0001_line0030_word0014" HEIGHT="43" WIDTH="121" HPOS="398" VPOS="2364" CONTENT="درهان"/>
-          </TextLine>
-          <TextLine ID="region0001_line0032" HEIGHT="93" WIDTH="1326" HPOS="392" VPOS="2437">
-            <String ID="region0001_line0032_word0000" HEIGHT="33" WIDTH="47" HPOS="1653" VPOS="2474" CONTENT="سر"/>
-            <SP/>
-            <String ID="region0001_line0032_word0001" HEIGHT="54" WIDTH="140" HPOS="1558" VPOS="2444" CONTENT="زمین"/>
-            <SP/>
-            <String ID="region0001_line0032_word0002" HEIGHT="64" WIDTH="43" HPOS="1508" VPOS="2443" CONTENT="که"/>
-            <SP/>
-            <String ID="region0001_line0032_word0003" HEIGHT="57" WIDTH="48" HPOS="1434" VPOS="2449" CONTENT="علم"/>
-            <SP/>
-            <String ID="region0001_line0032_word0004" HEIGHT="47" WIDTH="84" HPOS="1328" VPOS="2449" CONTENT="باعلی"/>
-            <SP/>
-            <String ID="region0001_line0032_word0005" HEIGHT="24" WIDTH="88" HPOS="1213" VPOS="2466" CONTENT="درجه"/>
-            <SP/>
-            <String ID="region0001_line0032_word0006" HEIGHT="46" WIDTH="68" HPOS="1120" VPOS="2447" CONTENT="تژق"/>
-            <SP/>
-            <String ID="region0001_line0032_word0007" HEIGHT="33" WIDTH="99" HPOS="996" VPOS="2461" CONTENT="رسیده"/>
-            <SP/>
-            <String ID="region0001_line0032_word0008" HEIGHT="39" WIDTH="69" HPOS="901" VPOS="2445" CONTENT="است"/>
-            <SP/>
-            <String ID="region0001_line0032_word0009" HEIGHT="43" WIDTH="85" HPOS="792" VPOS="2452" CONTENT="مسیار"/>
-            <SP/>
-            <String ID="region0001_line0032_word0010" HEIGHT="54" WIDTH="82" HPOS="686" VPOS="2449" CONTENT="دارم"/>
-            <SP/>
-            <String ID="region0001_line0032_word0011" HEIGHT="59" WIDTH="85" HPOS="576" VPOS="2437" CONTENT="اینکه"/>
-            <SP/>
-            <String ID="region0001_line0032_word0012" HEIGHT="40" WIDTH="136" HPOS="399" VPOS="2455" CONTENT="میکویند"/>
-          </TextLine>
-          <TextLine ID="region0001_line0034" HEIGHT="94" WIDTH="1326" HPOS="392" VPOS="2527">
-            <String ID="region0001_line0034_word0000" HEIGHT="52" WIDTH="105" HPOS="1591" VPOS="2539" CONTENT="بواسطۀ"/>
-            <SP/>
-            <String ID="region0001_line0034_word0001" HEIGHT="49" WIDTH="68" HPOS="1510" VPOS="2541" CONTENT="نرق"/>
-            <SP/>
-            <String ID="region0001_line0034_word0002" HEIGHT="48" WIDTH="71" HPOS="1422" VPOS="2540" CONTENT="علوم"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0034_word0004" HEIGHT="54" WIDTH="93" HPOS="1281" VPOS="2545" CONTENT="صنایع"/>
-            <SP/>
-            <String ID="region0001_line0034_word0005" HEIGHT="48" WIDTH="103" HPOS="1164" VPOS="2539" CONTENT="ادبیات"/>
-            <SP/>
-            <String ID="region0001_line0034_word0006" HEIGHT="38" WIDTH="74" HPOS="1075" VPOS="2554" CONTENT="روي"/>
-            <SP/>
-            <String ID="region0001_line0034_word0007" HEIGHT="60" WIDTH="133" HPOS="931" VPOS="2529" CONTENT="باحطاط"/>
-            <SP/>
-            <String ID="region0001_line0034_word0008" HEIGHT="50" WIDTH="136" HPOS="778" VPOS="2537" CONTENT="میمذارد"/>
-            <SP/>
-            <String ID="region0001_line0034_word0009" HEIGHT="50" WIDTH="80" HPOS="681" VPOS="2538" CONTENT="برای"/>
-            <SP/>
-            <String ID="region0001_line0034_word0010" HEIGHT="48" WIDTH="48" HPOS="616" VPOS="2535" CONTENT="این"/>
-            <SP/>
-            <String ID="region0001_line0034_word0011" HEIGHT="50" WIDTH="71" HPOS="530" VPOS="2530" CONTENT="است"/>
-            <SP/>
-            <String ID="region0001_line0034_word0012" HEIGHT="69" WIDTH="41" HPOS="482" VPOS="2527" CONTENT="که"/>
-            <SP/>
-            <String ID="region0001_line0034_word0013" HEIGHT="45" WIDTH="62" HPOS="402" VPOS="2540" CONTENT="اهل"/>
-          </TextLine>
-          <TextLine ID="region0001_line0035" HEIGHT="78" WIDTH="1326" HPOS="392" VPOS="2616">
-            <String ID="region0001_line0035_word0000" HEIGHT="36" WIDTH="74" HPOS="1621" VPOS="2631" CONTENT="ذوق"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0035_word0002" HEIGHT="44" WIDTH="79" HPOS="1480" VPOS="2630" CONTENT="هوش"/>
-            <SP/>
-            <SP/>
-            <String ID="region0001_line0035_word0004" HEIGHT="46" WIDTH="129" HPOS="1295" VPOS="2628" CONTENT="مردمان"/>
-            <SP/>
-            <String ID="region0001_line0035_word0005" HEIGHT="44" WIDTH="20" HPOS="1257" VPOS="2629" CONTENT="با"/>
-            <SP/>
-            <String ID="region0001_line0035_word0006" HEIGHT="50" WIDTH="124" HPOS="1114" VPOS="2622" CONTENT="استعداد"/>
-            <SP/>
-            <String ID="region0001_line0035_word0007" HEIGHT="53" WIDTH="118" HPOS="976" VPOS="2625" CONTENT="بشعبات"/>
-            <SP/>
-            <String ID="region0001_line0035_word0008" HEIGHT="62" WIDTH="88" HPOS="862" VPOS="2617" CONTENT="ختلف"/>
-            <SP/>
-            <String ID="region0001_line0035_word0009" HEIGHT="56" WIDTH="92" HPOS="750" VPOS="2625" CONTENT="تقسیم"/>
-            <SP/>
-            <String ID="region0001_line0035_word0010" HEIGHT="53" WIDTH="63" HPOS="667" VPOS="2628" CONTENT="شده"/>
-            <SP/>
-            <String ID="region0001_line0035_word0011" HEIGHT="41" WIDTH="40" HPOS="602" VPOS="2639" CONTENT="هر"/>
-            <SP/>
-            <String ID="region0001_line0035_word0012" HEIGHT="53" WIDTH="83" HPOS="498" VPOS="2627" CONTENT="رشته"/>
-            <SP/>
-            <String ID="region0001_line0035_word0013" HEIGHT="53" WIDTH="38" HPOS="447" VPOS="2621" CONTENT="اي"/>
-            <SP/>
-            <String ID="region0001_line0035_word0014" HEIGHT="49" WIDTH="30" HPOS="401" VPOS="2617" CONTENT="از"/>
-          </TextLine>
-          <TextLine ID="region0001_line0037" HEIGHT="91" WIDTH="1326" HPOS="392" VPOS="2687">
-            <String ID="region0001_line0037_word0000" HEIGHT="42" WIDTH="73" HPOS="1625" VPOS="2708" CONTENT="علوم"/>
-            <SP/>
-            <String ID="region0001_line0037_word0001" HEIGHT="32" WIDTH="59" HPOS="1546" VPOS="2719" CONTENT="چند"/>
-            <SP/>
-            <String ID="region0001_line0037_word0002" HEIGHT="35" WIDTH="67" HPOS="1455" VPOS="2716" CONTENT="نفري"/>
-            <SP/>
-            <String ID="region0001_line0037_word0003" HEIGHT="33" WIDTH="143" HPOS="1291" VPOS="2718" CONTENT="میرسدنه"/>
-            <SP/>
-            <String ID="region0001_line0037_word0004" HEIGHT="45" WIDTH="60" HPOS="1216" VPOS="2711" CONTENT="مثن"/>
-            <SP/>
-            <String ID="region0001_line0037_word0005" HEIGHT="45" WIDTH="35" HPOS="1160" VPOS="2711" CONTENT="سا"/>
-            <SP/>
-            <String ID="region0001_line0037_word0006" HEIGHT="45" WIDTH="37" HPOS="1106" VPOS="2707" CONTENT="بق"/>
-            <SP/>
-            <String ID="region0001_line0037_word0007" HEIGHT="59" WIDTH="35" HPOS="1058" VPOS="2697" CONTENT="که"/>
-            <SP/>
-            <String ID="region0001_line0037_word0008" HEIGHT="49" WIDTH="112" HPOS="927" VPOS="2699" CONTENT="بواسطۀ"/>
-            <SP/>
-            <String ID="region0001_line0037_word0009" HEIGHT="27" WIDTH="48" HPOS="850" VPOS="2729" CONTENT="سب"/>
-            <SP/>
-            <String ID="region0001_line0037_word0010" HEIGHT="32" WIDTH="72" HPOS="735" VPOS="2715" CONTENT="بودن"/>
-            <SP/>
-            <String ID="region0001_line0037_word0011" HEIGHT="53" WIDTH="92" HPOS="621" VPOS="2703" CONTENT="داثره"/>
-            <SP/>
-            <String ID="region0001_line0037_word0012" HEIGHT="51" WIDTH="94" HPOS="506" VPOS="2704" CONTENT="معرفت"/>
-            <SP/>
-            <String ID="region0001_line0037_word0013" HEIGHT="68" WIDTH="85" HPOS="400" VPOS="2687" CONTENT="کلیه"/>
-          </TextLine>
-        </TextBlock>
-      </PrintSpace>
-    </Page>
-  </Layout>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v3#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v3# http://www.loc.gov/alto/v3/alto-3-0.xsd">
+	<Description>
+		<MeasurementUnit>pixel</MeasurementUnit>
+		<sourceImageInformation>
+			<fileName>1981185920_88120_00000010.jpg</fileName>
+		</sourceImageInformation>
+		<OCRProcessing ID="OCR_0">
+			<ocrProcessingStep>
+				<processingSoftware>
+					<softwareName>tesseract 5.4.1</softwareName>
+				</processingSoftware>
+			</ocrProcessingStep>
+		</OCRProcessing>
+	</Description>
+	<Layout>
+		<Page WIDTH="2289" HEIGHT="3173" PHYSICAL_IMG_NR="0" ID="page_0">
+			<PrintSpace HPOS="0" VPOS="0" WIDTH="2289" HEIGHT="3173">
+				<Illustration ID="cblock_0" HPOS="2118" VPOS="0" WIDTH="171" HEIGHT="3058"></Illustration>
+				<ComposedBlock ID="cblock_1" HPOS="1019" VPOS="345" WIDTH="690" HEIGHT="57">
+					<TextBlock ID="block_0" HPOS="1019" VPOS="345" WIDTH="690" HEIGHT="57">
+						<TextLine ID="line_0" HPOS="1019" VPOS="345" WIDTH="690" HEIGHT="57">
+							<String ID="string_0" HPOS="1692" VPOS="359" WIDTH="17" HEIGHT="25" WC="0.92" CONTENT="٨‏"/><SP WIDTH="-690" VPOS="359" HPOS="1709"/>
+							<String ID="string_1" HPOS="1019" VPOS="345" WIDTH="100" HEIGHT="57" WC="0.74" CONTENT="ديباجه"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_2" HPOS="399" VPOS="442" WIDTH="1314" HEIGHT="170">
+					<TextBlock ID="block_1" HPOS="399" VPOS="442" WIDTH="1314" HEIGHT="166">
+						<TextLine ID="line_1" HPOS="442" VPOS="442" WIDTH="1271" HEIGHT="35">
+							<String ID="string_2" HPOS="1706" VPOS="450" WIDTH="7" HEIGHT="21" WC="0.42" CONTENT=".."/><SP WIDTH="-231" VPOS="450" HPOS="1713"/>
+							<String ID="string_3" HPOS="1482" VPOS="451" WIDTH="10" HEIGHT="11" WC="0.7" CONTENT="ه"/><SP WIDTH="-234" VPOS="451" HPOS="1492"/>
+							<String ID="string_4" HPOS="1258" VPOS="447" WIDTH="8" HEIGHT="30" WC="0.14" CONTENT="ف☸"/><SP WIDTH="-84" VPOS="447" HPOS="1266"/>
+							<String ID="string_5" HPOS="1182" VPOS="447" WIDTH="16" HEIGHT="27" WC="0.28" CONTENT="نيفيِ"/><SP WIDTH="-334" VPOS="447" HPOS="1198"/>
+							<String ID="string_6" HPOS="864" VPOS="444" WIDTH="37" HEIGHT="22" WC="0.73" CONTENT="حكه"/><SP WIDTH="-215" VPOS="444" HPOS="901"/>
+							<String ID="string_7" HPOS="686" VPOS="444" WIDTH="8" HEIGHT="26" WC="0.0" CONTENT="بر"/><SP WIDTH="-252" VPOS="444" HPOS="694"/>
+							<String ID="string_8" HPOS="442" VPOS="442" WIDTH="31" HEIGHT="22" WC="0.28" CONTENT=".٠٦‏"/>
+						</TextLine>
+						<TextLine ID="line_2" HPOS="399" VPOS="456" WIDTH="1308" HEIGHT="62">
+							<String ID="string_9" HPOS="1624" VPOS="463" WIDTH="83" HEIGHT="55" WC="0.77" CONTENT="كرده"/><SP WIDTH="-137" VPOS="463" HPOS="1707"/>
+							<String ID="string_10" HPOS="1570" VPOS="470" WIDTH="36" HEIGHT="33" WC="0.92" CONTENT="اند"/><SP WIDTH="-131" VPOS="470" HPOS="1606"/>
+							<String ID="string_11" HPOS="1475" VPOS="459" WIDTH="75" HEIGHT="63" WC="0.84" CONTENT="مثلا"/><SP WIDTH="-174" VPOS="459" HPOS="1550"/>
+							<String ID="string_12" HPOS="1376" VPOS="467" WIDTH="84" HEIGHT="49" WC="0.82" CONTENT="انورى"/><SP WIDTH="-116" VPOS="467" HPOS="1460"/>
+							<String ID="string_13" HPOS="1344" VPOS="459" WIDTH="17" HEIGHT="63" WC="0.84" CONTENT="و"/><SP WIDTH="-128" VPOS="459" HPOS="1361"/>
+							<String ID="string_14" HPOS="1233" VPOS="467" WIDTH="308" HEIGHT="49" WC="0.89" CONTENT="حافظ"/><SP WIDTH="-466" VPOS="467" HPOS="1541"/>
+							<String ID="string_15" HPOS="1075" VPOS="467" WIDTH="122" HEIGHT="41" WC="0.41" CONTENT="قصائدو"/><SP WIDTH="-172" VPOS="467" HPOS="1197"/>
+							<String ID="string_16" HPOS="1025" VPOS="454" WIDTH="32" HEIGHT="63" WC="0.91" CONTENT="غن"/><SP WIDTH="-79" VPOS="454" HPOS="1057"/>
+							<String ID="string_17" HPOS="978" VPOS="454" WIDTH="32" HEIGHT="63" WC="0.57" CONTENT="له"/><SP WIDTH="-106" VPOS="454" HPOS="1010"/>
+							<String ID="string_18" HPOS="904" VPOS="454" WIDTH="64" HEIGHT="63" WC="0.57" CONTENT="ائبى"/><SP WIDTH="-180" VPOS="454" HPOS="968"/>
+							<String ID="string_19" HPOS="788" VPOS="458" WIDTH="262" HEIGHT="55" WC="0.20" CONTENT="كَفْتّند"/><SP WIDTH="-414" VPOS="458" HPOS="1050"/>
+							<String ID="string_20" HPOS="636" VPOS="467" WIDTH="121" HEIGHT="37" WC="0.71" CONTENT="ورفتند"/><SP WIDTH="-209" VPOS="467" HPOS="757"/>
+							<String ID="string_21" HPOS="548" VPOS="474" WIDTH="55" HEIGHT="37" WC="0.86" CONTENT="بس"/><SP WIDTH="-103" VPOS="474" HPOS="603"/>
+							<String ID="string_22" HPOS="500" VPOS="452" WIDTH="42" HEIGHT="63" WC="0.89" CONTENT="از"/><SP WIDTH="-143" VPOS="452" HPOS="542"/>
+							<String ID="string_23" HPOS="399" VPOS="456" WIDTH="120" HEIGHT="46" WC="0.20" CONTENT="انان"/>
+						</TextLine>
+						<TextLine ID="line_3" HPOS="401" VPOS="539" WIDTH="1303" HEIGHT="73">
+							<String ID="string_24" HPOS="1592" VPOS="564" WIDTH="112" HEIGHT="48" WC="0.30" CONTENT="جندين"/><SP WIDTH="-192" VPOS="564" HPOS="1704"/>
+							<String ID="string_25" HPOS="1512" VPOS="546" WIDTH="64" HEIGHT="63" WC="0.69" CONTENT="قررن"/><SP WIDTH="-138" VPOS="546" HPOS="1576"/>
+							<String ID="string_26" HPOS="1438" VPOS="546" WIDTH="56" HEIGHT="63" WC="0.50" CONTENT="است"/><SP WIDTH="-113" VPOS="546" HPOS="1494"/>
+							<String ID="string_27" HPOS="1381" VPOS="546" WIDTH="37" HEIGHT="63" WC="0.6" CONTENT="كه"/><SP WIDTH="-129" VPOS="546" HPOS="1418"/>
+							<String ID="string_28" HPOS="1289" VPOS="563" WIDTH="76" HEIGHT="29" WC="0.32" CONTENT="دسّه"/><SP WIDTH="-169" VPOS="563" HPOS="1365"/>
+							<String ID="string_29" HPOS="1196" VPOS="563" WIDTH="76" HEIGHT="29" WC="0.14" CONTENT="دسمّه"/><SP WIDTH="-181" VPOS="563" HPOS="1272"/>
+							<String ID="string_30" HPOS="1091" VPOS="560" WIDTH="85" HEIGHT="39" WC="0.4" CONTENT="دربف"/><SP WIDTH="-190" VPOS="560" HPOS="1176"/>
+							<String ID="string_31" HPOS="986" VPOS="552" WIDTH="83" HEIGHT="51" WC="0.91" CONTENT="غارت"/><SP WIDTH="-123" VPOS="552" HPOS="1069"/>
+							<String ID="string_32" HPOS="946" VPOS="571" WIDTH="17" HEIGHT="26" WC="0.83" CONTENT="و"/><SP WIDTH="-122" VPOS="571" HPOS="963"/>
+							<String ID="string_33" HPOS="841" VPOS="542" WIDTH="83" HEIGHT="59" WC="0.71" CONTENT="تاراج"/><SP WIDTH="-199" VPOS="542" HPOS="924"/>
+							<String ID="string_34" HPOS="725" VPOS="541" WIDTH="83" HEIGHT="52" WC="0.0" CONTENT="موالي"/><SP WIDTH="-120" VPOS="541" HPOS="808"/>
+							<String ID="string_35" HPOS="688" VPOS="570" WIDTH="16" HEIGHT="23" WC="0.80" CONTENT="و"/><SP WIDTH="-166" VPOS="570" HPOS="704"/>
+							<String ID="string_36" HPOS="538" VPOS="544" WIDTH="131" HEIGHT="58" WC="0.85" CONTENT="تعبيرات"/><SP WIDTH="-268" VPOS="544" HPOS="669"/>
+							<String ID="string_37" HPOS="401" VPOS="539" WIDTH="122" HEIGHT="55" WC="0.2" CONTENT="انالنب"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_3" HPOS="841" VPOS="595" WIDTH="28" HEIGHT="14">
+					<TextBlock ID="block_2" HPOS="841" VPOS="595" WIDTH="28" HEIGHT="14">
+						<TextLine ID="line_4" HPOS="841" VPOS="595" WIDTH="28" HEIGHT="14">
+							<String ID="string_38" HPOS="841" VPOS="595" WIDTH="28" HEIGHT="14" WC="0.45" CONTENT="١-"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_4" HPOS="395" VPOS="634" WIDTH="1308" HEIGHT="183">
+					<TextBlock ID="block_3" HPOS="399" VPOS="634" WIDTH="1304" HEIGHT="179">
+						<TextLine ID="line_5" HPOS="401" VPOS="634" WIDTH="1300" HEIGHT="70">
+							<String ID="string_39" HPOS="1612" VPOS="648" WIDTH="89" HEIGHT="48" WC="0.80" CONTENT="افتاده"/><SP WIDTH="-153" VPOS="648" HPOS="1701"/>
+							<String ID="string_40" HPOS="1548" VPOS="642" WIDTH="41" HEIGHT="55" WC="0.48" CONTENT="هر"/><SP WIDTH="-108" VPOS="642" HPOS="1589"/>
+							<String ID="string_41" HPOS="1481" VPOS="648" WIDTH="50" HEIGHT="52" WC="0.0" CONTENT="لن"/><SP WIDTH="-116" VPOS="648" HPOS="1531"/>
+							<String ID="string_42" HPOS="1415" VPOS="645" WIDTH="46" HEIGHT="55" WC="0.41" CONTENT="لفر"/><SP WIDTH="-133" VPOS="645" HPOS="1461"/>
+							<String ID="string_43" HPOS="1328" VPOS="645" WIDTH="74" HEIGHT="55" WC="0.41" CONTENT="اخور"/><SP WIDTH="-139" VPOS="645" HPOS="1402"/>
+							<String ID="string_44" HPOS="1263" VPOS="644" WIDTH="35" HEIGHT="54" WC="0.32" CONTENT="قؤ"/><SP WIDTH="-53" VPOS="644" HPOS="1298"/>
+							<String ID="string_45" HPOS="1245" VPOS="670" WIDTH="10" HEIGHT="12" WC="0.48" CONTENT="ه"/><SP WIDTH="-46" VPOS="670" HPOS="1255"/>
+							<String ID="string_46" HPOS="1209" VPOS="667" WIDTH="18" HEIGHT="24" WC="0.0" CONTENT="ش"/><SP WIDTH="-89" VPOS="667" HPOS="1227"/>
+							<String ID="string_47" HPOS="1138" VPOS="649" WIDTH="48" HEIGHT="55" WC="0.68" CONTENT="فهم"/><SP WIDTH="-141" VPOS="649" HPOS="1186"/>
+							<String ID="string_48" HPOS="1045" VPOS="649" WIDTH="69" HEIGHT="48" WC="0.71" CONTENT="خود"/><SP WIDTH="-161" VPOS="649" HPOS="1114"/>
+							<String ID="string_49" HPOS="953" VPOS="644" WIDTH="77" HEIGHT="56" WC="0.86" CONTENT="تغيير"/><SP WIDTH="-110" VPOS="644" HPOS="1030"/>
+							<String ID="string_50" HPOS="920" VPOS="659" WIDTH="15" HEIGHT="37" WC="0.90" CONTENT="ي"/><SP WIDTH="-75" VPOS="659" HPOS="935"/>
+							<String ID="string_51" HPOS="860" VPOS="658" WIDTH="39" HEIGHT="29" WC="0.51" CONTENT="ذر"/><SP WIDTH="-112" VPOS="658" HPOS="899"/>
+							<String ID="string_52" HPOS="787" VPOS="637" WIDTH="54" HEIGHT="50" WC="0.49" CONTENT="آسها"/><SP WIDTH="-146" VPOS="637" HPOS="841"/>
+							<String ID="string_53" HPOS="695" VPOS="642" WIDTH="70" HEIGHT="33" WC="0.29" CONTENT="داده"/><SP WIDTH="-166" VPOS="642" HPOS="765"/>
+							<String ID="string_54" HPOS="599" VPOS="649" WIDTH="68" HEIGHT="51" WC="0.47" CONTENT="داسم"/><SP WIDTH="-151" VPOS="649" HPOS="667"/>
+							<String ID="string_55" HPOS="516" VPOS="647" WIDTH="69" HEIGHT="40" WC="0.57" CONTENT="خود"/><SP WIDTH="-184" VPOS="647" HPOS="585"/>
+							<String ID="string_56" HPOS="401" VPOS="634" WIDTH="94" HEIGHT="56" WC="0.84" CONTENT="خواند"/>
+						</TextLine>
+						<TextLine ID="line_6" HPOS="454" VPOS="723" WIDTH="548" HEIGHT="42">
+							<String ID="string_57" HPOS="839" VPOS="745" WIDTH="3" HEIGHT="17" WC="0.91" CONTENT="١"/><SP WIDTH="70" VPOS="745" HPOS="842"/>
+							<String ID="string_58" HPOS="912" VPOS="749" WIDTH="8" HEIGHT="11" WC="0.71" CONTENT="٤"/><SP WIDTH="61" VPOS="749" HPOS="920"/>
+							<String ID="string_59" HPOS="981" VPOS="737" WIDTH="21" HEIGHT="5" WC="0.44" CONTENT="٤٢‏"/><SP WIDTH="-373" VPOS="737" HPOS="1002"/>
+							<String ID="string_60" HPOS="629" VPOS="734" WIDTH="11" HEIGHT="31" WC="0.12" CONTENT="لَف"/><SP WIDTH="-186" VPOS="734" HPOS="640"/>
+							<String ID="string_61" HPOS="454" VPOS="723" WIDTH="43" HEIGHT="40" WC="0.0" CONTENT="ررا"/>
+						</TextLine>
+						<TextLine ID="line_7" HPOS="395" VPOS="732" WIDTH="1308" HEIGHT="85">
+							<String ID="string_62" HPOS="1616" VPOS="751" WIDTH="87" HEIGHT="66" WC="0.81" CONTENT="سالاح"/><SP WIDTH="-271" VPOS="751" HPOS="1703"/>
+							<String ID="string_63" HPOS="1432" VPOS="745" WIDTH="156" HEIGHT="60" WC="0.91" CONTENT="سخنوران"/><SP WIDTH="-268" VPOS="745" HPOS="1588"/>
+							<String ID="string_64" HPOS="1320" VPOS="750" WIDTH="78" HEIGHT="51" WC="0.88" CONTENT="اخير"/><SP WIDTH="-144" VPOS="750" HPOS="1398"/>
+							<String ID="string_65" HPOS="1254" VPOS="773" WIDTH="13" HEIGHT="22" WC="0.25" CONTENT=":"/><SP WIDTH="-99" VPOS="773" HPOS="1267"/>
+							<String ID="string_66" HPOS="1168" VPOS="744" WIDTH="50" HEIGHT="59" WC="0.88" CONTENT="هيد"/><SP WIDTH="-105" VPOS="744" HPOS="1218"/>
+							<String ID="string_67" HPOS="1113" VPOS="748" WIDTH="37" HEIGHT="46" WC="0.89" CONTENT="ان"/><SP WIDTH="-131" VPOS="748" HPOS="1150"/>
+							<String ID="string_68" HPOS="1019" VPOS="757" WIDTH="60" HEIGHT="36" WC="0.91" CONTENT="زور"/><SP WIDTH="-147" VPOS="757" HPOS="1079"/>
+							<String ID="string_69" HPOS="932" VPOS="746" WIDTH="62" HEIGHT="46" WC="0.91" CONTENT="ازما"/><SP WIDTH="-114" VPOS="746" HPOS="994"/>
+							<String ID="string_70" HPOS="880" VPOS="755" WIDTH="36" HEIGHT="47" WC="0.2" CONTENT="كتى"/><SP WIDTH="-143" VPOS="755" HPOS="916"/>
+							<String ID="string_71" HPOS="773" VPOS="751" WIDTH="69" HEIGHT="34" WC="0.48" CONTENT="ادف"/><SP WIDTH="-170" VPOS="751" HPOS="842"/>
+							<String ID="string_72" HPOS="672" VPOS="756" WIDTH="69" HEIGHT="35" WC="0.71" CONTENT="همان"/><SP WIDTH="-173" VPOS="756" HPOS="741"/>
+							<String ID="string_73" HPOS="568" VPOS="736" WIDTH="64" HEIGHT="54" WC="0.90" CONTENT="ناوك"/><SP WIDTH="-237" VPOS="736" HPOS="632"/>
+							<String ID="string_74" HPOS="395" VPOS="732" WIDTH="125" HEIGHT="59" WC="0.11" CONTENT="هزكّاني"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_5" HPOS="1261" VPOS="827" WIDTH="156" HEIGHT="47">
+					<TextBlock ID="block_4" HPOS="1261" VPOS="827" WIDTH="156" HEIGHT="47">
+						<TextLine ID="line_8" HPOS="1268" VPOS="827" WIDTH="149" HEIGHT="32">
+							<String ID="string_75" HPOS="1384" VPOS="828" WIDTH="33" HEIGHT="19" WC="0.0" CONTENT="نی"/><SP WIDTH="-91" VPOS="828" HPOS="1417"/>
+							<String ID="string_76" HPOS="1326" VPOS="814" WIDTH="6" HEIGHT="58" WC="0.54" CONTENT="*"/><SP WIDTH="-64" VPOS="814" HPOS="1332"/>
+							<String ID="string_77" HPOS="1268" VPOS="827" WIDTH="43" HEIGHT="32" WC="0.0" CONTENT="قف"/>
+						</TextLine>
+						<TextLine ID="line_9" HPOS="1261" VPOS="862" WIDTH="31" HEIGHT="12">
+							<String ID="string_78" HPOS="1275" VPOS="862" WIDTH="17" HEIGHT="12" WC="0.14" CONTENT="ه٠‏"/><SP WIDTH="-31" VPOS="862" HPOS="1292"/>
+							<String ID="string_79" HPOS="1261" VPOS="868" WIDTH="7" HEIGHT="6" WC="0.83" CONTENT="-"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_6" HPOS="1316" VPOS="825" WIDTH="385" HEIGHT="70">
+					<TextBlock ID="block_5" HPOS="1316" VPOS="825" WIDTH="385" HEIGHT="70">
+						<TextLine ID="line_10" HPOS="1374" VPOS="825" WIDTH="307" HEIGHT="46">
+							<String ID="string_80" HPOS="1374" VPOS="848" WIDTH="37" HEIGHT="13" WC="0.33" CONTENT="١٢٧٠"/><SP WIDTH="154" VPOS="848" HPOS="1411"/>
+							<String ID="string_81" HPOS="1565" VPOS="857" WIDTH="5" HEIGHT="5" WC="0.88" CONTENT="."/><SP WIDTH="17" VPOS="857" HPOS="1570"/>
+							<String ID="string_82" HPOS="1587" VPOS="825" WIDTH="46" HEIGHT="46" WC="0.22" CONTENT="کكم‎"/><SP WIDTH="46" VPOS="825" HPOS="1633"/>
+							<String ID="string_83" HPOS="1679" VPOS="851" WIDTH="2" HEIGHT="13" WC="0.92" CONTENT="١"/>
+						</TextLine>
+						<TextLine ID="line_11" HPOS="1316" VPOS="842" WIDTH="385" HEIGHT="53">
+							<String ID="string_84" HPOS="1629" VPOS="865" WIDTH="72" HEIGHT="29" WC="0.37" CONTENT="يارو"/><SP WIDTH="-147" VPOS="865" HPOS="1701"/>
+							<String ID="string_85" HPOS="1554" VPOS="855" WIDTH="59" HEIGHT="34" WC="0.31" CONTENT="مان"/><SP WIDTH="-183" VPOS="855" HPOS="1613"/>
+							<String ID="string_86" HPOS="1430" VPOS="842" WIDTH="106" HEIGHT="53" WC="0.72" CONTENT="ابروي"/><SP WIDTH="-183" VPOS="842" HPOS="1536"/>
+							<String ID="string_87" HPOS="1353" VPOS="850" WIDTH="58" HEIGHT="36" WC="0.71" CONTENT="نكار"/><SP WIDTH="-95" VPOS="850" HPOS="1411"/>
+							<String ID="string_88" HPOS="1316" VPOS="863" WIDTH="17" HEIGHT="23" WC="0.92" CONTENT="و‎"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_7" HPOS="403" VPOS="829" WIDTH="855" HEIGHT="63">
+					<TextBlock ID="block_6" HPOS="403" VPOS="829" WIDTH="855" HEIGHT="62">
+						<TextLine ID="line_12" HPOS="448" VPOS="829" WIDTH="788" HEIGHT="20">
+							<String ID="string_89" HPOS="1206" VPOS="829" WIDTH="30" HEIGHT="17" WC="0.10" CONTENT="ك"/><SP WIDTH="-788" VPOS="829" HPOS="1236"/>
+							<String ID="string_90" HPOS="448" VPOS="830" WIDTH="2" HEIGHT="15" WC="0.88" CONTENT="١"/><SP WIDTH="52" VPOS="830" HPOS="450"/>
+							<String ID="string_91" HPOS="502" VPOS="832" WIDTH="3" HEIGHT="12" WC="0.92" CONTENT="١"/><SP WIDTH="48" VPOS="832" HPOS="505"/>
+							<String ID="string_92" HPOS="553" VPOS="834" WIDTH="3" HEIGHT="11" WC="0.92" CONTENT="١"/><SP WIDTH="94" VPOS="834" HPOS="556"/>
+							<String ID="string_93" HPOS="650" VPOS="837" WIDTH="17" HEIGHT="7" WC="0.54" CONTENT="-"/><SP WIDTH="152" VPOS="837" HPOS="667"/>
+							<String ID="string_94" HPOS="819" VPOS="838" WIDTH="2" HEIGHT="11" WC="0.75" CONTENT="١"/><SP WIDTH="83" VPOS="838" HPOS="821"/>
+							<String ID="string_95" HPOS="904" VPOS="835" WIDTH="31" HEIGHT="13" WC="0.50" CONTENT="٤‏"/>
+						</TextLine>
+						<TextLine ID="line_13" HPOS="415" VPOS="835" WIDTH="843" HEIGHT="40">
+							<String ID="string_96" HPOS="1203" VPOS="847" WIDTH="55" HEIGHT="27" WC="0.0" CONTENT="ه ‏"/><SP WIDTH="-249" VPOS="847" HPOS="1258"/>
+							<String ID="string_97" HPOS="1009" VPOS="839" WIDTH="69" HEIGHT="36" WC="0.5" CONTENT="واللز"/><SP WIDTH="-173" VPOS="839" HPOS="1078"/>
+							<String ID="string_98" HPOS="905" VPOS="831" WIDTH="64" HEIGHT="49" WC="0.0" CONTENT="مطل"/><SP WIDTH="-124" VPOS="831" HPOS="969"/>
+							<String ID="string_99" HPOS="845" VPOS="851" WIDTH="43" HEIGHT="19" WC="0.79" CONTENT="هان"/><SP WIDTH="-125" VPOS="851" HPOS="888"/>
+							<String ID="string_100" HPOS="763" VPOS="850" WIDTH="47" HEIGHT="19" WC="0.51" CONTENT="است"/><SP WIDTH="-124" VPOS="850" HPOS="810"/>
+							<String ID="string_101" HPOS="686" VPOS="849" WIDTH="54" HEIGHT="19" WC="0.64" CONTENT="ونه"/><SP WIDTH="-128" VPOS="849" HPOS="740"/>
+							<String ID="string_102" HPOS="612" VPOS="835" WIDTH="60" HEIGHT="33" WC="0.69" CONTENT="فقط"/><SP WIDTH="-199" VPOS="835" HPOS="672"/>
+							<String ID="string_103" HPOS="473" VPOS="846" WIDTH="118" HEIGHT="23" WC="0.19" CONTENT="والطه"/><SP WIDTH="-176" VPOS="846" HPOS="591"/>
+							<String ID="string_104" HPOS="415" VPOS="842" WIDTH="15" HEIGHT="14" WC="0.29" CONTENT="ابر"/>
+						</TextLine>
+						<TextLine ID="line_14" HPOS="403" VPOS="855" WIDTH="805" HEIGHT="37">
+							<String ID="string_105" HPOS="1095" VPOS="857" WIDTH="113" HEIGHT="34" WC="0.33" CONTENT="-سوى"/><SP WIDTH="-224" VPOS="857" HPOS="1208"/>
+							<String ID="string_106" HPOS="984" VPOS="858" WIDTH="20" HEIGHT="34" WC="0.13" CONTENT="لي"/><SP WIDTH="-169" VPOS="858" HPOS="1004"/>
+							<String ID="string_107" HPOS="835" VPOS="867" WIDTH="34" HEIGHT="21" WC="0.23" CONTENT="٦س‏"/><SP WIDTH="-304" VPOS="867" HPOS="869"/>
+							<String ID="string_108" HPOS="565" VPOS="870" WIDTH="30" HEIGHT="11" WC="0.28" CONTENT="تن"/><SP WIDTH="-192" VPOS="870" HPOS="595"/>
+							<String ID="string_109" HPOS="403" VPOS="855" WIDTH="32" HEIGHT="34" WC="0.29" CONTENT="عحا"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_8" HPOS="399" VPOS="913" WIDTH="1300" HEIGHT="75">
+					<TextBlock ID="block_7" HPOS="399" VPOS="913" WIDTH="1300" HEIGHT="71">
+						<TextLine ID="line_15" HPOS="409" VPOS="913" WIDTH="1274" HEIGHT="41">
+							<String ID="string_110" HPOS="1661" VPOS="934" WIDTH="22" HEIGHT="12" WC="0.0" CONTENT="١ت‏"/><SP WIDTH="-97" VPOS="934" HPOS="1683"/>
+							<String ID="string_111" HPOS="1586" VPOS="934" WIDTH="35" HEIGHT="19" WC="0.31" CONTENT="اللا*"/><SP WIDTH="-89" VPOS="934" HPOS="1621"/>
+							<String ID="string_112" HPOS="1532" VPOS="942" WIDTH="4" HEIGHT="4" WC="0.48" CONTENT="."/><SP WIDTH="-132" VPOS="942" HPOS="1536"/>
+							<String ID="string_113" HPOS="1404" VPOS="941" WIDTH="39" HEIGHT="12" WC="0.1" CONTENT="رن"/><SP WIDTH="-202" VPOS="941" HPOS="1443"/>
+							<String ID="string_114" HPOS="1241" VPOS="934" WIDTH="4" HEIGHT="16" WC="0.66" CONTENT="١‏"/><SP WIDTH="-106" VPOS="934" HPOS="1245"/>
+							<String ID="string_115" HPOS="1139" VPOS="915" WIDTH="37" HEIGHT="39" WC="0.15" CONTENT="حم"/><SP WIDTH="-248" VPOS="915" HPOS="1176"/>
+							<String ID="string_116" HPOS="928" VPOS="940" WIDTH="3" HEIGHT="3" WC="0.0" CONTENT="ٍ"/><SP WIDTH="-275" VPOS="940" HPOS="931"/>
+							<String ID="string_117" HPOS="656" VPOS="926" WIDTH="3" HEIGHT="18" WC="0.65" CONTENT="١"/><SP WIDTH="206" VPOS="926" HPOS="659"/>
+							<String ID="string_118" HPOS="865" VPOS="930" WIDTH="7" HEIGHT="11" WC="0.8" CONTENT="٤‏"/><SP WIDTH="-306" VPOS="930" HPOS="872"/>
+							<String ID="string_119" HPOS="566" VPOS="934" WIDTH="4" HEIGHT="4" WC="0.60" CONTENT="."/><SP WIDTH="-85" VPOS="934" HPOS="570"/>
+							<String ID="string_120" HPOS="485" VPOS="923" WIDTH="4" HEIGHT="16" WC="0.31" CONTENT="ارن"/><SP WIDTH="-80" VPOS="923" HPOS="489"/>
+							<String ID="string_121" HPOS="409" VPOS="934" WIDTH="6" HEIGHT="6" WC="0.26" CONTENT="بم"/>
+						</TextLine>
+						<TextLine ID="line_16" HPOS="399" VPOS="920" WIDTH="1300" HEIGHT="68">
+							<String ID="string_122" HPOS="1575" VPOS="929" WIDTH="124" HEIGHT="59" WC="0.54" CONTENT="باغبانان"/><SP WIDTH="-178" VPOS="929" HPOS="1699"/>
+							<String ID="string_123" HPOS="1521" VPOS="932" WIDTH="29" HEIGHT="51" WC="0.92" CONTENT="از"/><SP WIDTH="-140" VPOS="932" HPOS="1550"/>
+							<String ID="string_124" HPOS="1410" VPOS="920" WIDTH="87" HEIGHT="67" WC="0.7" CONTENT="هرخت"/><SP WIDTH="-194" VPOS="920" HPOS="1497"/>
+							<String ID="string_125" HPOS="1303" VPOS="920" WIDTH="86" HEIGHT="67" WC="0.8" CONTENT="کلمین"/><SP WIDTH="-165" VPOS="920" HPOS="1389"/>
+							<String ID="string_126" HPOS="1224" VPOS="934" WIDTH="63" HEIGHT="43" WC="0.8" CONTENT="سماالي"/><SP WIDTH="-191" VPOS="934" HPOS="1287"/>
+							<String ID="string_127" HPOS="1096" VPOS="950" WIDTH="103" HEIGHT="30" WC="0.57" CONTENT="بر"/><SP WIDTH="-131" VPOS="950" HPOS="1199"/>
+							<String ID="string_128" HPOS="1068" VPOS="952" WIDTH="1" HEIGHT="23" WC="0.82" CONTENT="و"/><SP WIDTH="-113" VPOS="952" HPOS="1069"/>
+							<String ID="string_129" HPOS="956" VPOS="946" WIDTH="63" HEIGHT="36" WC="0.82" CONTENT="بري"/><SP WIDTH="-197" VPOS="946" HPOS="1019"/>
+							<String ID="string_130" HPOS="822" VPOS="942" WIDTH="110" HEIGHT="34" WC="0.82" CONTENT="نروئيد"/><SP WIDTH="-143" VPOS="942" HPOS="932"/>
+							<String ID="string_131" HPOS="789" VPOS="947" WIDTH="5" HEIGHT="24" WC="0.88" CONTENT="و"/><SP WIDTH="-65" VPOS="947" HPOS="794"/>
+							<String ID="string_132" HPOS="729" VPOS="939" WIDTH="28" HEIGHT="34" WC="0.2" CONTENT="بو"/><SP WIDTH="-123" VPOS="939" HPOS="757"/>
+							<String ID="string_133" HPOS="634" VPOS="927" WIDTH="79" HEIGHT="33" WC="0.29" CONTENT="اسصاه"/><SP WIDTH="-160" VPOS="927" HPOS="713"/>
+							<String ID="string_134" HPOS="553" VPOS="922" WIDTH="51" HEIGHT="44" WC="0.29" CONTENT="اين"/><SP WIDTH="-205" VPOS="922" HPOS="604"/>
+							<String ID="string_135" HPOS="399" VPOS="926" WIDTH="119" HEIGHT="41" WC="0.89" CONTENT="واران"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_9" HPOS="409" VPOS="1002" WIDTH="71" HEIGHT="46">
+					<TextBlock ID="block_8" HPOS="409" VPOS="1002" WIDTH="71" HEIGHT="46">
+						<TextLine ID="line_17" HPOS="409" VPOS="1002" WIDTH="71" HEIGHT="46">
+							<String ID="string_136" HPOS="409" VPOS="1002" WIDTH="71" HEIGHT="46" WC="0.28" CONTENT="كمارء"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_10" HPOS="481" VPOS="1005" WIDTH="1217" HEIGHT="72">
+					<TextBlock ID="block_9" HPOS="398" VPOS="1005" WIDTH="1300" HEIGHT="72">
+						<TextLine ID="line_18" HPOS="785" VPOS="1008" WIDTH="818" HEIGHT="35">
+							<String ID="string_137" HPOS="1559" VPOS="1012" WIDTH="44" HEIGHT="31" WC="0.0" CONTENT="يهيني؟"/><SP WIDTH="-339" VPOS="1012" HPOS="1603"/>
+							<String ID="string_138" HPOS="1264" VPOS="1009" WIDTH="13" HEIGHT="29" WC="0.2" CONTENT="يْنِ"/><SP WIDTH="-136" VPOS="1009" HPOS="1277"/>
+							<String ID="string_139" HPOS="1141" VPOS="1008" WIDTH="13" HEIGHT="29" WC="0.5" CONTENT="زِنه"/><SP WIDTH="-369" VPOS="1008" HPOS="1154"/>
+							<String ID="string_140" HPOS="785" VPOS="1019" WIDTH="2" HEIGHT="9" WC="0.81" CONTENT="١‏"/>
+						</TextLine>
+						<TextLine ID="line_19" HPOS="481" VPOS="1005" WIDTH="1217" HEIGHT="72">
+							<String ID="string_141" HPOS="1648" VPOS="1021" WIDTH="50" HEIGHT="55" WC="0.87" CONTENT="باند"/><SP WIDTH="-146" VPOS="1021" HPOS="1698"/>
+							<String ID="string_142" HPOS="1552" VPOS="1021" WIDTH="78" HEIGHT="55" WC="0.76" CONTENT="وختهُ"/><SP WIDTH="-193" VPOS="1021" HPOS="1630"/>
+							<String ID="string_143" HPOS="1437" VPOS="1032" WIDTH="89" HEIGHT="44" WC="0.56" CONTENT="يدشن"/><SP WIDTH="-210" VPOS="1032" HPOS="1526"/>
+							<String ID="string_144" HPOS="1316" VPOS="1020" WIDTH="88" HEIGHT="56" WC="0.59" CONTENT="جيزى"/><SP WIDTH="-219" VPOS="1020" HPOS="1404"/>
+							<String ID="string_145" HPOS="1185" VPOS="1020" WIDTH="103" HEIGHT="56" WC="0.90" CONTENT="افزوده"/><SP WIDTH="-194" VPOS="1020" HPOS="1288"/>
+							<String ID="string_146" HPOS="1094" VPOS="1029" WIDTH="55" HEIGHT="37" WC="0.22" CONTENT="لمشص"/><SP WIDTH="-157" VPOS="1029" HPOS="1149"/>
+							<String ID="string_147" HPOS="992" VPOS="1016" WIDTH="77" HEIGHT="39" WC="0.0" CONTENT="ولا"/><SP WIDTH="-190" VPOS="1016" HPOS="1069"/>
+							<String ID="string_148" HPOS="879" VPOS="1039" WIDTH="80" HEIGHT="38" WC="0.0" CONTENT="ف("/><SP WIDTH="-184" VPOS="1039" HPOS="959"/>
+							<String ID="string_149" HPOS="775" VPOS="1027" WIDTH="66" HEIGHT="39" WC="0.63" CONTENT="خوا"/><SP WIDTH="-187" VPOS="1027" HPOS="841"/>
+							<String ID="string_150" HPOS="654" VPOS="1005" WIDTH="102" HEIGHT="56" WC="0.84" CONTENT="دكان"/><SP WIDTH="-148" VPOS="1005" HPOS="756"/>
+							<String ID="string_151" HPOS="608" VPOS="1037" WIDTH="17" HEIGHT="23" WC="0.70" CONTENT="و"/><SP WIDTH="-98" VPOS="1037" HPOS="625"/>
+							<String ID="string_152" HPOS="527" VPOS="1024" WIDTH="50" HEIGHT="39" WC="0.39" CONTENT="شو"/><SP WIDTH="-96" VPOS="1024" HPOS="577"/>
+							<String ID="string_153" HPOS="481" VPOS="1025" WIDTH="31" HEIGHT="23" WC="0.37" CONTENT="ذل"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+				<ComposedBlock ID="cblock_11" HPOS="397" VPOS="1103" WIDTH="1311" HEIGHT="1670">
+					<TextBlock ID="block_10" HPOS="397" VPOS="1103" WIDTH="1311" HEIGHT="1670">
+						<TextLine ID="line_20" HPOS="398" VPOS="1103" WIDTH="1300" HEIGHT="63">
+							<String ID="string_154" HPOS="1628" VPOS="1126" WIDTH="70" HEIGHT="40" WC="0.88" CONTENT="خود"/><SP WIDTH="-117" VPOS="1126" HPOS="1698"/>
+							<String ID="string_155" HPOS="1581" VPOS="1118" WIDTH="27" HEIGHT="45" WC="0.57" CONTENT="وا"/><SP WIDTH="-71" VPOS="1118" HPOS="1608"/>
+							<String ID="string_156" HPOS="1537" VPOS="1118" WIDTH="25" HEIGHT="43" WC="0.57" CONTENT="از"/><SP WIDTH="-174" VPOS="1118" HPOS="1562"/>
+							<String ID="string_157" HPOS="1388" VPOS="1110" WIDTH="132" HEIGHT="54" WC="0.62" CONTENT="مكزرات"/><SP WIDTH="-262" VPOS="1110" HPOS="1520"/>
+							<String ID="string_158" HPOS="1258" VPOS="1115" WIDTH="107" HEIGHT="48" WC="0.39" CONTENT="افسرده"/><SP WIDTH="-146" VPOS="1115" HPOS="1365"/>
+							<String ID="string_159" HPOS="1219" VPOS="1136" WIDTH="17" HEIGHT="23" WC="0.44" CONTENT="وو"/><SP WIDTH="-192" VPOS="1136" HPOS="1236"/>
+							<String ID="string_160" HPOS="1044" VPOS="1105" WIDTH="156" HEIGHT="56" WC="0.32" CONTENT="ختهكر"/><SP WIDTH="-182" VPOS="1105" HPOS="1200"/>
+							<String ID="string_161" HPOS="1018" VPOS="1126" WIDTH="20" HEIGHT="20" WC="0.0" CONTENT="ك"/><SP WIDTH="-122" VPOS="1126" HPOS="1038"/>
+							<String ID="string_162" HPOS="916" VPOS="1124" WIDTH="69" HEIGHT="34" WC="0.91" CONTENT="همان"/><SP WIDTH="-192" VPOS="1124" HPOS="985"/>
+							<String ID="string_163" HPOS="793" VPOS="1111" WIDTH="110" HEIGHT="49" WC="0.86" CONTENT="طبيعتى"/><SP WIDTH="-166" VPOS="1111" HPOS="903"/>
+							<String ID="string_164" HPOS="737" VPOS="1104" WIDTH="34" HEIGHT="38" WC="0.46" CONTENT="كه"/><SP WIDTH="-103" VPOS="1104" HPOS="771"/>
+							<String ID="string_165" HPOS="668" VPOS="1123" WIDTH="39" HEIGHT="30" WC="0.92" CONTENT="در"/><SP WIDTH="-119" VPOS="1123" HPOS="707"/>
+							<String ID="string_166" HPOS="588" VPOS="1124" WIDTH="62" HEIGHT="30" WC="0.92" CONTENT="عهد"/><SP WIDTH="-252" VPOS="1124" HPOS="650"/>
+							<String ID="string_167" HPOS="398" VPOS="1103" WIDTH="169" HEIGHT="51" WC="0.69" CONTENT="ساجوقيان"/>
+						</TextLine>
+						<TextLine ID="line_21" HPOS="400" VPOS="1194" WIDTH="1297" HEIGHT="73">
+							<String ID="string_168" HPOS="1638" VPOS="1190" WIDTH="61" HEIGHT="81" WC="0.91" CONTENT="ذوق"/><SP WIDTH="-156" VPOS="1190" HPOS="1699"/>
+							<String ID="string_169" HPOS="1543" VPOS="1205" WIDTH="154" HEIGHT="59" WC="0.87" CONTENT="سليم"/><SP WIDTH="-304" VPOS="1205" HPOS="1697"/>
+							<String ID="string_170" HPOS="1393" VPOS="1214" WIDTH="129" HEIGHT="53" WC="0.88" CONTENT="دربرخي"/><SP WIDTH="-175" VPOS="1214" HPOS="1522"/>
+							<String ID="string_171" HPOS="1347" VPOS="1208" WIDTH="26" HEIGHT="43" WC="0.92" CONTENT="از"/><SP WIDTH="-133" VPOS="1208" HPOS="1373"/>
+							<String ID="string_172" HPOS="1240" VPOS="1207" WIDTH="86" HEIGHT="57" WC="0.90" CONTENT="طباع"/><SP WIDTH="-182" VPOS="1207" HPOS="1326"/>
+							<String ID="string_173" HPOS="1144" VPOS="1220" WIDTH="78" HEIGHT="33" WC="0.91" CONTENT="مردم"/><SP WIDTH="-138" VPOS="1220" HPOS="1222"/>
+							<String ID="string_174" HPOS="1084" VPOS="1190" WIDTH="41" HEIGHT="81" WC="0.93" CONTENT="آن"/><SP WIDTH="-146" VPOS="1190" HPOS="1125"/>
+							<String ID="string_175" HPOS="979" VPOS="1194" WIDTH="147" HEIGHT="55" WC="0.84" CONTENT="زمان"/><SP WIDTH="-272" VPOS="1194" HPOS="1126"/>
+							<String ID="string_176" HPOS="854" VPOS="1215" WIDTH="105" HEIGHT="35" WC="0.63" CONTENT="لوديعه"/><SP WIDTH="-194" VPOS="1215" HPOS="959"/>
+							<String ID="string_177" HPOS="765" VPOS="1196" WIDTH="55" HEIGHT="49" WC="0.84" CONTENT="نهاد"/><SP WIDTH="-119" VPOS="1196" HPOS="820"/>
+							<String ID="string_178" HPOS="701" VPOS="1215" WIDTH="38" HEIGHT="29" WC="0.92" CONTENT="در"/><SP WIDTH="-104" VPOS="1215" HPOS="739"/>
+							<String ID="string_179" HPOS="635" VPOS="1199" WIDTH="46" HEIGHT="42" WC="0.22" CONTENT="ان"/><SP WIDTH="-173" VPOS="1199" HPOS="681"/>
+							<String ID="string_180" HPOS="508" VPOS="1199" WIDTH="91" HEIGHT="46" WC="0.92" CONTENT="قرون"/><SP WIDTH="-199" VPOS="1199" HPOS="599"/>
+							<String ID="string_181" HPOS="400" VPOS="1195" WIDTH="78" HEIGHT="50" WC="0.90" CONTENT="اخير"/>
+						</TextLine>
+						<TextLine ID="line_22" HPOS="401" VPOS="1280" WIDTH="1297" HEIGHT="84">
+							<String ID="string_182" HPOS="1643" VPOS="1280" WIDTH="55" HEIGHT="84" WC="0.0" CONTENT="نيزُ"/><SP WIDTH="-126" VPOS="1280" HPOS="1698"/>
+							<String ID="string_183" HPOS="1572" VPOS="1280" WIDTH="56" HEIGHT="84" WC="0.66" CONTENT="بخل"/><SP WIDTH="-114" VPOS="1280" HPOS="1628"/>
+							<String ID="string_184" HPOS="1514" VPOS="1301" WIDTH="43" HEIGHT="45" WC="0.75" CONTENT="لور"/><SP WIDTH="-138" VPOS="1301" HPOS="1557"/>
+							<String ID="string_185" HPOS="1419" VPOS="1306" WIDTH="78" HEIGHT="38" WC="0.87" CONTENT="زيده"/><SP WIDTH="-172" VPOS="1306" HPOS="1497"/>
+							<String ID="string_186" HPOS="1325" VPOS="1299" WIDTH="73" HEIGHT="48" WC="0.92" CONTENT="فيض"/><SP WIDTH="-199" VPOS="1299" HPOS="1398"/>
+							<String ID="string_187" HPOS="1199" VPOS="1296" WIDTH="108" HEIGHT="48" WC="0.74" CONTENT="خودرا"/><SP WIDTH="-161" VPOS="1296" HPOS="1307"/>
+							<String ID="string_188" HPOS="1146" VPOS="1294" WIDTH="29" HEIGHT="46" WC="0.92" CONTENT="ار"/><SP WIDTH="-76" VPOS="1294" HPOS="1175"/>
+							<String ID="string_189" HPOS="1099" VPOS="1314" WIDTH="24" HEIGHT="14" WC="0.92" CONTENT="ما"/><SP WIDTH="-117" VPOS="1314" HPOS="1123"/>
+							<String ID="string_190" HPOS="1006" VPOS="1300" WIDTH="73" HEIGHT="53" WC="0.48" CONTENT="دريغ"/><SP WIDTH="-198" VPOS="1300" HPOS="1079"/>
+							<String ID="string_191" HPOS="881" VPOS="1301" WIDTH="108" HEIGHT="38" WC="0.75" CONTENT="ننموده"/><SP WIDTH="-202" VPOS="1301" HPOS="989"/>
+							<String ID="string_192" HPOS="787" VPOS="1288" WIDTH="71" HEIGHT="40" WC="0.87" CONTENT="است"/><SP WIDTH="-199" VPOS="1288" HPOS="858"/>
+							<String ID="string_193" HPOS="659" VPOS="1292" WIDTH="109" HEIGHT="44" WC="0.64" CONTENT="هزارها"/><SP WIDTH="-196" VPOS="1292" HPOS="768"/>
+							<String ID="string_194" HPOS="572" VPOS="1302" WIDTH="67" HEIGHT="34" WC="0.86" CONTENT="لوده"/><SP WIDTH="-116" VPOS="1302" HPOS="639"/>
+							<String ID="string_195" HPOS="523" VPOS="1307" WIDTH="17" HEIGHT="26" WC="0.61" CONTENT="و"/><SP WIDTH="-139" VPOS="1307" HPOS="540"/>
+							<String ID="string_196" HPOS="401" VPOS="1293" WIDTH="99" HEIGHT="27" WC="0.61" CONTENT="هستند"/>
+						</TextLine>
+						<TextLine ID="line_23" HPOS="401" VPOS="1373" WIDTH="1297" HEIGHT="75">
+							<String ID="string_197" HPOS="1604" VPOS="1386" WIDTH="94" HEIGHT="33" WC="0.90" CONTENT="كه"/><SP WIDTH="-224" VPOS="1386" HPOS="1698"/>
+							<String ID="string_198" HPOS="1474" VPOS="1383" WIDTH="97" HEIGHT="45" WC="0.76" CONTENT="داراى"/><SP WIDTH="-183" VPOS="1383" HPOS="1571"/>
+							<String ID="string_199" HPOS="1388" VPOS="1377" WIDTH="68" HEIGHT="71" WC="0.90" CONTENT="طبع"/><SP WIDTH="-203" VPOS="1377" HPOS="1456"/>
+							<String ID="string_200" HPOS="1253" VPOS="1378" WIDTH="98" HEIGHT="47" WC="0.62" CONTENT="متعد"/><SP WIDTH="-133" VPOS="1378" HPOS="1351"/>
+							<String ID="string_201" HPOS="1218" VPOS="1399" WIDTH="18" HEIGHT="26" WC="0.67" CONTENT="و"/><SP WIDTH="-185" VPOS="1399" HPOS="1236"/>
+							<String ID="string_202" HPOS="1051" VPOS="1384" WIDTH="143" HEIGHT="43" WC="0.0" CONTENT="سرضاوق"/><SP WIDTH="-298" VPOS="1384" HPOS="1194"/>
+							<String ID="string_203" HPOS="896" VPOS="1382" WIDTH="130" HEIGHT="46" WC="0.24" CONTENT="مياشتد"/><SP WIDTH="-167" VPOS="1382" HPOS="1026"/>
+							<String ID="string_204" HPOS="859" VPOS="1394" WIDTH="9" HEIGHT="27" WC="0.84" CONTENT="و"/><SP WIDTH="-95" VPOS="1394" HPOS="868"/>
+							<String ID="string_205" HPOS="773" VPOS="1380" WIDTH="50" HEIGHT="29" WC="0.35" CONTENT="همه"/><SP WIDTH="-125" VPOS="1380" HPOS="823"/>
+							<String ID="string_206" HPOS="698" VPOS="1387" WIDTH="43" HEIGHT="37" WC="0.0" CONTENT="بيز"/><SP WIDTH="-235" VPOS="1387" HPOS="741"/>
+							<String ID="string_207" HPOS="506" VPOS="1382" WIDTH="168" HEIGHT="46" WC="0.0" CONTENT="جقهين"/><SP WIDTH="-273" VPOS="1382" HPOS="674"/>
+							<String ID="string_208" HPOS="401" VPOS="1373" WIDTH="77" HEIGHT="47" WC="0.38" CONTENT="محماف"/>
+						</TextLine>
+						<TextLine ID="line_24" HPOS="399" VPOS="1454" WIDTH="1299" HEIGHT="70">
+							<String ID="string_209" HPOS="1628" VPOS="1491" WIDTH="70" HEIGHT="36" WC="0.17" CONTENT="يیت"/><SP WIDTH="-129" VPOS="1491" HPOS="1698"/>
+							<String ID="string_210" HPOS="1569" VPOS="1477" WIDTH="27" HEIGHT="44" WC="0.77" CONTENT="او"/><SP WIDTH="-130" VPOS="1477" HPOS="1596"/>
+							<String ID="string_211" HPOS="1466" VPOS="1483" WIDTH="71" HEIGHT="41" WC="0.0" CONTENT="خوه"/><SP WIDTH="-245" VPOS="1483" HPOS="1537"/>
+							<String ID="string_212" HPOS="1292" VPOS="1463" WIDTH="157" HEIGHT="47" WC="0.7" CONTENT="كذادتند"/><SP WIDTH="-233" VPOS="1463" HPOS="1449"/>
+							<String ID="string_213" HPOS="1216" VPOS="1467" WIDTH="53" HEIGHT="50" WC="0.63" CONTENT="ولى"/><SP WIDTH="-203" VPOS="1467" HPOS="1269"/>
+							<String ID="string_214" HPOS="1066" VPOS="1456" WIDTH="124" HEIGHT="66" WC="0.60" CONTENT="جلكي"/><SP WIDTH="-304" VPOS="1456" HPOS="1190"/>
+							<String ID="string_215" HPOS="886" VPOS="1467" WIDTH="149" HEIGHT="53" WC="0.20" CONTENT="ازفتحعلى"/><SP WIDTH="-239" VPOS="1467" HPOS="1035"/>
+							<String ID="string_216" HPOS="796" VPOS="1472" WIDTH="54" HEIGHT="30" WC="0.88" CONTENT="شاء"/><SP WIDTH="-171" VPOS="1472" HPOS="850"/>
+							<String ID="string_217" HPOS="679" VPOS="1454" WIDTH="98" HEIGHT="60" WC="0.22" CONTENT="كرقه ‏"/><SP WIDTH="-263" VPOS="1454" HPOS="777"/>
+							<String ID="string_218" HPOS="514" VPOS="1454" WIDTH="90" HEIGHT="59" WC="0.22" CONTENT="قاآفي"/><SP WIDTH="-205" VPOS="1454" HPOS="604"/>
+							<String ID="string_219" HPOS="399" VPOS="1473" WIDTH="80" HEIGHT="27" WC="0.21" CONTENT="ماقله"/>
+						</TextLine>
+						<TextLine ID="line_25" HPOS="402" VPOS="1540" WIDTH="1298" HEIGHT="72">
+							<String ID="string_220" HPOS="1566" VPOS="1570" WIDTH="134" HEIGHT="42" WC="0.0" CONTENT="وررينا"/><SP WIDTH="-184" VPOS="1570" HPOS="1700"/>
+							<String ID="string_221" HPOS="1516" VPOS="1583" WIDTH="18" HEIGHT="26" WC="0.68" CONTENT="و"/><SP WIDTH="-119" VPOS="1583" HPOS="1534"/>
+							<String ID="string_222" HPOS="1415" VPOS="1560" WIDTH="66" HEIGHT="38" WC="0.0" CONTENT="فانه"/><SP WIDTH="-202" VPOS="1560" HPOS="1481"/>
+							<String ID="string_223" HPOS="1279" VPOS="1560" WIDTH="109" HEIGHT="48" WC="0.36" CONTENT="ارن"/><SP WIDTH="-260" VPOS="1560" HPOS="1388"/>
+							<String ID="string_224" HPOS="1128" VPOS="1563" WIDTH="115" HEIGHT="46" WC="0.12" CONTENT="سکور"/><SP WIDTH="-306" VPOS="1563" HPOS="1243"/>
+							<String ID="string_225" HPOS="937" VPOS="1557" WIDTH="157" HEIGHT="50" WC="0.0" CONTENT="كکوران"/><SP WIDTH="-277" VPOS="1557" HPOS="1094"/>
+							<String ID="string_226" HPOS="817" VPOS="1554" WIDTH="93" HEIGHT="51" WC="0.0" CONTENT="رتقليد"/><SP WIDTH="-221" VPOS="1554" HPOS="910"/>
+							<String ID="string_227" HPOS="689" VPOS="1540" WIDTH="102" HEIGHT="64" WC="0.8" CONTENT="امرنن"/><SP WIDTH="-221" VPOS="1540" HPOS="791"/>
+							<String ID="string_228" HPOS="570" VPOS="1555" WIDTH="83" HEIGHT="44" WC="0.11" CONTENT="لوواة"/><SP WIDTH="-251" VPOS="1555" HPOS="653"/>
+							<String ID="string_229" HPOS="402" VPOS="1551" WIDTH="134" HEIGHT="48" WC="0.36" CONTENT="واذكاه"/>
+						</TextLine>
+						<TextLine ID="line_26" HPOS="403" VPOS="1642" WIDTH="1305" HEIGHT="62">
+							<String ID="string_230" HPOS="1616" VPOS="1644" WIDTH="92" HEIGHT="60" WC="0.71" CONTENT="كرفته"/><SP WIDTH="-278" VPOS="1644" HPOS="1708"/>
+							<String ID="string_231" HPOS="1430" VPOS="1654" WIDTH="154" HEIGHT="48" WC="0.84" CONTENT="بتكرار"/><SP WIDTH="-265" VPOS="1654" HPOS="1584"/>
+							<String ID="string_232" HPOS="1319" VPOS="1653" WIDTH="76" HEIGHT="46" WC="0.89" CONTENT="هزار"/><SP WIDTH="-134" VPOS="1653" HPOS="1395"/>
+							<String ID="string_233" HPOS="1261" VPOS="1654" WIDTH="37" HEIGHT="42" WC="0.90" CONTENT="بار"/><SP WIDTH="-112" VPOS="1654" HPOS="1298"/>
+							<String ID="string_234" HPOS="1186" VPOS="1666" WIDTH="42" HEIGHT="32" WC="0.92" CONTENT="هو"/><SP WIDTH="-124" VPOS="1666" HPOS="1228"/>
+							<String ID="string_235" HPOS="1104" VPOS="1661" WIDTH="58" HEIGHT="40" WC="0.92" CONTENT="حق"/><SP WIDTH="-130" VPOS="1661" HPOS="1162"/>
+							<String ID="string_236" HPOS="1032" VPOS="1650" WIDTH="46" HEIGHT="35" WC="0.92" CONTENT="دل"/><SP WIDTH="-147" VPOS="1650" HPOS="1078"/>
+							<String ID="string_237" HPOS="931" VPOS="1654" WIDTH="68" HEIGHT="41" WC="0.90" CONTENT="خود"/><SP WIDTH="-123" VPOS="1654" HPOS="999"/>
+							<String ID="string_238" HPOS="876" VPOS="1644" WIDTH="27" HEIGHT="48" WC="0.92" CONTENT="را"/><SP WIDTH="-145" VPOS="1644" HPOS="903"/>
+							<String ID="string_239" HPOS="758" VPOS="1649" WIDTH="89" HEIGHT="45" WC="0.92" CONTENT="خوش"/><SP WIDTH="-262" VPOS="1649" HPOS="847"/>
+							<String ID="string_240" HPOS="585" VPOS="1636" WIDTH="150" HEIGHT="72" WC="0.73" CONTENT="كردند"/><SP WIDTH="-336" VPOS="1636" HPOS="735"/>
+							<String ID="string_241" HPOS="399" VPOS="1636" WIDTH="159" HEIGHT="72" WC="0.68" CONTENT="وياين"/>
+						</TextLine>
+						<TextLine ID="line_27" HPOS="402" VPOS="1724" WIDTH="1293" HEIGHT="76">
+							<String ID="string_242" HPOS="1564" VPOS="1741" WIDTH="131" HEIGHT="51" WC="0.40" CONTENT="مكررات"/><SP WIDTH="-233" VPOS="1741" HPOS="1695"/>
+							<String ID="string_243" HPOS="1462" VPOS="1758" WIDTH="85" HEIGHT="34" WC="0.78" CONTENT="بيمزه"/><SP WIDTH="-157" VPOS="1758" HPOS="1547"/>
+							<String ID="string_244" HPOS="1390" VPOS="1741" WIDTH="53" HEIGHT="59" WC="0.93" CONTENT="اسم"/><SP WIDTH="-163" VPOS="1741" HPOS="1443"/>
+							<String ID="string_245" HPOS="1280" VPOS="1743" WIDTH="93" HEIGHT="48" WC="0.81" CONTENT="قصيده"/><SP WIDTH="-131" VPOS="1743" HPOS="1373"/>
+							<String ID="string_246" HPOS="1242" VPOS="1762" WIDTH="18" HEIGHT="24" WC="0.80" CONTENT="و"/><SP WIDTH="-114" VPOS="1762" HPOS="1260"/>
+							<String ID="string_247" HPOS="1146" VPOS="1742" WIDTH="72" HEIGHT="46" WC="0.80" CONTENT="غزل"/><SP WIDTH="-195" VPOS="1742" HPOS="1218"/>
+							<String ID="string_248" HPOS="1023" VPOS="1735" WIDTH="96" HEIGHT="49" WC="0.50" CONTENT="نهادند"/><SP WIDTH="-217" VPOS="1735" HPOS="1119"/>
+							<String ID="string_249" HPOS="902" VPOS="1720" WIDTH="88" HEIGHT="84" WC="0.90" CONTENT="برخي"/><SP WIDTH="-200" VPOS="1720" HPOS="990"/>
+							<String ID="string_250" HPOS="790" VPOS="1720" WIDTH="91" HEIGHT="84" WC="0.34" CONTENT="كمان"/><SP WIDTH="-266" VPOS="1720" HPOS="881"/>
+							<String ID="string_251" HPOS="615" VPOS="1730" WIDTH="124" HEIGHT="57" WC="0.64" CONTENT="ميكنند"/><SP WIDTH="-238" VPOS="1730" HPOS="739"/>
+							<String ID="string_252" HPOS="501" VPOS="1737" WIDTH="94" HEIGHT="33" WC="0.91" CONTENT="كه"/><SP WIDTH="-193" VPOS="1737" HPOS="595"/>
+							<String ID="string_253" HPOS="402" VPOS="1758" WIDTH="78" HEIGHT="30" WC="0.91" CONTENT="سبب"/>
+						</TextLine>
+						<TextLine ID="line_28" HPOS="397" VPOS="1813" WIDTH="1298" HEIGHT="78">
+							<String ID="string_254" HPOS="1650" VPOS="1837" WIDTH="45" HEIGHT="41" WC="0.38" CONTENT="اين"/><SP WIDTH="-184" VPOS="1837" HPOS="1695"/>
+							<String ID="string_255" HPOS="1511" VPOS="1823" WIDTH="121" HEIGHT="47" WC="0.43" CONTENT="انحطاطّ"/><SP WIDTH="-240" VPOS="1823" HPOS="1632"/>
+							<String ID="string_256" HPOS="1392" VPOS="1832" WIDTH="98" HEIGHT="59" WC="0.91" CONTENT="اوضاع"/><SP WIDTH="-195" VPOS="1832" HPOS="1490"/>
+							<String ID="string_257" HPOS="1295" VPOS="1837" WIDTH="81" HEIGHT="41" WC="0.0" CONTENT="زمار"/><SP WIDTH="-113" VPOS="1837" HPOS="1376"/>
+							<String ID="string_258" HPOS="1263" VPOS="1851" WIDTH="17" HEIGHT="26" WC="0.72" CONTENT="و"/><SP WIDTH="-174" VPOS="1851" HPOS="1280"/>
+							<String ID="string_259" HPOS="1106" VPOS="1835" WIDTH="138" HEIGHT="46" WC="0.6" CONTENT="متتضيات"/><SP WIDTH="-204" VPOS="1835" HPOS="1244"/>
+							<String ID="string_260" HPOS="1040" VPOS="1835" WIDTH="43" HEIGHT="37" WC="0.74" CONTENT="ابن"/><SP WIDTH="-114" VPOS="1835" HPOS="1083"/>
+							<String ID="string_261" HPOS="969" VPOS="1809" WIDTH="58" HEIGHT="76" WC="0.54" CONTENT="عحر"/><SP WIDTH="-153" VPOS="1809" HPOS="1027"/>
+							<String ID="string_262" HPOS="874" VPOS="1842" WIDTH="77" HEIGHT="34" WC="0.21" CONTENT="جيد"/><SP WIDTH="-181" VPOS="1842" HPOS="951"/>
+							<String ID="string_263" HPOS="770" VPOS="1832" WIDTH="70" HEIGHT="45" WC="0.45" CONTENT="بلشد"/><SP WIDTH="-212" VPOS="1832" HPOS="840"/>
+							<String ID="string_264" HPOS="628" VPOS="1829" WIDTH="87" HEIGHT="44" WC="0.20" CONTENT="واين"/><SP WIDTH="-200" VPOS="1829" HPOS="715"/>
+							<String ID="string_265" HPOS="515" VPOS="1825" WIDTH="90" HEIGHT="51" WC="0.6" CONTENT="اتاء"/><SP WIDTH="-208" VPOS="1825" HPOS="605"/>
+							<String ID="string_266" HPOS="397" VPOS="1813" WIDTH="95" HEIGHT="66" WC="0.29" CONTENT="تزركي"/>
+						</TextLine>
+						<TextLine ID="line_29" HPOS="402" VPOS="1902" WIDTH="1295" HEIGHT="75">
+							<String ID="string_267" HPOS="1631" VPOS="1928" WIDTH="66" HEIGHT="38" WC="0.89" CONTENT="است"/><SP WIDTH="-128" VPOS="1928" HPOS="1697"/>
+							<String ID="string_268" HPOS="1569" VPOS="1941" WIDTH="46" HEIGHT="34" WC="0.86" CONTENT="جه"/><SP WIDTH="-147" VPOS="1941" HPOS="1615"/>
+							<String ID="string_269" HPOS="1468" VPOS="1926" WIDTH="83" HEIGHT="49" WC="0.87" CONTENT="ايران"/><SP WIDTH="-165" VPOS="1926" HPOS="1551"/>
+							<String ID="string_270" HPOS="1386" VPOS="1902" WIDTH="68" HEIGHT="75" WC="0.20" CONTENT="عنوز"/><SP WIDTH="-175" VPOS="1902" HPOS="1454"/>
+							<String ID="string_271" HPOS="1279" VPOS="1922" WIDTH="90" HEIGHT="46" WC="0.57" CONTENT="داراى"/><SP WIDTH="-152" VPOS="1922" HPOS="1369"/>
+							<String ID="string_272" HPOS="1217" VPOS="1902" WIDTH="41" HEIGHT="75" WC="0.26" CONTENT="تمد"/><SP WIDTH="-79" VPOS="1902" HPOS="1258"/>
+							<String ID="string_273" HPOS="1179" VPOS="1902" WIDTH="26" HEIGHT="75" WC="0.38" CONTENT="نی"/><SP WIDTH="-82" VPOS="1902" HPOS="1205"/>
+							<String ID="string_274" HPOS="1123" VPOS="1902" WIDTH="38" HEIGHT="75" WC="0.67" CONTENT="كه"/><SP WIDTH="-110" VPOS="1902" HPOS="1161"/>
+							<String ID="string_275" HPOS="1051" VPOS="1911" WIDTH="60" HEIGHT="59" WC="0.65" CONTENT="آنرا"/><SP WIDTH="-144" VPOS="1911" HPOS="1111"/>
+							<String ID="string_276" HPOS="967" VPOS="1902" WIDTH="69" HEIGHT="75" WC="0.45" CONTENT="بكلى"/><SP WIDTH="-171" VPOS="1902" HPOS="1036"/>
+							<String ID="string_277" HPOS="865" VPOS="1911" WIDTH="84" HEIGHT="53" WC="0.9" CONTENT="ماى"/><SP WIDTH="-176" VPOS="1911" HPOS="949"/>
+							<String ID="string_278" HPOS="773" VPOS="1914" WIDTH="76" HEIGHT="53" WC="0.92" CONTENT="تموده"/><SP WIDTH="-160" VPOS="1914" HPOS="849"/>
+							<String ID="string_279" HPOS="689" VPOS="1920" WIDTH="63" HEIGHT="44" WC="0.76" CONTENT="واز"/><SP WIDTH="-215" VPOS="1920" HPOS="752"/>
+							<String ID="string_280" HPOS="537" VPOS="1923" WIDTH="137" HEIGHT="44" WC="0.89" CONTENT="معنويات"/><SP WIDTH="-272" VPOS="1923" HPOS="674"/>
+							<String ID="string_281" HPOS="402" VPOS="1920" WIDTH="117" HEIGHT="46" WC="0.78" CONTENT="منصرف"/>
+						</TextLine>
+						<TextLine ID="line_30" HPOS="407" VPOS="1995" WIDTH="1292" HEIGHT="77">
+							<String ID="string_282" HPOS="1602" VPOS="2020" WIDTH="97" HEIGHT="31" WC="0.92" CONTENT="ساخته"/><SP WIDTH="-183" VPOS="2020" HPOS="1699"/>
+							<String ID="string_283" HPOS="1516" VPOS="2020" WIDTH="68" HEIGHT="45" WC="0.90" CONTENT="باشد"/><SP WIDTH="-172" VPOS="2020" HPOS="1584"/>
+							<String ID="string_284" HPOS="1412" VPOS="2027" WIDTH="85" HEIGHT="38" WC="0.90" CONTENT="نيست"/><SP WIDTH="-140" VPOS="2027" HPOS="1497"/>
+							<String ID="string_285" HPOS="1357" VPOS="2029" WIDTH="36" HEIGHT="29" WC="0.91" CONTENT="در"/><SP WIDTH="-129" VPOS="2029" HPOS="1393"/>
+							<String ID="string_286" HPOS="1264" VPOS="2020" WIDTH="70" HEIGHT="41" WC="0.83" CONTENT="خود"/><SP WIDTH="-194" VPOS="2020" HPOS="1334"/>
+							<String ID="string_287" HPOS="1140" VPOS="2010" WIDTH="105" HEIGHT="54" WC="0.80" CONTENT="اروياي"/><SP WIDTH="-238" VPOS="2010" HPOS="1245"/>
+							<String ID="string_288" HPOS="1007" VPOS="2005" WIDTH="112" HEIGHT="49" WC="0.67" CONTENT="مئمدن"/><SP WIDTH="-207" VPOS="2005" HPOS="1119"/>
+							<String ID="string_289" HPOS="912" VPOS="1995" WIDTH="77" HEIGHT="77" WC="0.47" CONTENT="نهم"/><SP WIDTH="-131" VPOS="1995" HPOS="989"/>
+							<String ID="string_290" HPOS="858" VPOS="2026" WIDTH="39" HEIGHT="28" WC="0.86" CONTENT="در"/><SP WIDTH="-149" VPOS="2026" HPOS="897"/>
+							<String ID="string_291" HPOS="748" VPOS="2003" WIDTH="95" HEIGHT="55" WC="0.57" CONTENT="تملكتى"/><SP WIDTH="-176" VPOS="2003" HPOS="843"/>
+							<String ID="string_292" HPOS="667" VPOS="2012" WIDTH="60" HEIGHT="38" WC="0.91" CONTENT="منل"/><SP WIDTH="-176" VPOS="2012" HPOS="727"/>
+							<String ID="string_293" HPOS="551" VPOS="2008" WIDTH="97" HEIGHT="48" WC="0.90" CONTENT="فراقه"/><SP WIDTH="-241" VPOS="2008" HPOS="648"/>
+							<String ID="string_294" HPOS="407" VPOS="2010" WIDTH="124" HEIGHT="48" WC="0.75" CONTENT="دوهمين"/>
+						</TextLine>
+						<TextLine ID="line_31" HPOS="404" VPOS="2080" WIDTH="1293" HEIGHT="73">
+							<String ID="string_295" HPOS="1528" VPOS="2093" WIDTH="169" HEIGHT="59" WC="0.55" CONTENT="روزكاران"/><SP WIDTH="-314" VPOS="2093" HPOS="1697"/>
+							<String ID="string_296" HPOS="1383" VPOS="2108" WIDTH="131" HEIGHT="45" WC="0.53" CONTENT="خودهان"/><SP WIDTH="-225" VPOS="2108" HPOS="1514"/>
+							<String ID="string_297" HPOS="1289" VPOS="2107" WIDTH="81" HEIGHT="43" WC="0.89" CONTENT="شاعر"/><SP WIDTH="-203" VPOS="2107" HPOS="1370"/>
+							<String ID="string_298" HPOS="1167" VPOS="2093" WIDTH="103" HEIGHT="54" WC="0.45" CONTENT="بزرك"/><SP WIDTH="-203" VPOS="2093" HPOS="1270"/>
+							<String ID="string_299" HPOS="1067" VPOS="2121" WIDTH="82" HEIGHT="24" WC="0.39" CONTENT="وزبر"/><SP WIDTH="-164" VPOS="2121" HPOS="1149"/>
+							<String ID="string_300" HPOS="985" VPOS="2076" WIDTH="76" HEIGHT="89" WC="0.39" CONTENT="دستى"/><SP WIDTH="-157" VPOS="2076" HPOS="1061"/>
+							<String ID="string_301" HPOS="904" VPOS="2102" WIDTH="64" HEIGHT="39" WC="0.91" CONTENT="مثل"/><SP WIDTH="-192" VPOS="2102" HPOS="968"/>
+							<String ID="string_302" HPOS="776" VPOS="2092" WIDTH="110" HEIGHT="53" WC="0.88" CONTENT="ويكتور"/><SP WIDTH="-208" VPOS="2092" HPOS="886"/>
+							<String ID="string_303" HPOS="678" VPOS="2084" WIDTH="84" HEIGHT="61" WC="0.85" CONTENT="هوكو"/><SP WIDTH="-301" VPOS="2084" HPOS="762"/>
+							<String ID="string_304" HPOS="461" VPOS="2106" WIDTH="93" HEIGHT="25" WC="0.15" CONTENT="٧٤٥٤٥"/><SP WIDTH="22" VPOS="2106" HPOS="554"/>
+							<String ID="string_305" HPOS="576" VPOS="2107" WIDTH="80" HEIGHT="31" WC="0.19" CONTENT=")٥٥‏"/><SP WIDTH="-252" VPOS="2107" HPOS="656"/>
+							<String ID="string_306" HPOS="404" VPOS="2080" WIDTH="44" HEIGHT="50" WC="0.75" CONTENT="كه"/>
+						</TextLine>
+						<TextLine ID="line_32" HPOS="402" VPOS="2168" WIDTH="1293" HEIGHT="79">
+							<String ID="string_307" HPOS="1607" VPOS="2195" WIDTH="88" HEIGHT="52" WC="0.87" CONTENT="اسمش"/><SP WIDTH="-156" VPOS="2195" HPOS="1695"/>
+							<String ID="string_308" HPOS="1539" VPOS="2204" WIDTH="47" HEIGHT="39" WC="0.75" CONTENT="تمام"/><SP WIDTH="-127" VPOS="2204" HPOS="1586"/>
+							<String ID="string_309" HPOS="1459" VPOS="2199" WIDTH="54" HEIGHT="47" WC="0.90" CONTENT="دنيا"/><SP WIDTH="-108" VPOS="2199" HPOS="1513"/>
+							<String ID="string_310" HPOS="1405" VPOS="2191" WIDTH="28" HEIGHT="47" WC="0.93" CONTENT="را"/><SP WIDTH="-88" VPOS="2191" HPOS="1433"/>
+							<String ID="string_311" HPOS="1345" VPOS="2178" WIDTH="44" HEIGHT="68" WC="0.84" CONTENT="فرا"/><SP WIDTH="-153" VPOS="2178" HPOS="1389"/>
+							<String ID="string_312" HPOS="1236" VPOS="2178" WIDTH="91" HEIGHT="68" WC="0.84" CONTENT="كرفته"/><SP WIDTH="-177" VPOS="2178" HPOS="1327"/>
+							<String ID="string_313" HPOS="1150" VPOS="2191" WIDTH="68" HEIGHT="38" WC="0.61" CONTENT="است"/><SP WIDTH="-168" VPOS="2191" HPOS="1218"/>
+							<String ID="string_314" HPOS="1050" VPOS="2205" WIDTH="74" HEIGHT="30" WC="0.91" CONTENT="ودر"/><SP WIDTH="-170" VPOS="2205" HPOS="1124"/>
+							<String ID="string_315" HPOS="954" VPOS="2192" WIDTH="78" HEIGHT="47" WC="0.8" CONTENT="جهل"/><SP WIDTH="-250" VPOS="2192" HPOS="1032"/>
+							<String ID="string_316" HPOS="782" VPOS="2189" WIDTH="153" HEIGHT="44" WC="0.83" CONTENT="ودوسال"/><SP WIDTH="-239" VPOS="2189" HPOS="935"/>
+							<String ID="string_317" HPOS="696" VPOS="2197" WIDTH="69" HEIGHT="41" WC="0.89" CONTENT="ييش"/><SP WIDTH="-116" VPOS="2197" HPOS="765"/>
+							<String ID="string_318" HPOS="649" VPOS="2186" WIDTH="29" HEIGHT="45" WC="0.92" CONTENT="از"/><SP WIDTH="-99" VPOS="2186" HPOS="678"/>
+							<String ID="string_319" HPOS="579" VPOS="2185" WIDTH="46" HEIGHT="43" WC="0.0" CONTENT="ابن"/><SP WIDTH="-101" VPOS="2185" HPOS="625"/>
+							<String ID="string_320" HPOS="524" VPOS="2200" WIDTH="30" HEIGHT="30" WC="0.86" CONTENT="در"/><SP WIDTH="-152" VPOS="2200" HPOS="554"/>
+							<String ID="string_321" HPOS="402" VPOS="2168" WIDTH="106" HEIGHT="66" WC="0.61" CONTENT="كذثت"/>
+						</TextLine>
+						<TextLine ID="line_33" HPOS="403" VPOS="2256" WIDTH="1294" HEIGHT="82">
+							<String ID="string_322" HPOS="1605" VPOS="2269" WIDTH="92" HEIGHT="69" WC="0.0" CONTENT="بوجرو"/><SP WIDTH="-168" VPOS="2269" HPOS="1697"/>
+							<String ID="string_323" HPOS="1529" VPOS="2269" WIDTH="60" HEIGHT="69" WC="0.3" CONTENT="الن"/><SP WIDTH="-241" VPOS="2269" HPOS="1589"/>
+							<String ID="string_324" HPOS="1348" VPOS="2273" WIDTH="139" HEIGHT="58" WC="0.0" CONTENT="واكضون"/><SP WIDTH="-195" VPOS="2273" HPOS="1487"/>
+							<String ID="string_325" HPOS="1292" VPOS="2296" WIDTH="39" HEIGHT="31" WC="0.88" CONTENT="در"/><SP WIDTH="-103" VPOS="2296" HPOS="1331"/>
+							<String ID="string_326" HPOS="1228" VPOS="2291" WIDTH="48" HEIGHT="26" WC="0.11" CONTENT="هدد"/><SP WIDTH="-164" VPOS="2291" HPOS="1276"/>
+							<String ID="string_327" HPOS="1112" VPOS="2269" WIDTH="94" HEIGHT="66" WC="0.10" CONTENT="وسعان"/><SP WIDTH="-202" VPOS="2269" HPOS="1206"/>
+							<String ID="string_328" HPOS="1004" VPOS="2283" WIDTH="81" HEIGHT="43" WC="0.21" CONTENT="شاع"/><SP WIDTH="-172" VPOS="2283" HPOS="1085"/>
+							<String ID="string_329" HPOS="913" VPOS="2286" WIDTH="72" HEIGHT="43" WC="0.51" CONTENT="ععوي"/><SP WIDTH="-185" VPOS="2286" HPOS="985"/>
+							<String ID="string_330" HPOS="800" VPOS="2263" WIDTH="94" HEIGHT="63" WC="0.0" CONTENT="قال"/><SP WIDTH="-256" VPOS="2263" HPOS="894"/>
+							<String ID="string_331" HPOS="638" VPOS="2256" WIDTH="136" HEIGHT="73" WC="0.23" CONTENT="إ)اکلری"/><SP WIDTH="-199" VPOS="2256" HPOS="774"/>
+							<String ID="string_332" HPOS="575" VPOS="2261" WIDTH="39" HEIGHT="66" WC="0.69" CONTENT="كه"/><SP WIDTH="-89" VPOS="2261" HPOS="614"/>
+							<String ID="string_333" HPOS="525" VPOS="2261" WIDTH="34" HEIGHT="66" WC="0.52" CONTENT="در"/><SP WIDTH="-100" VPOS="2261" HPOS="559"/>
+							<String ID="string_334" HPOS="459" VPOS="2265" WIDTH="155" HEIGHT="55" WC="0.52" CONTENT="همه"/><SP WIDTH="-211" VPOS="2265" HPOS="614"/>
+							<String ID="string_335" HPOS="403" VPOS="2279" WIDTH="38" HEIGHT="44" WC="0.92" CONTENT="جا"/>
+						</TextLine>
+						<TextLine ID="line_34" HPOS="398" VPOS="2364" WIDTH="1306" HEIGHT="63">
+							<String ID="string_336" HPOS="1617" VPOS="2364" WIDTH="87" HEIGHT="56" WC="0.11" CONTENT="آوازهْ"/><SP WIDTH="-131" VPOS="2364" HPOS="1704"/>
+							<String ID="string_337" HPOS="1573" VPOS="2376" WIDTH="29" HEIGHT="44" WC="0.89" CONTENT="او"/><SP WIDTH="-157" VPOS="2376" HPOS="1602"/>
+							<String ID="string_338" HPOS="1445" VPOS="2387" WIDTH="116" HEIGHT="40" WC="0.87" CONTENT="بيجيده"/><SP WIDTH="-199" VPOS="2387" HPOS="1561"/>
+							<String ID="string_339" HPOS="1362" VPOS="2371" WIDTH="67" HEIGHT="40" WC="0.90" CONTENT="است"/><SP WIDTH="-224" VPOS="2371" HPOS="1429"/>
+							<String ID="string_340" HPOS="1205" VPOS="2375" WIDTH="140" HEIGHT="47" WC="0.91" CONTENT="درحيات"/><SP WIDTH="-222" VPOS="2375" HPOS="1345"/>
+							<String ID="string_341" HPOS="1123" VPOS="2368" WIDTH="67" HEIGHT="40" WC="0.92" CONTENT="است"/><SP WIDTH="-200" VPOS="2368" HPOS="1190"/>
+							<String ID="string_342" HPOS="990" VPOS="2367" WIDTH="87" HEIGHT="47" WC="0.55" CONTENT="ازان"/><SP WIDTH="-174" VPOS="2367" HPOS="1077"/>
+							<String ID="string_343" HPOS="903" VPOS="2369" WIDTH="74" HEIGHT="50" WC="0.85" CONTENT="قبيل"/><SP WIDTH="-212" VPOS="2369" HPOS="977"/>
+							<String ID="string_344" HPOS="765" VPOS="2366" WIDTH="118" HEIGHT="52" WC="0.88" CONTENT="مثالهاى"/><SP WIDTH="-201" VPOS="2366" HPOS="883"/>
+							<String ID="string_345" HPOS="682" VPOS="2374" WIDTH="71" HEIGHT="38" WC="0.92" CONTENT="زنده"/><SP WIDTH="-123" VPOS="2374" HPOS="753"/>
+							<String ID="string_346" HPOS="630" VPOS="2383" WIDTH="37" HEIGHT="28" WC="0.92" CONTENT="در"/><SP WIDTH="-132" VPOS="2383" HPOS="667"/>
+							<String ID="string_347" HPOS="535" VPOS="2364" WIDTH="74" HEIGHT="49" WC="0.90" CONTENT="اروبا"/><SP WIDTH="-211" VPOS="2364" HPOS="609"/>
+							<String ID="string_348" HPOS="398" VPOS="2374" WIDTH="120" HEIGHT="41" WC="0.73" CONTENT="درهمان"/>
+						</TextLine>
+						<TextLine ID="line_35" HPOS="400" VPOS="2442" WIDTH="1297" HEIGHT="79">
+							<String ID="string_349" HPOS="1659" VPOS="2449" WIDTH="42" HEIGHT="83" WC="0.68" CONTENT="سر"/><SP WIDTH="-139" VPOS="2449" HPOS="1701"/>
+							<String ID="string_350" HPOS="1562" VPOS="2453" WIDTH="135" HEIGHT="62" WC="0.66" CONTENT="زمين"/><SP WIDTH="-190" VPOS="2453" HPOS="1697"/>
+							<String ID="string_351" HPOS="1507" VPOS="2449" WIDTH="42" HEIGHT="83" WC="0.66" CONTENT="كه"/><SP WIDTH="-114" VPOS="2449" HPOS="1549"/>
+							<String ID="string_352" HPOS="1435" VPOS="2459" WIDTH="47" HEIGHT="62" WC="0.92" CONTENT="علم"/><SP WIDTH="-154" VPOS="2459" HPOS="1482"/>
+							<String ID="string_353" HPOS="1328" VPOS="2459" WIDTH="84" HEIGHT="52" WC="0.91" CONTENT="باعلى"/><SP WIDTH="-198" VPOS="2459" HPOS="1412"/>
+							<String ID="string_354" HPOS="1214" VPOS="2476" WIDTH="87" HEIGHT="29" WC="0.87" CONTENT="درجه"/><SP WIDTH="-180" VPOS="2476" HPOS="1301"/>
+							<String ID="string_355" HPOS="1121" VPOS="2457" WIDTH="66" HEIGHT="51" WC="0.75" CONTENT="تزقى"/><SP WIDTH="-191" VPOS="2457" HPOS="1187"/>
+							<String ID="string_356" HPOS="996" VPOS="2472" WIDTH="99" HEIGHT="35" WC="0.90" CONTENT="رسيده"/><SP WIDTH="-194" VPOS="2472" HPOS="1095"/>
+							<String ID="string_357" HPOS="901" VPOS="2456" WIDTH="68" HEIGHT="41" WC="0.92" CONTENT="است"/><SP WIDTH="-176" VPOS="2456" HPOS="969"/>
+							<String ID="string_358" HPOS="793" VPOS="2463" WIDTH="83" HEIGHT="44" WC="0.78" CONTENT="بسيار"/><SP WIDTH="-190" VPOS="2463" HPOS="876"/>
+							<String ID="string_359" HPOS="686" VPOS="2460" WIDTH="81" HEIGHT="51" WC="0.85" CONTENT="داريم"/><SP WIDTH="-190" VPOS="2460" HPOS="767"/>
+							<String ID="string_360" HPOS="577" VPOS="2447" WIDTH="84" HEIGHT="57" WC="0.89" CONTENT="اينكه"/><SP WIDTH="-261" VPOS="2447" HPOS="661"/>
+							<String ID="string_361" HPOS="400" VPOS="2442" WIDTH="135" HEIGHT="63" WC="0.80" CONTENT="ميكويند"/>
+						</TextLine>
+						<TextLine ID="line_36" HPOS="402" VPOS="2531" WIDTH="1293" HEIGHT="86">
+							<String ID="string_362" HPOS="1592" VPOS="2549" WIDTH="103" HEIGHT="55" WC="0.51" CONTENT="بواسطهُ"/><SP WIDTH="-185" VPOS="2549" HPOS="1695"/>
+							<String ID="string_363" HPOS="1510" VPOS="2551" WIDTH="67" HEIGHT="51" WC="0.89" CONTENT="تزقى"/><SP WIDTH="-154" VPOS="2551" HPOS="1577"/>
+							<String ID="string_364" HPOS="1423" VPOS="2550" WIDTH="69" HEIGHT="51" WC="0.90" CONTENT="علوم"/><SP WIDTH="-211" VPOS="2550" HPOS="1492"/>
+							<String ID="string_365" HPOS="1281" VPOS="2545" WIDTH="120" HEIGHT="72" WC="0.85" CONTENT="وصنايع"/><SP WIDTH="-236" VPOS="2545" HPOS="1401"/>
+							<String ID="string_366" HPOS="1165" VPOS="2549" WIDTH="102" HEIGHT="51" WC="0.64" CONTENT="ادبيّات"/><SP WIDTH="-191" VPOS="2549" HPOS="1267"/>
+							<String ID="string_367" HPOS="1076" VPOS="2565" WIDTH="73" HEIGHT="36" WC="0.90" CONTENT="روي"/><SP WIDTH="-218" VPOS="2565" HPOS="1149"/>
+							<String ID="string_368" HPOS="931" VPOS="2533" WIDTH="132" HEIGHT="68" WC="0.49" CONTENT="بانحطاطٌ"/><SP WIDTH="-284" VPOS="2533" HPOS="1063"/>
+							<String ID="string_369" HPOS="779" VPOS="2531" WIDTH="136" HEIGHT="70" WC="0.31" CONTENT="مكداره"/><SP WIDTH="-237" VPOS="2531" HPOS="915"/>
+							<String ID="string_370" HPOS="678" VPOS="2541" WIDTH="83" HEIGHT="59" WC="0.80" CONTENT="براى"/><SP WIDTH="-144" VPOS="2541" HPOS="761"/>
+							<String ID="string_371" HPOS="617" VPOS="2544" WIDTH="47" HEIGHT="45" WC="0.74" CONTENT="اين"/><SP WIDTH="-130" VPOS="2544" HPOS="664"/>
+							<String ID="string_372" HPOS="534" VPOS="2537" WIDTH="67" HEIGHT="48" WC="0.80" CONTENT="است"/><SP WIDTH="-116" VPOS="2537" HPOS="601"/>
+							<String ID="string_373" HPOS="485" VPOS="2533" WIDTH="38" HEIGHT="62" WC="0.83" CONTENT="كه"/><SP WIDTH="-121" VPOS="2533" HPOS="523"/>
+							<String ID="string_374" HPOS="402" VPOS="2547" WIDTH="61" HEIGHT="43" WC="0.92" CONTENT="اهل"/>
+						</TextLine>
+						<TextLine ID="line_37" HPOS="401" VPOS="2626" WIDTH="1293" HEIGHT="59">
+							<String ID="string_375" HPOS="1621" VPOS="2641" WIDTH="73" HEIGHT="42" WC="0.93" CONTENT="ذوق"/><SP WIDTH="-214" VPOS="2641" HPOS="1694"/>
+							<String ID="string_376" HPOS="1480" VPOS="2640" WIDTH="118" HEIGHT="45" WC="0.91" CONTENT="وهوش"/><SP WIDTH="-303" VPOS="2640" HPOS="1598"/>
+							<String ID="string_377" HPOS="1295" VPOS="2638" WIDTH="162" HEIGHT="45" WC="0.83" CONTENT="ومردمان"/><SP WIDTH="-200" VPOS="2638" HPOS="1457"/>
+							<String ID="string_378" HPOS="1257" VPOS="2638" WIDTH="19" HEIGHT="45" WC="0.91" CONTENT="با"/><SP WIDTH="-161" VPOS="2638" HPOS="1276"/>
+							<String ID="string_379" HPOS="1115" VPOS="2632" WIDTH="122" HEIGHT="36" WC="0.91" CONTENT="استعداد"/><SP WIDTH="-260" VPOS="2632" HPOS="1237"/>
+							<String ID="string_380" HPOS="977" VPOS="2635" WIDTH="116" HEIGHT="47" WC="0.89" CONTENT="بشعبات"/><SP WIDTH="-242" VPOS="2635" HPOS="1093"/>
+							<String ID="string_381" HPOS="851" VPOS="2627" WIDTH="96" HEIGHT="38" WC="0.91" CONTENT="مختلف"/><SP WIDTH="-200" VPOS="2627" HPOS="947"/>
+							<String ID="string_382" HPOS="747" VPOS="2635" WIDTH="87" HEIGHT="50" WC="0.57" CONTENT="تقسيم"/><SP WIDTH="-167" VPOS="2635" HPOS="834"/>
+							<String ID="string_383" HPOS="667" VPOS="2638" WIDTH="64" HEIGHT="27" WC="0.91" CONTENT="شده"/><SP WIDTH="-133" VPOS="2638" HPOS="731"/>
+							<String ID="string_384" HPOS="598" VPOS="2652" WIDTH="49" HEIGHT="25" WC="0.92" CONTENT="بهر"/><SP WIDTH="-144" VPOS="2652" HPOS="647"/>
+							<String ID="string_385" HPOS="503" VPOS="2637" WIDTH="77" HEIGHT="37" WC="0.87" CONTENT="رشته"/><SP WIDTH="-128" VPOS="2637" HPOS="580"/>
+							<String ID="string_386" HPOS="452" VPOS="2630" WIDTH="31" HEIGHT="52" WC="0.78" CONTENT="اي"/><SP WIDTH="-82" VPOS="2630" HPOS="483"/>
+							<String ID="string_387" HPOS="401" VPOS="2626" WIDTH="30" HEIGHT="47" WC="0.92" CONTENT="از"/>
+						</TextLine>
+						<TextLine ID="line_38" HPOS="403" VPOS="2695" WIDTH="1290" HEIGHT="78">
+							<String ID="string_388" HPOS="1624" VPOS="2718" WIDTH="69" HEIGHT="51" WC="0.93" CONTENT="علوم"/><SP WIDTH="-154" VPOS="2718" HPOS="1693"/>
+							<String ID="string_389" HPOS="1539" VPOS="2703" WIDTH="56" HEIGHT="74" WC="0.47" CONTENT="جند"/><SP WIDTH="-143" VPOS="2703" HPOS="1595"/>
+							<String ID="string_390" HPOS="1452" VPOS="2703" WIDTH="69" HEIGHT="74" WC="0.91" CONTENT="نفري"/><SP WIDTH="-194" VPOS="2703" HPOS="1521"/>
+							<String ID="string_391" HPOS="1327" VPOS="2726" WIDTH="276" HEIGHT="47" WC="0.72" CONTENT="ميرسد"/><SP WIDTH="-311" VPOS="2726" HPOS="1603"/>
+							<String ID="string_392" HPOS="1292" VPOS="2728" WIDTH="24" HEIGHT="23" WC="0.64" CONTENT="نه"/><SP WIDTH="-109" VPOS="2728" HPOS="1316"/>
+							<String ID="string_393" HPOS="1207" VPOS="2721" WIDTH="63" HEIGHT="39" WC="0.91" CONTENT="مثل"/><SP WIDTH="-114" VPOS="2721" HPOS="1270"/>
+							<String ID="string_394" HPOS="1156" VPOS="2703" WIDTH="35" HEIGHT="74" WC="0.84" CONTENT="سا"/><SP WIDTH="-78" VPOS="2703" HPOS="1191"/>
+							<String ID="string_395" HPOS="1113" VPOS="2727" WIDTH="28" HEIGHT="43" WC="0.84" CONTENT="بق"/><SP WIDTH="-89" VPOS="2727" HPOS="1141"/>
+							<String ID="string_396" HPOS="1052" VPOS="2703" WIDTH="44" HEIGHT="74" WC="0.90" CONTENT="كه"/><SP WIDTH="-170" VPOS="2703" HPOS="1096"/>
+							<String ID="string_397" HPOS="926" VPOS="2695" WIDTH="110" HEIGHT="73" WC="0.6" CONTENT="يواسطة"/><SP WIDTH="-215" VPOS="2695" HPOS="1036"/>
+							<String ID="string_398" HPOS="821" VPOS="2695" WIDTH="88" HEIGHT="73" WC="0.4" CONTENT="متكّ"/><SP WIDTH="-171" VPOS="2695" HPOS="909"/>
+							<String ID="string_399" HPOS="738" VPOS="2725" WIDTH="67" HEIGHT="38" WC="0.0" CONTENT="بوضن"/><SP WIDTH="-184" VPOS="2725" HPOS="805"/>
+							<String ID="string_400" HPOS="621" VPOS="2693" WIDTH="90" HEIGHT="74" WC="0.36" CONTENT="واثره"/><SP WIDTH="-201" VPOS="2693" HPOS="711"/>
+							<String ID="string_401" HPOS="510" VPOS="2693" WIDTH="87" HEIGHT="74" WC="0.59" CONTENT="همرفن"/><SP WIDTH="-198" VPOS="2693" HPOS="597"/>
+							<String ID="string_402" HPOS="399" VPOS="2693" WIDTH="87" HEIGHT="74" WC="0.24" CONTENT="كظيه"/>
+						</TextLine>
+					</TextBlock>
+				</ComposedBlock>
+			</PrintSpace>
+		</Page>
+	</Layout>
 </alto>

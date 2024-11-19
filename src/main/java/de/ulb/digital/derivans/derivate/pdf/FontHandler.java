@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.font.PdfFontFactory.EmbeddingStrategy;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 
@@ -66,11 +68,11 @@ public class FontHandler {
 		return optString.isPresent();
 	}
 
-	public BaseFont forPDF(String path) throws DigitalDerivansException {
+	public PdfFont forPDF(String path) throws DigitalDerivansException {
 		try {
 			String resPath = this.storeAsTempfile(path);
-			return BaseFont.createFont(resPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-		} catch (DocumentException | IOException e) {
+			return PdfFontFactory.createFont(resPath, PdfEncodings.IDENTITY_H, EmbeddingStrategy.PREFER_EMBEDDED);
+		} catch (IOException e) {
 			throw new DigitalDerivansException(e);
 		}
 	}

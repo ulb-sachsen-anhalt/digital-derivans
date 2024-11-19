@@ -430,7 +430,8 @@ public class DerivansConfiguration {
 		}
 	}
 
-	protected void enrichPDFDerivateInformation(DerivateStepPDF step, INIConfiguration conf, String section) {
+	protected void enrichPDFDerivateInformation(DerivateStepPDF step, INIConfiguration conf, String section) 
+		throws DigitalDerivansException {
 		String keyMetadataCreator = section + ".metadata_creator";
 		Optional<String> optCreator = extractValue(conf, keyMetadataCreator, String.class);
 		if (optCreator.isPresent()) {
@@ -463,7 +464,7 @@ public class DerivansConfiguration {
 		Optional<String> optRenderLvl = extractValue(conf, keyPdfRenderLvl, String.class);
 		if (optRenderLvl.isPresent()) {
 			LOGGER.debug("set render text level '{}'", optRenderLvl.get());
-			step.setRenderLevel(optRenderLvl.get());
+			step.setRenderLevel(TypeConfiguration.get(optRenderLvl.get()));
 		}
 
 		// on which level optional text to render: per word, per line ... ?
@@ -471,7 +472,7 @@ public class DerivansConfiguration {
 		Optional<String> optRenderVis = extractValue(conf, keyPdfRenderVis, String.class);
 		if (optRenderVis.isPresent()) {
 			LOGGER.debug("set render text visibility '{}'", optRenderVis.get());
-			step.setRenderModus(optRenderVis.get());
+			step.setRenderModus(TypeConfiguration.get(optRenderVis.get()));
 		}
 
 		// disable automated enrichment of created PDF file into metadata file
