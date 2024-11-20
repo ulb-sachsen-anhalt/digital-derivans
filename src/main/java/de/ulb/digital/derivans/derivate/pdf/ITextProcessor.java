@@ -14,10 +14,13 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.DeviceCmyk;
 import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.font.PdfFontFactory.EmbeddingStrategy;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.geom.Point;
 import com.itextpdf.kernel.pdf.PdfAConformanceLevel;
@@ -41,6 +44,7 @@ import com.itextpdf.pdfa.PdfADocument;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.TypeConfiguration;
+import de.ulb.digital.derivans.data.io.TmpJarResource;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.IPDFProcessor;
@@ -195,8 +199,7 @@ public class ITextProcessor implements IPDFProcessor {
 		List<PDFPage> resultPages = new ArrayList<>();
 		LOGGER.trace("render pages at {}", this.renderLevel);
 		try {
-			FontHandler handler = new FontHandler();
-			PdfFont font = handler.forPDF("ttf/DejaVuSans.ttf");
+			PdfFont font = this.loadFont("ttf/DejaVuSans.ttf");
 			this.rtlStyle = this.rtlStyle.setFont(font);
 			for (int i = 0; i < pages.size(); i++) {
 				DigitalPage pageIn = pages.get(i);
@@ -447,6 +450,16 @@ public class ITextProcessor implements IPDFProcessor {
 			}
 		} else {
 		  	currOutline.addOutline(label).addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
+		}
+	}
+
+	public PdfFont loadFont(String path) throws DigitalDerivansException {
+		try {
+			TmpJarResource tmpResHandler = new TmpJarResource(path);
+			String resPath = tmpResHandler.extract("derivans-tmp-font-", ".ttf");
+			return PdfFontFactory.createFont(resPath, PdfEncodings.IDENTITY_H, EmbeddingStrategy.PREFER_EMBEDDED);
+		} catch (IOException e) {
+			throw new DigitalDerivansException(e);
 		}
 	}
 }

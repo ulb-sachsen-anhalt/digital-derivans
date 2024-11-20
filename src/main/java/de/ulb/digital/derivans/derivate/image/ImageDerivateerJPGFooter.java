@@ -13,7 +13,6 @@ import java.util.List;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
-import de.ulb.digital.derivans.derivate.pdf.FontHandler;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;

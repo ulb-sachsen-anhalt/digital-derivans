@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.pdf;
+package de.ulb.digital.derivans.derivate.image;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -8,11 +8,6 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
-import com.itextpdf.kernel.font.PdfFont;
-
-// import com.itextpdf.text.pdf.BaseFont;
-
-
 /**
  * 
  * Font Handling Specification
@@ -20,7 +15,7 @@ import com.itextpdf.kernel.font.PdfFont;
  * @author u.hartwig
  *
  */
-public class TestFontHandler {
+class TestFontHandler {
 
 	@Test
 	void testLoadFontDejaVuSansForGraphics() throws Exception {
@@ -38,11 +33,5 @@ public class TestFontHandler {
 		Font f = new FontHandler().forGraphics(p.toString());
 		assertNotNull(f);
 	}
-	
-	@Test
-	void testLoadFontDejaVuSansForPDF() throws Exception {
-		String path = "src/main/resources/ttf/DejaVuSans.ttf";
-		PdfFont baseFont = new FontHandler().forPDF(path);
-		assertNotNull(baseFont);
-	}
+
 }
