@@ -126,6 +126,13 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 		return this.text;
 	}
 
+	public String forPrint() {
+		// if (!this.isLTR()) {
+		// 	return new StringBuffer(text).reverse().toString();
+		// }
+		return this.text;
+	}
+
 	public PDFTextElement getParent() {
 		return this.parent;
 	}

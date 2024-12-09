@@ -44,7 +44,7 @@
 		<pdfbox.version>3.0.3</pdfbox.version>
 		<jaxen.version>1.2.0</jaxen.version>
 		<log4j2.version>2.17.1</log4j2.version>
-		<args4j.version>2.33</args4j.version>
+		<args4j.version>2.37</args4j.version>
 		<configuration2.version>2.11.0</configuration2.version>
 	</properties>
 
@@ -90,6 +90,11 @@
 			<artifactId>bouncy-castle-adapter</artifactId>
 			<version>${itext.version}</version>
 		</dependency-->
+		<dependency>
+    		<groupId>com.ibm.icu</groupId>
+    		<artifactId>icu4j</artifactId>
+    		<version>76.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>

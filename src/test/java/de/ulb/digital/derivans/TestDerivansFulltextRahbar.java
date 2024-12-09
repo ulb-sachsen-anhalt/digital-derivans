@@ -164,12 +164,13 @@ public class TestDerivansFulltextRahbar {
 	 * 
 	 * Changed 24/11 itext8
 	 * 1610 => 1419
+	 * 1419 => 1338
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testLineLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathLine, 1);
-		assertEquals(1419, textPage07.length());
+		assertEquals(1338, textPage07.length());
 	}
 }
