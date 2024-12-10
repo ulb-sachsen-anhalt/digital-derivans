@@ -127,9 +127,9 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	}
 
 	public String forPrint() {
-		// if (!this.isLTR()) {
-		// 	return new StringBuffer(text).reverse().toString();
-		// }
+		if (this.isRTL()) {
+			return new StringBuffer(this.text).reverse().toString();
+		}
 		return this.text;
 	}
 

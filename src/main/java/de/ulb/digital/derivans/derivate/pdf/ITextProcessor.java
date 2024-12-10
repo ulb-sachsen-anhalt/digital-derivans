@@ -72,7 +72,7 @@ public class ITextProcessor implements IPDFProcessor {
 
 	private static final Logger LOGGER = LogManager.getLogger(ITextProcessor.class);
 
-	// what IText assumes as output resolution
+	// Assumed output resolution
 	public static final float ITEXT_ASSUMES_DPI = 72.0f;
 
 	private TypeConfiguration renderLevel;
@@ -175,7 +175,7 @@ public class ITextProcessor implements IPDFProcessor {
 			this.iTextPDFDocument = new PdfDocument(writer);
 			this.document = new Document(iTextPDFDocument);
 			this.addMetadata();
-			var resultPages = this.addPages(pages);
+			var resultPages = this.addPages(this.pages);
 			this.reportDoc.addPages(resultPages);
 			if (this.structure != null && this.structure.getLabel() != null) {
 				this.addOutline(resultPages.size());
@@ -219,7 +219,7 @@ public class ITextProcessor implements IPDFProcessor {
 				pdfPage.setNumber(i + 1);
 				pdfPage.setImageDimensionOriginal((int) image.getImageWidth(), (int) image.getImageHeight());
 				pdfPage.passOCR(pageIn);
-				addPageAt(image, font, pdfPage);
+				append(image, font, pdfPage);
 				resultPages.add(pdfPage);
 			}
 		} catch (IOException e) {
@@ -230,11 +230,9 @@ public class ITextProcessor implements IPDFProcessor {
 
 	/**
 	 * 
-	 * Add new page to PDF an re-calculate actual image dimension for
-	 * each page again since different sizes happen due different
-	 * pages like inlay maps, illustrations, etc.
-	 * 
-	 * Optional: render ocr box outlines for debugging visualization
+	 * Append page and re-calculate actual dimension for
+	 * each page because different pages sizes due different
+	 * formats like inlay maps, illustrations, etc.
 	 * 
 	 * @param image
 	 * @param font
@@ -242,7 +240,7 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @return
 	 * @throws IOException
 	 */
-	private PDFPage addPageAt(Image image, PdfFont font, PDFPage page) {
+	private PDFPage append(Image image, PdfFont font, PDFPage page) {
 		PageSize pageSize = new PageSize(image.getImageScaledWidth(), image.getImageScaledHeight());
 		var nextPage = this.iTextPDFDocument.addNewPage(pageSize);
 		nextPage.getPdfObject().get(PdfName.PageNum);
@@ -251,15 +249,14 @@ public class ITextProcessor implements IPDFProcessor {
 		if (page.getTextcontent().isPresent()) {
 			List<PDFTextElement> txtContents = page.getTextcontent().get();
 			for (var line : txtContents) {
-				this.render2(font, line);
-				// if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
-				// 	render2(font, line);
-				// } else if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_WORD) {
-				// 	var tokens = line.getChildren();
-				// 	for (var word : tokens) {
-				// 		render2(font, word);
-				// 	}
-				// }
+				if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
+					render(font, line);
+				} else if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_WORD) {
+					var tokens = line.getChildren();
+					for (var word : tokens) {
+						render(font, word);
+					}
+				}
 			}
 			if (this.debugRender) {
 				LOGGER.debug("render ocr outlines {} (height: {})", txtContents, image.getImageHeight());
@@ -281,121 +278,53 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @param cb
 	 * @param line
 	 */
-	// private PDFTextElement render(PdfFont font, PDFTextElement token) {
-	// 	String text = token.getText();
-	// 	float fontSize = token.getFontSize();
-	// 	if (fontSize < IPDFProcessor.MIN_CHAR_SIZE) {
-	// 		LOGGER.warn("font too small: '{}'(min:{}) resist to render text '{}'", fontSize,
-	// 				IPDFProcessor.MIN_CHAR_SIZE, text);
-	// 		return token;
-	// 	}
-	// 	Rectangle2D box = token.getBox();
-	// 	float leftMargin = (float) box.getMinX();
-	// 	float verticalBaseline = token.getBaseline().getY1();
-	// 	var page = this.iTextPDFDocument.getLastPage();
-	// 	PdfCanvas pdfCanvas = new PdfCanvas(page);
-	// 	// var iTextRect = new com.itextpdf.kernel.geom.Rectangle(
-	// 	// 		(float) box.getMinX(), (float) box.getMinY(), (float) box.getWidth(), (float) box.getHeight());
-	// 	// Canvas canvas = new Canvas(page, iTextRect);
-	// 	if ((!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
-	// 		pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
-	// 	}
-	// 	// canvas.showTextAligned(text, leftMargin, verticalBaseline, TextAlignment.CENTER);
-	// 	float hScale = calculateHorizontalScaling(font, token);
-	// 	if (this.debugRender) {
-	// 		LOGGER.trace("put '{}' at {}x{} size:{}, scale:{})",
-	// 				text, leftMargin, verticalBaseline, fontSize, hScale);
-	// 		drawLine(leftMargin, (float) (leftMargin + box.getWidth()), verticalBaseline);
-	// 	}
-	// 	pdfCanvas.beginText();
-	// 	pdfCanvas.setFontAndSize(font, fontSize);
-	// 	pdfCanvas.setHorizontalScaling(hScale);
-	// 	pdfCanvas.moveTo(leftMargin, verticalBaseline);
-	// 	pdfCanvas.showText(text);
-	// 	pdfCanvas.endText();
-	// 	pdfCanvas.release();
-	// 	token.setPrinted(true);
-	// 	return token;
-	// }
-
-	private PDFTextElement render2(PdfFont font, PDFTextElement token) {
-		// var page = this.iTextPDFDocument.getLastPage();
-		// PdfCanvas pdfCanvas = new PdfCanvas(page);
-		// if ((!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
-		// 	pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
-		// }
-		Paragraph paraG = new Paragraph();
+	private PDFTextElement render(PdfFont font, PDFTextElement token) {
+		String text = token.forPrint();
+		float fontSize = token.getFontSize();
+		if (fontSize < IPDFProcessor.MIN_CHAR_SIZE) {
+			LOGGER.warn("font too small: '{}'(min:{}) resist to render text '{}'", fontSize,
+					IPDFProcessor.MIN_CHAR_SIZE, text);
+			return token;
+		}
 		Rectangle2D box = token.getBox();
 		float leftMargin = (float) box.getMinX();
 		float verticalBaseline = token.getBaseline().getY1();
-		if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
-			String text = token.getText();
-			float fontSize = token.getFontSize();
-			if (fontSize < IPDFProcessor.MIN_CHAR_SIZE) {
-				LOGGER.warn("font too small: '{}'(min:{}) resist to render text '{}'", fontSize,
-				IPDFProcessor.MIN_CHAR_SIZE, text);
-				return token;
-			}
-			float hScale = calculateHorizontalScaling(font, token);
-			Text lineText = new Text(text);
-			lineText.setHorizontalScaling(hScale);
-			lineText.setFont(font);
-			paraG.add(lineText);
-			if (this.debugRender) {
-				drawLine(leftMargin, (float) (leftMargin + box.getWidth()), verticalBaseline);
-			}
-		} else if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_WORD) {
-		 	var words = token.getChildren();
-			for (var word : words) {
-				Rectangle2D wordBox = word.getBox();
-				String text = token.getText();
-				float fontSize = token.getFontSize();
-				if (fontSize < IPDFProcessor.MIN_CHAR_SIZE) {
-					LOGGER.warn("font too small: '{}'(min:{}) resist to render text '{}'", fontSize,
-					IPDFProcessor.MIN_CHAR_SIZE, text);
-					continue;
-				}
-				float hScale = calculateHorizontalScaling(font, word);
-				Text wordText = new Text(text);
-				wordText.setHorizontalScaling(hScale);
-				if (word.isLTR()) {
-					wordText.setBaseDirection(BaseDirection.RIGHT_TO_LEFT);
-				}
-				wordText.setFont(font);
-				paraG.add(wordText);
-				if (this.debugRender) {
-					float wordLeftMargin = (float) wordBox.getMinX();
-					float wordBaseline = word.getBaseline().getY1();
-					drawLine(wordLeftMargin, (float) (leftMargin + box.getWidth()), wordBaseline);
-				}
-		 	}
+		var page = this.iTextPDFDocument.getLastPage();
+		PdfCanvas pdfCanvas = new PdfCanvas(page);
+		var iTextRect = new com.itextpdf.kernel.geom.Rectangle(
+				leftMargin, verticalBaseline, (float) box.getWidth(), (float) box.getHeight());
+		if ((!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
+			pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
 		}
-
-		// text please
-		this.document.showTextAligned(paraG, leftMargin, verticalBaseline, TextAlignment.CENTER);
-		// pdfCanvas.beginText();
-		// pdfCanvas.setFontAndSize(font, fontSize);
-		// pdfCanvas.setHorizontalScaling(hScale);
-		// pdfCanvas.moveTo(leftMargin, verticalBaseline);
-		// pdfCanvas.showText(text);
-		// pdfCanvas.endText();
-		// pdfCanvas.release();
+		float hScale = calculateHorizontalScaling(font, token);
+		if (this.debugRender) {
+			LOGGER.trace("put '{}' at {}x{} size:{}, scale:{})",
+					text, leftMargin, verticalBaseline, fontSize, hScale);
+			drawLine(leftMargin, (float) (leftMargin + box.getWidth()), verticalBaseline);
+		}
+		Text txt = new Text(text).setFont(font).setFontSize(fontSize).setHorizontalScaling(hScale);
+		if (token.isRTL()) {
+			txt.addStyle(rtlStyle);
+		}
+		Canvas canvas = new Canvas(pdfCanvas, iTextRect);
+		canvas.add(new Paragraph(txt));
+		canvas.close();
+		pdfCanvas.release();
 		token.setPrinted(true);
 		return token;
 	}
 
 	/**
 	 * 
-	 * Calculates font size to fit the given text into the specified width. Not
-	 * exact but the best we have so far.
+	 * Calculate font scaling to fit given text into the specified width.
+	 * cf. 
+	 * https://kb.itextpdf.com/itext/how-to-choose-the-optimal-size-for-a-font
 	 * 
-	 * cf. https://kb.itextpdf.com/itext/how-to-choose-the-optimal-size-for-a-font
-	 * 
-	 * It's nowhere written, but according to
+	 * According to
 	 * https://opensource.adobe.com/dc-acrobat-sdk-docs/standards/pdfstandards/pdf/PDF32000_2008.pdf#page=253
-	 * value must be in range 0 - 100 as it is expected to be in PERCENTS
+	 * value expected to be in PERCENTS, i.e. 0-100
 	 * 
-	 * iText8 = 1.0?
+	 * iText8: 100 => 1.0
 	 * 
 	 * @param text
 	 * @param width
@@ -408,7 +337,7 @@ public class ITextProcessor implements IPDFProcessor {
 		float glyphWidth = font.getWidth(text) * .001f * token.getFontSize();
 		float totalGlyphWidth = glyphWidth;
 		float tokenLenght = token.getBaseline().length();
-		return tokenLenght / totalGlyphWidth; // * 100;
+		return tokenLenght / totalGlyphWidth;
 	}
 
 	private void renderOcrOutlines(List<PDFTextElement> ocrLines) {
@@ -463,6 +392,7 @@ public class ITextProcessor implements IPDFProcessor {
 		return points;
 	}
 
+	@Override
 	public boolean addOutline(int maxPages) {
 		PdfOutline rootOutline = this.iTextPDFDocument.getOutlines(true);
 		for (int i = 1; i <= maxPages; i++) {
@@ -485,7 +415,7 @@ public class ITextProcessor implements IPDFProcessor {
 				traverseStructure(pdfDocument, newParent, sub);
 			}
 		} else {
-		  	currOutline.addOutline(label).addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
+			currOutline.addOutline(label).addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
 		}
 	}
 

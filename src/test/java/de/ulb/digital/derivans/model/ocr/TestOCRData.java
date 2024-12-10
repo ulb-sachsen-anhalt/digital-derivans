@@ -15,7 +15,7 @@ import de.ulb.digital.derivans.model.text.Word;
 /**
  * @author u.hartwig
  */
-public class TestOCRData {
+class TestOCRData {
 
 	/**
 	 * Minimum LTR example
@@ -30,7 +30,7 @@ public class TestOCRData {
 		Textline line = new Textline(words);
 
 		// act
-		assertTrue(line.isLTR());
+		assertFalse(line.isRTL());
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class TestOCRData {
 		Textline line = new Textline(words);
 
 		// act
-		assertFalse(line.isLTR());
+		assertTrue(line.isRTL());
 	}
 
 	@Test
@@ -52,6 +52,6 @@ public class TestOCRData {
 		Textline line = new Textline(words);
 
 		// act
-		assertFalse(line.isLTR());
+		assertTrue(line.isRTL());
 	}
 }

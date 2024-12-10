@@ -114,40 +114,15 @@ public class TestDerivansFulltextRahbar {
 	}
 
 	/**
-	 * Please note:
-	 * This test is *not really* valuable with current
-	 * TextExtractionStrategy because it shadows the
-	 * fact that the character order is okay
-	 * therefore "ﻪﭼ" is actually "چه"
-	 * 
-	 * 2024/11
-	 * Due PDFBox to read now starts with "‮‭چه"
-	 * 
-	 * @throws Exception
-	 */
-	@Test
-	void testWordLevelPage01Contents() throws Exception {
-		var textTokens = TestHelper.getText(pdfPathWord, 1);
-		assertTrue(textTokens.startsWith("‮‭چه"));
-	}
-
-	/**
 	 * 
 	 * Test total length of resultant text including whitespaces
-	 * 
-	 * Please note:
-	 * test ref value changed from 1578 to 1616 due
-	 * refactoring of rendering for right-to-left fonts
-	 * 
-	 * changed 24/11 iText8
-	 * 1616 => 1315
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testWordLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathWord, 1);
-		assertEquals(1315, textPage07.length());
+		assertEquals(1318, textPage07.length());
 	}
 
 	@Test
@@ -162,15 +137,11 @@ public class TestDerivansFulltextRahbar {
 	 * Please note:
 	 * test result differs slightly from word level
 	 * 
-	 * Changed 24/11 itext8
-	 * 1610 => 1419
-	 * 1419 => 1338
-	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testLineLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathLine, 1);
-		assertEquals(1338, textPage07.length());
+		assertEquals(1614, textPage07.length());
 	}
 }

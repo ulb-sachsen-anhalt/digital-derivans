@@ -280,7 +280,7 @@ public class PDFBoxProcessor implements IPDFProcessor {
 		return null;
 	}
 
-	// public boolean addOutline(PdfWriter pdfWriter, int nPages) {
+	public boolean addOutline(int nPages) {
 	// PdfOutline rootOutline = pdfWriter.getRootOutline();
 	// rootOutline.setTitle(structure.getLabel());
 	// for (int i = 1; i <= nPages; i++) {
@@ -288,8 +288,8 @@ public class PDFBoxProcessor implements IPDFProcessor {
 	// traverseStructure(pdfWriter, rootOutline, structure);
 	// }
 	// }
-	// return true;
-	// }
+		return true;
+	}
 
 	public String loadFont(String path) throws DigitalDerivansException {
 		TmpJarResource tmpResHandler = new TmpJarResource(path);

@@ -346,6 +346,6 @@ public class TestDerivans {
 		assertTrue(Files.exists(pdfWritten));
 		var textPageOne = TestHelper.getTextAsSingleLine(pdfWritten, 1);
 		assertFalse(textPageOne.isBlank());
-		assertTrue(textPageOne.contains("SOLEMNI PANEGYRIAVGVSTISSIMO"));
+		assertTrue(textPageOne.contains("SOLEMNI PANEGYRI AVGVSTISSIMO"));
 	}
 }

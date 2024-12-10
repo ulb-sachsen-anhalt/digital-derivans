@@ -17,9 +17,8 @@ public interface ITextElement {
 
     /**
      * 
-     * Distinguish between western european
-     * and arabic/persian/hebrew
-     * left (LTR) or right (RTL) text orientation
+     * Distinguish between western european left (LTR)
+     * and arabic/persian/hebrew right (RTL) text orientation
      * by inspecting the very *FIRST* character.
      * 
      * Please note:
@@ -30,27 +29,27 @@ public interface ITextElement {
      * 
      * @return boolean
      */
-    default boolean isLTR() {
+    default boolean isRTL() {
         if (!this.getText().isEmpty()) {
             var code = getText().codePointAt(0);
             // arabic basic
             if (code >= 0x600 && code <= 0x6ff) {
-                return false;
+                return true;
             }
             // arabic extension
             if (code >= 0x750 && code <= 0x77f) {
-                return false;
+                return true;
             }
             // arabic extension A
             if (code >= 0x8a0 && code <= 0x8ff) {
-                return false;
+                return true;
             }
             // hebrew
             if (code >= 0x590 && code <= 0x5ff) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
 }

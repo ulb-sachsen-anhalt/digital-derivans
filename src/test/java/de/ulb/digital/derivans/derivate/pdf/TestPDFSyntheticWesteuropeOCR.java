@@ -44,7 +44,7 @@ import de.ulb.digital.derivans.model.text.Word;
  * @author hartwig
  *
  */
-class TestPDFSyntheticOCR {
+class TestPDFSyntheticWesteuropeOCR {
 
 	private static final int N_PAGES = 1;
 
@@ -79,7 +79,7 @@ class TestPDFSyntheticOCR {
 		ImageIO.write(bi2, "JPG", jpgFile.toFile());
 		
 		DigitalPage e = new DigitalPage(1, imageName);
-		e.setOcrData(createOCR());
+		e.setOcrData(italianOCR());
 		List<DigitalPage> pages = new ArrayList<>();
 		pages.add(e);
 
@@ -292,7 +292,7 @@ class TestPDFSyntheticOCR {
 	 * 
 	 * @return
 	 */
-	static OCRData createOCR() {
+	static OCRData italianOCR() {
 		List<Word> texts1 = new ArrayList<>();
 		texts1.add(new Word("BELLA", new Rectangle(textMarginLeft, textMarginTop, 70, 30)));
 		texts1.add(new Word("CHIAO", new Rectangle(130, textMarginTop, 70, 30)));

@@ -90,7 +90,7 @@ public class TestPDFulltextODEMLines {
 	@Test
 	void testPage07ContainsText() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 2);
-		assertTrue(textPage07.contains("ChriſtlicheMa ")); // PDFBox
+		assertTrue(textPage07.contains("Chriſtliche Majeſt")); // PDFBox
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class TestPDFulltextODEMLines {
 	@Test
 	void testPage07HasCertainLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 2);
-		assertEquals(1017, textPage07.length());
+		assertEquals(3446, textPage07.length());
 	}
 
 }

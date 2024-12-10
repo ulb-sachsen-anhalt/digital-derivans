@@ -59,7 +59,7 @@ public class TestPDFRahbarOCRWords {
 		// arrange base derivateer
 		DerivansData input = new DerivansData(pathImageMax, DerivateType.JPG);
 		DerivansData output = new DerivansData(workDirWord, DerivateType.PDF);
-	
+
 		// arrange pdf path and pages
 		DerivansPathResolver resolver = new DerivansPathResolver(workDirWord);
 		DerivateStepPDF step = new DerivateStepPDF();
@@ -69,8 +69,9 @@ public class TestPDFRahbarOCRWords {
 		resolver.enrichOCRFromFilesystem(pages, targetOcrDir);
 		step.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		step.setDebugRender(true);
+		step.setImageDpi(300); // prevent re-scaling for testing
 		PDFDerivateer wordLvlDerivateer = new PDFDerivateer(input, output, pages, step);
-	
+
 		// act
 		wordLvlDerivateer.create();
 		wordLvlResult = wordLvlDerivateer.getPDFResult();
@@ -84,11 +85,11 @@ public class TestPDFRahbarOCRWords {
 
 	/**
 	 * 
-	 * Original ALTO/OCR 
-	 * 	line x:1017, y:342, w: 697, h:51
-	 * 		word0001 x: 1061, y: 342, w: 60, h: 48, content: "دیبا"
-	 * 		word0002 x: 1019, y: 350, w: 30, h: 40, content: "چه"
-	 * image: 3173 x 2289 300 DPI => 
+	 * Original OCR
+	 * line x:1017, y:342, w: 697, h:51
+	 * word0001 x: 1061, y: 342, w: 60, h: 48, content: "دیبا"
+	 * word0002 x: 1019, y: 350, w: 30, h: 40, content: "چه"
+	 * image: 3173 x 2289 300 DPI =>
 	 */
 	@Test
 	void testWordLevelPage01Line01ElementCoords() {
@@ -107,37 +108,17 @@ public class TestPDFRahbarOCRWords {
 		var word02 = line01.getChildren().get(1);
 		assertEquals(word01.getBox().getMaxY(), word02.getBox().getMaxY()); // same bottom line
 	}
-	
-	/**
-	 * Please note:
-	 * This test is *not really* valuable with current
-	 * TextExtractionStrategy because it shadows the
-	 * fact that the characters order is okay
-	 * therefore "ﻪﭼ" is actually "چه"
-	 */
-	@Test
-	void testWordLevelPage01Line01Text() {
-		var optLine01 = wordLvlResult.getPdfPages().get(0).getTextcontent();
-		assertTrue(optLine01.isPresent());
-		var line01 = optLine01.get().get(0);
-		assertEquals("٨‏", line01.getChildren().get(0).getText());
-		assertEquals("ديباجه", line01.getChildren().get(1).getText());
-	}
 
 	/**
 	 * 
 	 * Test total length of resultant text including whitespaces
-	 * 
-	 * Please note:
-	 * test ref value changed from 1578 to 1616 due
-	 * refactoring of rendering for right-to-left fonts
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testWordLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathWord, 1);
-		assertEquals(1568, textPage07.length());
+		assertEquals(1485, textPage07.length());
 	}
 
 }

@@ -53,4 +53,13 @@ public interface IPDFProcessor {
 	 */
 	PDFResult write(File fileDescriptor) throws DigitalDerivansException;
 	
+	/**
+	 * 
+	 * Enrich navigable PDF outline if and only if
+	 * Metadate for logical structs present of maxPages
+	 * 
+	 * @param maxPages
+	 * @return
+	 */
+	boolean addOutline(int maxPages);
 }
