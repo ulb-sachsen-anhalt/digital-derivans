@@ -11,7 +11,7 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 
 /**
  * 
- * Exract resource from Jar with provided specifics
+ * Exract resource from Jar
  * 
  * @author hartwig
  * 
@@ -31,7 +31,7 @@ public class TmpJarResource {
 	}
 		/**
 	 * 
-	 * Create temporary File if Font within JAR
+	 * Create temporary file from font in JAR
 	 * 
 	 * @param resPath
 	 * @return
@@ -39,7 +39,6 @@ public class TmpJarResource {
 	 */
 	public String extract(String prefix, String suffix) throws DigitalDerivansException {
 		ClassLoader cl = this.getClass().getClassLoader();
-		//if (cl.getResource(this.resPath) != null && cl.getResource(resPath).getProtocol().equals("jar")) {
 		if (cl.getResource(this.resPath) != null) {
 			try (InputStream input = cl.getResourceAsStream(resPath)) {
 				File file = File.createTempFile(prefix, suffix);

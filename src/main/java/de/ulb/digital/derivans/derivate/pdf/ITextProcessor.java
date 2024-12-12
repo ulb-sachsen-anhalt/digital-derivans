@@ -50,7 +50,6 @@ import de.ulb.digital.derivans.data.io.TmpJarResource;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.IPDFProcessor;
-import de.ulb.digital.derivans.model.IVisualElement;
 import de.ulb.digital.derivans.model.pdf.MetadataType;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 import de.ulb.digital.derivans.model.pdf.PDFPage;
@@ -66,13 +65,19 @@ import de.ulb.digital.derivans.model.step.DerivateStepPDF;
  */
 public class ITextProcessor implements IPDFProcessor {
 
+	private static final float DBG_LINEWIDTH_BASE = 2.0f;
+
+	private static final float DBG_LINEWIDTH_WORD = 0.3f;
+
+	private static final float DBG_LINEWIDTH_ROW = 0.6f;
+
 	private static final String PDF_METADATA_LABEL_PUBLISHED = "Published";
 
 	private static final String PDF_METADATA_LABEL_ACCESS_CONDITION = "Access condition";
 
 	private static final Logger LOGGER = LogManager.getLogger(ITextProcessor.class);
 
-	// Assumed output resolution
+	// output resolution for screens
 	public static final float ITEXT_ASSUMES_DPI = 72.0f;
 
 	private TypeConfiguration renderLevel;
@@ -97,8 +102,14 @@ public class ITextProcessor implements IPDFProcessor {
 
 	public static final float ITEXT_FONT_STEP = .5f;
 
-	private Style rtlStyle = new Style().setTextAlignment(TextAlignment.RIGHT)
+	private Style rtlStyle = new Style()
+			.setTextAlignment(TextAlignment.RIGHT)
 			.setBaseDirection(BaseDirection.RIGHT_TO_LEFT);
+
+	// colors in debug mode
+	private Color dbgColorLine = new DeviceCmyk(1.0f, 1.0f, 0.0f, 0.0f);
+	private Color dbgColorWord = new DeviceCmyk(0.0f, 1.0f, 1.0f, 0.0f);
+	private Color dbgColorBase = new DeviceCmyk(0.0f, 0.0f, 1.0f, 0.0f);
 
 	PDFResult reportDoc = new PDFResult();
 
@@ -190,9 +201,6 @@ public class ITextProcessor implements IPDFProcessor {
 	}
 
 	/**
-	 * 
-	 * Optional: set font style in advance for arabic and farsi
-	 * 
 	 * @param pages
 	 * @return
 	 * @throws DigitalDerivansException
@@ -251,16 +259,18 @@ public class ITextProcessor implements IPDFProcessor {
 			for (var line : txtContents) {
 				if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
 					render(font, line);
+					if (this.debugRender) {
+						this.drawBoundingBox(line.getBox(), this.dbgColorLine, DBG_LINEWIDTH_ROW);
+					}
 				} else if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_WORD) {
 					var tokens = line.getChildren();
 					for (var word : tokens) {
 						render(font, word);
+						if (this.debugRender) {
+							this.drawBoundingBox(word.getBox(), this.dbgColorWord, DBG_LINEWIDTH_WORD);
+						}
 					}
 				}
-			}
-			if (this.debugRender) {
-				LOGGER.debug("render ocr outlines {} (height: {})", txtContents, image.getImageHeight());
-				this.renderOcrOutlines(txtContents);
 			}
 		} else {
 			LOGGER.info("no ocr data present for '{}'", page.getImagePath());
@@ -288,19 +298,22 @@ public class ITextProcessor implements IPDFProcessor {
 		}
 		Rectangle2D box = token.getBox();
 		float leftMargin = (float) box.getMinX();
-		float verticalBaseline = token.getBaseline().getY1();
+		float baselineY = token.getBaseline().getY1();
 		var page = this.iTextPDFDocument.getLastPage();
 		PdfCanvas pdfCanvas = new PdfCanvas(page);
 		var iTextRect = new com.itextpdf.kernel.geom.Rectangle(
-				leftMargin, verticalBaseline, (float) box.getWidth(), (float) box.getHeight());
+				leftMargin, baselineY, (float) box.getWidth(), (float) box.getHeight());
 		if ((!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
 			pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
 		}
 		float hScale = calculateHorizontalScaling(font, token);
 		if (this.debugRender) {
-			LOGGER.trace("put '{}' at {}x{} size:{}, scale:{})",
-					text, leftMargin, verticalBaseline, fontSize, hScale);
-			drawLine(leftMargin, (float) (leftMargin + box.getWidth()), verticalBaseline);
+			LOGGER.trace("put '{}' at baseline {}x{} size:{}, scale:{})",
+					text, leftMargin, baselineY, fontSize, hScale);
+			var rightMargin = (float) (leftMargin + box.getWidth());
+			pdfCanvas.setStrokeColor(dbgColorBase).setLineWidth(DBG_LINEWIDTH_BASE)
+					.moveTo(leftMargin, baselineY)
+					.lineTo(rightMargin, baselineY).closePathStroke();
 		}
 		Text txt = new Text(text).setFont(font).setFontSize(fontSize).setHorizontalScaling(hScale);
 		if (token.isRTL()) {
@@ -317,14 +330,10 @@ public class ITextProcessor implements IPDFProcessor {
 	/**
 	 * 
 	 * Calculate font scaling to fit given text into the specified width.
-	 * cf. 
-	 * https://kb.itextpdf.com/itext/how-to-choose-the-optimal-size-for-a-font
-	 * 
-	 * According to
+	 * cf. https://kb.itextpdf.com/itext/how-to-choose-the-optimal-size-for-a-font
+	 * Value range unclear; according to Specs it's percents (i.e. 0-100)
 	 * https://opensource.adobe.com/dc-acrobat-sdk-docs/standards/pdfstandards/pdf/PDF32000_2008.pdf#page=253
-	 * value expected to be in PERCENTS, i.e. 0-100
-	 * 
-	 * iText8: 100 => 1.0
+	 * but with iText8: 100 => 1.0
 	 * 
 	 * @param text
 	 * @param width
@@ -340,36 +349,23 @@ public class ITextProcessor implements IPDFProcessor {
 		return tokenLenght / totalGlyphWidth;
 	}
 
-	private void renderOcrOutlines(List<PDFTextElement> ocrLines) {
-		Color colorLine = new DeviceCmyk(1.0f, 1.0f, 0.0f, 0.0f);
-		Color colorKids = new DeviceCmyk(0.0f, 1.0f, 1.0f, 0.0f);
-		for (PDFTextElement line : ocrLines) {
-			drawOutline(line.getBox(), colorLine, 1.0f);
-			for (IVisualElement txt : line.getChildren()) {
-				drawOutline(txt.getBox(), colorKids, 0.4f);
-			}
-		}
-	}
-
-	private void drawLine(float leftBottomX, float rightBottomX, float bottomY) {
-		var page = this.iTextPDFDocument.getLastPage();
-		var canvas = new PdfCanvas(page);
-		var bottomColor = new DeviceCmyk(0.0f, 0.0f, 1.0f, 0.0f);
-		canvas.setStrokeColor(bottomColor).setLineWidth(2.0f)
-				.moveTo(leftBottomX, bottomY)
-				.lineTo(rightBottomX, bottomY).closePathStroke();
-	}
-
-	private void drawOutline(Rectangle2D rectangle, Color c, float lineWidth) {
-		List<Point> points = asPoints(rectangle);
+	private void drawBoundingBox(Rectangle2D rectangle, Color c, float lineWidth) {
+		List<Point> points = new ArrayList<>();
+		float minX = (float) rectangle.getMinX();
+		float minY = (float) rectangle.getMinY();
+		float maxX = (float) rectangle.getMaxX();
+		float maxY = (float) rectangle.getMaxY();
+		points.add(new Point(minX, minY));
+		points.add(new Point(maxX, minY));
+		points.add(new Point(maxX, maxY));
+		points.add(new Point(minX, maxY));
 		this.drawPointsWith(points, lineWidth, c);
 	}
 
 	private void drawPointsWith(List<Point> points, float lineWidth, Color c) {
 		var page = this.iTextPDFDocument.getLastPage();
 		var canvas = new PdfCanvas(page);
-		canvas.setStrokeColor(c);
-		canvas.setLineWidth(lineWidth);
+		canvas.setStrokeColor(c).setLineWidth(lineWidth);
 		Point pLast = points.get(points.size() - 1);
 		canvas.moveTo(pLast.x, pLast.y);
 		for (int i = 0; i < points.size(); i++) {
@@ -377,19 +373,6 @@ public class ITextProcessor implements IPDFProcessor {
 			canvas.lineTo(p.x, p.y);
 		}
 		canvas.closePathStroke();
-	}
-
-	private List<Point> asPoints(Rectangle2D rect) {
-		List<Point> points = new ArrayList<>();
-		float minX = (float) rect.getMinX();
-		float minY = (float) rect.getMinY();
-		float maxX = (float) rect.getMaxX();
-		float maxY = (float) rect.getMaxY();
-		points.add(new Point(minX, minY));
-		points.add(new Point(maxX, minY));
-		points.add(new Point(maxX, maxY));
-		points.add(new Point(minX, maxY));
-		return points;
 	}
 
 	@Override
