@@ -11,9 +11,7 @@ import static de.ulb.digital.derivans.data.IMetadataStore.*;
 
 /**
  * 
- * Application Parameters.
- * 
- * Can be set global on CLI-level.
+ * Application Parameters on CLI-level.
  * 
  * @author hartwig
  *
@@ -56,6 +54,13 @@ public class DerivansParameter {
 			"Overwrites default naming logics from METS (if present) and directory.\n" +
 			"(No default).\n")
 	private String namePDF;
+
+
+	@Option(name = "-f", aliases = { "--footer" }, required = false, usage = "Path to footer template file.\n" +
+			"Determine absolute path to used footer image file.\n" +
+			"Overwrites default footer setting if exists.\n" +
+			"(No default).\n")
+	private Path pathFooter;
 
 	/**
 	 * 
@@ -115,5 +120,13 @@ public class DerivansParameter {
 
 	public void setDebugPdfRender(boolean isRequired) {
 		this.debugPdfRender = isRequired;
+	}
+
+	public Path getPathFooter(){
+		return this.pathFooter;
+	}
+
+	public void setPathFooter(Path pathFooter) {
+		this.pathFooter = pathFooter;
 	}
 }

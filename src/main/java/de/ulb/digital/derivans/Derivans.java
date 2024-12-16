@@ -2,8 +2,8 @@ package de.ulb.digital.derivans;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
-import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.io.DerivansPathResolver;
+import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.mets.MetadataStore;
 import de.ulb.digital.derivans.derivate.*;
 import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPG;
@@ -152,7 +152,6 @@ public class Derivans {
                 String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
                 pdfStep.setConformanceLevel(pdfALevel);
                 pdfStep.setDebugRender(config.isDebugPdfRender());
-                pdfStep.setNamePDF(this.config.getNamePDF());
                 DescriptiveMetadata descriptiveData = new DescriptiveMetadata();
                 if (this.optMetadataStore.isPresent()) {
                     var store = this.optMetadataStore.get();
