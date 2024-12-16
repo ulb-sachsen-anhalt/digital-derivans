@@ -55,8 +55,6 @@ public class DerivansConfiguration {
 
 	private Optional<String> paramOCR = Optional.empty();
 
-	private Optional<String> paramNamePDF = Optional.empty();
-
 	private Integer quality = DefaultConfiguration.DEFAULT_QUALITY;
 
 	private Integer poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
@@ -109,7 +107,7 @@ public class DerivansConfiguration {
 			this.pathDir = input.getParent();
 		}
 
-		// set configuration file for later examination
+		// set configuration file
 		if (params.getPathConfig() != null) {
 			LOGGER.debug("inspect cli config file {}", params.getPathConfig());
 			this.pathConfigFile = params.getPathConfig();
@@ -126,18 +124,43 @@ public class DerivansConfiguration {
 				this.initConfigurationFromFile();
 			}
 		}
-		// inspect pdf name present
-		if(params.getNamePDF() != null) {
-			this.paramNamePDF = Optional.of(params.getNamePDF());
-		}
-
-		// take care if no config provided
+		
+		// take care if no configuration file provided
 		if (derivateSteps.isEmpty()) {
 			provideDefaultSteps();
 			LOGGER.warn("no config read, use fallback with {} steps", this.derivateSteps.size());
 		}
 		LOGGER.info("use config with {} steps", this.derivateSteps.size());
 		LOGGER.debug("first step inputs from '{}'", this.derivateSteps.get(0).getInputPath());
+		
+		// inspect parameters which *might* override
+		// any previously configured settings
+		if(params.getNamePDF() != null) {
+			var pdfStep = this.pick(DerivateType.PDF);
+			var pdfName = params.getNamePDF();
+			if(pdfStep.isPresent()) {
+				((DerivateStepPDF) pdfStep.get()).setNamePDF(pdfName);
+				LOGGER.info("force PDF name {}", pdfName);
+			} else {
+				LOGGER.warn("refuse to set {} - no PDF step present", pdfName);
+			}
+		}
+		if(params.getPathFooter() != null) {
+			var newTemplate = params.getPathFooter();
+			var theStep = this.pick(DerivateType.JPG_FOOTER);
+			if (theStep.isPresent()) {
+				if (!newTemplate.isAbsolute()) {
+					newTemplate = this.pathConfigFile.getParent().resolve(newTemplate);
+				}
+				DerivateStepImageFooter footerStep = (DerivateStepImageFooter) theStep.get();
+				var footerPrev = footerStep.getPathTemplate();
+				LOGGER.info("force footer template {} with {}", 
+					footerPrev, newTemplate);
+				footerStep.setPathTemplate(newTemplate);
+			} else {
+				LOGGER.warn("refuse to set {} - no footer step present", newTemplate);
+			}
+		}
 	}
 
 	private void initConfigurationFromFile() throws DigitalDerivansException {
@@ -582,7 +605,15 @@ public class DerivansConfiguration {
 		return this.debugPdfRender;
 	}
 
-	public Optional<String> getNamePDF() { 
-		return this.paramNamePDF;
+	/**
+	 * 
+	 * Pick first step with matching {@link DerivateType}
+	 * 
+	 * @param type
+	 * @return
+	 */
+	private Optional<DerivateStep> pick(DerivateType type) {
+		return this.derivateSteps.stream()
+			.filter(s -> s.getDerivateType() == type).findFirst();
 	}
 }

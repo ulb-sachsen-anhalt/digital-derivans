@@ -157,8 +157,8 @@ public class DerivateStepPDF extends DerivateStep {
 		return this.optNamePDF;
 	}
 
-	public void setNamePDF(Optional<String> optNamePDF) {
-		this.optNamePDF = optNamePDF;
+	public void setNamePDF(String optNamePDF) {
+		this.optNamePDF = Optional.of(optNamePDF);
 	}
 
 	/**

@@ -148,7 +148,6 @@ public class Derivans {
                 String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
                 pdfStep.setConformanceLevel(pdfALevel);
                 pdfStep.setDebugRender(config.isDebugPdfRender());
-                pdfStep.setNamePDF(this.config.getNamePDF());
                 DescriptiveData descriptiveData = new DescriptiveData();
                 if (this.optMetadataStore.isPresent()) {
                     var store = this.optMetadataStore.get();
