@@ -9,11 +9,22 @@ package de.ulb.digital.derivans.model;
 public interface ITextElement {
 
     /**
-     * Get textual UTF-8 representation
+     * Get textual representation as-in memory
      * 
      * @return
      */
     String getText();
+
+
+    /**
+     * 
+     * Get textual representation used for printing PDF which 
+     * might differ if text orientation switches between 
+     * left-to-right (LTR, western EU) right-to-left (RTL, arabic)
+     * 
+     * @return
+     */
+    String forPrint();
 
     /**
      * 
@@ -31,7 +42,7 @@ public interface ITextElement {
      */
     default boolean isRTL() {
         if (!this.getText().isEmpty()) {
-            var code = getText().codePointAt(0);
+            var code = this.getText().codePointAt(0);
             // arabic basic
             if (code >= 0x600 && code <= 0x6ff) {
                 return true;

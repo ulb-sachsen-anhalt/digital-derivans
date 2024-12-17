@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import de.ulb.digital.derivans.model.ITextElement;
 import de.ulb.digital.derivans.model.IVisualElement;
 
 /**
@@ -17,7 +16,7 @@ import de.ulb.digital.derivans.model.IVisualElement;
  * @author u.hartwig
  *
  */
-public class Textline implements IVisualElement, ITextElement {
+public class Textline implements IVisualElement {
 	
 	private List<Word> textTokens = new ArrayList<>();
 
@@ -37,7 +36,7 @@ public class Textline implements IVisualElement, ITextElement {
 		this.textTokens.addAll(texts);
 		this.calculateArea();
 		this.actualText = String.join(" ",
-				texts.stream().map(ITextElement::getText).filter(Objects::nonNull).collect(Collectors.toList()));
+				texts.stream().map(Word::getText).filter(Objects::nonNull).collect(Collectors.toList()));
 	}
 
 	public void calculateArea() {

@@ -28,6 +28,11 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	// within the spanning rectangular area
 	public static final float DESCENT_RATIO = .25f;
 
+	// Important to mark end of actual token for heavy ligated
+	// script fonts like arabic or farsi
+	// cf. https://en.wikipedia.org/wiki/Zero-width_space
+	public static final char ZERO_WIDTH = '\u200b';
+
 	private PDFTextElementType type = PDFTextElementType.TOKEN;
 
 	private Rectangle2D box;
@@ -42,6 +47,14 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 
 	private boolean isPrinted;
 	
+	public PDFTextElement(PDFTextElementType type) {
+		this.type = type;
+	}
+
+	public PDFTextElement(List<PDFTextElement> children) {
+		children.forEach(this::add);
+	}
+
 	public PDFTextElement(String actualText) {
 		this(actualText, new Rectangle2D.Float());
 	}
@@ -58,6 +71,11 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 		} catch (DigitalDerivansException e) {
 			this.type = PDFTextElementType.TOKEN;
 		}
+	}
+
+	public PDFTextElement(String actualText, Rectangle2D box, PDFTextElementType type) {
+		this(actualText, box);
+		this.type = type;
 	}
 
 	private float descent() {
@@ -123,12 +141,32 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 
 	@Override
 	public String getText() {
+		if (!this.getChildren().isEmpty()) {
+			var builder = new StringBuilder();
+			for (var kid : this.children) {
+				builder.append(kid.getText()).append(" ");
+			}
+			return builder.toString().trim();
+		}
 		return this.text;
 	}
 
+	@Override
 	public String forPrint() {
+		if (!this.children.isEmpty()) {
+			var builder = new StringBuilder();
+			for (var kid : this.children) {
+				var txtPrint = kid.forPrint();
+				builder.append(txtPrint);
+				if (kid.isRTL()) {
+					builder.append(ZERO_WIDTH);
+				}
+				builder.append(" ");
+			}
+			return builder.toString().trim();
+		}
 		if (this.isRTL()) {
-			return new StringBuffer(this.text).reverse().toString();
+			return new StringBuilder(this.text).reverse().toString();
 		}
 		return this.text;
 	}

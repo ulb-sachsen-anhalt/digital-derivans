@@ -194,21 +194,16 @@ class TestPDFSyntheticArabicOCR {
 	static OCRData arabicOCR() {
 		var w1 = new Word("٨", new Rectangle(400, textMarginTop, 15, 30)); // ٨
 		assertEquals(1, w1.getText().length());
-		assertTrue(w1.isRTL());
 		var w2 = new Word("ديبا", new Rectangle(200, textMarginTop, 60, 30));
 		assertEquals(4, w2.getText().length());
-		assertTrue(w2.isRTL());
 		var w3 = new Word("جه", new Rectangle(160, textMarginTop, 30, 30));
 		assertEquals(2, w3.getText().length());
-		assertTrue(w3.isRTL());
 		//
 		var w4 = new Word("\u0627\u0644\u0633\u0639\u0631",
 				new Rectangle(400, textMarginTop + 40, 75, 30)); // السعر
-		assertTrue(w4.isRTL());
 		assertEquals(5, w4.getText().length());
 		var w5 = new Word("\u0627\u0644\u0627\u062c\u0645\u0627\u0644\u064a",
 				new Rectangle(250, textMarginTop + 40, 120, 30)); // الاجمالي
-		assertTrue(w5.isRTL());
 		assertEquals(8, w5.getText().length());
 		List<Textline> lines = List.of(
 				new Textline(List.of(w1, w2, w3)),
