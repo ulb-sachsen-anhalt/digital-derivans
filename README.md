@@ -2,14 +2,10 @@
 
 ![JDK11 Maven3](https://github.com/ulb-sachsen-anhalt/digital-derivans/workflows/Java%20CI%20with%20Maven/badge.svg)
 
-Java command line tool that creates image derivates with different, configurable sizes and qualities, appends additional
-image footer and may assemble image files and OCR data to produce searchable PDF files with hidden text layer and an
-outline. If derivates can be created independently, like single scaled image variants, it uses parallel execution.
+Java command line tool to create PDF files from image derivates with configurable scales and qualities.  
+Optional appends image footer or structured OCR formats (ALTO, PAGE) to produce text layers and metadata (METS/MODS) to reflect logical order.
 
-Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling,
-classical [iText5](https://github.com/itext/itextpdf) to create
-PDF, [Apache log4j2](https://github.com/apache/logging-log4j2) for logging and a workflow inspired
-by [OCR-D/Core](https://github.com/OCR-D/core) Workflows.
+Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling, [iText-java](https://github.com/itext/itext-java) to create PDF, [Apache log4j2](https://github.com/apache/logging-log4j2) for logging and a workflow inspired by [OCR-D/Core](https://github.com/OCR-D/core) Workflows.
 
 * [Features](#features)
 * [Local Installation](#installation)
@@ -20,23 +16,21 @@ by [OCR-D/Core](https://github.com/OCR-D/core) Workflows.
 
 ## Features
 
-Create JPEG or PDF from TIFF or JPEG with optional Footer appended and custom constraints on compression rate and max
+Create PDF from scaled image data (optional: footer) and constraints on compression rate and max
 sizes.  
 For details see [configuration section](#configuration).
 
-If METS/MODS-information is available, the following will be taken into account:
+If metadata (METS/MODS) is available, the following will be taken into account:
 
+* Value `mods:recordIdentifier[@source]` to name PDF artefact
+* Value `mods:titleInfo/mods:title` for internal naming
 * Attribute `mets:div[@ORDER]` for file containers as defined in the METS physical structMap to create a PDF outline
 * Attribute `mets:div[@CONTENTIDS]` (granular URN) will be rendered for each page if footer shall be appended to each
   page image
 
 ## Docker Image
 
-There is
-an [official Docker image](https://github.com/ulb-sachsen-anhalt/digital-derivans/pkgs/container/digital-derivansout)
-there.
-
-Pull the image:
+Pull the [Docker image](https://github.com/ulb-sachsen-anhalt/digital-derivans/pkgs/container/digital-derivansout):
 
 ```bash
 docker pull ghcr.io/ulb-sachsen-anhalt/digital-derivans:latest
@@ -48,7 +42,7 @@ or build it your own locally:
 ./scripts/build_docker_image.sh
 ```
 
-For using the docker image it is the same like described in [Usage](#usage) section, except you has to pass all required directories / files as mapped volumes.
+Usage of docker image is described in [Usage](#usage) section, but all required directories / files need to be passed as mapped volumes.
 
 For example:
 
@@ -61,10 +55,7 @@ docker run \
   <print-dir|mets-file> -c /data-config/derivans.ini  
 ```
 
-*Please note*:  
-Logging configuration must not be outside config dir.
-
-## Installation
+## Local Installation
 
 Digital Derivans is a Java 11+ project build with [Apache Maven](https://github.com/apache/maven).
 
@@ -84,8 +75,7 @@ cd digital-derivans
 mvn clean package
 ```
 
-This will first run the tests and afterwards create a shaded JAR ("FAT-JAR") inside the build
-directory (`./target/digital-derivans-<version>.jar`)
+This will finally create a shaded JAR ("FAT-JAR") inside the build directory (`./target/digital-derivans-<version>.jar`)
 
 ## Usage
 
@@ -94,7 +84,7 @@ In local mode, a recent OpenJRE is required.
 The tool expects a project folder containing an image directory (default: `MAX`) and optional OCR-data directory (
 default: `FULLTEXT`').
 
-The *default name* of the generated PDF is derived from the project folder name.
+The *default name* of the generated PDF inside is derived from the object's folder name or can be set with `-n`-arg.
 
 A sample folder structure:
 
@@ -209,7 +199,9 @@ METS/MODS-file with sub directories for images and OCR-data, if using metadata.
 
 Additionally, one can also provide via CLI
 
-* path to custom configuration INI-file
+* `-c` path to custom configuration INI-file
+* `-d` flag to turn on rendering of boxes and text if using OCR input
+* `-n` set custom name for resulting PDF
 * set labels for OCR and input-image (will overwrite configuration)  
   If metadata present, both will be used as filegroup names;
   For images they will also be used as input directory for initial image processing
