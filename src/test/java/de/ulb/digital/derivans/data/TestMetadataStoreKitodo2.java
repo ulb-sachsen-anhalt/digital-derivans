@@ -137,8 +137,8 @@ class TestMetadataStoreKitodo2 {
 	void testFindRecordIdentifierPeriodicalVolume() throws DigitalDerivansException {
 		// arrange
 		var mds = new MetadataStore(TestResource.K2_AB_16740608619039.get());
-		var primeMods = mds.getMetadataHandler().getPrimaryMods();
-		var metsAnchestor = primeMods.getParentElement().getParentElement().getParentElement();
+		var primeMods = mds.getMetadataHandler().getPrimeMODS();
+		var metsAnchestor = primeMods.getElement().getParentElement().getParentElement().getParentElement();
 		assertEquals("DMDLOG_0001", metsAnchestor.getAttributeValue("ID"));
 
 		// act

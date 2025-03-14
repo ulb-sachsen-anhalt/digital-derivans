@@ -91,6 +91,30 @@ public class XMLHandler {
 		return elements;
 	}
 
+	// /**
+	//  * Evaluate XPath expressions on underlying {@link Document document instance}
+	//  * 
+	//  * @param xpathStr
+	//  * @return {@link Element}
+	//  * @throws DigitalDerivansException If any internal Exceptions occour
+	//  */
+	// public Element evaluateFirst(String xpathStr, List<Namespace> namespaces) throws DigitalDerivansException {
+	// 	try {
+	// 		XPathBuilder<Element> builder = new XPathBuilder<>(xpathStr, Filters.element());
+	// 		for (Namespace ns : namespaces) {
+	// 			builder.setNamespace(ns);
+	// 		}
+	// 		var xpr = builder.compileWith(XPathFactory.instance());
+	// 		return xpr.evaluateFirst(this.document);
+	// 	} catch (Exception exc) {
+	// 		throw new DigitalDerivansException(exc.getMessage());
+	// 	}
+	// }
+
+	public Element evaluateFirst(String xpathStr, List<Namespace> namespaces) throws DigitalDerivansException {
+		return this.evaluate(xpathStr, namespaces).get(0);
+	}
+
 	/**
 	 * Evaluate XPath expressions on underlying {@link Document document instance}
 	 * 
@@ -98,14 +122,35 @@ public class XMLHandler {
 	 * @return {@link Element}
 	 * @throws DigitalDerivansException If any internal Exceptions occour
 	 */
-	public Element evaluateFirst(String xpathStr, List<Namespace> namespaces) throws DigitalDerivansException {
+	public List<Element> evaluate(String xpathStr, List<Namespace> namespaces) throws DigitalDerivansException {
 		try {
 			XPathBuilder<Element> builder = new XPathBuilder<>(xpathStr, Filters.element());
 			for (Namespace ns : namespaces) {
 				builder.setNamespace(ns);
 			}
 			var xpr = builder.compileWith(XPathFactory.instance());
-			return xpr.evaluateFirst(this.document);
+			return xpr.evaluate(this.document);
+		} catch (Exception exc) {
+			throw new DigitalDerivansException(exc.getMessage());
+		}
+	}
+
+	/**
+	 * Evaluate XPath expressions for {@link Document current root document}
+	 * 
+	 * @param xpathStr
+	 * @return {@link List<Element>}
+	 * @throws DigitalDerivansException If any internal Exceptions occour
+	 */
+	public static List<Element> evaluate(String xpathStr, List<Namespace> namespaces, Document root)
+			throws DigitalDerivansException {
+		try {
+			XPathBuilder<Element> builder = new XPathBuilder<>(xpathStr, Filters.element());
+			for (Namespace ns : namespaces) {
+				builder.setNamespace(ns);
+			}
+			var xpr = builder.compileWith(XPathFactory.instance());
+			return xpr.evaluate(root);
 		} catch (Exception exc) {
 			throw new DigitalDerivansException(exc.getMessage());
 		}

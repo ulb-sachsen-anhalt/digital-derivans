@@ -280,7 +280,7 @@ class TestMetadataStoreVLSMultivolumes {
 		var mds = new MetadataStore(targetMETS);
 
 		// arrange
-		Element primMods = mds.getMetadataHandler().getPrimaryMods();
+		Element primMods = mds.getMetadataHandler().getPrimeMODS().getElement();
 		assertEquals(20, primMods.getChildren().size());
 
 		// act + assert

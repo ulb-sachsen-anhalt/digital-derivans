@@ -11,11 +11,9 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.mets.model.Mets;
-import org.mycore.mets.model.files.FLocat;
 import org.mycore.mets.model.files.File;
 import org.mycore.mets.model.files.FileGrp;
 import org.mycore.mets.model.struct.Fptr;
-import org.mycore.mets.model.struct.LOCTYPE;
 import org.mycore.mets.model.struct.PhysicalStructMap;
 import org.mycore.mets.model.struct.PhysicalSubDiv;
 
@@ -242,7 +240,7 @@ public class MetadataStore implements IMetadataStore {
 	}
 
 	@Override
-	public boolean enrichPDF(String identifier) {
+	public boolean enrichPDF(String identifier) throws DigitalDerivansException {
 		if (IMetadataStore.UNKNOWN.equals(identifier)) {
 			LOGGER.warn("no mets available to enrich created PDF");
 			return false;
@@ -250,28 +248,15 @@ public class MetadataStore implements IMetadataStore {
 		if (this.handler != null) {
 			String mimeType = "application/pdf";
 			String fileGroup = "DOWNLOAD";
-			LOGGER.info("enrich derivate with href '{}' as '{}' in '{}'", identifier, mimeType, fileGroup);
-			String fileId = integrateFileGroup(fileGroup, identifier, mimeType);
-			String note = this.handler.enrichAgent(fileId);
-			Fptr fpts = new Fptr("PDF_" + identifier);
-			this.handler.addTo(fpts.asElement(), true);
-			this.handler.write();
-			LOGGER.info("integrated pdf fileId '{}' in '{}'", fileId, this.handler.getPath());
-			LOGGER.info("integrated mets:agent {}", note);
+			LOGGER.info("enrich pdf '{}' as '{}' in '{}'", identifier, mimeType, fileGroup);
+			String fileId = "PDF_" + identifier;
+			var resultText = this.handler.addDownloadFile("DOWNLOAD", fileId, "application/pdf");
+			LOGGER.info("integrated pdf fileId '{}' in '{}'", fileId, this.storePath);
+			LOGGER.info("integrated mets:agent {}", resultText);
 			return true;
+
 		}
 		return false;
-	}
-
-	private String integrateFileGroup(String fileGroupUse, String identifier, String mimeType) {
-		FileGrp fileGrp = new FileGrp(fileGroupUse);
-		String fileId = "PDF_" + identifier;
-		File f = new File(fileId, mimeType);
-		FLocat fLocat = new FLocat(LOCTYPE.URL, identifier + ".pdf");
-		f.setFLocat(fLocat);
-		fileGrp.addFile(f);
-		this.handler.addFileGroup(fileGrp.asElement());
-		return fileId;
 	}
 
 	@Override
@@ -280,7 +265,7 @@ public class MetadataStore implements IMetadataStore {
 			IDescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
 			builder.setMetadataStore(this);
 			descriptiveData = builder.person().access().identifier().title().urn().year().build();
-		} else if(this.xPathIdentifier.isPresent()) {
+		} else if (this.xPathIdentifier.isPresent()) {
 			// identifier might have changed just for PDF labelling
 			IDescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
 			builder.setMetadataStore(this);

@@ -91,7 +91,7 @@ public interface IMetadataStore {
 	 * @param fileId
 	 * @return isEnriched
 	 */
-	boolean enrichPDF(String fileId);
+	boolean enrichPDF(String fileId) throws DigitalDerivansException;
 
 
 	/*

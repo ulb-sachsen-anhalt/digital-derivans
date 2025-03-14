@@ -1,12 +1,6 @@
 package de.ulb.digital.derivans.data.mets;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.TreeMap;
-import java.util.function.Predicate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +14,8 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
- * Implementation of {@link IDescriptiveMetadataBuilder Descriptive metadata builder} 
+ * Implementation of {@link IDescriptiveMetadataBuilder Descriptive metadata
+ * builder}
  * from METS/MODS information
  * 
  * @author u.hartwig
@@ -42,7 +37,7 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 
 	private MetadataStore store;
 
-	private Element primeMods;
+	private MODS primeMods;
 
 	private static final Logger LOGGER = LogManager.getLogger(DescriptiveMetadataBuilder.class);
 
@@ -97,81 +92,10 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 
 	public String getPerson() {
 		if (this.primeMods != null) {
-			List<Element> nameSubtrees = this.primeMods.getChildren("name", IMetadataStore.NS_MODS);
-
-			// collect proper name relations
-			Map<MODSRelator, List<Element>> properRelations = getDesiredRelations(nameSubtrees);
-			if (properRelations.isEmpty()) {
-				LOGGER.warn("found no proper related persons!");
-				return IMetadataStore.UNKNOWN;
-			}
-
-			// assume we have pbl's or aut's candidates
-			if (properRelations.containsKey(MODSRelator.AUTHOR)) {
-				return getSomeName(properRelations.get(MODSRelator.AUTHOR));
-			} else if (properRelations.containsKey(MODSRelator.PUBLISHER)) {
-				return getSomeName(properRelations.get(MODSRelator.PUBLISHER));
-			}
+			return this.primeMods.getPerson();
 
 		}
 		return IMetadataStore.UNKNOWN;
-	}
-
-	/**
-	 * 
-	 * Get some name for person-of-interest from MODS:
-	 * 
-	 * <ul>
-	 * <li>if any mods:displayForm exists, get the text() from first element</li>
-	 * <li>if not, search for mods:namePart elements and get the first with
-	 * attribute "family"</li>
-	 * </ul>
-	 * 
-	 * @param list
-	 * @return
-	 */
-	private String getSomeName(List<Element> list) {
-		for (Element e : list) {
-			List<Element> displayers = e.getChildren("displayForm", IMetadataStore.NS_MODS);
-			if (!displayers.isEmpty()) {
-				return displayers.get(0).getTextNormalize();
-			}
-			for (Element f : e.getChildren("namePart", IMetadataStore.NS_MODS)) {
-				if ("family".equals(f.getAttributeValue("type"))) {
-					return f.getTextNormalize();
-				}
-			}
-		}
-		return IMetadataStore.UNKNOWN;
-	}
-
-	private Map<MODSRelator, List<Element>> getDesiredRelations(List<Element> nameSubtrees) {
-		Map<MODSRelator, List<Element>> map = new TreeMap<>();
-		for (Element e : nameSubtrees) {
-			for (Element f : e.getChildren("role", IMetadataStore.NS_MODS)) {
-				for (Element g : f.getChildren("roleTerm", IMetadataStore.NS_MODS)) {
-					if ("code".equals(g.getAttributeValue("type"))) {
-						String code = g.getTextNormalize();
-						MODSRelator rel = MODSRelator.forCode(code);
-						switch (rel) {
-							case AUTHOR:
-							case PUBLISHER:
-								LOGGER.debug("map '{}' as person", rel);
-								List<Element> currList = new ArrayList<>();
-								currList.add(e);
-								map.merge(rel, currList, (prev, curr) -> {
-									prev.addAll(curr);
-									return prev;
-								});
-								break;
-							default:
-								LOGGER.debug("dont map '{}' as person", rel);
-						}
-					}
-				}
-			}
-		}
-		return map;
 	}
 
 	/**
@@ -180,10 +104,10 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 	 * 
 	 * Handles different scenarios:
 	 * <ul>
-	 *	<li>no metadata present, return Zero information</li>
-	 *	<li>configured {@link DefaultConfiguration.Key.PDF_MODS_IDENTIFIER_XPATH}
-	 *		present, then go for it</li>
-	 *	<li>former not present: use first mods:recordIdentifier</li>
+	 * <li>no metadata present, return Zero information</li>
+	 * <li>configured {@link DefaultConfiguration.Key.PDF_MODS_IDENTIFIER_XPATH}
+	 * present, then go for it</li>
+	 * <li>former not present: use first mods:recordIdentifier</li>
 	 * </ul>
 	 * 
 	 * If nothing present at all (since not metadata present),
@@ -194,7 +118,7 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 	 * by the special glue-token "_"
 	 * 
 	 * @throws DigitalDerivansException
-	 * 		If Xpath provided but nothing matches
+	 *                                  If Xpath provided but nothing matches
 	 * 
 	 * @return String Identifier
 	 * 
@@ -211,93 +135,47 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 				if (!textualContent.isEmpty()) {
 					return textualContent.replace(' ', '_');
 				} else {
-					var msg = String.format("PDF Identifier XPath '%s' empty for '%s'", xPath, this.store.getMetadataHandler().getPath());
+					var msg = String.format("PDF Identifier XPath '%s' empty for '%s'", xPath,
+							this.store.getMetadataHandler().getPath());
 					throw new DigitalDerivansException(msg);
 				}
 			} else {
-				var msg = String.format("PDF Identifier XPath '%s' no match in '%s'", xPath, this.store.getMetadataHandler().getPath());
+				var msg = String.format("PDF Identifier XPath '%s' no match in '%s'", xPath,
+						this.store.getMetadataHandler().getPath());
 				throw new DigitalDerivansException(msg);
 			}
 		}
-		List<Element> recordInfos = this.primeMods.getChildren("recordInfo", IMetadataStore.NS_MODS);
-		Predicate<Element> sourceExists = e -> Objects.nonNull(e.getAttributeValue("source"));
-		for (Element recordInfo : recordInfos) {
-			List<Element> identifiers = recordInfo.getChildren("recordIdentifier", IMetadataStore.NS_MODS);
-			Optional<Element> optUrn = identifiers.stream().filter(sourceExists).findFirst();
-			if (optUrn.isPresent()) {
-				return optUrn.get().getTextTrim();
-			}
+		var ident = this.primeMods.getIdentifier();
+		if (ident.equals(IMetadataStore.UNKNOWN)) {
+			throw new DigitalDerivansException("found no valid recordIdentifier");
 		}
-		throw new DigitalDerivansException("found no valid recordIdentifier");
+		return ident;
 	}
 
 	String getTitle() {
 		if (this.primeMods != null) {
-			Element titleInfo = this.primeMods.getChild("titleInfo", IMetadataStore.NS_MODS);
-			if (titleInfo != null) {
-				Element titleText = titleInfo.getChild("title", IMetadataStore.NS_MODS);
-				if (titleText != null) {
-					return titleText.getTextNormalize();
-				}
-				Element subtitleText = this.primeMods.getChild("subTitle", IMetadataStore.NS_MODS);
-				if (subtitleText != null) {
-					return subtitleText.getTextNormalize();
-				}
-			} else {
-				// if exists a relatedItem ...
-				if (this.primeMods.getChild("relatedItem", IMetadataStore.NS_MODS) != null) {
-					// ... then it must be a volume of something
-					return "Band";
-				}
-			}
+			return this.primeMods.getTitle();
 		}
 		return IMetadataStore.UNKNOWN;
 	}
 
 	String getURN() {
 		if (this.primeMods != null) {
-			List<Element> identifiers = this.primeMods.getChildren("identifier", IMetadataStore.NS_MODS);
-			Predicate<Element> typeUrn = e -> e.getAttribute("type").getValue().equals("urn");
-			Optional<Element> optUrn = identifiers.stream().filter(typeUrn).findFirst();
-			if (optUrn.isPresent()) {
-				return optUrn.get().getTextNormalize();
-			}
+			return this.primeMods.getIdentifierURN();
 		}
 		return IMetadataStore.UNKNOWN;
 	}
 
 	String getAccessCondition() {
 		if (this.primeMods != null) {
-			Element cond = this.primeMods.getChild("accessCondition", IMetadataStore.NS_MODS);
-			if (cond != null) {
-				return cond.getTextNormalize();
-			}
+			return this.primeMods.getAccessCondition();
 		}
 		return IMetadataStore.UNKNOWN;
 	}
 
 	String getYear() {
 		if (this.primeMods != null) {
-			PredicateEventTypePublication publicationEvent = new PredicateEventTypePublication();
-			Optional<Element> optPubl = this.primeMods.getChildren("originInfo", IMetadataStore.NS_MODS).stream()
-					.filter(publicationEvent)
-					.findFirst();
-			if (optPubl.isPresent()) {
-				Element publ = optPubl.get();
-				Element issued = publ.getChild("dateIssued", IMetadataStore.NS_MODS);
-				if (issued != null) {
-					return issued.getTextNormalize();
-				}
-			}
-			// Attribute 'eventType=publication' of node 'publication' is missing
-			// so try to find/filter node less consistently
-			Element oInfo = this.primeMods.getChild("originInfo", IMetadataStore.NS_MODS);
-			if (oInfo != null) {
-				Element issued = oInfo.getChild("dateIssued", IMetadataStore.NS_MODS);
-				if (issued != null) {
-					return issued.getTextNormalize();
-				}
-			}
+			return this.primeMods.getYearPublication();
 		}
 		return IMetadataStore.UNKNOWN;
 	}
@@ -305,27 +183,7 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 	@Override
 	public void setMetadataStore(MetadataStore store) {
 		this.store = store;
-		this.primeMods = store.getMetadataHandler().getPrimaryMods();
-	}
-
-}
-
-/**
- * 
- * Predicate for filtering mods:originInfo[@eventType] elements
- * 
- * @author hartwig
- *
- */
-class PredicateEventTypePublication implements Predicate<Element> {
-
-	@Override
-	public boolean test(Element el) {
-		if (el.getAttribute("eventType") != null) {
-			String val = el.getAttributeValue("eventType");
-			return val.equalsIgnoreCase("publication");
-		}
-		return false;
+		this.primeMods = store.getMetadataHandler().getPrimeMODS();
 	}
 
 }

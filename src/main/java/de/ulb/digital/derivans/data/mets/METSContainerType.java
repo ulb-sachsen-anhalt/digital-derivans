@@ -1,7 +1,10 @@
 package de.ulb.digital.derivans.data.mets;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
+import de.ulb.digital.derivans.DigitalDerivansException;
 
 /**
  * 
@@ -10,7 +13,11 @@ import java.util.Optional;
  * 
  * see: http://dfg-viewer.de/strukturdatenset/
  * 
- * @author hartwig
+ * METS places no constraints on the possible TYPE values.
+ * Suggestions for controlled vocabularies for TYPE may be 
+ * found on the Library of Congress METS website.
+ * 
+ * @author u.hartwig
  * 
  */
 public enum METSContainerType {
@@ -104,7 +111,12 @@ public enum METSContainerType {
 	PAPER("paper", "Vortrag"),
 	PREFACE("preface", "Vorwort"),
 	DEDICATION("dedication", "Widmung"),
-	NEWSPAPER("newspaper", "Zeitung");
+	NEWSPAPER("newspaper", "Zeitung"),
+
+	// this is peculiar since not listed at Strukturdatenset
+	// *but* DFG METS heavy relies on it for it's physical line out
+	PAGE("page", "Seite"),
+	;
 
 	private METSContainerType(String label, String translation) {
 		this.label = label;
@@ -127,4 +139,37 @@ public enum METSContainerType {
 	public String getLabel() {
 		return this.label;
 	}
+
+	public static METSContainerType forLabel(String label) throws DigitalDerivansException {
+		Optional<METSContainerType> optValue = Arrays.stream(METSContainerType.values())
+				.filter(struct -> struct.label.equalsIgnoreCase(label))
+				.findFirst();
+		if (optValue.isPresent()) {
+			return optValue.get();
+		}
+		throw new DigitalDerivansException("No METS container type: " + label);
+	}
+
+	static List<METSContainerType> digitalObjects = List.of(MONOGRAPH, MANUSCRIPT, VOLUME, ISSUE, ADDITIONAL);
+
+	/**
+	 * 
+	 * Is given type stand-alone digital object
+	 * with pages/images?
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public static boolean isObject(METSContainerType type) {
+		return digitalObjects.contains(type);
+	}
+
+	// mark top container
+	public static final List<METSContainerType> TOP_LEVEL_MEDIA_CONTAINER = List.of(METSContainerType.MONOGRAPH,
+			METSContainerType.MANUSCRIPT, METSContainerType.VOLUME);
+	public static final List<METSContainerType> PARENT_MEDIA_CONTAINER = List.of(METSContainerType.MULTIVOLUME_WORK,
+			METSContainerType.PERIODICAL);
+	public static final List<METSContainerType> PARENT_NEWSPAPER_CONTAINER = List.of(METSContainerType.NEWSPAPER,
+			METSContainerType.YEAR, METSContainerType.MONTH, METSContainerType.DAY);
+
 }
