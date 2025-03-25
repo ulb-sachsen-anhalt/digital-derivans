@@ -205,6 +205,11 @@ public class DerivansPathResolver {
 		return pages;
 	}
 
+
+	public static boolean isTIFF(String fileName) {
+		return (fileName.endsWith(".tif") || fileName.endsWith(".tiff"));
+	}
+
 	/**
 	 * 
 	 * Gather Image Path Information regarding a specific image type specified by

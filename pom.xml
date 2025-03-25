@@ -37,8 +37,7 @@
 		<git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
 		<junit.jupiter.version>5.6.2</junit.jupiter.version>
 		<mockito.version>5.3.1</mockito.version>
-		<mets-model.version>2.0</mets-model.version>
-		<itext5pdf.version>5.5.13.4</itext5pdf.version>
+		<jdom2.version>2.0.6.1</jdom2.version>
 		<itext.version>8.0.5</itext.version>
 		<pdfbox.version>3.0.3</pdfbox.version>
 		<jaxen.version>1.2.0</jaxen.version>
@@ -67,11 +66,10 @@
 			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
-			<groupId>org.mycore.mets</groupId>
-			<artifactId>mets-model</artifactId>
-			<version>${mets-model.version}</version>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+			<version>${jdom2.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>jaxen</groupId>

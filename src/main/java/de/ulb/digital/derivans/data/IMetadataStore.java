@@ -35,11 +35,12 @@ public interface IMetadataStore {
 	 */
 	String UNKNOWN = "n.a.";
 
-	/*
-	 * XML Namespaces for METS/MODS parsing
+	void setMetadata() throws DigitalDerivansException;
+
+	/**
+	 * Trigger actual analysis and evaluation of underlying data source
 	 */
-	Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
-	Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
+	void setStructure() throws DigitalDerivansException;
 
 	/**
 	 * 

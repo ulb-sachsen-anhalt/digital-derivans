@@ -45,6 +45,7 @@ import org.jdom2.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 
 import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
 import de.ulb.digital.derivans.model.pdf.MetadataType;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
@@ -132,7 +133,7 @@ public class TestHelper {
 
 	public static XPathExpression<Element> generateXpression(String xpathStr) {
 		XPathBuilder<Element> builder = new XPathBuilder<Element>(xpathStr, Filters.element());
-		builder.setNamespace(IMetadataStore.NS_METS);
+		builder.setNamespace(METS.NS_METS);
 		return builder.compileWith(XPathFactory.instance());
 	}
 

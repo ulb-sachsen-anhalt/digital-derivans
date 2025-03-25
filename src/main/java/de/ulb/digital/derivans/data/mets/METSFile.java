@@ -98,12 +98,12 @@ public class METSFile {
 	 * @return
 	 */
 	public Element asElement() {
-		var fileEl = new Element("file", METSHandler.NS_METS);
+		var fileEl = new Element("file", METS.NS_METS);
 		fileEl.setAttribute("ID", this.id);
 		fileEl.setAttribute("MIMETYPE", mimeType);
-		var fLocat = new Element("FLocat", METSHandler.NS_METS);
+		var fLocat = new Element("FLocat", METS.NS_METS);
 		fLocat.setAttribute("LOCTYPE", this.locationType);
-		fLocat.setAttribute("href", this.location, METSHandler.NS_XLINK);
+		fLocat.setAttribute("href", this.location, METS.NS_XLINK);
 		fileEl.addContent(fLocat);
 		return fileEl;
 	}

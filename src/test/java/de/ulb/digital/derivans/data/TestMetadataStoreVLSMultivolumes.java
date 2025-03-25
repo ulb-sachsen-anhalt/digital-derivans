@@ -277,11 +277,8 @@ class TestMetadataStoreVLSMultivolumes {
 		Path targetMETS = tempDir.resolve("11250807.xml");
 		Files.copy(sourceMETS, targetMETS);
 
-		var mds = new MetadataStore(targetMETS);
-
 		// arrange
-		Element primMods = mds.getMetadataHandler().getPrimeMODS().getElement();
-		assertEquals(20, primMods.getChildren().size());
+		var mds = new MetadataStore(targetMETS);
 
 		// act + assert
 		assertTrue(mds.enrichPDF("PDF_11250807"));

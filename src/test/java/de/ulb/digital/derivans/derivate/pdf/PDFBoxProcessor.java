@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 import de.ulb.digital.derivans.DigitalDerivansException;
 // import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
-import de.ulb.digital.derivans.data.io.TmpJarResource;
+import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 // import de.ulb.digital.derivans.model.ITextElement;
@@ -292,7 +292,7 @@ public class PDFBoxProcessor implements IPDFProcessor {
 	}
 
 	public String loadFont(String path) throws DigitalDerivansException {
-		TmpJarResource tmpResHandler = new TmpJarResource(path);
+		JarResource tmpResHandler = new JarResource(path);
 		return tmpResHandler.extract("derivans-tmp-font-", ".ttf");
 	}
 }

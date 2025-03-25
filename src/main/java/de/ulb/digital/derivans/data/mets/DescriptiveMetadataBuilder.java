@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans.data.mets;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,14 +15,12 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
- * Implementation of {@link IDescriptiveMetadataBuilder Descriptive metadata
- * builder}
- * from METS/MODS information
+ * Build descriptive metadata (=DMD) from METS/MODS information
  * 
  * @author u.hartwig
  *
  */
-public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
+public class DescriptiveMetadataBuilder {
 
 	private String urn = IMetadataStore.UNKNOWN;
 
@@ -39,45 +38,40 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 
 	private MODS primeMods;
 
+	private METS mets;
+
 	private static final Logger LOGGER = LogManager.getLogger(DescriptiveMetadataBuilder.class);
 
-	@Override
-	public IDescriptiveMetadataBuilder urn() {
+	public DescriptiveMetadataBuilder urn() {
 		this.urn = getURN();
 		return this;
 	}
 
-	@Override
-	public IDescriptiveMetadataBuilder person() {
+	public DescriptiveMetadataBuilder person() {
 		this.person = getPerson();
 		return this;
 	}
 
-	@Override
-	public IDescriptiveMetadataBuilder identifier() throws DigitalDerivansException {
+	public DescriptiveMetadataBuilder identifier() throws DigitalDerivansException {
 		this.identifier = loadIdentifier();
 		return this;
 	}
 
-	@Override
-	public IDescriptiveMetadataBuilder title() {
+	public DescriptiveMetadataBuilder title() {
 		this.title = getTitle();
 		return this;
 	}
 
-	@Override
-	public IDescriptiveMetadataBuilder access() {
+	public DescriptiveMetadataBuilder access() {
 		accessCondition = getAccessCondition();
 		return this;
 	}
 
-	@Override
-	public IDescriptiveMetadataBuilder year() {
+	public DescriptiveMetadataBuilder year() {
 		year = getYear();
 		return this;
 	}
 
-	@Override
 	public DescriptiveMetadata build() {
 		DescriptiveMetadata dd = new DescriptiveMetadata();
 		dd.setUrn(urn);
@@ -114,11 +108,10 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 	 * later stages *might* set this vital information in their
 	 * own fashion (i.e., use digi root-directory as label ...)
 	 * 
-	 * Please note, that any including whitespaces will be replaced
+	 * Please note, that any included whitespaces will be replaced
 	 * by the special glue-token "_"
 	 * 
-	 * @throws DigitalDerivansException
-	 *                                  If Xpath provided but nothing matches
+	 * @throws DigitalDerivansException XPath provided no matches
 	 * 
 	 * @return String Identifier
 	 * 
@@ -129,23 +122,23 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 		}
 		if (this.store.optionalIdentifierExpression().isPresent()) {
 			String xPath = this.store.optionalIdentifierExpression().get();
-			Element match = this.store.getMetadataHandler().evaluateFirst(xPath);
+			Element match = this.mets.evaluate(xPath).get(0);
 			if (match != null) {
 				String textualContent = match.getTextTrim();
 				if (!textualContent.isEmpty()) {
 					return textualContent.replace(' ', '_');
 				} else {
 					var msg = String.format("PDF Identifier XPath '%s' empty for '%s'", xPath,
-							this.store.getMetadataHandler().getPath());
+					this.mets.getPath());
 					throw new DigitalDerivansException(msg);
 				}
 			} else {
 				var msg = String.format("PDF Identifier XPath '%s' no match in '%s'", xPath,
-						this.store.getMetadataHandler().getPath());
+				this.mets.getPath());
 				throw new DigitalDerivansException(msg);
 			}
 		}
-		var ident = this.primeMods.getIdentifier();
+		var ident = this.mets.getPrimeMODS().getIdentifier();
 		if (ident.equals(IMetadataStore.UNKNOWN)) {
 			throw new DigitalDerivansException("found no valid recordIdentifier");
 		}
@@ -153,37 +146,56 @@ public class DescriptiveMetadataBuilder implements IDescriptiveMetadataBuilder {
 	}
 
 	String getTitle() {
-		if (this.primeMods != null) {
-			return this.primeMods.getTitle();
+		if (this.mets.getPrimeMODS() != null) {
+			return this.mets.getPrimeMODS().getTitle();
 		}
 		return IMetadataStore.UNKNOWN;
 	}
 
 	String getURN() {
-		if (this.primeMods != null) {
-			return this.primeMods.getIdentifierURN();
+		if (this.mets.getPrimeMODS() != null) {
+			return this.mets.getPrimeMODS().getIdentifierURN();
 		}
 		return IMetadataStore.UNKNOWN;
 	}
 
 	String getAccessCondition() {
-		if (this.primeMods != null) {
-			return this.primeMods.getAccessCondition();
+		if (this.mets.getPrimeMODS() != null) {
+			return this.mets.getPrimeMODS().getAccessCondition();
 		}
 		return IMetadataStore.UNKNOWN;
 	}
 
 	String getYear() {
-		if (this.primeMods != null) {
-			return this.primeMods.getYearPublication();
+		if (this.mets.getPrimeMODS() != null) {
+			return this.mets.getPrimeMODS().getYearPublication();
 		}
 		return IMetadataStore.UNKNOWN;
 	}
 
-	@Override
 	public void setMetadataStore(MetadataStore store) {
 		this.store = store;
-		this.primeMods = store.getMetadataHandler().getPrimeMODS();
+		this.mets = store.getMets();
+	}
+
+}
+
+/**
+ * 
+ * Predicate for filtering mods:originInfo[@eventType] elements
+ * 
+ * @author hartwig
+ *
+ */
+class PredicateEventTypePublication implements Predicate<Element> {
+
+	@Override
+	public boolean test(Element el) {
+		if (el.getAttribute("eventType") != null) {
+			String val = el.getAttributeValue("eventType");
+			return val.equalsIgnoreCase("publication");
+		}
+		return false;
 	}
 
 }

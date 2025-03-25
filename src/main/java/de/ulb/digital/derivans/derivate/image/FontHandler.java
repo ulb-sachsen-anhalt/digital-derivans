@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.io.TmpJarResource;
+import de.ulb.digital.derivans.data.io.JarResource;
 
 /**
  * 
@@ -31,7 +31,7 @@ public class FontHandler {
 			String tmpPath = Path.of(path).getFileName().toString();
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			if (!isAvailable(tmpPath, ge)) {
-				TmpJarResource tmpResHandler = new TmpJarResource(path);
+				JarResource tmpResHandler = new JarResource(path);
 				String resPath = tmpResHandler.extract("derivans-tmp-font", ".ttf");
 				Font font = Font.createFont(Font.TRUETYPE_FONT, new File(resPath));
 				if (!ge.registerFont(font)) {

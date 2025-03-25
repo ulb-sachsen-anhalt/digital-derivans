@@ -46,7 +46,7 @@ import com.itextpdf.pdfa.PdfADocument;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.TypeConfiguration;
-import de.ulb.digital.derivans.data.io.TmpJarResource;
+import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.IPDFProcessor;
@@ -404,7 +404,7 @@ public class ITextProcessor implements IPDFProcessor {
 
 	public PdfFont loadFont(String path) throws DigitalDerivansException {
 		try {
-			TmpJarResource tmpResHandler = new TmpJarResource(path);
+			JarResource tmpResHandler = new JarResource(path);
 			String resPath = tmpResHandler.extract("derivans-tmp-font-", ".ttf");
 			return PdfFontFactory.createFont(resPath, PdfEncodings.IDENTITY_H, EmbeddingStrategy.PREFER_EMBEDDED);
 		} catch (IOException e) {
