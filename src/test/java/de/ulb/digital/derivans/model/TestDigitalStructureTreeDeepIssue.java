@@ -21,7 +21,8 @@ public class TestDigitalStructureTreeDeepIssue {
 
 	@BeforeAll
 	static void setupClazz() throws Exception {
-		deepIssue = new MetadataStore(TestResource.METS_ZD_ISSUE_182327845018001101.get()).getStructure();
+		MetadataStore store = new MetadataStore(TestResource.METS_ZD_ISSUE_182327845018001101.get());
+		deepIssue = store.getStructure();
 	}
 
 	@Test

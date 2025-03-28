@@ -112,11 +112,11 @@ public class METSContainer {
 	}
 
 	public boolean isMediaContainer() {
-		return METSContainerType.TOP_LEVEL_MEDIA_CONTAINER.stream().anyMatch(p -> p.equals(this.type));
+		return METSContainerType.MEDIA_CONTAINER.stream().anyMatch(p -> p.equals(this.type));
 	}
 
 	public boolean isNewspaperStruct() {
-		return METSContainerType.PARENT_NEWSPAPER_CONTAINER.stream().anyMatch(p -> p.equals(this.type));
+		return METSContainerType.NEWSPAPER_CONTAINER_PARENT.stream().anyMatch(p -> p.equals(this.type));
 	}
 
 	public Element get() {

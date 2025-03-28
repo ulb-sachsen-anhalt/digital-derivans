@@ -14,7 +14,7 @@ import de.ulb.digital.derivans.DigitalDerivansException;
  * see: http://dfg-viewer.de/strukturdatenset/
  * 
  * METS places no constraints on the possible TYPE values.
- * Suggestions for controlled vocabularies for TYPE may be 
+ * Suggestions for controlled vocabularies for TYPE may be
  * found on the Library of Congress METS website.
  * 
  * @author u.hartwig
@@ -165,11 +165,20 @@ public enum METSContainerType {
 	}
 
 	// mark top container
-	public static final List<METSContainerType> TOP_LEVEL_MEDIA_CONTAINER = List.of(METSContainerType.MONOGRAPH,
-			METSContainerType.MANUSCRIPT, METSContainerType.VOLUME);
-	public static final List<METSContainerType> PARENT_MEDIA_CONTAINER = List.of(METSContainerType.MULTIVOLUME_WORK,
-			METSContainerType.PERIODICAL);
-	public static final List<METSContainerType> PARENT_NEWSPAPER_CONTAINER = List.of(METSContainerType.NEWSPAPER,
-			METSContainerType.YEAR, METSContainerType.MONTH, METSContainerType.DAY);
+	public static final List<METSContainerType> MEDIA_CONTAINER = List.of(
+		METSContainerType.MONOGRAPH,
+		METSContainerType.MANUSCRIPT,
+		METSContainerType.VOLUME);
+	public static final List<METSContainerType> MEDIA_CONTAINER_PARENT = List.of(
+		METSContainerType.MULTIVOLUME_WORK,
+		METSContainerType.PERIODICAL);
+	public static final List<METSContainerType> NEWSPAPER_CONTAINER = List.of(
+		METSContainerType.ISSUE,
+		METSContainerType.ADDITIONAL);
+	public static final List<METSContainerType> NEWSPAPER_CONTAINER_PARENT = List.of(
+		METSContainerType.NEWSPAPER,
+		METSContainerType.YEAR, 
+		METSContainerType.MONTH, 
+		METSContainerType.DAY);
 
 }

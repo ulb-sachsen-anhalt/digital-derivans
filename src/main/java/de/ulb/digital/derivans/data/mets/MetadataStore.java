@@ -68,13 +68,14 @@ public class MetadataStore implements IMetadataStore {
 	public MetadataStore(Path filePath) throws DigitalDerivansException {
 		this.storePath = Optional.of(filePath.toString());
 		this.mets = new METS(filePath);
-		LOGGER.info("p new metadatastore from '{}'", filePath);
+		LOGGER.info("set metadatastore from '{}'", filePath);
+		this.mets.setPrimes();
 	}
 
 	
 	@Override
 	public void setMetadata()  throws DigitalDerivansException {
-		this.mets.setPrimeMods();
+		this.mets.setPrimes();
 	}
 
 	@Override
@@ -108,13 +109,17 @@ public class MetadataStore implements IMetadataStore {
 		// getDescriptiveData().getTitle());
 		// return creator.build();
 		// return this.mets.getContainer(getDescriptiveData().getTitle());
-		return null;
+		return mets.getLogicalStructure();
 	}
 
 	@Override
 	public List<DigitalPage> getDigitalPagesInOrder() {
 		List<DigitalPage> pages = new ArrayList<>();
 		int n = 1;
+		List<METSContainer> metsPages = mets.getPhyContainers();
+		for(var metsPage : metsPages) {
+			
+		}
 		// PhysicalStructMap physStruct = mets.getPhysicalStructMap();
 		// if (physStruct != null) {
 		// 	for (PhysicalSubDiv physSubDiv : physStruct.getDivContainer().getChildren()) {
@@ -166,7 +171,7 @@ public class MetadataStore implements IMetadataStore {
 		return pages;
 	}
 
-		/**
+	/**
 	 * 
 	 * Enrich Information about physical images that represent pages
 	 * <ul>
