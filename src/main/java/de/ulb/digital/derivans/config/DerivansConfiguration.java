@@ -45,7 +45,7 @@ public class DerivansConfiguration {
 
 	private Optional<Path> metadataFile;
 
-	private Path pathDir;
+	// private Path pathDir;
 
 	private Path pathConfigFile;
 
@@ -98,14 +98,14 @@ public class DerivansConfiguration {
 		}
 
 		// determine if inputPath points to a METS-file or directory
-		if (Files.isDirectory(input)) {
-			this.metadataFile = Optional.empty();
-			this.pathDir = input;
-			LOGGER.warn("no metadata available for input '{}'", input);
-		} else if (Files.isRegularFile(input, LinkOption.NOFOLLOW_LINKS)) {
-			this.metadataFile = Optional.of(input);
-			this.pathDir = input.getParent();
-		}
+		// if (Files.isDirectory(input)) {
+		// 	this.metadataFile = Optional.empty();
+		// 	this.pathDir = input;
+		// 	LOGGER.warn("no metadata available for input '{}'", input);
+		// } else if (Files.isRegularFile(input, LinkOption.NOFOLLOW_LINKS)) {
+		// 	this.metadataFile = Optional.of(input);
+		// 	this.pathDir = input.getParent();
+		// }
 
 		// set configuration file
 		if (params.getPathConfig() != null) {
@@ -173,9 +173,9 @@ public class DerivansConfiguration {
 		evaluate(conf);
 	}
 
-	public Path getPathDir() {
-		return this.pathDir;
-	}
+	// public Path getPathDir() {
+	// 	return this.pathDir;
+	// }
 
 	public Optional<Path> getMetadataFile() {
 		return this.metadataFile;
@@ -293,29 +293,31 @@ public class DerivansConfiguration {
 	private void provideDefaultSteps() {
 		DerivateStepImage createMins = new DerivateStepImage();
 		var inputs = this.paramImages.orElse(DEFAULT_INPUT_IMAGES);
-		createMins.setInputPath(this.pathDir.resolve(inputs));
+		// createMins.setInputPath(this.pathDir.resolve(inputs));
+		createMins.setInputPath(Path.of(inputs));
 		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
-		var minOutput = this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL);
-		createMins.setOutputPath(minOutput);
+		// var minOutput = this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL);
+		var output = DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL;
+		createMins.setOutputPath(Path.of(output));
 		createMins.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
 		createMins.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
 		createMins.setDerivateType(DerivateType.JPG);
 		this.derivateSteps.add(createMins);
 		DerivateStepPDF createPdf = new DerivateStepPDF();
-		createPdf.setInputPath(minOutput);
+		createPdf.setInputPath(Path.of(output));
 		createPdf.setDerivateType(DerivateType.PDF);
 		createPdf.setOutputType("pdf");
-		createPdf.setOutputPath(this.pathDir);
+		createPdf.setOutputPath(Path.of(""));
 		// handle optional image group too
 		this.paramImages.ifPresent(createPdf::setParamImages);
 		// handle optional OCR data
 		var ocr = this.paramOCR.orElse(DEFAULT_INPUT_FULLTEXT);
-		var ocrDir = this.pathDir.resolve(ocr);
-		if (Files.exists(ocrDir)) {
-			createPdf.setParamOCR(ocr);
-		} else {
-			LOGGER.warn("Can't set invalid input OCR data from '{}'!", ocrDir);
-		}
+		// var ocrDir = this.pathDir.resolve(ocr);
+		// if (Files.exists(ocrDir)) {
+		createPdf.setParamOCR(ocr);
+		// } else {
+		// 	LOGGER.warn("Can't set invalid input OCR data from '{}'!", ocrDir);
+		// }
 		this.derivateSteps.add(createPdf);
 	}
 
@@ -373,9 +375,9 @@ public class DerivansConfiguration {
 		Optional<String> optInputDir = extractValue(conf, keyInputDir, String.class);
 		if (optInputDir.isPresent()) {
 			var inputDir = Path.of(optInputDir.get());
-			if (!inputDir.isAbsolute()) {
-				inputDir = this.pathDir.resolve(inputDir);
-			}
+			// if (!inputDir.isAbsolute()) {
+			// 	inputDir = this.pathDir.resolve(inputDir);
+			// }
 			step.setInputPath(inputDir);
 		}
 		// output dir
@@ -383,11 +385,11 @@ public class DerivansConfiguration {
 		Optional<String> optOutputDir = extractValue(conf, keyOutputDir, String.class);
 		if (optOutputDir.isPresent()) {
 			Path output = Path.of(optOutputDir.get());
-			if (".".equals(output.toString()) || output.toString().isBlank()) {
-				output = this.pathDir;
-			} else if (!output.isAbsolute()) {
-				output = this.pathDir.resolve(optOutputDir.get());
-			}
+			// if (".".equals(output.toString()) || output.toString().isBlank()) {
+			// 	output = this.pathDir;
+			// } else if (!output.isAbsolute()) {
+			// 	output = this.pathDir.resolve(optOutputDir.get());
+			// }
 			step.setOutputPath(output);
 		}
 		// optional output_prefix (used for additional derivates)
