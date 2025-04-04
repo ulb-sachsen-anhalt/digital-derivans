@@ -113,7 +113,7 @@ public class DerivansConfiguration {
 			this.pathConfigFile = params.getPathConfig();
 			this.initConfigurationFromFile();
 		} else {
-			Path defaultConfigLocation = Path.of("").resolve("config")
+			Path defaultConfigLocation = Path.of(".").resolve("config")
 					.resolve(DefaultConfiguration.DEFAULT_CONFIG_FILE_LABEL);
 			LOGGER.info("no config from cli, inspect default {}", defaultConfigLocation);
 			if (!Files.exists(defaultConfigLocation)) {
@@ -291,33 +291,24 @@ public class DerivansConfiguration {
 	 * 
 	 */
 	private void provideDefaultSteps() {
-		DerivateStepImage createMins = new DerivateStepImage();
-		var inputs = this.paramImages.orElse(DEFAULT_INPUT_IMAGES);
-		// createMins.setInputPath(this.pathDir.resolve(inputs));
-		createMins.setInputPath(Path.of(inputs));
-		createMins.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
-		// var minOutput = this.pathDir.resolve(DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL);
+		DerivateStepImage create80sJpgs = new DerivateStepImage();
+		create80sJpgs.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
 		var output = DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL;
-		createMins.setOutputPath(Path.of(output));
-		createMins.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
-		createMins.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
-		createMins.setDerivateType(DerivateType.JPG);
-		this.derivateSteps.add(createMins);
+		create80sJpgs.setOutputPath(Path.of(output));
+		create80sJpgs.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
+		create80sJpgs.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
+		create80sJpgs.setDerivateType(DerivateType.JPG);
+		this.derivateSteps.add(create80sJpgs);
 		DerivateStepPDF createPdf = new DerivateStepPDF();
 		createPdf.setInputPath(Path.of(output));
 		createPdf.setDerivateType(DerivateType.PDF);
 		createPdf.setOutputType("pdf");
-		createPdf.setOutputPath(Path.of(""));
+		createPdf.setOutputPath(Path.of("."));
 		// handle optional image group too
 		this.paramImages.ifPresent(createPdf::setParamImages);
 		// handle optional OCR data
 		var ocr = this.paramOCR.orElse(DEFAULT_INPUT_FULLTEXT);
-		// var ocrDir = this.pathDir.resolve(ocr);
-		// if (Files.exists(ocrDir)) {
 		createPdf.setParamOCR(ocr);
-		// } else {
-		// 	LOGGER.warn("Can't set invalid input OCR data from '{}'!", ocrDir);
-		// }
 		this.derivateSteps.add(createPdf);
 	}
 

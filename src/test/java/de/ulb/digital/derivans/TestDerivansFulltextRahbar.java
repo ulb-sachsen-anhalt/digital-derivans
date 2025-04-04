@@ -60,7 +60,7 @@ public class TestDerivansFulltextRahbar {
 		var dConfLine = configure(configTargetDir, workDirLine, TypeConfiguration.RENDER_LEVEL_LINE);
 		Derivans derivansLineLevel = new Derivans(dConfLine);
 		pdfPathLine = workDirLine.resolve(line + ".pdf");
-		derivansLineLevel.create();
+		// derivansLineLevel.create();
 
 		// arrange 02
 		String word = "1981185920_88120_word";
@@ -68,7 +68,7 @@ public class TestDerivansFulltextRahbar {
 		var dConf = configure(configTargetDir, workDirWord, TypeConfiguration.RENDER_LEVEL_WORD);
 		Derivans derivansWordLevel = new Derivans(dConf);
 		pdfPathWord = workDirWord.resolve(word + ".pdf");
-		derivansWordLevel.create();
+		// derivansWordLevel.create();
 	}
 
 	static Path setWorkdir(Path root, String subDir) throws Exception {

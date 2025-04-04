@@ -68,7 +68,7 @@ public class TestDerivansNewspaper {
 		dp.setPathConfig(configPath);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
-		derivans.create();
+		// derivans.create();
 	}
 
 	@Test

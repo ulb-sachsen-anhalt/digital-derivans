@@ -38,7 +38,7 @@ import de.ulb.digital.derivans.model.step.DerivateStepPDF;
  * @author hartwig
  *
  */
-public class TestDerivans {
+public class TestDerivansMigrationInhouseMWE {
 
 	/**
 	 * 
@@ -90,20 +90,25 @@ public class TestDerivans {
 		}
 	}
 
+	/**
+	 * 
+	 * Start images set flat in start directory
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
-	void testDerivatesFlat(@TempDir Path tempDir) throws Exception {
+	void testDerivatesFSEnforceFlat(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path pathTarget = tempDir.resolve("only_images");
-		// Path pathImageMax = pathTarget.resolve("MAX");
-		// Files.createDirectories(pathImageMax);
-		TestHelper.generateImages(pathTarget, 300, 420, 6, "%04d.jpg");
+		TestHelper.generateImages(pathTarget, 300, 420, 4, "%04d.jpg");
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
+		dp.setImages(".");
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
-		// dc.setInputDirImages(pathImageMax);
 		Derivans derivans = new Derivans(dc);
 		derivans.create(pathTarget);
 
@@ -112,20 +117,54 @@ public class TestDerivans {
 		assertTrue(Files.exists(pdfWritten));
 	}
 
+	/**
+	 * 
+	 * Start images one level below actual start directory
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
-	void testDerivatesMAXPath(@TempDir Path tempDir) throws Exception {
+	void testDerivatesFSDefaultsToMAXPath(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path pathTarget = tempDir.resolve("only_images");
 		Path pathImageMax = pathTarget.resolve("MAX");
 		Files.createDirectories(pathImageMax);
-		TestHelper.generateImages(pathImageMax, 300, 420, 6, "%04d.jpg");
+		TestHelper.generateImages(pathImageMax, 300, 420, 4, "%04d.jpg");
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
-		// dc.setInputDirImages(pathImageMax);
+		Derivans derivans = new Derivans(dc);
+		derivans.create(pathTarget);
+
+		// assert
+		Path pdfWritten = pathTarget.resolve("only_images.pdf");
+		assertTrue(Files.exists(pdfWritten));
+	}
+	
+	/**
+	 * 
+	 * Start images one level below actual start directory
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testDerivatesFSDefaultsToDEFAULTPath(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path pathTarget = tempDir.resolve("only_images");
+		Path pathImageMax = pathTarget.resolve("DEFAULT");
+		Files.createDirectories(pathImageMax);
+		TestHelper.generateImages(pathImageMax, 300, 420, 4, "%04d.jpg");
+
+		// act
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathInput(pathTarget);
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		derivans.create(pathTarget);
 

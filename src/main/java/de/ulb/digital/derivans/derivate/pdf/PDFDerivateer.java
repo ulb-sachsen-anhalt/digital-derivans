@@ -87,7 +87,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	@Override
 	public int create() throws DigitalDerivansException {
-		Path pathToPDF = this.output.getPath();
+		Path pathToPDF = this.output.getPath().normalize();
 		// if output path points to a directory, use it's name for PDF-file
 		if (Files.isDirectory(pathToPDF)) {
 			pathToPDF = pathToPDF.resolve(pathToPDF.getFileName() + ".pdf");
