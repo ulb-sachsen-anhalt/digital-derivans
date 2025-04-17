@@ -21,6 +21,8 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.derivate.pdf.ITextProcessor;
+import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 
 /**
@@ -145,6 +147,14 @@ class TestDerivansLegacyULB {
 	void testPDFNamedLikePPNWritten() {
 		Path pdfWritten = workDir.resolve("191092622.pdf");
 		assertTrue(Files.exists(pdfWritten));
+	}
+
+	@Test
+	void testPDFOutline() throws Exception{
+		Path pdfWritten = workDir.resolve("737429.pdf");
+		assertTrue(Files.exists(pdfWritten));
+		PDFOutlineEntry outline = ITextProcessor.readOutline(pdfWritten);
+		assertNotNull(outline);
 	}
 
 	@Test

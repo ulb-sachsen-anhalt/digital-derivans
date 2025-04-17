@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import com.itextpdf.kernel.pdf.PdfName;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfOutputIntent;
 import com.itextpdf.kernel.pdf.PdfPage;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
@@ -47,12 +49,14 @@ import com.itextpdf.pdfa.PdfADocument;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.data.io.JarResource;
+import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.MetadataType;
+import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 import de.ulb.digital.derivans.model.pdf.PDFPage;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
@@ -521,6 +525,40 @@ public class ITextProcessor implements IPDFProcessor {
 			return PdfFontFactory.createFont(resPath, PdfEncodings.IDENTITY_H, EmbeddingStrategy.PREFER_EMBEDDED);
 		} catch (IOException e) {
 			throw new DigitalDerivansException(e);
+		}
+	}
+
+	public static PDFOutlineEntry readOutline(Path pathPdf) throws Exception {
+		PdfReader reader = new PdfReader(pathPdf.toFile());
+		PdfOutline pdfOutline = null;
+		try (PdfDocument pdfDocument = new PdfDocument(reader)) {
+			pdfOutline = pdfDocument.getOutlines(true);
+		}
+		String label = pdfOutline.getTitle();
+		String dest = METS.UNSET;
+		if (pdfOutline.getDestination() != null) {
+			dest = pdfOutline.getDestination().getPdfObject().toString();
+		}
+		PDFOutlineEntry root = new PDFOutlineEntry(label, dest);
+		if (!pdfOutline.getAllChildren().isEmpty()) {
+			for(var child : pdfOutline.getAllChildren()) {
+				traverseOutline(root, child);
+			}
+		}
+		return root;
+	}
+
+	public static void traverseOutline(PDFOutlineEntry currParent, PdfOutline currChild) {
+		String label = currChild.getTitle();
+		String dest = METS.UNSET;
+		if (currChild.getDestination() != null) {
+			dest = currChild.getDestination().getPdfObject().toString();
+		}
+		PDFOutlineEntry nextChild = new PDFOutlineEntry(label, dest);
+		currParent.getOutlineEntries().add(nextChild);
+		List<PdfOutline> nextChildren = currChild.getAllChildren();
+		for (var nextOutlineChild: nextChildren) {
+			traverseOutline(nextChild, nextOutlineChild);
 		}
 	}
 }
