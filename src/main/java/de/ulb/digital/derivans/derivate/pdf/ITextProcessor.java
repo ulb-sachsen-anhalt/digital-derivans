@@ -47,8 +47,10 @@ import com.itextpdf.pdfa.PdfADocument;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.data.io.JarResource;
+import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.MetadataType;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
@@ -86,8 +88,6 @@ public class ITextProcessor implements IPDFProcessor {
 
 	private float dpiScale = 1.0f;
 
-	private DigitalStructureTree structure = new DigitalStructureTree();
-
 	// high-level access
 	private Document document;
 
@@ -98,7 +98,14 @@ public class ITextProcessor implements IPDFProcessor {
 
 	private DerivateStepPDF pdfStep;
 
-	private List<DigitalPage> pages;
+	private IDerivate derivate;
+
+	// private DigitalStructureTree structure = new DigitalStructureTree();
+	// private List<DigitalPage> pages;
+
+	private int pageNumber = 1;
+
+	private PdfFont font;
 
 	public static final float ITEXT_FONT_STEP = .5f;
 
@@ -114,15 +121,21 @@ public class ITextProcessor implements IPDFProcessor {
 	PDFResult reportDoc = new PDFResult();
 
 	@Override
-	public void init(DerivateStepPDF pdfStep, List<DigitalPage> pages, DigitalStructureTree structure)
+	public void init(DerivateStepPDF pdfStep, IDerivate derivate /*
+																	 * List<DigitalPage> pages, DigitalStructureTree
+																	 * structure
+																	 */)
 			throws DigitalDerivansException {
 		this.pdfStep = pdfStep;
 		this.renderLevel = pdfStep.getRenderLevel();
 		this.renderModus = pdfStep.getRenderModus();
 		this.debugRender = pdfStep.getDebugRender();
 		this.setDpi(pdfStep.getImageDpi());
-		this.structure = structure;
-		this.pages = pages;
+		// this.structure = structure;
+		// this.pages = pages;
+		this.derivate = derivate;
+		this.font = this.loadFont("ttf/DejaVuSans.ttf");
+		this.rtlStyle = this.rtlStyle.setFont(this.font);
 	}
 
 	private void setDpi(int dpi) throws DigitalDerivansException {
@@ -186,11 +199,13 @@ public class ITextProcessor implements IPDFProcessor {
 			this.iTextPDFDocument = new PdfDocument(writer);
 			this.document = new Document(iTextPDFDocument);
 			this.addMetadata();
-			var resultPages = this.addPages(this.pages);
-			this.reportDoc.addPages(resultPages);
-			if (this.structure != null && this.structure.getLabel() != null) {
-				this.addOutline(resultPages.size());
-			}
+			var result = this.addContents();
+			this.reportDoc.addPages(result);
+			// var resultPages = this.addPages(this.pages);
+			// this.reportDoc.addPages(resultPages);
+			// if (this.structure != null && this.structure.getLabel() != null) {
+			// this.addOutline(resultPages.size());
+			// }
 			this.document.close();
 			this.iTextPDFDocument.close();
 		} catch (IOException exc) {
@@ -200,17 +215,67 @@ public class ITextProcessor implements IPDFProcessor {
 		return this.reportDoc;
 	}
 
+	private List<PDFPage> addContents() throws DigitalDerivansException {
+		PdfOutline outline = this.iTextPDFDocument.getOutlines(true);
+		DerivateStruct rootStruct = this.derivate.getStructure();
+		String rootLabel = rootStruct.getLabel();
+		List<PDFPage> processedPdfPages = new ArrayList<>();
+		// outline the very first page
+		PdfOutline rootOutline = outline.addOutline(rootLabel);
+		if (rootStruct.getChildren().isEmpty()) {
+			List<PDFPage> processed = this.addPages(rootStruct.getPages(), rootOutline);
+			processedPdfPages.addAll(processed);
+			PdfPage startPage = this.iTextPDFDocument.getPage(1);
+			rootOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(startPage)));
+		} else {
+			for (DerivateStruct currentStruct : rootStruct.getChildren()) {
+				this.traverse(outline, currentStruct, processedPdfPages);
+			}
+		}
+		return processedPdfPages;
+	}
+
+	private void traverse(PdfOutline currentOutline, DerivateStruct currStruct, List<PDFPage> processedPdfPages)
+			throws DigitalDerivansException {
+		String label = currStruct.getLabel();
+		int pageN = currStruct.getOrder();
+		LOGGER.debug("add label {} for page {}", label, pageN);
+		if (currStruct.getChildren().isEmpty()) {
+			List<PDFPage> processed = this.addPages(currStruct.getPages(), currentOutline);
+			processedPdfPages.addAll(processed);
+			int firstNumber = processed.get(0).getNumber();
+			PdfPage firstStructPage = this.requestDestinationPage(firstNumber);
+			currentOutline.addOutline(label).addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(firstStructPage)));
+		} else {
+			var subOutline = currentOutline.addOutline(label);
+			for (DerivateStruct subStruct : currStruct.getChildren()) {
+				traverse(subOutline, subStruct, processedPdfPages);
+			}
+			PdfPage destPage = this.requestDestinationPage(pageN);
+			subOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
+		}
+	}
+
+	private PdfPage requestDestinationPage(int n) throws DigitalDerivansException {
+		// pre-check
+		int nPdfPages = this.iTextPDFDocument.getNumberOfPages();
+		if(nPdfPages < n) {
+			String msg = String.format("request invalid page number %02d (total: %02d)", n, nPdfPages);
+			throw new DigitalDerivansException(msg);
+		}
+		PdfPage destPage = this.iTextPDFDocument.getPage(n);
+		return destPage;
+	}
+
 	/**
 	 * @param pages
 	 * @return
 	 * @throws DigitalDerivansException
 	 */
-	public List<PDFPage> addPages(List<DigitalPage> pages) throws DigitalDerivansException {
+	public List<PDFPage> addPages(List<DigitalPage> pages, PdfOutline currentOutline) throws DigitalDerivansException {
 		List<PDFPage> resultPages = new ArrayList<>();
-		LOGGER.trace("render pages at {}", this.renderLevel);
+		LOGGER.debug("render pages at {}", this.renderLevel);
 		try {
-			PdfFont font = this.loadFont("ttf/DejaVuSans.ttf");
-			this.rtlStyle = this.rtlStyle.setFont(font);
 			for (int i = 0; i < pages.size(); i++) {
 				DigitalPage pageIn = pages.get(i);
 				String imagePath = pageIn.getImagePath().toString();
@@ -221,20 +286,66 @@ public class ITextProcessor implements IPDFProcessor {
 					image.scaleAbsolute(imageWidth * this.dpiScale, imageHeight * this.dpiScale);
 					imageWidth = image.getImageScaledWidth();
 					imageHeight = image.getImageScaledHeight();
-					LOGGER.debug("rescale image: {}x{}", imageWidth, imageHeight);
+					LOGGER.trace("rescale image: {}x{}", imageWidth, imageHeight);
 				}
 				PDFPage pdfPage = new PDFPage(new Dimension((int) imageWidth, (int) imageHeight), i);
 				pdfPage.setNumber(i + 1);
 				pdfPage.setImageDimensionOriginal((int) image.getImageWidth(), (int) image.getImageHeight());
 				pdfPage.passOCR(pageIn);
-				append(image, font, pdfPage);
+				this.append(image, /* font, */ pdfPage);
 				resultPages.add(pdfPage);
+				var optPageLabel = pageIn.getPageLabel();
+				if (optPageLabel.isPresent()) {
+					String label = optPageLabel.get();
+					PdfPage thisPage = this.iTextPDFDocument.getPage(pageIn.getOrderNr());
+					currentOutline.addOutline(label)
+							.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(thisPage)));
+				}
 			}
 		} catch (IOException e) {
 			throw new DigitalDerivansException(e);
 		}
 		return resultPages;
 	}
+
+	// /**
+	// * @param pages
+	// * @return
+	// * @throws DigitalDerivansException
+	// */
+	// public List<PDFPage> addPages(List<DigitalPage> pages) throws
+	// DigitalDerivansException {
+	// List<PDFPage> resultPages = new ArrayList<>();
+	// LOGGER.trace("render pages at {}", this.renderLevel);
+	// try {
+	// PdfFont font = this.loadFont("ttf/DejaVuSans.ttf");
+	// this.rtlStyle = this.rtlStyle.setFont(font);
+	// for (int i = 0; i < pages.size(); i++) {
+	// DigitalPage pageIn = pages.get(i);
+	// String imagePath = pageIn.getImagePath().toString();
+	// Image image = new Image(ImageDataFactory.create(imagePath));
+	// float imageWidth = image.getImageWidth();
+	// float imageHeight = image.getImageHeight();
+	// if (Math.abs(1.0 - this.dpiScale) > 0.01) {
+	// image.scaleAbsolute(imageWidth * this.dpiScale, imageHeight * this.dpiScale);
+	// imageWidth = image.getImageScaledWidth();
+	// imageHeight = image.getImageScaledHeight();
+	// LOGGER.debug("rescale image: {}x{}", imageWidth, imageHeight);
+	// }
+	// PDFPage pdfPage = new PDFPage(new Dimension((int) imageWidth, (int)
+	// imageHeight), i);
+	// pdfPage.setNumber(i + 1);
+	// pdfPage.setImageDimensionOriginal((int) image.getImageWidth(), (int)
+	// image.getImageHeight());
+	// pdfPage.passOCR(pageIn);
+	// append(image, font, pdfPage);
+	// resultPages.add(pdfPage);
+	// }
+	// } catch (IOException e) {
+	// throw new DigitalDerivansException(e);
+	// }
+	// return resultPages;
+	// }
 
 	/**
 	 * 
@@ -248,7 +359,7 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @return
 	 * @throws IOException
 	 */
-	private PDFPage append(Image image, PdfFont font, PDFPage page) {
+	private PDFPage append(Image image, /* PdfFont font, */ PDFPage page) {
 		PageSize pageSize = new PageSize(image.getImageScaledWidth(), image.getImageScaledHeight());
 		var nextPage = this.iTextPDFDocument.addNewPage(pageSize);
 		nextPage.getPdfObject().get(PdfName.PageNum);
@@ -258,14 +369,14 @@ public class ITextProcessor implements IPDFProcessor {
 			List<PDFTextElement> txtContents = page.getTextcontent().get();
 			for (var line : txtContents) {
 				if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
-					render(font, line);
+					render(/* font, */ line);
 					if (this.debugRender) {
 						this.drawBoundingBox(line.getBox(), this.dbgColorLine, DBG_LINEWIDTH_ROW);
 					}
 				} else if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_WORD) {
 					var tokens = line.getChildren();
 					for (var word : tokens) {
-						render(font, word);
+						render(/* font, */ word);
 						if (this.debugRender) {
 							this.drawBoundingBox(word.getBox(), this.dbgColorWord, DBG_LINEWIDTH_WORD);
 						}
@@ -280,15 +391,15 @@ public class ITextProcessor implements IPDFProcessor {
 
 	/**
 	 * 
-	 * Render single textual tokens, if a valid fontSize can be calculated,
-	 * which acutally means a line or a word token
+	 * Render single textual token(s) if valid fontSize can be calculated.
+	 * Depending on render level "token" means line or word.
 	 * 
 	 * @param font
 	 * @param pageHeight
 	 * @param cb
 	 * @param line
 	 */
-	private PDFTextElement render(PdfFont font, PDFTextElement token) {
+	private PDFTextElement render(/* PdfFont font, */ PDFTextElement token) {
 		String text = token.forPrint();
 		float fontSize = token.getFontSize();
 		if (fontSize < IPDFProcessor.MIN_CHAR_SIZE) {
@@ -377,30 +488,31 @@ public class ITextProcessor implements IPDFProcessor {
 
 	@Override
 	public boolean addOutline(int maxPages) {
-		PdfOutline rootOutline = this.iTextPDFDocument.getOutlines(true);
-		for (int i = 1; i <= maxPages; i++) {
-			if (structure.getPage() == i) {
-				traverseStructure(this.iTextPDFDocument, rootOutline, structure);
-			}
-		}
+		// PdfOutline rootOutline = this.iTextPDFDocument.getOutlines(true);
+		// for (int i = 1; i <= maxPages; i++) {
+		// if (structure.getPage() == i) {
+		// traverseStructure(this.iTextPDFDocument, rootOutline, structure);
+		// }
+		// }
 		return true;
 	}
 
-	static void traverseStructure(PdfDocument pdfDocument, PdfOutline currOutline, DigitalStructureTree structure) {
-		String label = structure.getLabel();
-		int pageN = structure.getPage();
-		PdfPage destPage = pdfDocument.getPage(pageN);
-		LOGGER.debug("[PAGE {}] created outline label {}", pageN, label);
-		if (structure.hasSubstructures()) {
-			var newParent = currOutline.addOutline(label);
-			newParent.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
-			for (DigitalStructureTree sub : structure.getSubstructures()) {
-				traverseStructure(pdfDocument, newParent, sub);
-			}
-		} else {
-			currOutline.addOutline(label).addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
-		}
-	}
+	// static void traverseStructure(PdfDocument pdfDocument, PdfOutline
+	// currOutline, DigitalStructureTree structure) {
+	// String label = structure.getLabel();
+	// int pageN = structure.getPage();
+	// PdfPage destPage = pdfDocument.getPage(pageN);
+	// LOGGER.debug("[PAGE {}] created outline label {}", pageN, label);
+	// if (structure.hasSubstructures()) {
+	// var newParent = currOutline.addOutline(label);
+	// newParent.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
+	// for (DigitalStructureTree sub : structure.getSubstructures()) {
+	// traverseStructure(pdfDocument, newParent, sub);
+	// }
+	// } else {
+	// currOutline.addOutline(label).addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
+	// }
+	// }
 
 	public PdfFont loadFont(String path) throws DigitalDerivansException {
 		try {

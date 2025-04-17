@@ -37,7 +37,7 @@ import de.ulb.digital.derivans.model.step.DerivateStep;
  * @author hartwig
  *
  */
-public class TestDerivansCommonULB {
+class TestDerivansLegacyULB {
 
 	@TempDir
 	static Path tempDir;
@@ -53,7 +53,7 @@ public class TestDerivansCommonULB {
 	static List<IDerivateer> derivateers;
 
 	@BeforeAll
-	public static void setupBeforeClass() throws Exception {
+	static void setupBeforeClass() throws Exception {
 
 		// arrange metadata and images
 		workDir = TestHelper.fixturePrint737429(tempDir);
@@ -69,30 +69,30 @@ public class TestDerivansCommonULB {
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(configTargetDir.resolve("derivans-5steps.ini"));
-		dp.setPathInput(workDir.resolve("737429.xml"));
+		Path input = workDir.resolve("737429.xml");
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 
 		// act
-		// derivans.create();
+		derivans.create(input);
 		derivateers = derivans.getDerivateers();
 		steps = derivans.getSteps();
 	}
 
 	@Test
-	void testNumberOfParsedDerivansSteps() throws Exception {
+	void testNumberOfParsedDerivansSteps() {
 		assertEquals(5, steps.size());
 	}
 
 	@Test
-	void testTypesOfDerivansSteps() throws Exception {
+	void testTypesOfDerivansSteps() {
 		assertEquals("DerivateStepImageFooter", steps.get(0).getClass().getSimpleName());
 		assertEquals("DerivateStepImage", steps.get(1).getClass().getSimpleName());
 		assertEquals("DerivateStepPDF", steps.get(2).getClass().getSimpleName());
 	}
 
 	@Test
-	void testNumberOfCreatedDerivateers() throws Exception {
+	void testNumberOfCreatedDerivateers() {
 		assertEquals(5, derivateers.size());
 	}
 
@@ -102,10 +102,9 @@ public class TestDerivansCommonULB {
 	 * https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/51
 	 * extended tests for clazz names
 	 * 
-	 * @throws Exception
 	 */
 	@Test
-	void testTypesOfDerivateers() throws Exception {
+	void testTypesOfDerivateers()  {
 		assertEquals("PDFDerivateer", derivateers.get(2).getClass().getSimpleName());
 		assertEquals("ImageDerivateerJPG", derivateers.get(1).getClass().getSimpleName());
 		assertNotEquals("ImageDerivateerJPGFooter", derivateers.get(0).getClass().getSimpleName());
@@ -113,7 +112,7 @@ public class TestDerivansCommonULB {
 	}
 
 	@Test
-	void testDerivateJPGsWithFooterWritten() throws Exception {
+	void testDerivateJPGsWithFooterWritten() {
 		Path footerDir = workDir.resolve("IMAGE_FOOTER");
 		assertTrue(Files.exists(footerDir));
 		for (int i=1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
@@ -123,7 +122,7 @@ public class TestDerivansCommonULB {
 	}
 
 	@Test
-	void testPreviewImagesWritten() throws Exception {
+	void testPreviewImagesWritten() {
 		Path previewDir = workDir.resolve(prefixPreview);
 		assertTrue(Files.exists(previewDir));
 		for (int i=1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
@@ -133,7 +132,7 @@ public class TestDerivansCommonULB {
 	}
 
 	@Test
-	void testThumbnailsWritten() throws Exception {
+	void testThumbnailsWritten()  {
 		Path thumbsDir = workDir.resolve(prefixThumbs);
 		assertTrue(Files.exists(thumbsDir));
 		for (int i=1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
@@ -143,7 +142,7 @@ public class TestDerivansCommonULB {
 	}
 
 	@Test
-	void testPDFWritten() throws Exception {
+	void testPDFNamedLikePPNWritten() {
 		Path pdfWritten = workDir.resolve("191092622.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}

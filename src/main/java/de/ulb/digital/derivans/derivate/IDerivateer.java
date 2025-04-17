@@ -5,6 +5,7 @@ import java.util.List;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
@@ -32,6 +33,8 @@ public interface IDerivateer {
 	
 	void setDigitalPages(List<DigitalPage> pages);
 	
+	void setDerivate(IDerivate derivate);
+
 	/**
 	 * 
 	 * Get to know what {@link DerivateType} this one will create.

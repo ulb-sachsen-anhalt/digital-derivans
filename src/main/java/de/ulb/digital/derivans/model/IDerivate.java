@@ -1,5 +1,8 @@
 package de.ulb.digital.derivans.model;
 
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +12,7 @@ import de.ulb.digital.derivans.data.mets.METS;
 
 /**
  * 
- * API describe Derivate to create
+ * Input, output and final destination of Derivans' efforts.
  * 
  * @author u.hartwig
  */
@@ -19,6 +22,8 @@ public interface IDerivate {
 	
 	boolean isInited();
 
+	DerivateStruct getStructure();
+
 	List<DigitalPage> getAllPages();
 
 	Path getPathInputDir();
@@ -26,4 +31,8 @@ public interface IDerivate {
 	Optional<METS> optMetadata();
 
 	void setOcr(Path ocrPath) throws DigitalDerivansException;
+
+	String getImageLocalDir();
+
+	void setImageLocalDir(String localSubDir);
 }

@@ -4,16 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author u.hartwig
- */
-class DerivateStruct {
+* Describe structural part of Derivate
+* with the very first page set = 1  
+*
+* @author u.hartwig
+*/
+public class DerivateStruct {
 
-    String label;
+    private String label;
 
-    int order;
+    private int order = 1;
 
-    List<DerivateStruct> children = new ArrayList<>();
+    private List<DerivateStruct> children = new ArrayList<>();
 
-    List<DigitalPage> pages = new ArrayList<>();
+    private List<DigitalPage> pages = new ArrayList<>();
+
+    public DerivateStruct(int order, String label) {
+        this.order = order;
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return this.label;
+    }
+
+    public int getOrder() {
+        return this.order;
+    }
+
+    public List<DigitalPage> getPages(){
+        return this.pages;
+    }
+
+    public List<DerivateStruct> getChildren() {
+        return this.children;
+    }
 
 }

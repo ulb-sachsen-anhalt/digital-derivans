@@ -44,7 +44,6 @@ import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 
-import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
 import de.ulb.digital.derivans.model.pdf.MetadataType;

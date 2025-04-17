@@ -21,6 +21,7 @@ import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.IDerivate;
 // import de.ulb.digital.derivans.model.ITextElement;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 // import de.ulb.digital.derivans.model.ocr.OCRData;
@@ -81,7 +82,7 @@ public class PDFBoxProcessor implements IPDFProcessor {
 	PDFResult reportDoc = new PDFResult();
 
 	@Override
-	public void init(DerivateStepPDF pdfStep, List<DigitalPage> pages, DigitalStructureTree structure)
+	public void init(DerivateStepPDF pdfStep, IDerivate derivate)
 			throws DigitalDerivansException {
 		this.pdfStep = pdfStep;
 		this.renderLevel = pdfStep.getRenderLevel();

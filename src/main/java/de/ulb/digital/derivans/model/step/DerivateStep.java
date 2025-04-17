@@ -23,7 +23,7 @@ public abstract class DerivateStep {
 
 	protected DerivateType derivateType;
 
-	public DerivateStep() {
+	DerivateStep() {
 		this.outputType = DefaultConfiguration.DEFAULT_OUTPUT_TYPE;
 		this.derivateType = DerivateType.JPG;
 	}

@@ -21,7 +21,7 @@ import de.ulb.digital.derivans.config.DerivansParameter;
  * @author hartwig
  *
  */
-public class TestDerivansFS {
+class TestDerivansFS {
 
 	/**
 	 * 
@@ -96,6 +96,34 @@ public class TestDerivansFS {
 
 		// act
 		DerivansParameter dp = new DerivansParameter();
+		dp.setPathInput(pathTarget);
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		Derivans derivans = new Derivans(dc);
+		derivans.create(pathTarget);
+
+		// assert
+		Path pdfWritten = pathTarget.resolve("only_images.pdf");
+		assertTrue(Files.exists(pdfWritten));
+	}
+
+	
+	@Test
+	void testDerivatesFSFiveSteps(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path configSourceDir = Path.of("src/test/resources/config");
+		Path configTargetDir = tempDir.resolve("config");
+		Files.createDirectories(configTargetDir);
+		Path testConfig = configSourceDir.resolve("derivans-5steps.ini");
+		Files.copy(testConfig, configTargetDir.resolve("derivans-5steps.ini"));
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(testConfig);
+		Path pathTarget = tempDir.resolve("only_images");
+		Path pathImageMax = pathTarget.resolve("MAX");
+		Files.createDirectories(pathImageMax);
+		TestHelper.generateImages(pathImageMax, 300, 420, 4, "%04d.jpg");
+
+		// act
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);

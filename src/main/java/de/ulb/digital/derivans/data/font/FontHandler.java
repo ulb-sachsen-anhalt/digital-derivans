@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.data.font;
 
 import java.awt.Font;
 import java.awt.FontFormatException;

@@ -8,6 +8,8 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
+import de.ulb.digital.derivans.data.font.FontHandler;
+
 /**
  * 
  * Font Handling Specification

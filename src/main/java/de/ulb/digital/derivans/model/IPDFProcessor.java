@@ -33,7 +33,7 @@ public interface IPDFProcessor {
 	 * @param structure
 	 * @throws DigitalDerivansException
 	 */
-	void init(DerivateStepPDF pdfStep, List<DigitalPage> pages, DigitalStructureTree structure) throws DigitalDerivansException;
+	void init(DerivateStepPDF pdfStep, IDerivate derivate /*List<DigitalPage> pages, DigitalStructureTree structure*/) throws DigitalDerivansException;
 	
 
 	/**

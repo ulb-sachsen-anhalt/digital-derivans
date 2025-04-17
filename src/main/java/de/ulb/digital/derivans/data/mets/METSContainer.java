@@ -44,34 +44,36 @@ public class METSContainer {
 
 	private Element element;
 
-	public METSContainer(String id, Element element) throws DigitalDerivansException {
+	public METSContainer(String id, Element element) {
 		this.id = id;
 		this.element = element;
 		this.type = METSContainerType.valueOf(this.element.getAttributeValue("TYPE").toUpperCase());
 		this.determineAttributes();
 		this.determineLabel();
+		this.determineHierarchy();
 	}
 
-	public METSContainer(Element element) throws DigitalDerivansException {
+	
+	public METSContainer(Element element) {
 		this(element.getAttributeValue("ID"), element);
 	}
-
+	
 	public String getId() {
 		return this.id;
 	}
-
+	
 	public METSContainerType getType() {
 		return this.type;
 	}
-
+	
 	public List<METSContainer> getChildren() {
 		return this.children;
 	}
-
+	
 	public void setChildren(List<METSContainer> childs) {
 		this.children = childs;
 	}
-
+	
 	private void determineAttributes() {
 		if (this.element != null) {
 			for (var elat : this.element.getAttributes()) {
@@ -84,7 +86,7 @@ public class METSContainer {
 			}
 		}
 	}
-
+	
 	public String determineLabel() {
 		String structType = null;
 		if (this.attributes.containsKey(METSContainerAttributeType.LABEL)) {
@@ -107,18 +109,41 @@ public class METSContainer {
 		return this.label;
 	}
 
+	/**
+	 * Form nested logical structures for mets:structMap@TYPE="LOGICAL"/mets:div
+	 */
+	private void determineHierarchy() {
+		List<Element> kids = this.element.getChildren("div", METS.NS_METS);
+		if(! kids.isEmpty()) {
+			traverse(this);
+				// this.children.add(new METSContainer(kid));
+		}
+	}
+
+	private void traverse(METSContainer parent) {
+		List<Element> kids = parent.get().getChildren("div", METS.NS_METS);
+		if(! kids.isEmpty()) {
+			for (var kid : kids) {
+				METSContainer curr = new METSContainer(kid);
+				parent.addChild(curr);
+				traverse(curr);
+			}
+		}
+
+	}
+	
 	public void setLabel(String label) {
 		this.label = label;
 	}
-
+	
 	public boolean isMediaContainer() {
 		return METSContainerType.MEDIA_CONTAINER.stream().anyMatch(p -> p.equals(this.type));
 	}
-
+	
 	public boolean isNewspaperStruct() {
 		return METSContainerType.NEWSPAPER_CONTAINER_PARENT.stream().anyMatch(p -> p.equals(this.type));
 	}
-
+	
 	public Element get() {
 		return this.element;
 	}
@@ -171,4 +196,6 @@ public class METSContainer {
 			this.children.add(child);
 		}
 	}
+
+
 }

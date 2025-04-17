@@ -69,13 +69,13 @@ public class MetadataStore implements IMetadataStore {
 		this.storePath = Optional.of(filePath.toString());
 		this.mets = new METS(filePath);
 		LOGGER.info("set metadatastore from '{}'", filePath);
-		this.mets.setPrimes();
+		this.mets.determine();
 	}
 
 	
 	@Override
 	public void setMetadata()  throws DigitalDerivansException {
-		this.mets.setPrimes();
+		this.mets.determine();
 	}
 
 	@Override
@@ -116,10 +116,10 @@ public class MetadataStore implements IMetadataStore {
 	public List<DigitalPage> getDigitalPagesInOrder() {
 		List<DigitalPage> pages = new ArrayList<>();
 		int n = 1;
-		List<METSContainer> metsPages = mets.getPhyContainers();
-		for(var metsPage : metsPages) {
+		// List<METSContainer> metsPages = mets.getPhyContainers();
+		// for(var metsPage : metsPages) {
 			
-		}
+		// }
 		// PhysicalStructMap physStruct = mets.getPhysicalStructMap();
 		// if (physStruct != null) {
 		// 	for (PhysicalSubDiv physSubDiv : physStruct.getDivContainer().getChildren()) {
@@ -154,10 +154,10 @@ public class MetadataStore implements IMetadataStore {
 		// 	}
 		// }
 
-		List<METSContainer> cnts = this.mets.getPhyContainers();
-		if (cnts.isEmpty()) {
-			return pages; // no DFG met:div page container, go home
-		}
+		// List<METSContainer> cnts = this.mets.getPhyContainers();
+		// if (cnts.isEmpty()) {
+		// 	return pages; // no DFG met:div page container, go home
+		// }
 		List<METSFile> imageFiles = this.mets.getFiles(this.fileGroupImages);
 		List<METSFile> optOcrs = this.mets.getFiles(this.fileGroupOcr);
 		for (var img : imageFiles) {
@@ -199,12 +199,12 @@ public class MetadataStore implements IMetadataStore {
 		}
 		page.setImagePath(Path.of(imgFile.getFileGroup(), fileRefSegment));
 		// handle granular urn (aka CONTENTIDS)
-		var optCntIds = imgFile.getContentIds();
-		if(optCntIds.isPresent()) {
-			var cntIds = optCntIds.get();
-			LOGGER.debug("[{}] contentids '{}'", imgFile.getId(), cntIds);
+		String cntIds = imgFile.getContentIds();
+		// if(optCntIds.isPresent()) {
+			// var cntIds = optCntIds.get();
+			LOGGER.debug("[{}] contentids '{}'", imgFile.getFileId(), cntIds);
 			page.setIdentifier(cntIds);
-		}
+		// }
 	}
 
 	private void enrichFulltextData(METSContainer pageCnt, DigitalPage page, FilePointerRef match) {

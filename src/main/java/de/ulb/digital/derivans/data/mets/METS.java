@@ -23,6 +23,7 @@ import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
+import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 
 /**
@@ -68,17 +69,19 @@ public class METS {
 
 	private MODS primeMods;
 
-	private Element primeLogicalContainer;
+	// private METSContainer logicalRoot;
+
+	private Element primeLog;
 
 	private Map<String, List<METSFile>> files = new LinkedHashMap<>();
 
-	private List<METSContainer> logContainers = new ArrayList<>();
+	// private List<METSContainer> logContainers = new ArrayList<>();
 
-	private List<METSContainer> phyContainers = new ArrayList<>();
+	// private List<METSContainer> phyContainers = new ArrayList<>();
 
-	public List<METSContainer> getPhyContainers() {
-		return phyContainers;
-	}
+	// public List<METSContainer> getPhyContainers() {
+	// return phyContainers;
+	// }
 
 	// private Map<String, Integer> pageOrders = new LinkedHashMap<>();
 
@@ -101,7 +104,7 @@ public class METS {
 	 * <li>2nd, inspect the structural Linkings</li>
 	 * </ol>
 	 */
-	public void setPrimes() throws DigitalDerivansException {
+	public void determine() throws DigitalDerivansException {
 		Optional<String> optRoot = this.oneRoot();
 		if (optRoot.isPresent()) {
 			this.primeId = optRoot.get();
@@ -126,8 +129,7 @@ public class METS {
 				var xpr = String.format("//mets:div[@ID='%s']", backLink);
 				var logDivs = this.evaluate(xpr);
 				if (logDivs.size() == 1) {
-					var primeLog = logDivs.get(0);
-					this.primeLogicalContainer = primeLog;
+					this.primeLog = logDivs.get(0);
 					var dmdId = primeLog.getAttributeValue("DMDID");
 					return Optional.of(dmdId);
 				}
@@ -151,24 +153,26 @@ public class METS {
 	 * @throws DigitalDerivansException
 	 */
 	private String calculatePrimeMODSId() throws DigitalDerivansException {
-		var dmdSects = this.evaluate("//mets:structMap//mets:div[@DMDID and @TYPE]");
-		if (dmdSects.size() == 1) {
-			var dmdOne = dmdSects.get(0);
-			if (dmdOne.hasAttributes()) {
-				String dmdId = dmdOne.getAttributeValue("DMDID");
+		var metsDivs = this.evaluate("//mets:structMap//mets:div[@DMDID and @TYPE]");
+		if (metsDivs.size() == 1) {
+			var primeDiv = metsDivs.get(0);
+			if (primeDiv.hasAttributes()) {
+				String dmdId = primeDiv.getAttributeValue("DMDID");
 				if (dmdId != null) {
+					this.primeLog = primeDiv;
 					return dmdId;
 				}
 			}
 		}
-		for (var sect : dmdSects) {
-			var type = sect.getAttributeValue("TYPE");
+		for (var metsDiv : metsDivs) {
+			var type = metsDiv.getAttributeValue("TYPE");
 			var containerType = METSContainerType.forLabel(type);
 			if (METSContainerType.isObject(containerType)) {
-				return sect.getAttributeValue("DMDID");
+				this.primeLog = metsDiv;
+				return metsDiv.getAttributeValue("DMDID");
 			}
 		}
-		throw new DigitalDerivansException("Can't determine DMD identifier in " + this.getPath());
+		throw new DigitalDerivansException("Can't determine mets:div with DMD identifier in " + this.getPath());
 	}
 
 	public void setStructure() throws DigitalDerivansException {
@@ -209,25 +213,25 @@ public class METS {
 	 * @param metsFile
 	 * @throws DigitalDerivansException
 	 */
-	// private void linkFile(METSFile metsFile) throws DigitalDerivansException {
-	// 	String fileId = metsFile.getId();
-	// 	List<Element> firstElements = this.evaluate(String.format("//mets:fptr[@FILEID='%s']", fileId));
-	// 	if (firstElements.size() != 1) {
-	// 		throw new DigitalDerivansException("File " + fileId + " invalid linked to " + firstElements);
-	// 	}
-	// 	var firstElementId = firstElements.get(0).getParentElement().getAttributeValue("ID");
-	// 	var firstContainer = this.getContainerForId(firstElementId);
-	// 	metsFile.addLinkedContainers(firstContainer);
-	// 	List<Element> linkElements = this.evaluate(String.format("//mets:smLink[@xlink:to='%s']", firstElementId));
-	// 	if (linkElements.isEmpty()) {
-	// 		throw new DigitalDerivansException("Page " + firstElementId + " not linked to any logical section!");
-	// 	}
-	// 	for (var e : linkElements) {
-	// 		String elementId = e.getAttributeValue("from", METS.NS_XLINK);
-	// 		var cnt = this.getContainerForId(elementId);
-	// 		metsFile.addLinkedContainers(cnt);
-	// 	}
-	// }
+	private void linkFile(METSFile metsFile) throws DigitalDerivansException {
+		String fileId = metsFile.getFileId();
+		List<Element> firstElements = this.evaluate(String.format("//mets:fptr[@FILEID='%s']", fileId));
+		if (firstElements.size() != 1) {
+			throw new DigitalDerivansException("File " + fileId + " invalid linked to " + firstElements);
+		}
+		var firstElementId = firstElements.get(0).getParentElement().getAttributeValue("ID");
+		var firstContainer = this.getContainerForId(firstElementId);
+		metsFile.addLinkedContainers(firstContainer);
+		List<Element> linkElements = this.evaluate(String.format("//mets:smLink[@xlink:to='%s']", firstElementId));
+		if (linkElements.isEmpty()) {
+			throw new DigitalDerivansException("Page " + firstElementId + " not linked to any logical section!");
+		}
+		for (var e : linkElements) {
+			String elementId = e.getAttributeValue("from", METS.NS_XLINK);
+			var cnt = this.getContainerForId(elementId);
+			metsFile.addLinkedContainers(cnt);
+		}
+	}
 
 	public Path getPath() {
 		return this.file;
@@ -420,7 +424,7 @@ public class METS {
 			String rootId = rootElement.getAttributeValue("ID");
 			METSContainer rootCnt = new METSContainer(rootId, rootElement);
 			this.structure = rootCnt;
-			this.logContainers.add(rootCnt);
+			// this.logContainers.add(rootCnt);
 			List<Element> childElements = METS.evaluate(String.format("//mets:div[@ID='%s']/mets:div", rootId),
 					rootElement.getDocument());
 			for (var child : childElements) {
@@ -443,8 +447,8 @@ public class METS {
 
 	}
 
-	public METSContainer getContainer() {
-		return this.structure;
+	public METSContainer getLogicalRoot() {
+		return new METSContainer(this.primeLog);
 	}
 
 	private void processContainer(METSContainer currentParent, Element currentElement) throws DigitalDerivansException {
@@ -452,7 +456,7 @@ public class METS {
 		METSContainer currentCnt = new METSContainer(currentId, currentElement);
 		currentCnt.setParent(currentParent);
 		currentParent.addChild(currentCnt);
-		this.logContainers.add(currentCnt);
+		// this.logContainers.add(currentCnt);
 		List<Element> granElements = METS.evaluate(String.format("//mets:div[@ID='%s']/mets:div", currentId),
 				currentElement.getDocument());
 		for (var granElement : granElements) {
@@ -460,9 +464,9 @@ public class METS {
 		}
 	}
 
-	public List<METSContainer> getLogContainers() {
-		return this.logContainers;
-	}
+	// public List<METSContainer> getLogContainers() {
+	// return this.logContainers;
+	// }
 
 	/**
 	 * 
@@ -504,43 +508,48 @@ public class METS {
 	 * 
 	 */
 	private void setPages() throws DigitalDerivansException {
-		for (var cnt : this.logContainers) {
-			var queryLinks = String.format("//mets:structLink/mets:smLink[@xlink:from='%s']", cnt.getId());
-			List<Element> smLinks = this.evaluate(queryLinks);
-			for (var smLink : smLinks) {
-				var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
-				if (STRUCT_PHYSICAL_ROOT.equalsIgnoreCase(pageId)) {
-					continue;
-				}
-				List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']", pageId));
-				for (var page : pages) {
-					var pageOrder = page.getAttributeValue("ORDER");
-					var theOrder = Integer.valueOf(pageOrder);
-					METSContainer phyCnt = new METSContainer(pageId, page);
-					// var expOrder = this.currOrder.getAndIncrement();
-					// if (theOrder != expOrder) {
-					// LOGGER.error("overwrite read @ORDER={} with expected:{}", theOrder,
-					// expOrder);
-					// theOrder = expOrder;
-					// phyCnt.addAttribute(METSContainerAttributeType.ORDER,
-					// String.valueOf(expOrder));
-					// }
-					// ensure each page is only added once even if
-					// linked several times
-					if (!this.phyContainers.contains(phyCnt)) {
-						this.phyContainers.add(phyCnt);
-					}
-					this.logicalOrder.computeIfAbsent(cnt.getId(), k -> new ArrayList<>()).add(theOrder);
-					var orders = this.logicalOrder.get(cnt.getId());
-					orders.add(theOrder); // prevent "theOrder must be effectively final in scope"
-				}
-			}
-		}
+		// for (var cnt : this.logContainers) {
+		// var queryLinks =
+		// String.format("//mets:structLink/mets:smLink[@xlink:from='%s']",
+		// cnt.getId());
+		// List<Element> smLinks = this.evaluate(queryLinks);
+		// for (var smLink : smLinks) {
+		// var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
+		// if (STRUCT_PHYSICAL_ROOT.equalsIgnoreCase(pageId)) {
+		// continue;
+		// }
+		// List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']",
+		// pageId));
+		// for (var page : pages) {
+		// var pageOrder = page.getAttributeValue("ORDER");
+		// var theOrder = Integer.valueOf(pageOrder);
+		// METSContainer phyCnt = new METSContainer(pageId, page);
+		// // var expOrder = this.currOrder.getAndIncrement();
+		// // if (theOrder != expOrder) {
+		// // LOGGER.error("overwrite read @ORDER={} with expected:{}", theOrder,
+		// // expOrder);
+		// // theOrder = expOrder;
+		// // phyCnt.addAttribute(METSContainerAttributeType.ORDER,
+		// // String.valueOf(expOrder));
+		// // }
+		// // ensure each page is only added once even if
+		// // linked several times
+		// if (!this.phyContainers.contains(phyCnt)) {
+		// this.phyContainers.add(phyCnt);
+		// }
+		// this.logicalOrder.computeIfAbsent(cnt.getId(), k -> new
+		// ArrayList<>()).add(theOrder);
+		// var orders = this.logicalOrder.get(cnt.getId());
+		// orders.add(theOrder); // prevent "theOrder must be effectively final in
+		// scope"
+		// }
+		// }
+		// }
 	}
 
 	private METSContainer getContainerForId(String containerId) throws DigitalDerivansException {
-		List<METSContainer> allContainer = new ArrayList<>(this.logContainers);
-		allContainer.addAll(this.phyContainers);
+		List<METSContainer> allContainer = new ArrayList<>();
+		// allContainer.addAll(this.phyContainers);
 		List<METSContainer> matches = allContainer.stream()
 				.filter(c -> containerId.equals(c.getId()))
 				.collect(Collectors.toList());
@@ -557,11 +566,71 @@ public class METS {
 	public DigitalStructureTree getLogicalStructure() throws DigitalDerivansException {
 		var q = String.format("//mets:div[@DMDID='%s']", this.primeId);
 		List<Element> logRoot = this.evaluate(q);
-		String typeLabel = this.primeLogicalContainer.getAttributeValue("TYPE");
+		String typeLabel = this.primeLog.getAttributeValue("TYPE");
 		var t = METSContainerType.forLabel(typeLabel);
-		
-		// throw new UnsupportedOperationException("Unimplemented method 'getLogicalStructure'");
+
+		// throw new UnsupportedOperationException("Unimplemented method
+		// 'getLogicalStructure'");
 
 		return null;
 	}
+
+	/**
+	 * 
+	 * Get any files, which are linked to given logical container.
+	 * 
+	 * Uses METS 1.12 DFG interlinking flavor:
+	 * div => smLink => div@TYPE=page => file
+	 * 
+	 * If no files linked to given container, yield exception:
+	 * 	There must not be an empty logical section!
+	 * 
+	 * @param div
+	 * @param fileGroup
+	 * @return
+	 * @throws DigitalDerivansException
+	 */
+	public List<METSFile> getFiles(METSContainer div, String fileGroup, String fileExt)
+			throws DigitalDerivansException {
+		String logID = div.getId();
+		String q01 = String.format("//mets:structLink/mets:smLink[@xlink:from='%s']", logID);
+		List<Element> smLinks = this.evaluate(q01);
+		List<METSFile> metsFiles = new ArrayList<>();
+		for (Element smLink : smLinks) {
+			var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
+			List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']", pageId));
+			for (var page : pages) {
+				METSContainer pageContainer = new METSContainer(page);
+				String cid = pageContainer.getAttribute("CONTENTIDS");
+				String pageLabel = pageContainer.determineLabel();
+				var allFiles = page.getChildren("fptr", METS.NS_METS);
+				for (var aFile : allFiles) {
+					String ptrId = aFile.getAttributeValue("FILEID");
+					String q02 = String.format("//mets:fileGrp[@USE='%s']/mets:file[@ID='%s']", fileGroup, ptrId);
+					List<Element> filesFromGroup = this.evaluate(q02);
+					if (filesFromGroup.isEmpty()) {
+						continue;
+					}
+					Element fileFromGroup = filesFromGroup.get(0);
+					String fileId = fileFromGroup.getAttributeValue("ID");
+					var fstLocat = fileFromGroup.getChildren("FLocat", METS.NS_METS).get(0);
+					String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
+					var thaFile = new METSFile(fileId, hRef);
+					thaFile.setPageLabel(pageLabel);
+					thaFile.setLocalRoot(this.getPath().getParent());
+					if (cid != null) {
+						thaFile.setContentIds(cid);
+					}
+					metsFiles.add(thaFile);
+				}
+			}
+		}
+		if (metsFiles.isEmpty()) {
+			String alert = String.format("No files link div %s/%s!", 
+				logID, div.determineLabel());
+			throw new DigitalDerivansException(alert);
+		}
+		return metsFiles;
+	}
+
 }

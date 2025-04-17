@@ -2,7 +2,9 @@ package de.ulb.digital.derivans.model;
 
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.OptionalInt;
 
+import de.ulb.digital.derivans.data.mets.METSFile;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**
@@ -21,7 +23,9 @@ import de.ulb.digital.derivans.model.ocr.OCRData;
  */
 public class DigitalPage {
 
-	private Integer orderNr;
+	private Integer orderNr = 0;
+
+	private String pageLabel;
 
 	/**
 	 * Pointer to single physical image for given page
@@ -52,13 +56,9 @@ public class DigitalPage {
 		this.orderNr = orderNr;
 	}
 	
-	public DigitalPage(int orderNr, String filePointer) {
+	public DigitalPage(int orderNr, Path localFilePath) {
 		this.orderNr = orderNr;
-		this.imgFile = new File(FileType.IMAGE, Path.of(filePointer));
-	}
-
-	public DigitalPage(Path physicalPath) {
-		this.imgFile = new File(FileType.IMAGE, physicalPath);
+		this.imgFile = new File(FileType.IMAGE, localFilePath);
 	}
 
 	public void setOcrFile(Path ocrPath) {
@@ -113,6 +113,19 @@ public class DigitalPage {
 
 	public void setFooterHeight(int footerHeight) {
 		this.footerHeight = Optional.of(footerHeight);
+	}
+
+	public void setPageLabel(String pageLabel) {
+		if(pageLabel != null) {
+			this.pageLabel = pageLabel;
+		}
+	}
+
+	public Optional<String> getPageLabel() {
+		if(this.pageLabel != null) {
+			return Optional.of(this.pageLabel);
+		}
+		return Optional.empty();
 	}
 
 	@Override

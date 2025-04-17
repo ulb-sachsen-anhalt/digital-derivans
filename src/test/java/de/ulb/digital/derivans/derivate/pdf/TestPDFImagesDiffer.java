@@ -67,7 +67,7 @@ class TestPDFImagesDiffer {
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setImageDpi(300);
 		var handler = new PDFDerivateer(input, output, pages, pdfMeta);
-		handler.setStructure(tree);
+		// handler.setStructure(tree);
 
 		// act
 		handler.create();

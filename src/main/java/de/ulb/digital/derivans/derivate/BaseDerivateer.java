@@ -8,6 +8,7 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
@@ -31,6 +32,8 @@ public class BaseDerivateer implements IDerivateer {
 	protected DerivansPathResolver resolver;
 
 	protected Optional<String> outputPrefix;
+
+	protected IDerivate derivate;
 
 	public BaseDerivateer(DerivansData input, DerivansData output) {
 		this.input = input;
@@ -88,6 +91,12 @@ public class BaseDerivateer implements IDerivateer {
 	@Override
 	public DerivateType getType() {
 		return this.derivateType;
+	}
+
+	@Override
+	public void setDerivate(IDerivate derivate) {
+		this.derivate =  derivate;
+		this.digitalPages = this.derivate.getAllPages();
 	}
 	
 }

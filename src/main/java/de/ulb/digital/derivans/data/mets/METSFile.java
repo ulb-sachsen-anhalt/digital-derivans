@@ -1,5 +1,7 @@
 package de.ulb.digital.derivans.data.mets;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -7,6 +9,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.jdom2.Element;
+
+import de.ulb.digital.derivans.DigitalDerivansException;
 
 /**
  * 
@@ -26,11 +30,17 @@ public class METSFile {
 
 	private String fileGroup;
 
-	private String id;
+	private String fileId;
+
+	private String contentIds;
+
+	private String pageLabel;
 
 	private String mimeType;
 
 	private String location;
+
+	private Path localRootPath;
 
 	private String locationType;
 
@@ -53,7 +63,7 @@ public class METSFile {
 
 	public METSFile(String fileGroup, String id, String mimeType, String location, String locationType) {
 		this.fileGroup = fileGroup;
-		this.id = id;
+		this.fileId = id;
 		this.mimeType = mimeType;
 		this.location = location;
 		this.locationType = locationType;
@@ -66,28 +76,75 @@ public class METSFile {
 	/**
 	 * 
 	 * Get @CONTAINERIDS attribute from corresponding physical page
+	 * if present, otherwise use current set value
 	 * 
 	 * @return
 	 */
-	public Optional<String> getContentIds() {
-		PredicatePage predPage = new PredicatePage();
-		return this.linkedContainers.stream()
-				.filter(predPage)
-				.map(c -> c.getAttribute("CONTENTIDS"))
-				.filter(Objects::nonNull)
-				.findFirst();
+	public String getContentIds() {
+		if (!this.linkedContainers.isEmpty()) {
+			PredicatePage predPage = new PredicatePage();
+			Optional<String> optCid = this.linkedContainers.stream()
+					.filter(predPage)
+					.map(c -> c.getAttribute("CONTENTIDS"))
+					.filter(Objects::nonNull)
+					.findFirst();
+			if (optCid.isPresent()) {
+				this.contentIds = optCid.get();
+			}
+		}
+		return this.contentIds;
+	}
+
+	public void setContentIds(String cid) {
+		this.contentIds = cid;
+	}
+
+	public String getPageLabel() {
+		return pageLabel;
+	}
+
+	public void setPageLabel(String pageLabel) {
+		this.pageLabel = pageLabel;
 	}
 
 	public List<METSContainer> getLinkedContainers() {
 		return this.linkedContainers;
 	}
 
-	public String getId() {
-		return this.id;
+	public String getFileId() {
+		return this.fileId;
 	}
 
 	public String getLocation() {
 		return this.location;
+	}
+
+	public void setLocalRoot(Path root) {
+		this.localRootPath = root;
+	}
+
+	public Path getLocalPath() throws DigitalDerivansException {
+		int lastSlashIndex = this.location.lastIndexOf('/');
+		if (lastSlashIndex > -1) { // even if it starts with leading slash
+			String[] tokens = this.location.split("/");
+			String lastPart = tokens[tokens.length - 1];
+			int lastDotIndex = lastPart.lastIndexOf('.');
+			if (lastDotIndex == -1) { // filename extension missing
+				if (this.mimeType.toLowerCase().contains("tif")) {
+					lastPart = lastPart + ".tiff";
+				} else {
+					lastPart = lastPart + ".jpg";
+				}
+			}
+			var theName = String.format("%s/%s", this.fileGroup, lastPart);
+			Path fileLoc = this.localRootPath.resolve(theName);
+			if (!Files.exists(fileLoc)) {
+				String alarma = String.format("Try to set invalid local path %s", fileLoc);
+				throw new DigitalDerivansException(alarma);
+			}
+			return fileLoc;
+		}
+		return Path.of(this.location);
 	}
 
 	/**
@@ -99,7 +156,7 @@ public class METSFile {
 	 */
 	public Element asElement() {
 		var fileEl = new Element("file", METS.NS_METS);
-		fileEl.setAttribute("ID", this.id);
+		fileEl.setAttribute("ID", this.fileId);
 		fileEl.setAttribute("MIMETYPE", mimeType);
 		var fLocat = new Element("FLocat", METS.NS_METS);
 		fLocat.setAttribute("LOCTYPE", this.locationType);
@@ -118,14 +175,14 @@ public class METSFile {
 			return false;
 		}
 		METSFile otherFile = (METSFile) other;
-		return this.id.equals(otherFile.getId());
+		return this.fileId.equals(otherFile.getFileId());
 	}
 
 	@Override
 	public int hashCode() {
 		int h = 0;
-		for (int o = 0; o < this.id.length(); o++) {
-			h += this.id.codePointAt(o);
+		for (int o = 0; o < this.fileId.length(); o++) {
+			h += this.fileId.codePointAt(o);
 		}
 		return h;
 	}

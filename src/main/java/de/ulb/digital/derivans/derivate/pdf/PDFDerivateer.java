@@ -14,6 +14,7 @@ import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
@@ -33,7 +34,7 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private static final Logger LOGGER = LogManager.getLogger(PDFDerivateer.class);
 
-	private DigitalStructureTree structure = new DigitalStructureTree();
+	// private DigitalStructureTree structure = new DigitalStructureTree();
 
 	private DerivateStepPDF derivateStep;
 
@@ -76,7 +77,7 @@ public class PDFDerivateer extends BaseDerivateer {
 			store.setFileGroupImages(this.derivateStep.getParamImages());
 			var descriptiveData = store.getDescriptiveData();
 			this.derivateStep.mergeDescriptiveData(descriptiveData);
-			this.structure = store.getStructure();
+			// this.structure = store.getStructure();
 			this.digitalPages = store.getDigitalPagesInOrder();
 		}
 	}
@@ -96,16 +97,14 @@ public class PDFDerivateer extends BaseDerivateer {
 			var msg = "No pages for PDF "+pathToPDF;
 			throw new DigitalDerivansException(msg);
 		}
-		this.resolver.enrichData(getDigitalPages(), this.getInput());
+		// this.resolver.enrichData(getDigitalPages(), this.getInput());
 
 		// forward pdf generation
-		this.pdfProcessor.init(this.derivateStep, digitalPages, structure);
+		this.pdfProcessor.init(this.derivateStep, /*digitalPages, structure,*/ this.derivate);
 		this.pdfResult = this.pdfProcessor.write(pathToPDF.toFile());
 		this.pdfResult.setPath(pathToPDF);
 		var nPagesAdded = this.pdfResult.getPdfPages().size();
-		var hasOutlineAdded = this.pdfResult.getOutline().size() > 0;
-		LOGGER.info("created pdf '{}' with {} pages (outline:{})", pathToPDF, nPagesAdded,
-				hasOutlineAdded);
+		LOGGER.info("created pdf '{}' with {} pages", pathToPDF, nPagesAdded);
 
 		// post-action
 		if (this.optMetadataStore.isPresent() && this.derivateStep.isEnrichMetadata()) {
@@ -135,9 +134,9 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * Set structure data for testing purposes
 	 * when no *real* metadata present
 	 */
-	public void setStructure(DigitalStructureTree tree) {
-		this.structure = tree;
-	}
+	// public void setStructure(DigitalStructureTree tree) {
+	// 	this.structure = tree;
+	// }
 
 	/**
 	 * 

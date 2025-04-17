@@ -96,7 +96,7 @@ public class DerivansPathResolver {
 				}
 				List<Path> paths = getFilePaths(inputPath, imageFilter);
 				for (Path path : paths) {
-					pages.add(new DigitalPage(path));
+					// pages.add(new DigitalPage(path));
 				}
 			} catch (IOException e) {
 				LOGGER.error(e);
@@ -160,15 +160,15 @@ public class DerivansPathResolver {
 		return pages;
 	}
 
-	public List<DigitalPage> resolveFromPath(Path inputPath) {
-		try {
-			List<Path> paths = getFilePaths(inputPath, imageFilter);
-			return paths.stream().map(DigitalPage::new).collect(Collectors.toList());
-		} catch (IOException e) {
-			LOGGER.error("fail resolve {}:{}", inputPath, e.getMessage());
-			return new ArrayList<>();
-		}
-	}
+	// public List<DigitalPage> resolveFromPath(Path inputPath) {
+	// 	try {
+	// 		List<Path> paths = getFilePaths(inputPath, imageFilter);
+	// 		return paths.stream().map(DigitalPage::new).collect(Collectors.toList());
+	// 	} catch (IOException e) {
+	// 		LOGGER.error("fail resolve {}:{}", inputPath, e.getMessage());
+	// 		return new ArrayList<>();
+	// 	}
+	// }
 
 	/**
 	 * 

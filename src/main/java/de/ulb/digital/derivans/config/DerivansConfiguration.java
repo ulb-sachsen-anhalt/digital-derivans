@@ -71,18 +71,18 @@ public class DerivansConfiguration {
 	 * @throws DigitalDerivansException
 	 */
 	public DerivansConfiguration(DerivansParameter params) throws DigitalDerivansException {
-		if (params.getPathInput() == null) {
-			throw new DigitalDerivansException("invalid data path 'null'");
-		}
-		if (!Files.exists(params.getPathInput())) {
-			throw new DigitalDerivansException("invalid data path '" + params.getPathInput() + "'");
-		}
+		// if (params.getPathInput() == null) {
+		// 	throw new DigitalDerivansException("invalid data path 'null'");
+		// }
+		// if (!Files.exists(params.getPathInput())) {
+		// 	throw new DigitalDerivansException("invalid data path '" + params.getPathInput() + "'");
+		// }
 
-		// sanitize: path must be absolute for PDF generation afterwards
-		Path input = params.getPathInput();
-		if (!input.isAbsolute()) {
-			input = input.toAbsolutePath();
-		}
+		// // sanitize: path must be absolute for PDF generation afterwards
+		// Path input = params.getPathInput();
+		// if (!input.isAbsolute()) {
+		// 	input = input.toAbsolutePath();
+		// }
 
 		// determine if debug render for PDF required
 		if (Boolean.TRUE.equals(params.isDebugPdfRender())) {

@@ -13,6 +13,7 @@ import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPGFooterGranular;
 import de.ulb.digital.derivans.derivate.pdf.PDFDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
+import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
@@ -50,8 +51,6 @@ public class Derivans {
 
     private Path derivateDir;
 
-    // private Path processMDFile;
-
     private final DerivansConfiguration config;
 
     // private Optional<IMetadataStore> optMetadataStore = Optional.empty();
@@ -87,47 +86,50 @@ public class Derivans {
 
     public void create(Path pathInput) throws DigitalDerivansException {
         this.init(pathInput);
-        var theInput = this.derivate.getPathInputDir();
+        Path theInput = this.derivate.getPathInputDir();
         List<DigitalPage> pages = new ArrayList<>();
         for (DerivateStep step : this.steps) {
-        	if (!this.derivate.isInited()) {
-        		this.derivate.init(step.getInputPath());
-        		pages = this.derivate.getAllPages();
-        	}
-        	var pathOut = theInput.resolve(step.getOutputPath());
-            DerivansData input = new DerivansData(this.derivate.getPathInputDir(), DerivateType.IMAGE);
+            if (!this.derivate.isInited()) {
+                this.derivate.init(step.getInputPath());
+                pages = this.derivate.getAllPages();
+            }
+            Path pathOut = theInput.resolve(step.getOutputPath());
+            DerivansData input = new DerivansData(theInput, DerivateType.IMAGE);
             DerivansData output = new DerivansData(pathOut, DerivateType.JPG);
             DerivateType type = step.getDerivateType();
             IDerivateer derivateer = null;
             if (type == DerivateType.JPG) {
                 DerivateStepImage imgStep = (DerivateStepImage) step;
                 var quality = imgStep.getQuality();
-                derivateer= new ImageDerivateerJPG(input, output, quality);
-                ((ImageDerivateerJPG)derivateer).setPoolsize(imgStep.getPoolsize());
-                ((ImageDerivateerJPG)derivateer).setMaximal(imgStep.getMaximal());
-                ((ImageDerivateerJPG)derivateer).setOutputPrefix(imgStep.getOutputPrefix());
-                derivateer.setDigitalPages(pages);
+                derivateer = new ImageDerivateerJPG(input, output, quality);
+                ((ImageDerivateerJPG) derivateer).setPoolsize(imgStep.getPoolsize());
+                ((ImageDerivateerJPG) derivateer).setMaximal(imgStep.getMaximal());
+                ((ImageDerivateerJPG) derivateer).setOutputPrefix(imgStep.getOutputPrefix());
+                // derivateer.setDigitalPages(pages);
+                derivateer.setDerivate(derivate);
             } else if (type == DerivateType.JPG_FOOTER) {
+                String ident = IMetadataStore.UNKNOWN;
                 DerivateStepImageFooter stepFooter = (DerivateStepImageFooter) step;
                 String footerLabel = stepFooter.getFooterLabel();
                 Path pathTemplate = stepFooter.getPathTemplate();
-                String ident = IMetadataStore.UNKNOWN;
-                ImageDerivateerJPGFooter d = null;
+                DigitalFooter footer = new DigitalFooter(footerLabel, ident, pathTemplate);
+                Integer quality = stepFooter.getQuality();
+                derivateer = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
                 if (this.derivate.optMetadata().isPresent()) {
                     ident = this.derivate.optMetadata().get().getPrimeMODS().getIdentifierURN();
-                    DigitalFooter footer = new DigitalFooter(footerLabel, ident, pathTemplate);
-                    Integer quality = stepFooter.getQuality();
-                    derivateer = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
-                    var store = this.derivate.optMetadata().get();
+                    footer = new DigitalFooter(footerLabel, ident, pathTemplate);
+                    // var store = this.derivate.optMetadata().get();
                     // var mdsPages = store.getDigitalPagesInOrder();
                     // // var storeLabel = store.usedStore();
                     // if (this.isGranularIdentifierPresent(mdsPages)) {
-                    //     LOGGER.debug("detected granular URN at {}", storeLabel);
-                    //     var enrichedPages = this.enrichGranularURN(pages, mdsPages);
-                    //     d = new ImageDerivateerJPGFooterGranular(d, quality);
-                    //     d.setDigitalPages(enrichedPages);
+                    // LOGGER.debug("detected granular URN at {}", storeLabel);
+                    // var enrichedPages = this.enrichGranularURN(pages, mdsPages);
+                    // d = new ImageDerivateerJPGFooterGranular(d, quality);
+                    // d.setDigitalPages(enrichedPages);
                     // }
                 }
+                derivateer = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
+                derivateer.setDerivate(derivate);
             } else if (type == DerivateType.PDF) {
                 DerivateStepPDF pdfStep = (DerivateStepPDF) step;
                 String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
@@ -146,8 +148,8 @@ public class Derivans {
                 } else {
                     Path ocrPath = this.derivateDir.resolve(pdfStep.getParamOCR());
                     if (Files.isDirectory(ocrPath)) {
-                    	LOGGER.info("enrich optional ocr from directory %s", pdfStep.getParamOCR());
-                    	this.derivate.setOcr(ocrPath);
+                        LOGGER.info("enrich optional ocr from directory %s", pdfStep.getParamOCR());
+                        this.derivate.setOcr(ocrPath);
                     }
                     // resolver.enrichOCRFromFilesystem(pages, ocrPath);
                 }
@@ -158,42 +160,43 @@ public class Derivans {
                 // required for proper resolving with kitodo2
                 var pdfInput = new DerivansData(input.getPath(), DerivateType.JPG);
                 derivateer = new PDFDerivateer(pdfInput, output, pages, pdfStep);
+                derivateer.setDerivate(derivate);
                 if (this.derivate.optMetadata().isPresent()) {
-                    // ToDo
-                    //pdfDerivateer.setMetadataStore(optMetadataStore);
                 }
             }
+            this.derivateers.add(derivateer);
             Instant start = Instant.now();
             int results = derivateer.create();
             Instant finish = Instant.now();
             long secsElapsed = Duration.between(start, finish).toSecondsPart();
             long minsElapsed = Duration.between(start, finish).toMinutesPart();
             if (results > 0) {
-            	LOGGER.info("created %02d results in %02dm%02ds", results, minsElapsed, secsElapsed);
+                LOGGER.info("created %02d results in %02dm%02ds", results, minsElapsed, secsElapsed);
             }
             LOGGER.info("finished derivate step %s: %s", derivateer.getClass().getSimpleName(), true);
+            pathInput = step.getOutputPath();
         }
 
-        
         // run derivateers
-//        for (IDerivateer derivateer : derivateers) {
-//            int pages = derivateer.getDigitalPages().size();
-//            String msg = String.format("process '%02d' digital pages", pages);
-//            LOGGER.info(msg);
-//
-//            Instant start = Instant.now();
-//            int results = derivateer.create();
-//            Instant finish = Instant.now();
-//            long secsElapsed = Duration.between(start, finish).toSecondsPart();
-//            long minsElapsed = Duration.between(start, finish).toMinutesPart();
-//
-//            if (results > 0) {
-//                String msg2 = String.format("created '%02d' results in '%dm%02ds'",
-//                        results, minsElapsed, secsElapsed);
-//                LOGGER.info(msg2);
-//            }
-//            LOGGER.info("finished derivate step '{}': '{}'", derivateer.getClass().getSimpleName(), true);
-//        }
+        // for (IDerivateer derivateer : derivateers) {
+        // int pages = derivateer.getDigitalPages().size();
+        // String msg = String.format("process '%02d' digital pages", pages);
+        // LOGGER.info(msg);
+        //
+        // Instant start = Instant.now();
+        // int results = derivateer.create();
+        // Instant finish = Instant.now();
+        // long secsElapsed = Duration.between(start, finish).toSecondsPart();
+        // long minsElapsed = Duration.between(start, finish).toMinutesPart();
+        //
+        // if (results > 0) {
+        // String msg2 = String.format("created '%02d' results in '%dm%02ds'",
+        // results, minsElapsed, secsElapsed);
+        // LOGGER.info(msg2);
+        // }
+        // LOGGER.info("finished derivate step '{}': '{}'",
+        // derivateer.getClass().getSimpleName(), true);
+        // }
 
         LOGGER.info("finished %02d steps at %s", this.steps.size(), derivateDir);
     }
@@ -206,146 +209,94 @@ public class Derivans {
      * @throws DigitalDerivansException
      */
     private List<IDerivateer> init(Path theInput) throws DigitalDerivansException {
-    	LOGGER.info("set derivate in %s", theInput);
+        LOGGER.info("set derivate in %s", theInput);
         if (Files.isDirectory(theInput)) {
             this.derivate = new DerivateFS(theInput);
-            // this.pathInputDir = pathInput;
-            // this.struct.label = this.pathInput.getFileName().toString();
-        // } else if (Files.isRegularFile(pathInput, LinkOption.NOFOLLOW_LINKS)) {
-        //     METS m = new METS(pathInput);
-        //     this.optMetadata = Optional.of(m);
-        //     this.pathInputDir = pathInput.getParent();
+        } else if (Files.isRegularFile(theInput, LinkOption.NOFOLLOW_LINKS)) {
+            this.derivate = new DerivateMD(theInput);
         }
         this.derivateDir = theInput;
         this.derivateers = new ArrayList<>();
-//        this.derivate.init(theInput);
-//        var pages = this.derivate.getAllPages();
-//        for (DerivateStep step : this.steps) {
-//            // create basic input-output pair for each Derivateer
-//        	var pathIn = theInput.resolve(step.getInputPath());
-//        	var pathOut = theInput.resolve(step.getOutputPath());
-//            DerivansData input = new DerivansData(pathIn, DerivateType.IMAGE);
-//            DerivansData output = new DerivansData(pathOut, DerivateType.JPG);
-//            // respect derivate step type
-//            DerivateType type = step.getDerivateType();
-//            if (type == DerivateType.JPG) {
-//                DerivateStepImage imgStep = (DerivateStepImage) step;
-//                var quality = imgStep.getQuality();
-//                var imgDerivateer = new ImageDerivateerJPG(input, output, quality);
-//                imgDerivateer.setPoolsize(imgStep.getPoolsize());
-//                imgDerivateer.setMaximal(imgStep.getMaximal());
-//                imgDerivateer.setOutputPrefix(imgStep.getOutputPrefix());
-//                imgDerivateer.setDigitalPages(pages);
-//                // imgDerivateer.setResolver(this.resolver);
-//                derivateers.add(imgDerivateer);
-//            } else if (type == DerivateType.JPG_FOOTER) {
-//                DerivateStepImageFooter stepFooter = (DerivateStepImageFooter) step;
-//                String footerLabel = stepFooter.getFooterLabel();
-//                Path pathTemplate = stepFooter.getPathTemplate();
-//                String ident = IMetadataStore.UNKNOWN;
-//                ImageDerivateerJPGFooter d = null;
-//                if (this.derivate.optMetadata().isPresent()) {
-//                    ident = this.derivate.optMetadata().get().getPrimeMODS().getIdentifierURN();
-//                    DigitalFooter footer = new DigitalFooter(footerLabel, ident, pathTemplate);
-//                    Integer quality = stepFooter.getQuality();
-//                    d = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
-//                    var store = this.derivate.optMetadata().get();
-//                    // var mdsPages = store.getDigitalPagesInOrder();
-//                    // // var storeLabel = store.usedStore();
-//                    // if (this.isGranularIdentifierPresent(mdsPages)) {
-//                    //     LOGGER.debug("detected granular URN at {}", storeLabel);
-//                    //     var enrichedPages = this.enrichGranularURN(pages, mdsPages);
-//                    //     d = new ImageDerivateerJPGFooterGranular(d, quality);
-//                    //     d.setDigitalPages(enrichedPages);
-//                    // }
-//                }
-//                // d.setResolver(this.resolver);
-//                derivateers.add(d);
-//            } else if (type == DerivateType.PDF) {
-//                DerivateStepPDF pdfStep = (DerivateStepPDF) step;
-//                String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
-//                pdfStep.setConformanceLevel(pdfALevel);
-//                pdfStep.setDebugRender(config.isDebugPdfRender());
-//                DescriptiveMetadata descriptiveData = new DescriptiveMetadata();
-//                if (this.derivate.optMetadata().isPresent()) {
-//                    var store = this.derivate.optMetadata().get();
-//                    // String storePath = store.usedStore();
-//                    // LOGGER.info("use metadata from {}", storePath);
-//                    // // if store present, set additional information
-//                    // pdfStep.getModsIdentifierXPath().ifPresent(store::setIdentifierExpression);
-//                    // store.setFileGroupOCR(pdfStep.getParamOCR());
-//                    // store.setFileGroupImages(pdfStep.getParamImages());
-//                    // descriptiveData = store.getDescriptiveData();
-//                } else {
-//                    LOGGER.info("enrich ocr from file system via {}", pdfStep.getParamOCR());
-//                    Path ocrPath = this.derivateDir.resolve(pdfStep.getParamOCR());
-//                    // resolver.enrichOCRFromFilesystem(pages, ocrPath);
-//                }
-//                // calculate identifier
-//                // Path pdfPath = resolver.calculatePDFPath(descriptiveData, pdfStep);
-//                // LOGGER.info("calculate local pdf derivate path '{}'", pdfPath);
-//                // output.setPath(pdfPath);
-//                // required for proper resolving with kitodo2
-//                var pdfInput = new DerivansData(input.getPath(), DerivateType.JPG);
-//                var pdfDerivateer = new PDFDerivateer(pdfInput, output, pages, pdfStep);
-//                if (this.derivate.optMetadata().isPresent()) {
-//                    // ToDo
-//                    //pdfDerivateer.setMetadataStore(optMetadataStore);
-//                }
-//                // pdfDerivateer.setResolver(this.resolver);
-//                derivateers.add(pdfDerivateer);
-//            }
-//        }
+        // this.derivate.init(theInput);
+        // var pages = this.derivate.getAllPages();
+        // for (DerivateStep step : this.steps) {
+        // // create basic input-output pair for each Derivateer
+        // var pathIn = theInput.resolve(step.getInputPath());
+        // var pathOut = theInput.resolve(step.getOutputPath());
+        // DerivansData input = new DerivansData(pathIn, DerivateType.IMAGE);
+        // DerivansData output = new DerivansData(pathOut, DerivateType.JPG);
+        // // respect derivate step type
+        // DerivateType type = step.getDerivateType();
+        // if (type == DerivateType.JPG) {
+        // DerivateStepImage imgStep = (DerivateStepImage) step;
+        // var quality = imgStep.getQuality();
+        // var imgDerivateer = new ImageDerivateerJPG(input, output, quality);
+        // imgDerivateer.setPoolsize(imgStep.getPoolsize());
+        // imgDerivateer.setMaximal(imgStep.getMaximal());
+        // imgDerivateer.setOutputPrefix(imgStep.getOutputPrefix());
+        // imgDerivateer.setDigitalPages(pages);
+        // // imgDerivateer.setResolver(this.resolver);
+        // derivateers.add(imgDerivateer);
+        // } else if (type == DerivateType.JPG_FOOTER) {
+        // DerivateStepImageFooter stepFooter = (DerivateStepImageFooter) step;
+        // String footerLabel = stepFooter.getFooterLabel();
+        // Path pathTemplate = stepFooter.getPathTemplate();
+        // String ident = IMetadataStore.UNKNOWN;
+        // ImageDerivateerJPGFooter d = null;
+        // if (this.derivate.optMetadata().isPresent()) {
+        // ident = this.derivate.optMetadata().get().getPrimeMODS().getIdentifierURN();
+        // DigitalFooter footer = new DigitalFooter(footerLabel, ident, pathTemplate);
+        // Integer quality = stepFooter.getQuality();
+        // d = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
+        // var store = this.derivate.optMetadata().get();
+        // // var mdsPages = store.getDigitalPagesInOrder();
+        // // // var storeLabel = store.usedStore();
+        // // if (this.isGranularIdentifierPresent(mdsPages)) {
+        // // LOGGER.debug("detected granular URN at {}", storeLabel);
+        // // var enrichedPages = this.enrichGranularURN(pages, mdsPages);
+        // // d = new ImageDerivateerJPGFooterGranular(d, quality);
+        // // d.setDigitalPages(enrichedPages);
+        // // }
+        // }
+        // // d.setResolver(this.resolver);
+        // derivateers.add(d);
+        // } else if (type == DerivateType.PDF) {
+        // DerivateStepPDF pdfStep = (DerivateStepPDF) step;
+        // String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
+        // pdfStep.setConformanceLevel(pdfALevel);
+        // pdfStep.setDebugRender(config.isDebugPdfRender());
+        // DescriptiveMetadata descriptiveData = new DescriptiveMetadata();
+        // if (this.derivate.optMetadata().isPresent()) {
+        // var store = this.derivate.optMetadata().get();
+        // // String storePath = store.usedStore();
+        // // LOGGER.info("use metadata from {}", storePath);
+        // // // if store present, set additional information
+        // //
+        // pdfStep.getModsIdentifierXPath().ifPresent(store::setIdentifierExpression);
+        // // store.setFileGroupOCR(pdfStep.getParamOCR());
+        // // store.setFileGroupImages(pdfStep.getParamImages());
+        // // descriptiveData = store.getDescriptiveData();
+        // } else {
+        // LOGGER.info("enrich ocr from file system via {}", pdfStep.getParamOCR());
+        // Path ocrPath = this.derivateDir.resolve(pdfStep.getParamOCR());
+        // // resolver.enrichOCRFromFilesystem(pages, ocrPath);
+        // }
+        // // calculate identifier
+        // // Path pdfPath = resolver.calculatePDFPath(descriptiveData, pdfStep);
+        // // LOGGER.info("calculate local pdf derivate path '{}'", pdfPath);
+        // // output.setPath(pdfPath);
+        // // required for proper resolving with kitodo2
+        // var pdfInput = new DerivansData(input.getPath(), DerivateType.JPG);
+        // var pdfDerivateer = new PDFDerivateer(pdfInput, output, pages, pdfStep);
+        // if (this.derivate.optMetadata().isPresent()) {
+        // // ToDo
+        // //pdfDerivateer.setMetadataStore(optMetadataStore);
+        // }
+        // // pdfDerivateer.setResolver(this.resolver);
+        // derivateers.add(pdfDerivateer);
+        // }
+        // }
         return derivateers;
-    }
-
-    /**
-     * Initialize digital pages from first step's input
-     *
-     * @param steps
-     * @return
-     */
-    // private List<DigitalPage> initDigitalPages(List<DerivateStep> steps) {
-    // DerivateStep step0 = steps.get(0);
-    // LOGGER.info("resolve page information from local root dir '{}'",
-    // this.derivansDir);
-    // return this.resolver.resolveFromStep(step0);
-    // }
-
-    /**
-     * 
-     * Enrich page-wise URN from first matching filename
-     * 
-     * @param targets
-     * @param sources
-     * @return
-     */
-    private List<DigitalPage> enrichGranularURN(List<DigitalPage> targets, List<DigitalPage> sources) {
-        List<DigitalPage> enriched = new ArrayList<>();
-        for (DigitalPage target : targets) {
-            for (DigitalPage src : sources) {
-                var targetFile = target.getImagePath().getFileName();
-                var sourceFile = src.getImagePath().getFileName();
-                if (targetFile.equals(sourceFile)) {
-                    Optional<String> optIdent = src.optIdentifier();
-                    if (optIdent.isPresent()) {
-                        target.setIdentifier(optIdent.get());
-                        enriched.add(0, target);
-                        break;
-                    }
-                }
-            }
-        }
-        return enriched;
-    }
-
-
-
-    private boolean isGranularIdentifierPresent(List<DigitalPage> pages) {
-        return pages.stream()
-                .filter(page -> page.optIdentifier().isPresent())
-                .map(page -> page.optIdentifier().get())
-                .findAny().isPresent();
     }
 
     // private String getIdentifier() throws DigitalDerivansException {

@@ -1,0 +1,99 @@
+package de.ulb.digital.derivans.data.mets;
+
+import static de.ulb.digital.derivans.data.IMetadataStore.UNKNOWN;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.TestResource;
+import de.ulb.digital.derivans.model.DerivateStruct;
+
+/**
+ * @author u.hartwig
+ */
+class TestDFGMETSULBLegacy01 {
+
+	static METS mets737429;
+
+	@BeforeAll
+	static void setupClazz() throws DigitalDerivansException {
+		mets737429 = new METS(TestResource.HD_Aa_737429.get());
+		mets737429.determine();
+	}
+	
+		/**
+	 * 
+	 * Check expected information is extracted from OAI-record in old VLS 12 format
+	 * 
+	 * http://digital.bibliothek.uni-halle.de/hd/oai/?verb=GetRecord&metadataPrefix=mets&mode=xml&identifier=737429
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testDescriptiveDataHDmonography() {
+		// mods:recordInfo/mods:recordIdentifier[@source]/text()
+		assertEquals("191092622", mets737429.getPrimeMODS().getIdentifier());
+		// mods:titleInfo/mods:title
+		assertTrue(mets737429.getPrimeMODS().getTitle().startsWith("Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo"));
+		// mods:identifier[@type="urn"]
+		assertEquals("urn:nbn:de:gbv:3:3-21437", mets737429.getPrimeMODS().getIdentifierURN());
+		// METS/MODS contains no license information, therefore unknown
+		assertEquals(UNKNOWN, mets737429.getPrimeMODS().getAccessCondition());
+		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
+		assertEquals("1731", mets737429.getPrimeMODS().getYearPublication());
+		// mods:role/mods:displayForm/text()
+		// OR
+		// mods:namePart[@type="family"]/text()
+		// WITH
+		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut"
+		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl
+		assertEquals("Officina Langenhemia", mets737429.getPrimeMODS().getPerson());
+	}
+
+	@Test
+	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {
+
+		// act
+		//List<DigitalPage> pages = mets737429.getDigitalPagesInOrder();
+		// DerivateStruct struct = mets737429.mapStructureWithFilegroup("MAX");
+
+		// // assert
+		// for (DigitalPage page : pages) {
+		// 	assertTrue(page.optIdentifier().isPresent());
+		// }
+
+		// String urn1 = "urn:nbn:de:gbv:3:3-21437-p0001-0";
+		// String urn2 = "urn:nbn:de:gbv:3:3-21437-p0004-6";
+		// assertEquals(urn1, pages.get(0).optIdentifier().get());
+		// assertEquals(urn2, pages.get(3).optIdentifier().get());
+		// assertEquals("MAX/737434.jpg", pages.get(0).getImageFile());
+		// assertEquals("MAX/737436.jpg", pages.get(1).getImageFile());
+		// assertEquals("MAX/737437.jpg", pages.get(2).getImageFile());
+		// assertEquals("MAX/737438.jpg", pages.get(3).getImageFile());
+	}
+
+	@Test
+	void testStructureOf737429() throws DigitalDerivansException {
+		DerivateStruct dst = mets737429.mapStructureWithFilegroup("MAX");
+		assertNotNull(dst);
+
+		assertTrue(dst.getLabel().startsWith("Ode In Solemni Panegyri"));
+		assertEquals(1, dst.getOrder());
+
+		// level 1
+		// List<DigitalStructureTree> children = dst.getSubstructures();
+		assertEquals(2, dst.getChildren().size());
+		// assertEquals("Titelblatt", children.get(0).getLabel());
+		// assertEquals(1, children.get(0).getPage());
+		// assertEquals("[Ode]", children.get(1).getLabel());
+		// assertEquals(2, children.get(1).getPage());
+	}
+}
