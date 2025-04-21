@@ -115,18 +115,19 @@ public class Derivans {
                 DigitalFooter footer = new DigitalFooter(footerLabel, ident, pathTemplate);
                 Integer quality = stepFooter.getQuality();
                 derivateer = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
-                if (this.derivate.optMetadata().isPresent()) {
-                    ident = this.derivate.optMetadata().get().getPrimeMODS().getIdentifierURN();
+                if (this.derivate.hasMetadata()) {
+                    var derivateMD = (DerivateMD) this.derivate;
+                    ident = derivateMD.getIdentifierURN();
                     footer = new DigitalFooter(footerLabel, ident, pathTemplate);
                     // var store = this.derivate.optMetadata().get();
                     // var mdsPages = store.getDigitalPagesInOrder();
                     // // var storeLabel = store.usedStore();
-                    // if (this.isGranularIdentifierPresent(mdsPages)) {
-                    // LOGGER.debug("detected granular URN at {}", storeLabel);
-                    // var enrichedPages = this.enrichGranularURN(pages, mdsPages);
-                    // d = new ImageDerivateerJPGFooterGranular(d, quality);
-                    // d.setDigitalPages(enrichedPages);
-                    // }
+                    var allPages = this.derivate.getAllPages();
+                    if (derivateMD.isGranularIdentifierPresent()) {
+                        var enrichedPages = this.enrichGranularURN(pages, allPages);
+                        derivateer = new ImageDerivateerJPGFooterGranular((ImageDerivateerJPGFooter)derivateer, quality);
+                        derivateer.setDigitalPages(enrichedPages);
+                    }
                 }
                 derivateer = new ImageDerivateerJPGFooter(input, output, footer, pages, quality);
                 derivateer.setDerivate(derivate);
@@ -135,16 +136,18 @@ public class Derivans {
                 String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
                 pdfStep.setConformanceLevel(pdfALevel);
                 pdfStep.setDebugRender(config.isDebugPdfRender());
-                DescriptiveMetadata descriptiveData = new DescriptiveMetadata();
-                // if store present, set additional information
-                if (this.derivate.optMetadata().isPresent()) {
-                    var store = this.derivate.optMetadata().get();
-                    // String storePath = store.usedStore();
-                    // LOGGER.info("use metadata from {}", storePath);
-                    // pdfStep.getModsIdentifierXPath().ifPresent(store::setIdentifierExpression);
+                var pdfInput = new DerivansData(input.getPath(), DerivateType.JPG);
+                if (this.derivate instanceof DerivateMD) {
+                    var derivateMd = (DerivateMD) this.derivate;
+                    // var store = this.derivate.optMetadata().get();
+                    pdfStep.getModsIdentifierXPath().ifPresent(derivateMd::setIdentifierExpression);
                     // store.setFileGroupOCR(pdfStep.getParamOCR());
                     // store.setFileGroupImages(pdfStep.getParamImages());
+                    // DescriptiveMetadata descriptiveData = new DescriptiveMetadata();
+                    DescriptiveMetadata descriptiveData = derivateMd.getDescriptiveData();
                     // descriptiveData = store.getDescriptiveData();
+                    Path outputPath = pdfStep.determinePDFPath(descriptiveData.getIdentifier());
+                    output = new DerivansData(outputPath, DerivateType.PDF);
                 } else {
                     Path ocrPath = this.derivateDir.resolve(pdfStep.getParamOCR());
                     if (Files.isDirectory(ocrPath)) {
@@ -153,16 +156,8 @@ public class Derivans {
                     }
                     // resolver.enrichOCRFromFilesystem(pages, ocrPath);
                 }
-                // calculate identifier
-                // Path pdfPath = resolver.calculatePDFPath(descriptiveData, pdfStep);
-                // LOGGER.info("calculate local pdf derivate path '{}'", pdfPath);
-                // output.setPath(pdfPath);
-                // required for proper resolving with kitodo2
-                var pdfInput = new DerivansData(input.getPath(), DerivateType.JPG);
                 derivateer = new PDFDerivateer(pdfInput, output, pages, pdfStep);
                 derivateer.setDerivate(derivate);
-                if (this.derivate.optMetadata().isPresent()) {
-                }
             }
             this.derivateers.add(derivateer);
             Instant start = Instant.now();

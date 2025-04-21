@@ -46,8 +46,10 @@ import org.xml.sax.SAXException;
 
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
+import de.ulb.digital.derivans.derivate.pdf.ITextProcessor;
 import de.ulb.digital.derivans.model.pdf.MetadataType;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
+import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 
 /**
  * 
@@ -256,6 +258,10 @@ public class TestHelper {
 				pdfMeta.setXmpMetadata(handler.getDocument());
 				return pdfMeta;
 			}
+		}
+
+		public PDFOutlineEntry getOutline() throws IOException {
+			return ITextProcessor.readOutline(this.pdfPath);
 		}
 	}
 }

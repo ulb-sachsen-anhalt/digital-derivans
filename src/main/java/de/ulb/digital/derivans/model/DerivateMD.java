@@ -11,9 +11,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.data.mets.DescriptiveMetadataBuilder;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.mets.METSContainer;
 import de.ulb.digital.derivans.data.mets.METSFile;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
+import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
  * 
@@ -52,17 +56,21 @@ public class DerivateMD implements IDerivate {
 
 	private static final AtomicInteger MD_PAGE_ORDER = new AtomicInteger(1);
 
-	private Optional<METS> optMetadata = Optional.empty();
+	private METS mets;
 
 	private DerivateStruct struct;
 
 	private final List<DigitalPage> allPages = new ArrayList<>();
 
+	private DescriptiveMetadata descriptiveData;
+
+	private String identifierExpression;
+
 	public DerivateMD(Path pathInput) throws DigitalDerivansException {
 		this.pathInput = pathInput;
 		METS m = new METS(pathInput);
 		m.determine(); // critical
-		this.optMetadata = Optional.of(m);
+		this.mets = m;
 		this.pathInputDir = pathInput.getParent();
 	}
 
@@ -87,7 +95,7 @@ public class DerivateMD implements IDerivate {
 		// populateFrom = this.pathInputDir.resolve(startSubDir);
 		// }
 		var orderNr = DerivateMD.MD_PAGE_ORDER.get();
-		METSContainer logicalRoot = this.optMetadata.get().getLogicalRoot();
+		METSContainer logicalRoot = this.mets.getLogicalRoot();
 		String logicalLabel = logicalRoot.determineLabel();
 		this.struct = new DerivateStruct(orderNr, logicalLabel);
 		this.populateStruct(logicalRoot, this.startFileExtension);
@@ -95,9 +103,8 @@ public class DerivateMD implements IDerivate {
 	}
 
 	private void populateStruct(METSContainer root, String fileExt) throws DigitalDerivansException {
-		METS metsData = this.optMetadata.get();
 		if (root.getChildren().isEmpty()) {
-			List<METSFile> digiFiles = metsData.getFiles(root, this.imageGroup, fileExt);
+			List<METSFile> digiFiles = this.mets.getFiles(root, this.imageGroup, fileExt);
 			for (var digiFile : digiFiles) {
 				Path filePath = this.pathInputDir.resolve(digiFile.getLocalPath());
 				int currOrder = DerivateMD.MD_PAGE_ORDER.getAndIncrement();
@@ -123,12 +130,14 @@ public class DerivateMD implements IDerivate {
 				this.traverseStruct(subContainer, currentStruct, fileExt);
 			}
 		}
-		METS metsData = this.optMetadata.get();
-		List<METSFile> digiFiles = metsData.getFiles(currentCnt, this.imageGroup, fileExt);
+		List<METSFile> digiFiles = this.mets.getFiles(currentCnt, this.imageGroup, fileExt);
 		for (var digiFile : digiFiles) {
 			Path localFilePath = digiFile.getLocalPath();
 			int currOrder = DerivateMD.MD_PAGE_ORDER.getAndIncrement();
 			DigitalPage page = new DigitalPage(currOrder, localFilePath);
+			if(digiFile.getPageLabel() != null) {
+				page.setPageLabel(digiFile.getPageLabel());
+			}
 			currentStruct.getPages().add(page);
 			this.allPages.add(page); // also store in derivate's list
 		}
@@ -156,11 +165,6 @@ public class DerivateMD implements IDerivate {
 
 	public Path getPathInputDir() {
 		return this.pathInputDir;
-	}
-
-	@Override
-	public Optional<METS> optMetadata() {
-		return this.optMetadata;
 	}
 
 	@Override
@@ -199,4 +203,67 @@ public class DerivateMD implements IDerivate {
 		// }
 		// }
 	}
+
+	public void setIdentifierExpression(String xpressiob) {
+		this.identifierExpression = xpressiob;
+	}
+
+	public DescriptiveMetadata getDescriptiveData() throws DigitalDerivansException {
+		if (this.descriptiveData == null) {
+			DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
+			builder.setMetadataStore(this.mets);
+			this.descriptiveData = builder.person().access().identifier().title().urn().year().build();
+		} if (this.identifierExpression != null) { // identifier might have changed for PDF labelling
+			DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
+			builder.setMetadataStore(this.mets);
+			builder.setIdentifierExpression(this.identifierExpression);
+			this.descriptiveData.setIdentifier(builder.build().getIdentifier());
+		}
+		return this.descriptiveData;
+	}
+
+	@Override
+	public boolean hasMetadata() {
+		return true;
+	}
+
+
+	// public Path setPDFPath(Path pdfDir, String identifier, DerivateStepPDF step) {
+	// 		// String identifier = dd.getIdentifier();
+	// 		// if metadata is *not* present, the identifier must be invalid ("n.a.")
+	// 		if (identifier.equals(IMetadataStore.UNKNOWN)) {
+	// 			identifier = pdfDir.getFileName().toString();
+	// 			// LOGGER.warn("invalid descriptive data, use '{}' to name PDF-file", identifier);
+	// 		}
+	// 		if(step.getNamePDF().isPresent()) {
+	// 			var namePDF = step.getNamePDF().get();
+	// 			identifier = namePDF;
+	// 		}
+	// 		// LOGGER.info("use '{}' to name PDF-file", identifier);
+	// 		String fileName = identifier;
+	// 		if (! identifier.endsWith(".pdf")) {
+	// 			fileName = fileName +  ".pdf";
+	// 		}
+	// 		String prefix = step.getOutputPrefix();
+	// 		if (prefix != null && (!prefix.isBlank())) {
+	// 			fileName = prefix.concat(fileName);
+	// 		}
+	// 		return pdfDir.resolve(fileName).normalize();
+	// }
+
+	public String getIdentifierURN() {
+		return this.mets.getPrimeMODS().getIdentifierURN();
+	}
+
+	public METS getMets() {
+		return this.mets;
+	}
+
+	public boolean isGranularIdentifierPresent() {
+		var allPages = this.getAllPages();
+        return allPages.stream()
+                .filter(page -> page.optIdentifier().isPresent())
+                .map(page -> page.optIdentifier().get())
+                .findAny().isPresent();
+    }
 }

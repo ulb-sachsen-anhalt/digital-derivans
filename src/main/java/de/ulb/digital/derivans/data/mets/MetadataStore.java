@@ -109,7 +109,8 @@ public class MetadataStore implements IMetadataStore {
 		// getDescriptiveData().getTitle());
 		// return creator.build();
 		// return this.mets.getContainer(getDescriptiveData().getTitle());
-		return mets.getLogicalStructure();
+		// return mets.getLogicalStructure();
+		return null;
 	}
 
 	@Override
@@ -270,17 +271,17 @@ public class MetadataStore implements IMetadataStore {
 
 	@Override
 	public DescriptiveMetadata getDescriptiveData() throws DigitalDerivansException {
-		if (descriptiveData == null) {
-			DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
-			builder.setMetadataStore(this);
-			descriptiveData = builder.person().access().identifier().title().urn().year().build();
-		} else if (this.xPathIdentifier.isPresent()) {
-			// identifier might have changed just for PDF labelling
-			DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
-			builder.setMetadataStore(this);
-			builder.identifier();
-			descriptiveData.setIdentifier(builder.build().getIdentifier());
-		}
+		// if (descriptiveData == null) {
+		// 	DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
+		// 	builder.setMetadataStore(this);
+		// 	descriptiveData = builder.person().access().identifier().title().urn().year().build();
+		// } else if (this.xPathIdentifier.isPresent()) {
+		// 	// identifier might have changed just for PDF labelling
+		// 	DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
+		// 	builder.setMetadataStore(this);
+		// 	builder.identifier();
+		// 	descriptiveData.setIdentifier(builder.build().getIdentifier());
+		// }
 		return descriptiveData;
 	}
 

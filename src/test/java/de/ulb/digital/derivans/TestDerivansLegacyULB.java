@@ -21,7 +21,6 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.derivate.IDerivateer;
-import de.ulb.digital.derivans.derivate.pdf.ITextProcessor;
 import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 
@@ -153,8 +152,22 @@ class TestDerivansLegacyULB {
 	void testPDFOutline() throws Exception{
 		Path pdfWritten = workDir.resolve("737429.pdf");
 		assertTrue(Files.exists(pdfWritten));
-		PDFOutlineEntry outline = ITextProcessor.readOutline(pdfWritten);
+		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
 		assertNotNull(outline);
+		assertEquals("Outlines", outline.getLabel());
+		assertEquals(1, outline.getOutlineEntries().size());
+		PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
+		assertEquals("Ode In Solemni", logRoot.getLabel().substring(0, 14));
+		assertEquals(2, logRoot.getOutlineEntries().size());
+		var childOne = logRoot.getOutlineEntries().get(0);
+		var childTwo = logRoot.getOutlineEntries().get(1);
+		assertEquals("Titelblatt", childOne.getLabel());
+		assertEquals("[Ode]", childTwo.getLabel());
+		assertEquals(1, childOne.getOutlineEntries().size());
+		assertEquals("[Seite 2]", childOne.getOutlineEntries().get(0).getLabel());
+		assertEquals(3, childTwo.getOutlineEntries().size());
+		assertEquals("[Seite 3]", childTwo.getOutlineEntries().get(0).getLabel());
+		assertEquals("[Seite 5]", childTwo.getOutlineEntries().get(2).getLabel());
 	}
 
 	@Test

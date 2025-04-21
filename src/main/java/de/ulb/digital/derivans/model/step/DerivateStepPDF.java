@@ -1,12 +1,15 @@
 package de.ulb.digital.derivans.model.step;
 
 import static de.ulb.digital.derivans.data.IMetadataStore.*;
-import static de.ulb.digital.derivans.data.IMetadataStore.UNKNOWN;
 
+import java.nio.file.Path;
 import java.util.Optional;
 
+import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
+import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.data.mets.DescriptiveMetadataBuilder;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -33,6 +36,7 @@ public class DerivateStepPDF extends DerivateStep {
 	private Optional<String> optLicense = Optional.empty();
 	private Optional<String> optKeywords = Optional.empty();
 	private Optional<String> optNamePDF = Optional.empty();
+	private DescriptiveMetadata descriptiveData;
 
 	public boolean isEnrichMetadata() {
 		return enrichMetadata;
@@ -180,4 +184,46 @@ public class DerivateStepPDF extends DerivateStep {
 		this.setTitle(dd.getTitle());
 		this.setPublicationYear(dd.getYearPublished());
 	}
+
+	public Path determinePDFPath(/*Path pdfDir, */ String identifier) {
+			// String identifier = dd.getIdentifier();
+			// if metadata is *not* present, the identifier must be invalid ("n.a.")
+			if (identifier.equals(IMetadataStore.UNKNOWN)) {
+				identifier = this.inputPath.getFileName().toString();
+				// LOGGER.warn("invalid descriptive data, use '{}' to name PDF-file", identifier);
+			}
+			if(this.getNamePDF().isPresent()) {
+				var namePDF = this.getNamePDF().get();
+				identifier = namePDF;
+			}
+			// LOGGER.info("use '{}' to name PDF-file", identifier);
+			String fileName = identifier;
+			if (! identifier.endsWith(".pdf")) {
+				fileName = fileName +  ".pdf";
+			}
+			String prefix = this.getOutputPrefix();
+			if (prefix != null && (!prefix.isBlank())) {
+				fileName = prefix.concat(fileName);
+			}
+			this.outputPath = this.outputPath.resolve(fileName).normalize();
+			return this.outputPath;
+	}
+
+    // public void setDescriptiveMD(DescriptiveMetadata descriptiveData) {
+    //     this.descriptiveData = descriptiveData;
+    // }
+
+	// public DescriptiveMetadata getDescriptiveData() throws DigitalDerivansException {
+	// 	if (this.descriptiveData == null) {
+	// 		DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
+	// 		builder.setMetadataStore(this.mets);
+	// 		this.descriptiveData = builder.person().access().identifier().title().urn().year().build();
+	// 	} if (this.identifierExpression != null) { // identifier might have changed for PDF labelling
+	// 		DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
+	// 		builder.setMetadataStore(this.mets);
+	// 		builder.setIdentifierExpression(this.identifierExpression);
+	// 		this.descriptiveData.setIdentifier(builder.build().getIdentifier());
+	// 	}
+	// 	return this.descriptiveData;
+	// }
 }

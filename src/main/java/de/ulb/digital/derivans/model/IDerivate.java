@@ -28,7 +28,9 @@ public interface IDerivate {
 
 	Path getPathInputDir();
 
-	Optional<METS> optMetadata();
+	// Optional<METS> optMetadata();
+
+	boolean hasMetadata();
 
 	void setOcr(Path ocrPath) throws DigitalDerivansException;
 

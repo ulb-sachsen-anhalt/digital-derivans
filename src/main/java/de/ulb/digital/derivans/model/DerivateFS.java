@@ -137,8 +137,8 @@ public class DerivateFS implements IDerivate {
 	}
 
 	@Override
-	public Optional<METS> optMetadata() {
-		return this.optMetadata;
+	public boolean hasMetadata() {
+		return false;
 	}
 
 	@Override

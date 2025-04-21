@@ -220,20 +220,23 @@ public class ITextProcessor implements IPDFProcessor {
 	}
 
 	private List<PDFPage> addContents() throws DigitalDerivansException {
-		PdfOutline outline = this.iTextPDFDocument.getOutlines(true);
+		PdfOutline baseOutline = this.iTextPDFDocument.getOutlines(true);
 		DerivateStruct rootStruct = this.derivate.getStructure();
 		String rootLabel = rootStruct.getLabel();
 		List<PDFPage> processedPdfPages = new ArrayList<>();
-		// outline the very first page
-		PdfOutline rootOutline = outline.addOutline(rootLabel);
+		// outline the very first page with logical root
+		PdfOutline logRootOutline = baseOutline.addOutline(rootLabel);
+		logRootOutline.setTitle(rootLabel);
 		if (rootStruct.getChildren().isEmpty()) {
-			List<PDFPage> processed = this.addPages(rootStruct.getPages(), rootOutline);
+			List<PDFPage> processed = this.addPages(rootStruct.getPages(), logRootOutline);
 			processedPdfPages.addAll(processed);
 			PdfPage startPage = this.iTextPDFDocument.getPage(1);
-			rootOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(startPage)));
+			logRootOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(startPage)));
 		} else {
 			for (DerivateStruct currentStruct : rootStruct.getChildren()) {
-				this.traverse(outline, currentStruct, processedPdfPages);
+				String childLabel = currentStruct.getLabel();
+				PdfOutline childLine = logRootOutline.addOutline(childLabel);
+				this.traverse(childLine, currentStruct, processedPdfPages);
 			}
 		}
 		return processedPdfPages;
@@ -241,22 +244,23 @@ public class ITextProcessor implements IPDFProcessor {
 
 	private void traverse(PdfOutline currentOutline, DerivateStruct currStruct, List<PDFPage> processedPdfPages)
 			throws DigitalDerivansException {
-		String label = currStruct.getLabel();
-		int pageN = currStruct.getOrder();
-		LOGGER.debug("add label {} for page {}", label, pageN);
+		// String label = currStruct.getLabel();
+		// int pageN = currStruct.getOrder();
+		// LOGGER.debug("add label {} for page {}", label, pageN);
 		if (currStruct.getChildren().isEmpty()) {
 			List<PDFPage> processed = this.addPages(currStruct.getPages(), currentOutline);
 			processedPdfPages.addAll(processed);
 			int firstNumber = processed.get(0).getNumber();
 			PdfPage firstStructPage = this.requestDestinationPage(firstNumber);
-			currentOutline.addOutline(label).addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(firstStructPage)));
+			currentOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(firstStructPage)));
 		} else {
-			var subOutline = currentOutline.addOutline(label);
 			for (DerivateStruct subStruct : currStruct.getChildren()) {
-				traverse(subOutline, subStruct, processedPdfPages);
+				String childLabel = subStruct.getLabel();
+				PdfOutline childLine = currentOutline.addOutline(childLabel);
+				traverse(childLine, subStruct, processedPdfPages);
 			}
-			PdfPage destPage = this.requestDestinationPage(pageN);
-			subOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
+			// PdfPage destPage = this.requestDestinationPage(pageN);
+			// subOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(destPage)));
 		}
 	}
 
@@ -528,7 +532,7 @@ public class ITextProcessor implements IPDFProcessor {
 		}
 	}
 
-	public static PDFOutlineEntry readOutline(Path pathPdf) throws Exception {
+	public static PDFOutlineEntry readOutline(Path pathPdf) throws IOException {
 		PdfReader reader = new PdfReader(pathPdf.toFile());
 		PdfOutline pdfOutline = null;
 		try (PdfDocument pdfDocument = new PdfDocument(reader)) {

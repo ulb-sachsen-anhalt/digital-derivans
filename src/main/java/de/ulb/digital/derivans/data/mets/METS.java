@@ -21,6 +21,7 @@ import org.jdom2.Namespace;
 
 import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
 import de.ulb.digital.derivans.model.DerivateStruct;
@@ -469,32 +470,6 @@ public class METS {
 	// }
 
 	/**
-	 * 
-	 * Tree-like representation of ordered containers
-	 * 
-	 * @param fallbackTitle
-	 * @return
-	 * @throws DigitalDerivansException
-	 */
-	// public DigitalStructureTree getStructure(String fallbackTitle) throws
-	// // ///////////////////////////////
-	// // // VALIDATION SECTION ???????
-	// // // review pageNr and pageOrder
-	// // // var suspects = checkPageOrder(theRoot);
-	// // // if (!suspects.isEmpty()) {
-	// // // var excMessage = String.format("%s", suspects);
-	// // // throw new DigitalDerivansException(excMessage);
-	// // // }
-	// // // // review invalid page links
-	// // // clearInvalidPageLinks(theRoot);
-	// // // // review redundant page links
-	// // // clearRedundantPageLinks(theRoot);
-	// // return theRoot;
-	// // }
-	// return null;
-	// }
-
-	/**
 	 * Cruical part to resolve internal links between logical structs and
 	 * physical file assets in DFG-flavour via mets:smLink relations
 	 * with intermedia mets:div@TYPE="page" elements
@@ -563,17 +538,15 @@ public class METS {
 		return this.xmlHandler.write(this.file);
 	}
 
-	public DigitalStructureTree getLogicalStructure() throws DigitalDerivansException {
-		var q = String.format("//mets:div[@DMDID='%s']", this.primeId);
-		List<Element> logRoot = this.evaluate(q);
-		String typeLabel = this.primeLog.getAttributeValue("TYPE");
-		var t = METSContainerType.forLabel(typeLabel);
+	// public DigitalStructureTree getLogicalStructure() throws
+	// DigitalDerivansException {
+	// var q = String.format("//mets:div[@DMDID='%s']", this.primeId);
+	// List<Element> logRoot = this.evaluate(q);
+	// String typeLabel = this.primeLog.getAttributeValue("TYPE");
+	// var t = METSContainerType.forLabel(typeLabel);
 
-		// throw new UnsupportedOperationException("Unimplemented method
-		// 'getLogicalStructure'");
-
-		return null;
-	}
+	// return null;
+	// }
 
 	/**
 	 * 
@@ -583,7 +556,7 @@ public class METS {
 	 * div => smLink => div@TYPE=page => file
 	 * 
 	 * If no files linked to given container, yield exception:
-	 * 	There must not be an empty logical section!
+	 * There must not be an empty logical section!
 	 * 
 	 * @param div
 	 * @param fileGroup
@@ -626,11 +599,25 @@ public class METS {
 			}
 		}
 		if (metsFiles.isEmpty()) {
-			String alert = String.format("No files link div %s/%s!", 
-				logID, div.determineLabel());
+			String alert = String.format("No files link div %s/%s!",
+					logID, div.determineLabel());
 			throw new DigitalDerivansException(alert);
 		}
 		return metsFiles;
+	}
+
+	public void setIdentifierExpression(String xpressiob) {
+		throw new UnsupportedOperationException("Unimplemented method 'setIdentifierExpression'");
+	}
+
+	public void enrichPDF(String identifier) throws DigitalDerivansException {
+		String mimeType = "application/pdf";
+		String fileGroup = "DOWNLOAD";
+		LOGGER.info("enrich pdf '{}' as '{}' in '{}'", identifier, mimeType, fileGroup);
+		String fileId = "PDF_" + identifier;
+		var resultText = this.addDownloadFile("DOWNLOAD", fileId, "application/pdf");
+		LOGGER.info("integrated pdf fileId '{}' in '{}'", fileId, this.file);
+		LOGGER.info("integrated mets:agent {}", resultText);
 	}
 
 }

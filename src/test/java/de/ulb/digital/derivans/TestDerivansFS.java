@@ -1,5 +1,7 @@
 package de.ulb.digital.derivans;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 
 /**
  * 
@@ -76,6 +79,14 @@ class TestDerivansFS {
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
 		assertTrue(Files.exists(pdfWritten));
+
+		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
+		assertNotNull(outline);
+		assertEquals("Outlines", outline.getLabel());
+		assertEquals(1, outline.getOutlineEntries().size());
+		PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
+		assertEquals("only_images", logRoot.getLabel());
+		assertEquals(4, logRoot.getOutlineEntries().size());
 	}
 
 	/**

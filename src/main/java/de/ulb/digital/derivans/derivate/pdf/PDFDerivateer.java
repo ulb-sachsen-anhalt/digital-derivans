@@ -10,12 +10,15 @@ import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
+import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
@@ -34,12 +37,10 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private static final Logger LOGGER = LogManager.getLogger(PDFDerivateer.class);
 
-	// private DigitalStructureTree structure = new DigitalStructureTree();
-
 	private DerivateStepPDF derivateStep;
 
-	private Optional<IMetadataStore> optMetadataStore = Optional.empty();
-	
+	private METS mets;
+
 	private IPDFProcessor pdfProcessor;
 
 	private PDFResult pdfResult;
@@ -58,28 +59,31 @@ public class PDFDerivateer extends BaseDerivateer {
 			DerivateStepPDF derivateStep) throws DigitalDerivansException {
 		super(input, output);
 		if (pages == null) {
-			throw new DigitalDerivansException("Invalid pages for PDF!");
+			throw new DigitalDerivansException("Miss pages for PDF!");
 		}
 		this.digitalPages = pages;
 		this.derivateStep = derivateStep;
 		this.pdfProcessor = new ITextProcessor();
 	}
 
+	@Override
+	public void setDerivate(IDerivate derivate) {
+		this.derivate = derivate;
+		if (this.derivate instanceof DerivateMD) {
+			this.mets = ((DerivateMD) this.derivate).getMets();
+		}
+	}
+
 	public DerivateStepPDF getConfig() {
 		return this.derivateStep;
 	}
 
-	public void setMetadataStore(Optional<IMetadataStore> metadataStore) throws DigitalDerivansException {
-		this.optMetadataStore = metadataStore;
-		if (this.optMetadataStore.isPresent()) {
-			var store = this.optMetadataStore.get();
-			store.setFileGroupOCR(this.derivateStep.getParamOCR());
-			store.setFileGroupImages(this.derivateStep.getParamImages());
-			var descriptiveData = store.getDescriptiveData();
-			this.derivateStep.mergeDescriptiveData(descriptiveData);
-			// this.structure = store.getStructure();
-			this.digitalPages = store.getDigitalPagesInOrder();
-		}
+	public void setDescriptiveMD(DescriptiveMetadata dmd) {
+		// var store = this.optMetadataStore.get();
+		// store.setFileGroupOCR(this.derivateStep.getParamOCR());
+		// store.setFileGroupImages(this.derivateStep.getParamImages());
+		// var descriptiveData = store.getDescriptiveData();
+		this.derivateStep.mergeDescriptiveData(dmd);
 	}
 
 	public void setPDFProcessor(IPDFProcessor processor) {
@@ -94,20 +98,20 @@ public class PDFDerivateer extends BaseDerivateer {
 			pathToPDF = pathToPDF.resolve(pathToPDF.getFileName() + ".pdf");
 		}
 		if (getDigitalPages().isEmpty()) {
-			var msg = "No pages for PDF "+pathToPDF;
+			var msg = "No pages for PDF " + pathToPDF;
 			throw new DigitalDerivansException(msg);
 		}
 		// this.resolver.enrichData(getDigitalPages(), this.getInput());
 
 		// forward pdf generation
-		this.pdfProcessor.init(this.derivateStep, /*digitalPages, structure,*/ this.derivate);
+		this.pdfProcessor.init(this.derivateStep, /* digitalPages, structure, */ this.derivate);
 		this.pdfResult = this.pdfProcessor.write(pathToPDF.toFile());
 		this.pdfResult.setPath(pathToPDF);
 		var nPagesAdded = this.pdfResult.getPdfPages().size();
 		LOGGER.info("created pdf '{}' with {} pages", pathToPDF, nPagesAdded);
 
 		// post-action
-		if (this.optMetadataStore.isPresent() && this.derivateStep.isEnrichMetadata()) {
+		if ((this.mets != null) && this.derivateStep.isEnrichMetadata()) {
 			this.enrichPDFInformation(pathToPDF);
 		} else {
 			LOGGER.warn("pdf '{}' not enriched in METS", pathToPDF);
@@ -117,12 +121,12 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private void enrichPDFInformation(Path pathtoPDF) throws DigitalDerivansException {
 		if (Files.exists(pathtoPDF)) {
-			var store = this.optMetadataStore.get();
-			var storePath = store.usedStore();
-			LOGGER.info("enrich created pdf '{}' in '{}'", pathtoPDF, storePath);
+			// var store = this.optMetadataStore.get();
+			// var storePath = store.usedStore();
+			LOGGER.info("enrich created pdf '{}' in '{}'", pathtoPDF, this.mets.getPath());
 			String filename = pathtoPDF.getFileName().toString();
 			String identifier = filename.substring(0, filename.indexOf('.'));
-			store.enrichPDF(identifier);
+			this.mets.enrichPDF(identifier);
 		} else {
 			String msg3 = "Missing pdf " + pathtoPDF.toString() + "!";
 			LOGGER.error(msg3);
@@ -135,7 +139,7 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * when no *real* metadata present
 	 */
 	// public void setStructure(DigitalStructureTree tree) {
-	// 	this.structure = tree;
+	// this.structure = tree;
 	// }
 
 	/**

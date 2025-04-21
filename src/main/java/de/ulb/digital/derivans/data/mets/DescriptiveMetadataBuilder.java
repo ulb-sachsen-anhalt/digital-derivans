@@ -9,7 +9,6 @@ import org.jdom2.Element;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
-import de.ulb.digital.derivans.data.IDescriptiveMetadataBuilder;
 import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
@@ -28,15 +27,17 @@ public class DescriptiveMetadataBuilder {
 
 	private String identifier = IMetadataStore.UNKNOWN;
 
+	private Optional<String> optIdentXpr = Optional.empty();
+
 	private String title = IMetadataStore.UNKNOWN;
 
 	private String year = IMetadataStore.UNKNOWN;
 
 	private String accessCondition = IMetadataStore.UNKNOWN;
 
-	private MetadataStore store;
+	// private MetadataStore store;
 
-	private MODS primeMods;
+	// private MODS primeMods;
 
 	private METS mets;
 
@@ -85,8 +86,8 @@ public class DescriptiveMetadataBuilder {
 	}
 
 	public String getPerson() {
-		if (this.primeMods != null) {
-			return this.primeMods.getPerson();
+		if (this.mets.getPrimeMODS() != null) {
+			return this.mets.getPrimeMODS().getPerson();
 
 		}
 		return IMetadataStore.UNKNOWN;
@@ -117,11 +118,11 @@ public class DescriptiveMetadataBuilder {
 	 * 
 	 */
 	private String loadIdentifier() throws DigitalDerivansException {
-		if (this.primeMods == null) {
+		if (this.mets.getPrimeMODS() == null) {
 			return null;
 		}
-		if (this.store.optionalIdentifierExpression().isPresent()) {
-			String xPath = this.store.optionalIdentifierExpression().get();
+		if (this.optIdentXpr.isPresent()) {
+			String xPath = this.optIdentXpr.get();
 			Element match = this.mets.evaluate(xPath).get(0);
 			if (match != null) {
 				String textualContent = match.getTextTrim();
@@ -173,9 +174,12 @@ public class DescriptiveMetadataBuilder {
 		return IMetadataStore.UNKNOWN;
 	}
 
-	public void setMetadataStore(MetadataStore store) {
-		this.store = store;
-		this.mets = store.getMets();
+	public void setMetadataStore(METS mets) {
+		this.mets = mets;
+	}
+
+	public void setIdentifierExpression(String xpr) {
+		this.optIdentXpr = Optional.of(xpr);
 	}
 
 }
