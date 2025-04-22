@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
+import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
 
 /**
@@ -82,15 +83,17 @@ class TestDFGMETSULBLegacy01 {
 
 	@Test
 	void testStructureOf737429() throws DigitalDerivansException {
-		DerivateStruct dst = mets737429.mapStructureWithFilegroup("MAX");
-		assertNotNull(dst);
+		DerivateMD derivateMD = new DerivateMD(mets737429.getPath());
+		assertNotNull(derivateMD);
+		derivateMD.init("MAX");
 
-		assertTrue(dst.getLabel().startsWith("Ode In Solemni Panegyri"));
-		assertEquals(1, dst.getOrder());
+		DerivateStruct struct = derivateMD.getStructure();
+		assertTrue(struct.getLabel().startsWith("Ode In Solemni Panegyri"));
+		assertEquals(1, struct.getOrder());
 
 		// level 1
 		// List<DigitalStructureTree> children = dst.getSubstructures();
-		assertEquals(2, dst.getChildren().size());
+		assertEquals(2, struct.getChildren().size());
 		// assertEquals("Titelblatt", children.get(0).getLabel());
 		// assertEquals(1, children.get(0).getPage());
 		// assertEquals("[Ode]", children.get(1).getLabel());

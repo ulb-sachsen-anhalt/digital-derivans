@@ -26,12 +26,10 @@ import de.ulb.digital.derivans.model.step.DerivateStep;
 
 /**
  * 
- * Common ULB Sachsen-Anhalt data setup
- * with images and METS/MODS metadata
- * from legacy vlserver to attach
- * footnote and generate some
- * additional derivates for dspace
- * (= 7 steps)
+ * MWE for ULB Sachsen-Anhalt 
+ * Setup contains JPG images + METS/MODS metadata
+ * generate images, attach footnote, create PDF
+ * (= 5 steps)
  * 
  * used config: src/test/resources/config/derivans-5steps.ini
  * 
@@ -116,15 +114,18 @@ class TestDerivansLegacyULB {
 	@Test
 	void ensurePathsDerivateer01() {
 		var d = derivateers.get(0);
-		assertTrue(d.getInput().getRootDir().toString().endsWith("737429/MAX"));
-		assertTrue(d.getOutput().getRootDir().toString().endsWith("737429/IMAGE_FOOTER"));
+		assertTrue(d.getInput().getRootDir().toString().endsWith("737429"));
+		assertEquals("MAX", d.getInput().getSubDir());
+		assertTrue(d.getOutput().getRootDir().toString().endsWith("737429"));
+		assertEquals("IMAGE_FOOTER",d.getOutput().getSubDir());
 	}
 
 	@Test
 	void ensurePathsDerivateer02() {
 		var d = derivateers.get(1);
-		assertTrue(d.getInput().getRootDir().toString().endsWith("737429/IMAGE_FOOTER"));
-		assertTrue(d.getOutput().getRootDir().toString().endsWith("737429/IMAGE_80"));
+		assertTrue(d.getInput().getRootDir().toString().endsWith("737429"));
+		assertEquals("IMAGE_FOOTER", d.getInput().getSubDir());
+		assertEquals("IMAGE_80", d.getOutput().getSubDir());
 	}
 
 	@Test

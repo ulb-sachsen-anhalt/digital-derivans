@@ -41,7 +41,6 @@ class TestDFGMETS {
 		var containerStructure = m.getLogicalRoot();
 		assertEquals(METSContainerType.PERIODICAL, containerStructure.getType());
 		assertEquals("Pirnaischer Chronicken und Historien Calender", containerStructure.determineLabel());
-		// assertEquals(32, m.getLogContainers().size());
 	}
 
 	/**

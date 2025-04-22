@@ -65,7 +65,7 @@ public class TestDerivansFulltextODEM {
 
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(targetMets);
-		dp.setPathConfig(configTargetDir.resolve("derivans.ini"));
+		dp.setPathConfig(configTargetDir.resolve("derivans_ulb.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 
 		// apply some scaling, too
@@ -77,7 +77,8 @@ public class TestDerivansFulltextODEM {
 		Derivans derivans = new Derivans(dc);
 
 		// act
-		// derivans.create();
+		derivans.init(targetMets);
+		derivans.create();
 		pdfPath = workDir.resolve("148811035.pdf");
 	}
 
