@@ -1,23 +1,16 @@
 package de.ulb.digital.derivans.model;
 
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.mets.DescriptiveMetadataBuilder;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.mets.METSContainer;
 import de.ulb.digital.derivans.data.mets.METSFile;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
-import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
  * 
@@ -79,7 +72,7 @@ public class DerivateMD implements IDerivate {
 	 * same directory to search for images
 	 */
 	@Override
-	public void init(Path localStartDir) throws DigitalDerivansException {
+	public void init(String localStartDir) throws DigitalDerivansException {
 		// Path populateFrom = this.pathInputDir;
 		// if (startSubDir == null) {
 		// // first try
@@ -119,7 +112,7 @@ public class DerivateMD implements IDerivate {
 		}
 	}
 
-	private void traverseStruct(METSContainer currentCnt, DerivateStruct parentStruct, 
+	private void traverseStruct(METSContainer currentCnt, DerivateStruct parentStruct,
 			String fileExt) throws DigitalDerivansException {
 		String logicalLabel = currentCnt.determineLabel();
 		Integer structOrder = Integer.valueOf(currentCnt.getAttribute("ORDER"));
@@ -135,8 +128,11 @@ public class DerivateMD implements IDerivate {
 			Path localFilePath = digiFile.getLocalPath();
 			int currOrder = DerivateMD.MD_PAGE_ORDER.getAndIncrement();
 			DigitalPage page = new DigitalPage(currOrder, localFilePath);
-			if(digiFile.getPageLabel() != null) {
+			if (digiFile.getPageLabel() != null) {
 				page.setPageLabel(digiFile.getPageLabel());
+			}
+			if (digiFile.getContentIds() != null) {
+				page.setIdentifier(digiFile.getContentIds());
 			}
 			currentStruct.getPages().add(page);
 			this.allPages.add(page); // also store in derivate's list
@@ -163,7 +159,7 @@ public class DerivateMD implements IDerivate {
 	// return currPages;
 	// }
 
-	public Path getPathInputDir() {
+	public Path getPathRootDir() {
 		return this.pathInputDir;
 	}
 
@@ -213,7 +209,8 @@ public class DerivateMD implements IDerivate {
 			DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
 			builder.setMetadataStore(this.mets);
 			this.descriptiveData = builder.person().access().identifier().title().urn().year().build();
-		} if (this.identifierExpression != null) { // identifier might have changed for PDF labelling
+		}
+		if (this.identifierExpression != null) { // identifier might have changed for PDF labelling
 			DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
 			builder.setMetadataStore(this.mets);
 			builder.setIdentifierExpression(this.identifierExpression);
@@ -223,32 +220,43 @@ public class DerivateMD implements IDerivate {
 	}
 
 	@Override
-	public boolean hasMetadata() {
+	public boolean isMetadataPresent() {
 		return true;
 	}
 
+	@Override
+	public String getStartFileExtension() {
+		return startFileExtension;
+	}
 
-	// public Path setPDFPath(Path pdfDir, String identifier, DerivateStepPDF step) {
-	// 		// String identifier = dd.getIdentifier();
-	// 		// if metadata is *not* present, the identifier must be invalid ("n.a.")
-	// 		if (identifier.equals(IMetadataStore.UNKNOWN)) {
-	// 			identifier = pdfDir.getFileName().toString();
-	// 			// LOGGER.warn("invalid descriptive data, use '{}' to name PDF-file", identifier);
-	// 		}
-	// 		if(step.getNamePDF().isPresent()) {
-	// 			var namePDF = step.getNamePDF().get();
-	// 			identifier = namePDF;
-	// 		}
-	// 		// LOGGER.info("use '{}' to name PDF-file", identifier);
-	// 		String fileName = identifier;
-	// 		if (! identifier.endsWith(".pdf")) {
-	// 			fileName = fileName +  ".pdf";
-	// 		}
-	// 		String prefix = step.getOutputPrefix();
-	// 		if (prefix != null && (!prefix.isBlank())) {
-	// 			fileName = prefix.concat(fileName);
-	// 		}
-	// 		return pdfDir.resolve(fileName).normalize();
+	@Override
+	public void setStartFileExtension(String startFileExtension) {
+		this.startFileExtension = startFileExtension;
+	}
+
+	// public Path setPDFPath(Path pdfDir, String identifier, DerivateStepPDF step)
+	// {
+	// // String identifier = dd.getIdentifier();
+	// // if metadata is *not* present, the identifier must be invalid ("n.a.")
+	// if (identifier.equals(IMetadataStore.UNKNOWN)) {
+	// identifier = pdfDir.getFileName().toString();
+	// // LOGGER.warn("invalid descriptive data, use '{}' to name PDF-file",
+	// identifier);
+	// }
+	// if(step.getNamePDF().isPresent()) {
+	// var namePDF = step.getNamePDF().get();
+	// identifier = namePDF;
+	// }
+	// // LOGGER.info("use '{}' to name PDF-file", identifier);
+	// String fileName = identifier;
+	// if (! identifier.endsWith(".pdf")) {
+	// fileName = fileName + ".pdf";
+	// }
+	// String prefix = step.getOutputPrefix();
+	// if (prefix != null && (!prefix.isBlank())) {
+	// fileName = prefix.concat(fileName);
+	// }
+	// return pdfDir.resolve(fileName).normalize();
 	// }
 
 	public String getIdentifierURN() {
@@ -261,9 +269,10 @@ public class DerivateMD implements IDerivate {
 
 	public boolean isGranularIdentifierPresent() {
 		var allPages = this.getAllPages();
-        return allPages.stream()
-                .filter(page -> page.optIdentifier().isPresent())
-                .map(page -> page.optIdentifier().get())
-                .findAny().isPresent();
-    }
+		return allPages.stream()
+				.filter(page -> page.optIdentifier().isPresent())
+				.map(page -> page.optIdentifier().get())
+				.findAny().isPresent();
+	}
+
 }

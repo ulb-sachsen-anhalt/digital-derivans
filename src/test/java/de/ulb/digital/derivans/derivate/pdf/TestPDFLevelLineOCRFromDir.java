@@ -64,8 +64,8 @@ class TestPDFLevelLineOCRFromDir {
 		// arrange pdf path and pages
 		DerivansPathResolver resolver = new DerivansPathResolver(pathTarget);
 		DerivateStepPDF step = new DerivateStepPDF();
-		step.setOutputPath(pathTarget);
-		step.setInputPath(pathImageMax);
+		step.setOutputSubDir(pathTarget);
+		step.setInputSubDir(pathImageMax);
 		step.setDebugRender(true);
 		step.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		// DescriptiveData dd = new DescriptiveData();

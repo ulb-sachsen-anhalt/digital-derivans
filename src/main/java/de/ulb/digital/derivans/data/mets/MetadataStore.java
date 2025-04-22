@@ -198,7 +198,7 @@ public class MetadataStore implements IMetadataStore {
 				fileRefSegment, imgFile.getFileGroup(), newLoc);
 			fileRefSegment = newLoc;
 		}
-		page.setImagePath(Path.of(imgFile.getFileGroup(), fileRefSegment));
+		// page.setImagePath(Path.of(imgFile.getFileGroup(), fileRefSegment));
 		// handle granular urn (aka CONTENTIDS)
 		String cntIds = imgFile.getContentIds();
 		// if(optCntIds.isPresent()) {

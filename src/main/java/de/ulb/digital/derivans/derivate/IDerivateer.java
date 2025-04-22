@@ -30,10 +30,12 @@ public interface IDerivateer {
 	int create() throws DigitalDerivansException;
 
 	List<DigitalPage> getDigitalPages();
-	
+
 	void setDigitalPages(List<DigitalPage> pages);
-	
+
 	void setDerivate(IDerivate derivate);
+
+	IDerivate getDerivate();
 
 	/**
 	 * 
@@ -44,4 +46,10 @@ public interface IDerivateer {
 	DerivateType getType();
 
 	DerivansData getInput();
+
+	void setInput(DerivansData input);
+
+	DerivansData getOutput();
+
+	void setOutput(DerivansData output);
 }

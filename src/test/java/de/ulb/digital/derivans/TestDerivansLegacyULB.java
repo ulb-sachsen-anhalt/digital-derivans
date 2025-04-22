@@ -75,7 +75,8 @@ class TestDerivansLegacyULB {
 		Derivans derivans = new Derivans(dc);
 
 		// act
-		derivans.create(input);
+		derivans.init(input);
+		derivans.create();
 		derivateers = derivans.getDerivateers();
 		steps = derivans.getSteps();
 	}
@@ -106,10 +107,24 @@ class TestDerivansLegacyULB {
 	 */
 	@Test
 	void testTypesOfDerivateers()  {
-		assertEquals("PDFDerivateer", derivateers.get(2).getClass().getSimpleName());
-		assertEquals("ImageDerivateerJPG", derivateers.get(1).getClass().getSimpleName());
 		assertNotEquals("ImageDerivateerJPGFooter", derivateers.get(0).getClass().getSimpleName());
 		assertEquals("ImageDerivateerJPGFooterGranular", derivateers.get(0).getClass().getSimpleName());
+		assertEquals("ImageDerivateerJPG", derivateers.get(1).getClass().getSimpleName());
+		assertEquals("PDFDerivateer", derivateers.get(2).getClass().getSimpleName());
+	}
+
+	@Test
+	void ensurePathsDerivateer01() {
+		var d = derivateers.get(0);
+		assertTrue(d.getInput().getRootDir().toString().endsWith("737429/MAX"));
+		assertTrue(d.getOutput().getRootDir().toString().endsWith("737429/IMAGE_FOOTER"));
+	}
+
+	@Test
+	void ensurePathsDerivateer02() {
+		var d = derivateers.get(1);
+		assertTrue(d.getInput().getRootDir().toString().endsWith("737429/IMAGE_FOOTER"));
+		assertTrue(d.getOutput().getRootDir().toString().endsWith("737429/IMAGE_80"));
 	}
 
 	@Test
@@ -149,9 +164,8 @@ class TestDerivansLegacyULB {
 	}
 
 	@Test
-	void testPDFOutline() throws Exception{
-		Path pdfWritten = workDir.resolve("737429.pdf");
-		assertTrue(Files.exists(pdfWritten));
+	void testPDFOutlineTree() throws Exception{
+		Path pdfWritten = workDir.resolve("191092622.pdf");
 		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
 		assertNotNull(outline);
 		assertEquals("Outlines", outline.getLabel());

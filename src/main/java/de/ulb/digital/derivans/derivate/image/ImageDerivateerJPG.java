@@ -1,9 +1,11 @@
 package de.ulb.digital.derivans.derivate.image;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -16,6 +18,11 @@ import de.ulb.digital.derivans.model.DigitalPage;
  *
  */
 public class ImageDerivateerJPG extends ImageDerivateer {
+
+
+	public ImageDerivateerJPG() {
+		super();
+	}
 
 	/**
 	 * 
@@ -33,14 +40,15 @@ public class ImageDerivateerJPG extends ImageDerivateer {
 	public ImageDerivateerJPG(BaseDerivateer base, Integer quality) {
 		super(base.getInput(), base.getOutput());
 		this.digitalPages = base.getDigitalPages();
-		this.resolver = base.getResolver();
 		this.imageProcessor.setQuality(quality);
 	}
 
 	private String render(DigitalPage page) {
-		Path pathIn = page.getImagePath();
-		this.resolver.setImagePath(page, this);
-		Path pathOut = page.getImagePath();
+		Path pathIn = page.getFile().withDirname(this.input.getSubDir());
+		if (!Files.exists(pathIn)) {
+			throw new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
+		}
+		Path pathOut = this.setOutpath(page);
 		try {
 			LOGGER.trace("start to write JPEG {} ({})", pathOut, imageProcessor.getQuality());
 			imageProcessor.writeJPG(pathIn, pathOut);

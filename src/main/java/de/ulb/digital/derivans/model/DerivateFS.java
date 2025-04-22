@@ -6,13 +6,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.mets.METS;
 
 /**
  * 
@@ -22,9 +20,9 @@ import de.ulb.digital.derivans.data.mets.METS;
  * layout, with the entry directory being set as label
  * for the final derivate.
  * 
- * All contained images files are assumed 
- * to be JPG files in a sub directory named 
- * "MAX" or "DEFAULT"; if nothing found, 
+ * All contained images files are assumed
+ * to be JPG files in a sub directory named
+ * "MAX" or "DEFAULT"; if nothing found,
  * searches root directory for JPG files.
  * 
  * Images are to be pages of the derivate in
@@ -40,42 +38,40 @@ public class DerivateFS implements IDerivate {
 
 	private String startFileExtension = ".jpg";
 
-	private String imageLocalDir = "MAX";
+	private String localStartDir = "DEFAULT";
 
-	private Path pathInputDir;
+	private Path pathRootDir;
 
 	private boolean inited;
-
-	private Optional<METS> optMetadata = Optional.empty();
 
 	private DerivateStruct struct;
 
 	public DerivateFS(Path pathInput) {
 		this.pathInput = pathInput;
-		this.pathInputDir = pathInput;
+		this.pathRootDir = pathInput;
 	}
 
 	/**
 	 * Include minimal sub dir resolving:
 	 * 1) ./MAX => default set at object creation
 	 * 2) ./DEFAULT
-	 * 3) ./<same_dir>
+	 * 3) ./<same_dir> which must exist
 	 * to search images
 	 */
 	@Override
-	public void init(Path localStartDir) throws DigitalDerivansException {
-		Path populateFrom = this.pathInputDir;
+	public void init(String localStartDir) throws DigitalDerivansException {
+		Path populateFrom = this.pathRootDir;
 		if (localStartDir == null) {
-			localStartDir = pathInput.resolve(this.imageLocalDir);
-			if (Files.notExists(localStartDir)) {
-				localStartDir = pathInput.resolve("DEFAULT");
-				if (Files.notExists(localStartDir)) {
-					localStartDir = pathInput.resolve(".");
+			var guessStartDir = this.pathInput.resolve(this.localStartDir);
+			if (Files.notExists(guessStartDir)) {
+				guessStartDir = this.pathInput.resolve("ORIGINAL");
+				if (Files.notExists(guessStartDir)) {
+					guessStartDir = this.pathInput.resolve("."); // hard fallback
 				}
 			}
-		}
-		if (localStartDir != null) {
-			populateFrom = this.pathInputDir.resolve(localStartDir);
+		} else {
+			this.localStartDir = localStartDir;
+			populateFrom = this.pathRootDir.resolve(localStartDir);
 		}
 		var label = this.pathInput.getFileName().toString();
 		var orderNr = this.theOrder.get();
@@ -85,7 +81,7 @@ public class DerivateFS implements IDerivate {
 	}
 
 	private void populateStruct(Path startDir, String fileExt) throws DigitalDerivansException {
-		List<Path> allFiles = this.filesFrom(startDir, fileExt);
+		List<Path> allFiles = this.filePathsFrom(startDir, fileExt);
 		for (var file : allFiles) {
 			var currentOrder = this.theOrder.getAndIncrement();
 			DigitalPage dp = new DigitalPage(currentOrder, file);
@@ -94,7 +90,7 @@ public class DerivateFS implements IDerivate {
 		}
 	}
 
-	private List<Path> filesFrom(Path theDir, String fileExt) throws DigitalDerivansException {
+	private List<Path> filePathsFrom(Path theDir, String fileExt) throws DigitalDerivansException {
 		List<Path> allFiles = new ArrayList<>();
 		try (Stream<Path> stream = Files.list(theDir)) {
 			allFiles = stream
@@ -132,12 +128,23 @@ public class DerivateFS implements IDerivate {
 		return currPages;
 	}
 
-	public Path getPathInputDir() {
-		return this.pathInputDir;
+	@Override
+	public String getStartFileExtension() {
+		return startFileExtension;
 	}
 
 	@Override
-	public boolean hasMetadata() {
+	public void setStartFileExtension(String startFileExtension) {
+		this.startFileExtension = startFileExtension;
+	}
+
+	@Override
+	public Path getPathRootDir() {
+		return this.pathRootDir;
+	}
+
+	@Override
+	public boolean isMetadataPresent() {
 		return false;
 	}
 
@@ -148,27 +155,29 @@ public class DerivateFS implements IDerivate {
 
 	@Override
 	public String getImageLocalDir() {
-		return this.imageLocalDir;
+		return this.localStartDir;
 	}
 
 	@Override
 	public void setImageLocalDir(String localDir) {
-		this.imageLocalDir = localDir;
+		this.localStartDir = localDir;
 	}
 
 	@Override
 	public void setOcr(Path ocrPath) throws DigitalDerivansException {
 		var ocrDir = this.pathInput.resolve(ocrPath);
-		List<Path> ocrFiles = this.filesFrom(ocrDir, ".xml");
+		List<Path> ocrFiles = this.filePathsFrom(ocrDir, ".xml");
 		for (var p : this.getAllPages()) {
-			var currPageName = p.getImagePath().getFileName().toString().replaceAll("(?<!^)[.][^.]*$", "");
-			for (int i = 0; i < ocrFiles.size(); i++) {
-				var ocrFile = ocrFiles.get(i).getFileName();
-				if (ocrFile.toString().startsWith(currPageName)) {
-					p.setOcrFile(ocrFiles.get(i));
-					break;
-				}
-			}
+			// var currPageName =
+			// p.getImagePath().getFileName().toString().replaceAll("(?<!^)[.][^.]*$", "");
+			// for (int i = 0; i < ocrFiles.size(); i++) {
+			// String ocrFile = ocrFiles.get(i).getFileName();
+			// if (ocrFile.toString().startsWith(currPageName)) {
+			// p.setOcrFile(ocrFiles.get(i));
+			// break;
+			// }
+			// }
 		}
 	}
+
 }

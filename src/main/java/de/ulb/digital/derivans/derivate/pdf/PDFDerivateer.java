@@ -45,6 +45,12 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private PDFResult pdfResult;
 
+
+	public PDFDerivateer(){
+		super();
+		this.pdfProcessor = new ITextProcessor();
+	}
+
 	/**
 	 * 
 	 * Create new instance on top of {@link BaseDerivateer}
@@ -74,6 +80,10 @@ public class PDFDerivateer extends BaseDerivateer {
 		}
 	}
 
+	public void setPDFStep(DerivateStepPDF step) {
+		this.derivateStep = step;
+	}
+
 	public DerivateStepPDF getConfig() {
 		return this.derivateStep;
 	}
@@ -92,12 +102,12 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	@Override
 	public int create() throws DigitalDerivansException {
-		Path pathToPDF = this.output.getPath().normalize();
+		Path pathToPDF = this.derivateStep.getPdfFilePath();
 		// if output path points to a directory, use it's name for PDF-file
 		if (Files.isDirectory(pathToPDF)) {
 			pathToPDF = pathToPDF.resolve(pathToPDF.getFileName() + ".pdf");
 		}
-		if (getDigitalPages().isEmpty()) {
+		if (this.derivate.getAllPages().isEmpty()) {
 			var msg = "No pages for PDF " + pathToPDF;
 			throw new DigitalDerivansException(msg);
 		}
@@ -125,6 +135,10 @@ public class PDFDerivateer extends BaseDerivateer {
 			// var storePath = store.usedStore();
 			LOGGER.info("enrich created pdf '{}' in '{}'", pathtoPDF, this.mets.getPath());
 			String filename = pathtoPDF.getFileName().toString();
+			if(this.getOutputPrefix().isPresent()) {
+				var optPrefix = this.getOutputPrefix().get();
+				filename = optPrefix + filename;
+			}
 			String identifier = filename.substring(0, filename.indexOf('.'));
 			this.mets.enrichPDF(identifier);
 		} else {

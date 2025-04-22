@@ -11,21 +11,24 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  */
 public class DerivansData {
 
-	private Path pathData;
+	private Path rootDir;
+
+	private String subDir;
 
 	private DerivateType type;
 
-	public DerivansData(Path pathIn, DerivateType type) {
-		this.pathData = pathIn;
+	public DerivansData(Path rootDir, String subDir, DerivateType type) {
+		this.rootDir = rootDir;
+		this.subDir = subDir;
 		this.type = type;
 	}
 
-	public Path getPath() {
-		return pathData;
+	public Path getRootDir() {
+		return rootDir;
 	}
 
-	public void setPath(Path path) {
-		this.pathData = path;
+	public String getSubDir() {
+		return this.subDir;
 	}
 
 	public DerivateType getType() {
@@ -34,6 +37,6 @@ public class DerivansData {
 
 	@Override
 	public String toString() {
-		return type + ":" + pathData;
+		return type + ":" + rootDir;
 	}
 }

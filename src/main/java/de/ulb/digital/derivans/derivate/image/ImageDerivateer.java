@@ -28,26 +28,27 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	public static final int MIN_FREE_CORES = 1;
 
-	protected Boolean insertIntoMets;
-
-	protected final Path inputDir;
-
-	protected final Path outputDir;
-
 	protected static final Logger LOGGER = LogManager.getLogger(ImageDerivateer.class);
 
 	protected int poolSize;
 
-	protected Integer maximal;
+	protected int maximal;
+
+	protected int quality;
 
 	protected ImageProcessor imageProcessor;
 
+	protected ImageDerivateer() {
+		super();
+		this.poolSize = DEFAULT_POOLSIZE;
+		this.imageProcessor = new ImageProcessor();
+	}
+
 	protected ImageDerivateer(DerivansData input, DerivansData output) {
 		super(input, output);
-		this.insertIntoMets = false;
 		this.poolSize = DEFAULT_POOLSIZE;
-		this.inputDir = input.getPath();
-		this.outputDir = output.getPath();
+		// this.inputDir = input.getRootDir().resolve(input.getSubDir());
+		// this.outputRootDir = output.getRootDir();
 		this.imageProcessor = new ImageProcessor();
 	}
 
@@ -79,6 +80,14 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 		this.imageProcessor.setMaximal(maximal);
 	}
 
+	public int getMaximal() {
+		return this.maximal;
+	}
+
+	public void setQuality(int quality) {
+		this.quality = quality;
+	}
+
 	protected boolean runWithPool(Runnable runnable) throws DigitalDerivansException {
 		try {
 			ForkJoinPool threadPool = new ForkJoinPool(poolSize);
@@ -99,17 +108,19 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 	public int create() throws DigitalDerivansException {
 
 		// basic precondition: output directory shall exist
-		if (!Files.exists(this.getOutput().getPath())) {
+		Path targetDir = this.getOutput().getRootDir().resolve(this.getOutput().getSubDir());
+		if (!Files.exists(targetDir)) {
 			try {
-				Files.createDirectory(this.getOutput().getPath());
+				Files.createDirectory(targetDir);
 			} catch (IOException e) {
 				LOGGER.error(e);
 				throw new DigitalDerivansException(e);
 			}
 		}
 
-		String msg = String.format("process '%02d' images in %s with quality %.2f in %02d threads",
-				this.digitalPages.size(), inputDir, this.imageProcessor.getQuality(), this.poolSize);
+		String msg = String.format("process '%02d' images in %s/%s with quality %.2f in %02d threads",
+				this.digitalPages.size(), this.input.getRootDir(), this.input.getSubDir(),
+				this.imageProcessor.getQuality(), this.poolSize);
 		LOGGER.info(msg);
 
 		// forward to actual image creation implementation
@@ -117,7 +128,7 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 		try {
 			boolean isSuccess = forward();
 			if (isSuccess) {
-				String msg2 = String.format("created '%02d' images at '%s'", digitalPages.size(), outputDir);
+				String msg2 = String.format("created '%02d' images at '%s'", digitalPages.size(), this.input.getSubDir());
 				LOGGER.info(msg2);
 			}
 		} catch (RuntimeException e) {

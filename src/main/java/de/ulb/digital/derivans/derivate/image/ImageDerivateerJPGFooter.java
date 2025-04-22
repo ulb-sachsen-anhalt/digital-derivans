@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.data.font.FontHandler;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
@@ -38,16 +39,27 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	protected FontHandler fontHandler = new FontHandler();
 
 	protected String footerFontFile = FontHandler.DEFAULT_FONT_FILE;
-	
+
 	private Font footerFont;
 
-	public ImageDerivateerJPGFooter(DerivansData input, DerivansData output, DigitalFooter footer, List<DigitalPage> pages, Integer quality) {
+	public ImageDerivateerJPGFooter() {
+		super();
+	}
+
+	public ImageDerivateerJPGFooter(ImageDerivateerJPGFooter copy) {
+		super(copy.input, copy.output, copy.quality);
+		this.poolSize = copy.getPoolSize();
+		this.maximal = copy.getMaximal();
+	}
+
+	public ImageDerivateerJPGFooter(DerivansData input, DerivansData output, DigitalFooter footer,
+			List<DigitalPage> pages, Integer quality) {
 		super(input, output, quality);
 		this.footer = footer;
 		this.digitalPages = pages;
 		this.init();
 	}
-	
+
 	public ImageDerivateerJPGFooter(ImageDerivateerJPGFooter jpgFooter, int quality) {
 		super(jpgFooter.getInput(), jpgFooter.getOutput(), quality);
 		this.footer = jpgFooter.getDigitalFooter();
@@ -67,7 +79,6 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	public ImageDerivateerJPGFooter(BaseDerivateer base, Integer quality, DigitalFooter footer) {
 		super(base.getInput(), base.getOutput(), quality);
 		this.digitalPages = base.getDigitalPages();
-		this.resolver = base.getResolver();
 		this.footer = footer;
 		this.init();
 	}
@@ -80,7 +91,12 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 			LOGGER.error("fail font for {}:{}", this.footerFontFile, e.getMessage());
 		}
 	}
-	
+
+	public void setFooter(DigitalFooter footer) {
+		this.footer = footer;
+		this.init();
+	}
+
 	protected DigitalFooter getDigitalFooter() {
 		return this.footer;
 	}
@@ -88,36 +104,24 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	protected void setFooterBuffer() {
 		if (this.footer.getBufferedImage() != null) {
 			this.footerBuffer = this.footer.getBufferedImage();
-		} else if (this.inputDir != null) {
-			LOGGER.warn("no footer template, create with {}x{}", DEFAULT_FOOTER_WIDTH, DEFAULT_FOOTER_HEIGHT);
-			BufferedImage bi = new BufferedImage(DEFAULT_FOOTER_WIDTH, DEFAULT_FOOTER_HEIGHT,
-					BufferedImage.TYPE_INT_RGB);
-			Graphics2D g2d = bi.createGraphics();
-			g2d.setColor(Color.DARK_GRAY);
-			g2d.fillRect(0, 0, bi.getWidth(), bi.getHeight());
-			g2d.dispose();
-			this.footerBuffer = bi;
 		}
 	}
 
 	private String renderFooter(DigitalPage page) {
-		Path sourcePath = page.getImagePath();
-		if (!Files.exists(sourcePath)) {
-			throw new RuntimeException("input '"+ sourcePath + "' missing!");
+		Path pathFile = page.getFile().withDirname(this.input.getSubDir());
+		if (!Files.exists(pathFile)) {
+			throw new DigitalDerivansRuntimeException("input '" + pathFile + "' missing!");
 		}
-		this.resolver.setImagePath(page, this);
-		Path targetPath = page.getImagePath();
-
+		Path pathOut = this.setOutpath(page);
 		try {
 			BufferedImage currentFooter = imageProcessor.clone(footerBuffer);
 			BufferedImage textFooterBuffer = addTextLayer2Footer(currentFooter, footer);
-			int newHeight = imageProcessor.writeJPGwithFooter(sourcePath, targetPath, textFooterBuffer);
+			int newHeight = imageProcessor.writeJPGwithFooter(pathFile, pathOut, textFooterBuffer);
 			page.setFooterHeight(newHeight);
 		} catch (IOException | DigitalDerivansException e) {
-			LOGGER.error("pathIn: {}, footer: {} => {}", sourcePath, footer, e.getMessage());
+			LOGGER.error("pathIn: {}, footer: {} => {}", pathOut, footer, e.getMessage());
 		}
-
-		return targetPath.toString();
+		return pathOut.toString();
 	}
 
 	protected BufferedImage addTextLayer2Footer(BufferedImage bufferedImage, DigitalFooter footR) {
@@ -129,10 +133,10 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 		LOGGER.trace("textlayer total:{}/ line:{}/ fontsize:{} ({})", totalHeight, heightPerLine, fontSize, footR);
 		Graphics2D g2d = bufferedImage.createGraphics();
 		g2d.setColor(Color.WHITE);
-		
+
 		// we want bold font with specific actual fontsize
 		String footerFontName = this.footerFont.getFontName();
-		Font theFont = new Font(footerFontName, Font.BOLD, fontSize); 
+		Font theFont = new Font(footerFontName, Font.BOLD, fontSize);
 		g2d.setFont(theFont);
 
 		int lineHeightRedux = heightPerLine - (int) (heightPerLine * 0.2);

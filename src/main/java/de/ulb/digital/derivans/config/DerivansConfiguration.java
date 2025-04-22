@@ -97,16 +97,6 @@ public class DerivansConfiguration {
 			this.paramOCR = Optional.of(params.getOcr());
 		}
 
-		// determine if inputPath points to a METS-file or directory
-		// if (Files.isDirectory(input)) {
-		// 	this.metadataFile = Optional.empty();
-		// 	this.pathDir = input;
-		// 	LOGGER.warn("no metadata available for input '{}'", input);
-		// } else if (Files.isRegularFile(input, LinkOption.NOFOLLOW_LINKS)) {
-		// 	this.metadataFile = Optional.of(input);
-		// 	this.pathDir = input.getParent();
-		// }
-
 		// set configuration file
 		if (params.getPathConfig() != null) {
 			LOGGER.debug("inspect cli config file {}", params.getPathConfig());
@@ -131,7 +121,7 @@ public class DerivansConfiguration {
 			LOGGER.warn("no config read, use fallback with {} steps", this.derivateSteps.size());
 		}
 		LOGGER.info("use config with {} steps", this.derivateSteps.size());
-		LOGGER.debug("first step inputs from '{}'", this.derivateSteps.get(0).getInputPath());
+		LOGGER.debug("first step inputs from '{}'", this.derivateSteps.get(0).getInputSubDir());
 		
 		// inspect parameters which *might* override
 		// any previously configured settings
@@ -253,8 +243,7 @@ public class DerivansConfiguration {
 				// if very first step and param image set, exchange
 				if (nSection == 1 && this.paramImages.isPresent()) {
 					var images = paramImages.get();
-					var parent = step.getInputPath().getParent();
-					step.setInputPath(parent.resolve(images));
+					step.setInputSubDir(images);
 				}
 			} else if (step.getDerivateType() == DerivateType.PDF) {
 				enrichPDFDerivateInformation((DerivateStepPDF) step, conf, derivateSection);
@@ -294,16 +283,18 @@ public class DerivansConfiguration {
 		DerivateStepImage create80sJpgs = new DerivateStepImage();
 		create80sJpgs.setOutputType(DefaultConfiguration.DEFAULT_OUTPUT_TYPE);
 		var output = DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL;
-		create80sJpgs.setOutputPath(Path.of(output));
+		create80sJpgs.setInputSubDir("DEFAULT");
+		this.paramImages.ifPresent(param -> create80sJpgs.setInputSubDir(param));
+		create80sJpgs.setOutputSubDir(output);
 		create80sJpgs.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
 		create80sJpgs.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
 		create80sJpgs.setDerivateType(DerivateType.JPG);
 		this.derivateSteps.add(create80sJpgs);
 		DerivateStepPDF createPdf = new DerivateStepPDF();
-		createPdf.setInputPath(Path.of(output));
+		createPdf.setInputSubDir(output);
 		createPdf.setDerivateType(DerivateType.PDF);
 		createPdf.setOutputType("pdf");
-		createPdf.setOutputPath(Path.of("."));
+		createPdf.setOutputSubDir(".");
 		// handle optional image group too
 		this.paramImages.ifPresent(createPdf::setParamImages);
 		// handle optional OCR data
@@ -365,23 +356,21 @@ public class DerivansConfiguration {
 		String keyInputDir = stepSection + ".input_dir";
 		Optional<String> optInputDir = extractValue(conf, keyInputDir, String.class);
 		if (optInputDir.isPresent()) {
-			var inputDir = Path.of(optInputDir.get());
 			// if (!inputDir.isAbsolute()) {
 			// 	inputDir = this.pathDir.resolve(inputDir);
 			// }
-			step.setInputPath(inputDir);
+			step.setInputSubDir(optInputDir.get());
 		}
 		// output dir
 		String keyOutputDir = stepSection + ".output_dir";
 		Optional<String> optOutputDir = extractValue(conf, keyOutputDir, String.class);
 		if (optOutputDir.isPresent()) {
-			Path output = Path.of(optOutputDir.get());
 			// if (".".equals(output.toString()) || output.toString().isBlank()) {
 			// 	output = this.pathDir;
 			// } else if (!output.isAbsolute()) {
 			// 	output = this.pathDir.resolve(optOutputDir.get());
 			// }
-			step.setOutputPath(output);
+			step.setOutputSubDir(optOutputDir.get());
 		}
 		// optional output_prefix (used for additional derivates)
 		String keyOutPrefix = stepSection + ".output_prefix";

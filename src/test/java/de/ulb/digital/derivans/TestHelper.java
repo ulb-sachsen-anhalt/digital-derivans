@@ -150,7 +150,7 @@ public class TestHelper {
 		Path metsTarget = pathTarget.resolve("737429.xml");
 		Files.copy(srcMets, metsTarget);
 		Path imagePath = pathTarget.resolve("MAX");
-		generateJpgsFromList(imagePath, 475, 750, fixture737429ImageLabel);
+		generateJpgsFromList(imagePath, 500, 800, fixture737429ImageLabel);
 		return pathTarget;
 	}
 

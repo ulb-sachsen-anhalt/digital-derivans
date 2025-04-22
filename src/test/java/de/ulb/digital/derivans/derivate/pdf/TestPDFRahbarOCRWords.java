@@ -63,8 +63,8 @@ public class TestPDFRahbarOCRWords {
 		// arrange pdf path and pages
 		DerivansPathResolver resolver = new DerivansPathResolver(workDirWord);
 		DerivateStepPDF step = new DerivateStepPDF();
-		step.setOutputPath(workDirWord);
-		step.setInputPath(pathImageMax);
+		step.setOutputSubDir(workDirWord);
+		step.setInputSubDir(pathImageMax);
 		List<DigitalPage> pages = resolver.resolveFromStep(step);
 		resolver.enrichOCRFromFilesystem(pages, targetOcrDir);
 		step.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);

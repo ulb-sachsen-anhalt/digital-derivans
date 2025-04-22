@@ -17,6 +17,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 
 /**
@@ -34,7 +35,7 @@ class TestDerivansFS {
 	 * @throws Exception
 	 */
 	@Test
-	void testDerivatesFSEnforceFlat(@TempDir Path tempDir) throws Exception {
+	void testDerivatesResolveFlat(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path pathTarget = tempDir.resolve("only_images");
@@ -46,7 +47,9 @@ class TestDerivansFS {
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
-		derivans.create(pathTarget);
+		List<IDerivateer> des = derivans.init(pathTarget);
+		assertEquals(2, des.size());
+		derivans.create();
 
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
@@ -61,7 +64,7 @@ class TestDerivansFS {
 	 * @throws Exception
 	 */
 	@Test
-	void testDerivatesFSDefaultsToMAXPath(@TempDir Path tempDir) throws Exception {
+	void testDerivatesResolveMAXPath(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path pathTarget = tempDir.resolve("only_images");
@@ -72,9 +75,11 @@ class TestDerivansFS {
 		// act
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
+		dp.setImages("MAX");
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
-		derivans.create(pathTarget);
+		derivans.init(pathTarget);
+		derivans.create();
 
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
@@ -97,7 +102,7 @@ class TestDerivansFS {
 	 * @throws Exception
 	 */
 	@Test
-	void testDerivatesFSDefaultsToDEFAULTPath(@TempDir Path tempDir) throws Exception {
+	void testDerivatesResolveDEFAULTPath(@TempDir Path tempDir) throws Exception {
 
 		// arrange
 		Path pathTarget = tempDir.resolve("only_images");
@@ -110,7 +115,8 @@ class TestDerivansFS {
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
-		derivans.create(pathTarget);
+		derivans.init(pathTarget);
+		derivans.create();
 
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
@@ -137,8 +143,10 @@ class TestDerivansFS {
 		// act
 		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		dc.setParamImages("MAX");
 		Derivans derivans = new Derivans(dc);
-		derivans.create(pathTarget);
+		derivans.init(pathTarget);
+		derivans.create();
 
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
@@ -183,7 +191,8 @@ class TestDerivansFS {
 		Derivans derivans = new Derivans(dc);
 
 		// act
-		derivans.create(pathTarget);
+		derivans.init(pathTarget);
+		derivans.create();
 
 		// assert
 		String pdfName = "16359604.pdf";

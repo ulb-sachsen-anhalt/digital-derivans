@@ -83,7 +83,7 @@ public class DerivansPathResolver {
 
 	public List<DigitalPage> resolveFromStep(DerivateStep step) {
 		List<DigitalPage> pages = new ArrayList<>();
-		Path inputPath = step.getInputPath();
+		Path inputPath = step.getInputSubDir();
 		switch (step.getDerivateType()) {
 		case JPG:
 		case JPG_FOOTER:
@@ -142,19 +142,19 @@ public class DerivansPathResolver {
 		}
 		
 		for(DigitalPage page : pages) {
-			Path imagePath = page.getImagePath().getFileName();
-			String imageName = imagePath.toString().split("\\.")[0];
-			for(Path ocrFile : ocrFiles) {
-				Path ocrFilePath = ocrFile.getFileName();
-				if(ocrFilePath.toString().startsWith(imageName)) {
-					try {
-						OCRData data = OCRReaderFactory.from(ocrFile).get(ocrFile);
-						page.setOcrData(data);
-					} catch (DigitalDerivansException e) {
-						LOGGER.error("fail read {}:{}", ocrFile, e);
-					}
-				}
-			}
+			// Path imagePath = page.getImagePath().getFileName();
+			// String imageName = imagePath.toString().split("\\.")[0];
+			// for(Path ocrFile : ocrFiles) {
+			// 	Path ocrFilePath = ocrFile.getFileName();
+			// 	if(ocrFilePath.toString().startsWith(imageName)) {
+			// 		try {
+			// 			OCRData data = OCRReaderFactory.from(ocrFile).get(ocrFile);
+			// 			page.setOcrData(data);
+			// 		} catch (DigitalDerivansException e) {
+			// 			LOGGER.error("fail read {}:{}", ocrFile, e);
+			// 		}
+			// 	}
+			// }
 		}
 		
 		return pages;
@@ -182,7 +182,7 @@ public class DerivansPathResolver {
 	 * @return
 	 */
 	public List<DigitalPage> enrichData(List<DigitalPage> pages, DerivansData inputData) {
-		Path nextDir = inputData.getPath();
+		Path nextDir = inputData.getRootDir();
 		DerivateType inputType = inputData.getType();
 		for (DigitalPage page : pages) {
 			Path prevPath = page.getImagePath();
@@ -234,7 +234,7 @@ public class DerivansPathResolver {
 		// collect information on derivateer
 		DerivateType type = derivateer.getType();
 		Optional<String> optPrefix = derivateer.getOutputPrefix();
-		Path nextDir = derivateer.getOutput().getPath();
+		Path nextDir = derivateer.getOutput().getRootDir();
 
 		// respect type
 //		if (type == DerivateType.JPG || type == DerivateType.JPG_FOOTER) {
@@ -260,7 +260,7 @@ public class DerivansPathResolver {
 
 		// resolve with new parent dir
 		Path nextPath = nextDir.resolve(Path.of(fileName));
-		page.setImagePath(nextPath);
+		// page.setImagePath(nextPath);
 		
 		return page;
 	}
@@ -270,47 +270,47 @@ public class DerivansPathResolver {
 	}
 	
 	public Path calculatePDFPath(DescriptiveMetadata dd, DerivateStepPDF step) throws DigitalDerivansException {
-		Path pdfPath = step.getOutputPath();
-		if (!Files.isDirectory(pdfPath, LinkOption.NOFOLLOW_LINKS)) {
-			pdfPath = step.getOutputPath().getParent().resolve(pdfPath);
-			try {
-				LOGGER.warn("create non-existing PDF target path {}", pdfPath);
-				Files.createDirectory(pdfPath);
-			} catch (IOException e) {
-				throw new DigitalDerivansException(e);
-			}
-		}
-		if (Files.isDirectory(pdfPath)) {
-			String identifier = dd.getIdentifier();
-			// if metadata is *not* present, the identifier must be invalid ("n.a.")
-			if (identifier.equals(IMetadataStore.UNKNOWN)) {
-				identifier = pdfPath.getFileName().toString();
-				LOGGER.warn("invalid descriptive data, use filename '{}' to name PDF-file", identifier);
-			}
-			if(step.getNamePDF().isPresent()) {
-				var namePDF = step.getNamePDF().get();
-				identifier = namePDF;
-			}
-			LOGGER.info("use '{}' to name PDF-file", identifier);
-			String fileName = identifier;
-			if (! identifier.endsWith(".pdf")) {
-				fileName = fileName +  ".pdf";
-			}
-			String prefix = step.getOutputPrefix();
-			if (prefix != null && (!prefix.isBlank())) {
-				fileName = prefix.concat(fileName);
-			}
-			return pdfPath.resolve(fileName).normalize();
-		}
+		Path pdfPath = null; //step.getOutputSubDir();
+		// if (!Files.isDirectory(pdfPath, LinkOption.NOFOLLOW_LINKS)) {
+		// 	pdfPath = step.getOutputPath().getParent().resolve(pdfPath);
+		// 	try {
+		// 		LOGGER.warn("create non-existing PDF target path {}", pdfPath);
+		// 		Files.createDirectory(pdfPath);
+		// 	} catch (IOException e) {
+		// 		throw new DigitalDerivansException(e);
+		// 	}
+		// }
+		// if (Files.isDirectory(pdfPath)) {
+		// 	String identifier = dd.getIdentifier();
+		// 	// if metadata is *not* present, the identifier must be invalid ("n.a.")
+		// 	if (identifier.equals(IMetadataStore.UNKNOWN)) {
+		// 		identifier = pdfPath.getFileName().toString();
+		// 		LOGGER.warn("invalid descriptive data, use filename '{}' to name PDF-file", identifier);
+		// 	}
+		// 	if(step.getNamePDF().isPresent()) {
+		// 		var namePDF = step.getNamePDF().get();
+		// 		identifier = namePDF;
+		// 	}
+		// 	LOGGER.info("use '{}' to name PDF-file", identifier);
+		// 	String fileName = identifier;
+		// 	if (! identifier.endsWith(".pdf")) {
+		// 		fileName = fileName +  ".pdf";
+		// 	}
+		// 	String prefix = step.getOutputPrefix();
+		// 	if (prefix != null && (!prefix.isBlank())) {
+		// 		fileName = prefix.concat(fileName);
+		// 	}
+		// 	return pdfPath.resolve(fileName).normalize();
+		// }
 
 		// if output path is set as file
 		throw new DigitalDerivansException("Can't create PDF: '" + pdfPath + "' invalid!");
 	}
 
 	public void enrichAbsoluteStartPath(List<DigitalPage> pages, Path inputPath) {
-		for (DigitalPage page : pages) {
-			page.setImagePath(inputPath.resolve(page.getImagePath()));
-		}
+		// for (DigitalPage page : pages) {
+		// 	page.setImagePath(inputPath.resolve(page.getImagePath()));
+		// }
 	}
 	
 }

@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.derivate;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,40 +25,29 @@ public class BaseDerivateer implements IDerivateer {
 	protected DerivansData input;
 
 	protected DerivansData output;
-	
+
+	// protected Path inputDir;
+
+	// protected Path outputRootDir;
+
 	protected DerivateType derivateType;
-	
+
 	protected List<DigitalPage> digitalPages;
-	
-	protected DerivansPathResolver resolver;
 
 	protected Optional<String> outputPrefix;
 
 	protected IDerivate derivate;
 
+
+	public BaseDerivateer() {
+		this.outputPrefix = Optional.empty();
+	}
+
 	public BaseDerivateer(DerivansData input, DerivansData output) {
 		this.input = input;
 		this.output = output;
-		this.resolver = new DerivansPathResolver();
 		this.derivateType = output.getType();
 		this.outputPrefix = Optional.empty();
-	}
-	
-	public void setResolver(DerivansPathResolver resolver) {
-		this.resolver = resolver;
-	}
-	
-	public DerivansPathResolver getResolver() {
-		return this.resolver;
-	}
-	
-	@Override
-	public DerivansData getInput() {
-		return this.input;
-	}
-
-	public DerivansData getOutput() {
-		return this.output;
 	}
 
 	/**
@@ -87,7 +77,7 @@ public class BaseDerivateer implements IDerivateer {
 			this.outputPrefix = Optional.of(prefix);
 		}
 	}
-	
+
 	@Override
 	public DerivateType getType() {
 		return this.derivateType;
@@ -95,8 +85,46 @@ public class BaseDerivateer implements IDerivateer {
 
 	@Override
 	public void setDerivate(IDerivate derivate) {
-		this.derivate =  derivate;
+		this.derivate = derivate;
 		this.digitalPages = this.derivate.getAllPages();
 	}
-	
+
+	@Override
+	public IDerivate getDerivate() {
+		return this.derivate;
+	}
+
+	@Override
+	public void setInput(DerivansData input) {
+		this.input = input;
+		// this.inputDir = input.getRootDir();
+	}
+
+	@Override
+	public DerivansData getInput() {
+		return this.input;
+	}
+
+	@Override
+	public void setOutput(DerivansData output) {
+		this.output = output;
+		// this.outputRootDir = output.getRootDir();
+	}
+
+	@Override
+	public DerivansData getOutput() {
+		return this.output;
+	}
+
+	protected Path setOutpath(DigitalPage page) {
+		Path pathOut = page.getFile().withDirname(this.output.getSubDir());
+		if(this.getOutputPrefix().isPresent()) {
+			var pathDir = pathOut.getParent();
+			var pathFnm = pathOut.getFileName();
+			var optPrefix = this.getOutputPrefix().get();
+			var prefixedFile = Path.of(optPrefix + pathFnm.toString());
+			pathOut = pathDir.resolve(prefixedFile);
+		}
+		return pathOut;
+	}
 }

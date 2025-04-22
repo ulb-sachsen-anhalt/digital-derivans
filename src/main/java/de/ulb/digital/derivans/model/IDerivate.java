@@ -18,7 +18,7 @@ import de.ulb.digital.derivans.data.mets.METS;
  */
 public interface IDerivate {
 
-	void init(Path derivatetPath) throws DigitalDerivansException;
+	void init(String derivatetPath) throws DigitalDerivansException;
 	
 	boolean isInited();
 
@@ -26,15 +26,17 @@ public interface IDerivate {
 
 	List<DigitalPage> getAllPages();
 
-	Path getPathInputDir();
+	Path getPathRootDir();
 
-	// Optional<METS> optMetadata();
-
-	boolean hasMetadata();
+	boolean isMetadataPresent();
 
 	void setOcr(Path ocrPath) throws DigitalDerivansException;
 
 	String getImageLocalDir();
 
 	void setImageLocalDir(String localSubDir);
+
+	void setStartFileExtension(String startFileExtension);
+
+	String getStartFileExtension();
 }

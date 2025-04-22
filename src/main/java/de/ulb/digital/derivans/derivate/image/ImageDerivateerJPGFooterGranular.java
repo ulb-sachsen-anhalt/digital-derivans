@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -23,6 +24,10 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 
 	private AtomicInteger nGranulars = new AtomicInteger();
 
+	public ImageDerivateerJPGFooterGranular() {
+		super();
+	}
+
 	/**
 	 * 
 	 * Create new Instance in rather isolated manner
@@ -33,35 +38,32 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 * @param footer
 	 * @param pages
 	 */
-	public ImageDerivateerJPGFooterGranular(DerivansData input, DerivansData output, Integer quality,
-			DigitalFooter footer, List<DigitalPage> pages) {
+	public ImageDerivateerJPGFooterGranular(DerivansData input, DerivansData output,
+			DigitalFooter footer, List<DigitalPage> pages, Integer quality) {
 		super(input, output, footer, pages, quality);
 		this.digitalPages = pages;
 	}
-	
+
 	/**
 	 * 
 	 * Forward to super constructor and set also pages
 	 * 
 	 * @param d
 	 */
-	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d, int quality) {
-		super(d, quality);
-		this.digitalPages = d.getDigitalPages();
-		this.poolSize = d.getPoolSize();
+	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d) {
+		super(d);
 	}
-	
+
 	public int getNumberOfGranularIdentifiers() {
 		return nGranulars.get();
 	}
-	
+
 	private void renderFooterGranular(DigitalPage page) {
-		Path pathIn = page.getImagePath();
+		Path pathIn = page.getFile().withDirname(this.input.getSubDir());
 		if (!Files.exists(pathIn)) {
-			throw new RuntimeException("input '"+ pathIn + "' missing!");
+			throw new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
 		}
-		this.resolver.setImagePath(page, this);
-		Path pathOut = page.getImagePath();
+		Path pathOut = this.setOutpath(page);
 		LOGGER.trace("read '{}' write '{}'", pathIn, pathOut);
 		try {
 			// keep track of granularity
@@ -70,9 +72,9 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 			if (optUrn.isPresent()) {
 				urn = optUrn.get();
 			} else {
-				throw new DigitalDerivansException("No granular URN: " + page.getImagePath()+ "!");
+				throw new DigitalDerivansException("No granular URN: " + page + "!");
 			}
-			
+
 			// do actual rendering
 			BufferedImage bi = imageProcessor.clone(this.footerBuffer);
 			DigitalFooter footer = new DigitalFooter(this.footer.getText().get(0), urn, bi);
@@ -83,7 +85,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 			// keep track of rendered granular URNs with respect to concurrency
 			nGranulars.getAndIncrement();
 		} catch (IOException | DigitalDerivansException e) {
-			LOGGER.error("pathIn: {}, footer: {} => {}", page.getImagePath(), footer, e.getMessage());
+			LOGGER.error("pathIn: {}, footer: {} => {}", page, footer, e.getMessage());
 		}
 	}
 

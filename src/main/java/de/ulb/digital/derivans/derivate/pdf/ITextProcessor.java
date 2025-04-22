@@ -286,7 +286,7 @@ public class ITextProcessor implements IPDFProcessor {
 		try {
 			for (int i = 0; i < pages.size(); i++) {
 				DigitalPage pageIn = pages.get(i);
-				String imagePath = pageIn.getImagePath().toString();
+				String imagePath = pageIn.getFile().getPath().toString();
 				Image image = new Image(ImageDataFactory.create(imagePath));
 				float imageWidth = image.getImageWidth();
 				float imageHeight = image.getImageHeight();

@@ -196,7 +196,6 @@ public class METS {
 				for (var fLoc : aFile.getChildren("FLocat", METS.NS_METS)) {
 					var fRef = fLoc.getAttributeValue("href", METS.NS_XLINK);
 					var f = new METSFile(fileGroup, fId, pMimeType, fRef);
-					// this.linkFile(f);
 					this.files.computeIfAbsent(fileGroup, k -> new ArrayList<METSFile>());
 					this.files.computeIfPresent(fileGroup, (k, v) -> {
 						v.add(f);

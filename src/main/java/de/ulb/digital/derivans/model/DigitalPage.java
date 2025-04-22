@@ -1,6 +1,8 @@
 package de.ulb.digital.derivans.model;
 
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -31,7 +33,7 @@ public class DigitalPage {
 	 * Pointer to single physical image for given page
 	 * Subject to change due subsequent derivation actions
 	 */
-	private File imgFile;
+	private DigitalPage.File file;
 
 	/**
 	 * Pointer to optional OCR Data for given page
@@ -58,7 +60,8 @@ public class DigitalPage {
 	
 	public DigitalPage(int orderNr, Path localFilePath) {
 		this.orderNr = orderNr;
-		this.imgFile = new File(FileType.IMAGE, localFilePath);
+		DigitalPage.File dFile = new File(FileType.IMAGE, localFilePath);
+		this.file = dFile;
 	}
 
 	public void setOcrFile(Path ocrPath) {
@@ -68,7 +71,7 @@ public class DigitalPage {
 	public Optional<Path> getOcrFile() {
 		if (this.ocrFile.isPresent()) {
 			File theFile = this.ocrFile.get();
-			return Optional.of(theFile.getPysicalPath());
+			return Optional.of(theFile.getPath());
 		}
 		return Optional.empty();
 	}
@@ -77,8 +80,8 @@ public class DigitalPage {
 		return orderNr;
 	}
 
-	public String getImageFile() {
-		return this.imgFile.physicalPath.toString();
+	public DigitalPage.File getFile() {
+		return this.file;
 	}
 
 	public void setIdentifier(String id) {
@@ -91,13 +94,13 @@ public class DigitalPage {
 		return this.uniqueIdentifier;
 	}
 
-	public Path getImagePath() {
-		return this.imgFile.physicalPath;
-	}
+	// public Path getImagePath() {
+	// 	return this.imgFile.physicalPath;
+	// }
 
-	public void setImagePath(Path path) {
-		this.imgFile = new File(FileType.IMAGE, path);
-	}
+	// public void setImagePath(Path path) {
+	// 	this.imgFile = new File(FileType.IMAGE, path);
+	// }
 
 	public Optional<OCRData> getOcrData() {
 		return ocrData;
@@ -134,8 +137,7 @@ public class DigitalPage {
 		builder.append("[");
 		if (orderNr != null)
 			builder.append(String.format("%04d", orderNr)).append(":");
-		else if (this.imgFile != null && this.imgFile.physicalPath != null)
-			builder.append(this.imgFile.physicalPath);
+		builder.append(this.file.toString());
 		builder.append("]");
 		return builder.toString();
 	}
@@ -147,7 +149,7 @@ public class DigitalPage {
 	 * @author u.hartwig
 	 *
 	 */
-	static class File {
+	public static class File {
 		private FileType fileType;
 		private Path physicalPath;
 
@@ -156,8 +158,22 @@ public class DigitalPage {
 			this.physicalPath = phyiscalPath;
 		}
 
-		public Path getPysicalPath() {
-			return physicalPath;
+		public Path getPath() {
+			return this.physicalPath;
+		}
+
+		public String getFileName() {
+			return this.physicalPath.getFileName().toString();
+		}
+
+		public Path withDirname(String newDirname) {
+			Path currDir = this.physicalPath.getParent();
+			Path currFile = this.physicalPath.getFileName();
+			return currDir.getParent().resolve(newDirname).resolve(currFile);
+		}
+
+		public String subDir() {
+			return this.physicalPath.getParent().getFileName().toString();
 		}
 
 		public FileType getFileType() {

@@ -140,7 +140,7 @@ public class PDFPage implements IVisualElement {
 	}
 
 	public String getImagePath() {
-		return this.digitalPage.getImageFile();
+		return this.digitalPage.getFile().getPath().toString();
 	}
 
 	public Dimension getDimension() {

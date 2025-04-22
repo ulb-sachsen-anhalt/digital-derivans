@@ -15,9 +15,9 @@ public abstract class DerivateStep {
 
 	protected String outputType;
 
-	protected Path inputPath;
+	protected String inputSubDir;
 
-	protected Path outputPath;
+	protected String outputSubDir;
 
 	protected String outputPrefix;
 
@@ -36,20 +36,20 @@ public abstract class DerivateStep {
 		this.outputType = outputType;
 	}
 
-	public Path getInputPath() {
-		return inputPath;
+	public String getInputSubDir() {
+		return inputSubDir;
 	}
 
-	public void setInputPath(Path pathInput) {
-		this.inputPath = pathInput;
+	public void setInputSubDir(String pathInput) {
+		this.inputSubDir = pathInput;
 	}
 
-	public Path getOutputPath() {
-		return outputPath;
+	public String getOutputSubDir() {
+		return this.outputSubDir;
 	}
 
-	public void setOutputPath(Path pathOutput) {
-		this.outputPath = pathOutput;
+	public void setOutputSubDir(String outputSubDir) {
+		this.outputSubDir = outputSubDir;
 	}
 
 	public String getOutputPrefix() {
@@ -77,10 +77,8 @@ public abstract class DerivateStep {
 		builder.append('{');
 		if (derivateType != null)
 			builder.append(derivateType).append(':');
-		if (inputPath != null)
-			builder.append(inputPath).append(':');
-		if (outputType != null)
-			builder.append(outputType);
+		if (inputSubDir != null)
+			builder.append(inputSubDir).append(':');
 		builder.append('}');
 		return builder.toString();
 	}
