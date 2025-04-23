@@ -60,13 +60,15 @@ public class TestDerivansExportKitodo2 {
 		}
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(configTargetDir.resolve("derivans-5steps.ini"));
-		dp.setPathInput(workDir.resolve("058141367.xml"));
+		dp.setPathConfig(configTargetDir.resolve("derivans_ulb.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 
 		// act
-		// derivans.create();
+		Path input = workDir.resolve("058141367.xml");
+		assertTrue(Files.exists(input));
+		derivans.init(input);
+		derivans.create();
 	}
 
 	@Test

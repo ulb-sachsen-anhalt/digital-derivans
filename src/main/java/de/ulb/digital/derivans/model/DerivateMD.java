@@ -104,7 +104,10 @@ public class DerivateMD implements IDerivate {
 	private void traverseStruct(METSContainer currentCnt, DerivateStruct parentStruct,
 			String fileExt) throws DigitalDerivansException {
 		String logicalLabel = currentCnt.determineLabel();
-		Integer structOrder = Integer.valueOf(currentCnt.getAttribute("ORDER"));
+		Integer structOrder = -1;
+		if (currentCnt.getAttribute("ORDER") != null) {
+			structOrder = Integer.valueOf(currentCnt.getAttribute("ORDER"));
+		}
 		DerivateStruct currentStruct = new DerivateStruct(structOrder, logicalLabel);
 		parentStruct.getChildren().add(currentStruct);
 		if (!currentCnt.getChildren().isEmpty()) {
@@ -194,17 +197,12 @@ public class DerivateMD implements IDerivate {
 	}
 
 	public DescriptiveMetadata getDescriptiveData() throws DigitalDerivansException {
-		if (this.descriptiveData == null) {
-			DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
-			builder.setMetadataStore(this.mets);
-			this.descriptiveData = builder.person().access().identifier().title().urn().year().build();
-		}
+		DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
+		builder.setMetadataStore(this.mets);
 		if (this.identifierExpression != null) { // identifier might have changed for PDF labelling
-			DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
-			builder.setMetadataStore(this.mets);
 			builder.setIdentifierExpression(this.identifierExpression);
-			this.descriptiveData.setIdentifier(builder.build().getIdentifier());
 		}
+		this.descriptiveData = builder.person().access().identifier().title().urn().year().build();
 		return this.descriptiveData;
 	}
 

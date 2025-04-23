@@ -159,8 +159,9 @@ class TestDerivansArguments {
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 
 		// alter config
+		String xPath = "//mods:mods/mods:titleInfo/mods:title";
 		var pathConfig = configTargetDir.resolve("derivans_ulb.ini");
-		var identConfLine = "mods_identifier_xpath = //mods:mods/mods:titleInfo/mods:title";
+		var identConfLine = "mods_identifier_xpath = " + xPath;
 		Files.writeString(pathConfig, identConfLine + System.lineSeparator(), StandardOpenOption.APPEND);
 
 		DerivansParameter dp = new DerivansParameter();
@@ -170,11 +171,15 @@ class TestDerivansArguments {
 
 		// act
 		derivans.init(thisDir.resolve("737429.xml"));
+		DerivateStep step = derivans.getSteps().get(2);
+		assertTrue(step instanceof DerivateStepPDF);
+		DerivateStepPDF stepPdf = (DerivateStepPDF) step;
+		assertEquals(xPath, stepPdf.getModsIdentifierXPath().get());
 		derivans.create();
 
 		// assert
 		var optPdf = Files.list(thisDir)
-			.filter(p -> p.getFileName().toString().endsWith(".pdf")).findFirst();
+				.filter(p -> p.getFileName().toString().endsWith(".pdf")).findFirst();
 		assertTrue(optPdf.isPresent());
 		assertTrue(optPdf.get().getFileName().toString().startsWith("Ode_In_Solemni_"));
 	}
@@ -187,7 +192,7 @@ class TestDerivansArguments {
 	 * 
 	 */
 	@Test
-	void testConfiguredXPathCollidesWithParam(@TempDir Path tmpDir) throws Exception {
+	void testConfiguredXPathOverwrittenByArg(@TempDir Path tmpDir) throws Exception {
 		var thisRoot = tmpDir.resolve("forceNameCLI");
 		Files.createDirectories(thisRoot);
 		var thisDir = TestHelper.fixturePrint737429(thisRoot);

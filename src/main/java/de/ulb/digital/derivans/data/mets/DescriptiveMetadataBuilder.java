@@ -40,43 +40,43 @@ public class DescriptiveMetadataBuilder {
 	private static final Logger LOGGER = LogManager.getLogger(DescriptiveMetadataBuilder.class);
 
 	public DescriptiveMetadataBuilder urn() {
-		this.urn = getURN();
+		this.urn = this.getURN();
 		return this;
 	}
 
 	public DescriptiveMetadataBuilder person() {
-		this.person = getPerson();
+		this.person = this.getPerson();
 		return this;
 	}
 
 	public DescriptiveMetadataBuilder identifier() throws DigitalDerivansException {
-		this.identifier = loadIdentifier();
+		this.identifier = this.loadIdentifier();
 		return this;
 	}
 
 	public DescriptiveMetadataBuilder title() {
-		this.title = getTitle();
+		this.title = this.getTitle();
 		return this;
 	}
 
 	public DescriptiveMetadataBuilder access() {
-		accessCondition = getAccessCondition();
+		this.accessCondition = this.getAccessCondition();
 		return this;
 	}
 
 	public DescriptiveMetadataBuilder year() {
-		year = getYear();
+		this.year = this.getYear();
 		return this;
 	}
 
 	public DescriptiveMetadata build() {
 		DescriptiveMetadata dd = new DescriptiveMetadata();
-		dd.setUrn(urn);
-		dd.setIdentifier(identifier);
-		dd.setTitle(title);
-		dd.setYearPublished(year);
-		dd.setPerson(person);
-		dd.setLicense(Optional.of(accessCondition));
+		dd.setUrn(this.urn);
+		dd.setIdentifier(this.identifier);
+		dd.setTitle(this.title);
+		dd.setYearPublished(this.year);
+		dd.setPerson(this.person);
+		dd.setLicense(Optional.of(this.accessCondition));
 		LOGGER.debug("build data: '{}'", dd);
 		return dd;
 	}
