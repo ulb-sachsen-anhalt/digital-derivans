@@ -24,13 +24,24 @@ class TestApp {
 	 * @throws Exception
 	 */
 	@Test
-	void testAppOdeFallbackConfiguration(@TempDir Path tempDir) throws Exception {
+	void testFallbackConfiguration(@TempDir Path tempDir) throws Exception {
 
 		// arrange metadata and images
-		Path pathTarget = TestHelper.fixturePrint737429(tempDir);
+		Path pathTarget = TestHelper.fixturePrint737429(tempDir, "DEFAULT");
+		Path metsFile = pathTarget.resolve("737429.xml");
+		var allInLines = Files.readAllLines(metsFile);
+		StringBuffer outlines = new StringBuffer();
+		for(int i=0; i < allInLines.size(); i++) {
+			String currLine = allInLines.get(i);
+			if ( currLine.contains("MAX")) {
+				currLine = currLine.replace("MAX", "DEFAULT");
+			}
+			outlines.append(currLine);
+		}
+		Files.writeString(metsFile, outlines.toString());
 
 		// act
-		String[] args = { pathTarget.resolve("737429.xml").toString() };
+		String[] args = { metsFile.toString() };
 		App.main(args);
 
 		// assert
@@ -38,15 +49,22 @@ class TestApp {
 		assertTrue(Files.exists(pathPdf));
 	}
 
+	/**
+	 * 
+	 * Behavor using common ULB configuration
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
 	@Test
 	void testAppOdeWithConfigurationFile(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		Path pathTarget = TestHelper.fixturePrint737429(tempDir);
+		Path pathTarget = TestHelper.fixturePrint737429(tempDir, "MAX");
 		
 		Path configDir = Path.of("src/test/resources/config");
 		Path configTempDir = tempDir.resolve("config");
-		Path configTemp = configTempDir.resolve("derivans.ini");
+		Path configTemp = configTempDir.resolve("derivans_ulb.ini");
 		TestHelper.copyTree(configDir, configTempDir);
 
 		// act

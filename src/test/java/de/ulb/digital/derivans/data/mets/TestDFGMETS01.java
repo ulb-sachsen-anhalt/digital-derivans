@@ -1,26 +1,27 @@
 package de.ulb.digital.derivans.data.mets;
 
-import static de.ulb.digital.derivans.data.IMetadataStore.UNKNOWN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
 
 /**
+ * 
+ * Test METS/MODS parsing for digital object urn:nbn:de:gbv:3:3-21437
+ * created 2010 for ULB inhouse / Historische Drucke
+ * VD18 PPN 191092622 / VD18 DB 10787747
+ * 
  * @author u.hartwig
  */
-class TestDFGMETSULBLegacy01 {
+class TestDFGMETS01 {
 
 	static METS mets737429;
 
@@ -30,9 +31,9 @@ class TestDFGMETSULBLegacy01 {
 		mets737429.determine();
 	}
 	
-		/**
+	/**
 	 * 
-	 * Check expected information is extracted from OAI-record in old VLS 12 format
+	 * Check expected information is extracted from OAI-record in VLS 12 format
 	 * 
 	 * http://digital.bibliothek.uni-halle.de/hd/oai/?verb=GetRecord&metadataPrefix=mets&mode=xml&identifier=737429
 	 * 
@@ -47,7 +48,7 @@ class TestDFGMETSULBLegacy01 {
 		// mods:identifier[@type="urn"]
 		assertEquals("urn:nbn:de:gbv:3:3-21437", mets737429.getPrimeMODS().getIdentifierURN());
 		// METS/MODS contains no license information, therefore unknown
-		assertEquals(UNKNOWN, mets737429.getPrimeMODS().getAccessCondition());
+		assertEquals(IDerivateer.UNKNOWN, mets737429.getPrimeMODS().getAccessCondition());
 		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
 		assertEquals("1731", mets737429.getPrimeMODS().getYearPublication());
 		// mods:role/mods:displayForm/text()

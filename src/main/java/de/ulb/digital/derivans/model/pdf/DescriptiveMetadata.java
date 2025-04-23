@@ -2,7 +2,7 @@ package de.ulb.digital.derivans.model.pdf;
 
 import java.util.Optional;
 
-import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 
 /**
  * 
@@ -16,9 +16,11 @@ import de.ulb.digital.derivans.data.IMetadataStore;
  * URNs for physical pages (granular URNs) might exist</i></li>
  * <li>Title</li>
  * <li>Person: being with central Relation, as Author or Editor<br />
- *     listed with mods:displayName, if given, otherwise mods:namePart[@type="family"]</li>
+ * listed with mods:displayName, if given, otherwise
+ * mods:namePart[@type="family"]</li>
  * <li>optional Creator (for PDF Metadata)</li>
- * <li>License: optional information from MODS:accessCondition@"use and reproduction" or
+ * <li>License: optional information from MODS:accessCondition@"use and
+ * reproduction" or
  * configuration</li>
  * </ul>
  * 
@@ -28,15 +30,15 @@ import de.ulb.digital.derivans.data.IMetadataStore;
  */
 public class DescriptiveMetadata {
 
-	private String urn = IMetadataStore.UNKNOWN;
+	private String urn = IDerivateer.UNKNOWN;
 
-	private String identifier = IMetadataStore.UNKNOWN;
+	private String identifier = IDerivateer.UNKNOWN;
 
-	private String title = IMetadataStore.UNKNOWN;
+	private String title = IDerivateer.UNKNOWN;
 
-	private String person = IMetadataStore.UNKNOWN;
+	private String person = IDerivateer.UNKNOWN;
 
-	private String yearPublished = IMetadataStore.UNKNOWN;
+	private String yearPublished = IDerivateer.UNKNOWN;
 
 	private Optional<String> license = Optional.empty();
 
@@ -79,7 +81,7 @@ public class DescriptiveMetadata {
 	}
 
 	public void setYearPublished(String yearPublished) {
-		if (IMetadataStore.UNKNOWN.equals(yearPublished))
+		if (IDerivateer.UNKNOWN.equals(yearPublished))
 			yearPublished = "0";
 		this.yearPublished = yearPublished;
 	}
@@ -89,9 +91,9 @@ public class DescriptiveMetadata {
 	}
 
 	public void setLicense(Optional<String> labelLicense) {
-		if(labelLicense.isPresent()) {
+		if (labelLicense.isPresent()) {
 			String newLicence = labelLicense.get();
-			if (! IMetadataStore.UNKNOWN.equals(newLicence)) {
+			if (!IDerivateer.UNKNOWN.equals(newLicence)) {
 				this.license = labelLicense;
 			}
 		}

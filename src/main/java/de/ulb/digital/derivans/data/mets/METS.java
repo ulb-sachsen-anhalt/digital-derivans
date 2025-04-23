@@ -21,11 +21,8 @@ import org.jdom2.Namespace;
 
 import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
-import de.ulb.digital.derivans.model.DerivateStruct;
-import de.ulb.digital.derivans.model.DigitalStructureTree;
 
 /**
  * 
@@ -66,31 +63,17 @@ public class METS {
 
 	private XMLHandler xmlHandler;
 
-	private String primeId;
+	// private String primeId;
 
 	private MODS primeMods;
-
-	// private METSContainer logicalRoot;
 
 	private Element primeLog;
 
 	private Map<String, List<METSFile>> files = new LinkedHashMap<>();
 
-	// private List<METSContainer> logContainers = new ArrayList<>();
+	// private METSContainer structure;
 
-	// private List<METSContainer> phyContainers = new ArrayList<>();
-
-	// public List<METSContainer> getPhyContainers() {
-	// return phyContainers;
-	// }
-
-	// private Map<String, Integer> pageOrders = new LinkedHashMap<>();
-
-	private METSContainer structure;
-
-	// private AtomicInteger currOrder = new AtomicInteger(1);
-
-	private Map<String, List<Integer>> logicalOrder = new LinkedHashMap<>();
+	// private Map<String, List<Integer>> logicalOrder = new LinkedHashMap<>();
 
 	public METS(Path metsfile) throws DigitalDerivansException {
 		this.file = metsfile;
@@ -107,10 +90,11 @@ public class METS {
 	 */
 	public void determine() throws DigitalDerivansException {
 		Optional<String> optRoot = this.oneRoot();
+		String primeId = null;
 		if (optRoot.isPresent()) {
-			this.primeId = optRoot.get();
+			primeId = optRoot.get();
 		} else {
-			this.primeId = this.calculatePrimeMODSId();
+			primeId = this.calculatePrimeMODSId();
 		}
 		String xpr = String.format("//mets:dmdSec[@ID='%s']//mods:mods", primeId);
 		List<Element> modsSecs = this.evaluate(xpr);
@@ -118,7 +102,7 @@ public class METS {
 			throw new DigitalDerivansException("can't identify primary MODS section using " + primeId);
 		}
 		var primeElement = modsSecs.get(0);
-		this.primeMods = new MODS(this.primeId, primeElement);
+		this.primeMods = new MODS(primeId, primeElement);
 	}
 
 	private Optional<String> oneRoot() throws DigitalDerivansException {
@@ -176,35 +160,35 @@ public class METS {
 		throw new DigitalDerivansException("Can't determine mets:div with DMD identifier in " + this.getPath());
 	}
 
-	public void setStructure() throws DigitalDerivansException {
-		this.setContainer();
-		this.setPages();
-	}
+	// public void setStructure() throws DigitalDerivansException {
+	// 	this.setContainer();
+	// 	this.setPages();
+	// }
 
-	public void setFiles(String useGroup) throws DigitalDerivansException {
-		var query = "//mets:fileGrp[@USE]";
-		if (useGroup != null) {
-			query = String.format("//mets:fileGrp[@USE='%s']", useGroup);
-		}
-		List<Element> fileGroups = this.evaluate(query);
-		for (var group : fileGroups) {
-			var fileGroup = group.getAttributeValue("USE");
-			var theFiles = group.getChildren("file", NS_METS);
-			for (var aFile : theFiles) {
-				var pMimeType = aFile.getAttributeValue("MIMETYPE");
-				var fId = aFile.getAttributeValue("ID");
-				for (var fLoc : aFile.getChildren("FLocat", METS.NS_METS)) {
-					var fRef = fLoc.getAttributeValue("href", METS.NS_XLINK);
-					var f = new METSFile(fileGroup, fId, pMimeType, fRef);
-					this.files.computeIfAbsent(fileGroup, k -> new ArrayList<METSFile>());
-					this.files.computeIfPresent(fileGroup, (k, v) -> {
-						v.add(f);
-						return v;
-					});
-				}
-			}
-		}
-	}
+	// public void setFiles(String useGroup) throws DigitalDerivansException {
+	// 	var query = "//mets:fileGrp[@USE]";
+	// 	if (useGroup != null) {
+	// 		query = String.format("//mets:fileGrp[@USE='%s']", useGroup);
+	// 	}
+	// 	List<Element> fileGroups = this.evaluate(query);
+	// 	for (var group : fileGroups) {
+	// 		var fileGroup = group.getAttributeValue("USE");
+	// 		var theFiles = group.getChildren("file", NS_METS);
+	// 		for (var aFile : theFiles) {
+	// 			var pMimeType = aFile.getAttributeValue("MIMETYPE");
+	// 			var fId = aFile.getAttributeValue("ID");
+	// 			for (var fLoc : aFile.getChildren("FLocat", METS.NS_METS)) {
+	// 				var fRef = fLoc.getAttributeValue("href", METS.NS_XLINK);
+	// 				var f = new METSFile(fileGroup, fId, pMimeType, fRef);
+	// 				this.files.computeIfAbsent(fileGroup, k -> new ArrayList<METSFile>());
+	// 				this.files.computeIfPresent(fileGroup, (k, v) -> {
+	// 					v.add(f);
+	// 					return v;
+	// 				});
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	/**
 	 * With respect to DFG METS smLink mechanics and two different
@@ -423,7 +407,7 @@ public class METS {
 			Element rootElement = firstChilds.get(0);
 			String rootId = rootElement.getAttributeValue("ID");
 			METSContainer rootCnt = new METSContainer(rootId, rootElement);
-			this.structure = rootCnt;
+			// this.structure = rootCnt;
 			// this.logContainers.add(rootCnt);
 			List<Element> childElements = METS.evaluate(String.format("//mets:div[@ID='%s']/mets:div", rootId),
 					rootElement.getDocument());
@@ -456,7 +440,6 @@ public class METS {
 		METSContainer currentCnt = new METSContainer(currentId, currentElement);
 		currentCnt.setParent(currentParent);
 		currentParent.addChild(currentCnt);
-		// this.logContainers.add(currentCnt);
 		List<Element> granElements = METS.evaluate(String.format("//mets:div[@ID='%s']/mets:div", currentId),
 				currentElement.getDocument());
 		for (var granElement : granElements) {
@@ -587,7 +570,7 @@ public class METS {
 					String fileId = fileFromGroup.getAttributeValue("ID");
 					var fstLocat = fileFromGroup.getChildren("FLocat", METS.NS_METS).get(0);
 					String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
-					var thaFile = new METSFile(fileId, hRef);
+					var thaFile = new METSFile(fileId, hRef, fileGroup);
 					thaFile.setPageLabel(pageLabel);
 					thaFile.setLocalRoot(this.getPath().getParent());
 					if (cid != null) {
@@ -598,8 +581,8 @@ public class METS {
 			}
 		}
 		if (metsFiles.isEmpty()) {
-			String alert = String.format("No files link div %s/%s!",
-					logID, div.determineLabel());
+			String alert = String.format("No files link div %s/%s in @USE=%s!",
+					logID, div.determineLabel(), fileGroup);
 			throw new DigitalDerivansException(alert);
 		}
 		return metsFiles;

@@ -35,7 +35,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  */
 public class DerivateMD implements IDerivate {
 
-	private Path pathInput;
+	// private Path pathInput;
 
 	private String startFileExtension = ".jpg";
 
@@ -47,7 +47,9 @@ public class DerivateMD implements IDerivate {
 
 	private boolean inited;
 
-	private static final AtomicInteger MD_PAGE_ORDER = new AtomicInteger(1);
+	private boolean testRessourceExists = true;
+
+	private final AtomicInteger mdPageOrder = new AtomicInteger(1);
 
 	private METS mets;
 
@@ -60,7 +62,7 @@ public class DerivateMD implements IDerivate {
 	private String identifierExpression;
 
 	public DerivateMD(Path pathInput) throws DigitalDerivansException {
-		this.pathInput = pathInput;
+		// this.pathInput = pathInput;
 		METS m = new METS(pathInput);
 		m.determine(); // critical
 		this.mets = m;
@@ -73,23 +75,10 @@ public class DerivateMD implements IDerivate {
 	 */
 	@Override
 	public void init(String localStartDir) throws DigitalDerivansException {
-		// Path populateFrom = this.pathInputDir;
-		// if (startSubDir == null) {
-		// // first try
-		// startSubDir = pathInput.resolve(this.imageLocalDir);
-		// if (Files.notExists(startSubDir)) {
-		// startSubDir = pathInput.resolve("DEFAULT");
-		// if (Files.notExists(startSubDir)) {
-		// startSubDir = pathInput.resolve(".");
-		// }
-		// }
-		// }
-		// if (startSubDir != null) {
-		// populateFrom = this.pathInputDir.resolve(startSubDir);
-		// }
-		var orderNr = DerivateMD.MD_PAGE_ORDER.get();
+		var orderNr = this.mdPageOrder.get();
 		METSContainer logicalRoot = this.mets.getLogicalRoot();
 		String logicalLabel = logicalRoot.determineLabel();
+		this.imageGroup = localStartDir;
 		this.struct = new DerivateStruct(orderNr, logicalLabel);
 		this.populateStruct(logicalRoot, this.startFileExtension);
 		this.inited = true;
@@ -99,8 +88,8 @@ public class DerivateMD implements IDerivate {
 		if (root.getChildren().isEmpty()) {
 			List<METSFile> digiFiles = this.mets.getFiles(root, this.imageGroup, fileExt);
 			for (var digiFile : digiFiles) {
-				Path filePath = this.pathInputDir.resolve(digiFile.getLocalPath());
-				int currOrder = DerivateMD.MD_PAGE_ORDER.getAndIncrement();
+				Path filePath = this.pathInputDir.resolve(digiFile.getLocalPath(this.testRessourceExists));
+				int currOrder = this.mdPageOrder.getAndIncrement();
 				DigitalPage page = new DigitalPage(currOrder, filePath);
 				this.struct.getPages().add(page);
 				this.allPages.add(page); // also store in derivate's list
@@ -125,8 +114,8 @@ public class DerivateMD implements IDerivate {
 		}
 		List<METSFile> digiFiles = this.mets.getFiles(currentCnt, this.imageGroup, fileExt);
 		for (var digiFile : digiFiles) {
-			Path localFilePath = digiFile.getLocalPath();
-			int currOrder = DerivateMD.MD_PAGE_ORDER.getAndIncrement();
+			Path localFilePath = digiFile.getLocalPath(this.testRessourceExists);
+			int currOrder = this.mdPageOrder.getAndIncrement();
 			DigitalPage page = new DigitalPage(currOrder, localFilePath);
 			if (digiFile.getPageLabel() != null) {
 				page.setPageLabel(digiFile.getPageLabel());
@@ -265,6 +254,10 @@ public class DerivateMD implements IDerivate {
 
 	public METS getMets() {
 		return this.mets;
+	}
+
+	public void setRessourceExists(boolean check) {
+		this.testRessourceExists = check;
 	}
 
 	public boolean isGranularIdentifierPresent() {

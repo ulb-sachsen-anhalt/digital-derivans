@@ -140,7 +140,7 @@ public class TestHelper {
 
 	public static List<String> fixture737429ImageLabel = List.of("737434", "737436", "737437", "737438");
 
-	public static Path fixturePrint737429(Path tempDir, Path srcMets) throws IOException {
+	public static Path fixturePrint737429(Path tempDir, Path srcMets, String imageSubDir) throws IOException {
 		Path pathTarget = tempDir.resolve("737429");
 		if (Files.exists(pathTarget)) {
 			Files.walk(pathTarget).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
@@ -149,13 +149,17 @@ public class TestHelper {
 		Files.createDirectory(pathTarget);
 		Path metsTarget = pathTarget.resolve("737429.xml");
 		Files.copy(srcMets, metsTarget);
-		Path imagePath = pathTarget.resolve("MAX");
+		Path imagePath = pathTarget.resolve(imageSubDir);
 		generateJpgsFromList(imagePath, 500, 800, fixture737429ImageLabel);
 		return pathTarget;
 	}
 
 	public static Path fixturePrint737429(Path tempDir) throws IOException {
-		return fixturePrint737429(tempDir, TestResource.HD_Aa_737429.get());
+		return fixturePrint737429(tempDir, TestResource.HD_Aa_737429.get(), "MAX");
+	}
+
+	public static Path fixturePrint737429(Path tempDir, String imageSubDir) throws IOException {
+		return fixturePrint737429(tempDir, TestResource.HD_Aa_737429.get(),imageSubDir);
 	}
 
 	public static String getText(Path writtenData, int pageNr) throws Exception {

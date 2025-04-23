@@ -1,12 +1,19 @@
 package de.ulb.digital.derivans;
 
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
-import de.ulb.digital.derivans.data.io.DerivansPathResolver;
-import de.ulb.digital.derivans.data.IMetadataStore;
-import de.ulb.digital.derivans.data.mets.METS;
-import de.ulb.digital.derivans.data.mets.MetadataStore;
-import de.ulb.digital.derivans.derivate.*;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPG;
 import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPGFooter;
 import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPGFooterGranular;
@@ -15,21 +22,13 @@ import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalFooter;
-import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
-import de.ulb.digital.derivans.model.step.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import de.ulb.digital.derivans.model.step.DerivateStep;
+import de.ulb.digital.derivans.model.step.DerivateStepImage;
+import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
+import de.ulb.digital.derivans.model.step.DerivateStepPDF;
+import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * Derive digital entities like pages with footer information and PDF from given
@@ -49,15 +48,7 @@ public class Derivans {
 
     private IDerivate derivate;
 
-    // private Path derivateDir;
-
     private final DerivansConfiguration config;
-
-    // private Optional<IMetadataStore> optMetadataStore = Optional.empty();
-
-    // private Optional<METS> optMetadata = Optional.empty();
-
-    // private DerivansPathResolver resolver;
 
     boolean footerDerivatesRendered;
 
@@ -71,10 +62,6 @@ public class Derivans {
      */
     public Derivans(DerivansConfiguration conf) throws DigitalDerivansException {
         this.config = conf;
-        // this.processDir = path;
-        // LOGGER.info("set derivates pathDir: '{}'", processDir);
-        // this.resolver = new DerivansPathResolver(this.processDir);
-        // this.resolver.setNamePrefixes(this.config.getDerivatePrefixes());
         var confSteps = this.config.getDerivateSteps();
         if (confSteps == null || confSteps.isEmpty()) {
             String msg = "DerivateSteps missing!";
@@ -148,7 +135,7 @@ public class Derivans {
                 int quality = stepFooter.getQuality();
                 footerDerivateer.setQuality(quality);
                 Path pathTemplate = stepFooter.getPathTemplate();
-                DigitalFooter footerUnknown = new DigitalFooter(footerLabel, IMetadataStore.UNKNOWN, pathTemplate);
+                DigitalFooter footerUnknown = new DigitalFooter(footerLabel, IDerivateer.UNKNOWN, pathTemplate);
                 footerDerivateer.setFooter(footerUnknown);
                 if (this.derivate.isMetadataPresent()) {
                     var derivateMD = (DerivateMD) this.derivate;
@@ -166,23 +153,12 @@ public class Derivans {
                 String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
                 pdfStep.setConformanceLevel(pdfALevel);
                 pdfStep.setDebugRender(config.isDebugPdfRender());
-                pdfStep.setPathPDF(this.derivate.getPathRootDir());
-                if (this.derivate instanceof DerivateMD) {
-                    var derivateMd = (DerivateMD) this.derivate;
-                    pdfStep.getModsIdentifierXPath().ifPresent(derivateMd::setIdentifierExpression);
-                    // derivateMd.getMets().setFiles(pdfStep.getParamImages());
-                    // derivateMd.getMets().set ???
-                    DescriptiveMetadata descriptiveData = derivateMd.getDescriptiveData();
-                    String pdfName = descriptiveData.getIdentifier()+ ".pdf";
-                    Path pdfFilePath = this.derivate.getPathRootDir().resolve(step.getOutputSubDir()).resolve(pdfName);
-                    pdfStep.setPathPDF(pdfFilePath);
-                } else {
-                    if (pdfStep.getParamOCR() != null) {
-                        Path ocrPath = this.derivate.getPathRootDir().resolve(pdfStep.getParamOCR());
-                        if (Files.isDirectory(ocrPath)) {
-                            LOGGER.info("enrich optional ocr from directory %s", pdfStep.getParamOCR());
-                            this.derivate.setOcr(ocrPath);
-                        }
+                this.setPDFPath(pdfStep);
+                if (pdfStep.getParamOCR() != null) {
+                    Path ocrPath = this.derivate.getPathRootDir().resolve(pdfStep.getParamOCR());
+                    if (Files.isDirectory(ocrPath)) {
+                        LOGGER.info("enrich optional ocr from directory %s", pdfStep.getParamOCR());
+                        this.derivate.setOcr(ocrPath);
                     }
                 }
                 ((PDFDerivateer) derivateer).setPDFStep(pdfStep);
@@ -221,5 +197,25 @@ public class Derivans {
             return new PDFDerivateer();
         }
         throw new DigitalDerivansException("Unknown type "+dType);
+    }
+
+    private void setPDFPath(DerivateStepPDF pdfStep) throws DigitalDerivansException {
+        Path   rootDir = this.derivate.getPathRootDir();
+        String pdfName = rootDir.getFileName().toString() + ".pdf"; // default PDF name like workdir
+        if (this.derivate instanceof DerivateMD) {
+            var derivateMd = (DerivateMD) this.derivate;
+            pdfStep.getModsIdentifierXPath().ifPresent(derivateMd::setIdentifierExpression);
+            DescriptiveMetadata descriptiveData = derivateMd.getDescriptiveData();
+            pdfName = descriptiveData.getIdentifier()+ ".pdf"; // if metadata present, use as PDF name
+        }
+        String finalPDFName = pdfStep.getNamePDF().orElse(pdfName); // id arg passed, use as PDF name
+        if(!finalPDFName.endsWith(".pdf")) {
+            finalPDFName += ".pdf";
+        }
+        if(Path.of(finalPDFName).isAbsolute()) {
+            pdfStep.setPathPDF(Path.of(finalPDFName));
+        } else {
+            pdfStep.setPathPDF(rootDir.resolve(finalPDFName));
+        }
     }
 }

@@ -17,6 +17,23 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  */
 public interface IDerivateer {
 
+
+	/*
+	 * Default METS file group for images
+	 */
+	String DEFAULT_INPUT_IMAGES = "DEFAULT";
+
+/*
+	 * Default METS file group for OCR-data with, most likely,
+	 * MIMETYPE="application/alto+xml"
+	 */
+	String DEFAULT_INPUT_FULLTEXT = "FULLTEXT";
+
+	/*
+	 * Mark all unresolved information about author, title, ...
+	 */
+	String UNKNOWN = "n.a.";
+
 	/**
 	 * 
 	 * Derive digitalization data.

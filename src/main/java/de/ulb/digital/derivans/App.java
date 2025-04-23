@@ -41,7 +41,8 @@ public class App {
 		try {
 			DerivansConfiguration conf = new DerivansConfiguration(dp);
 			Derivans derivans = new Derivans(conf);
-			derivans.create(dp.getPathInput());
+			derivans.init(dp.getPathInput());
+			derivans.create();
 		} catch (DigitalDerivansException e) {
 			Derivans.LOGGER.error(e.getLocalizedMessage());
 			throw new DigitalDerivansException(e);

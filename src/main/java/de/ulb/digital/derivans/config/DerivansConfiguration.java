@@ -19,14 +19,13 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
-import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_FULLTEXT;
-import static de.ulb.digital.derivans.data.IMetadataStore.DEFAULT_INPUT_IMAGES;
 
 /**
  * 
@@ -298,7 +297,7 @@ public class DerivansConfiguration {
 		// handle optional image group too
 		this.paramImages.ifPresent(createPdf::setParamImages);
 		// handle optional OCR data
-		var ocr = this.paramOCR.orElse(DEFAULT_INPUT_FULLTEXT);
+		var ocr = this.paramOCR.orElse(IDerivateer.DEFAULT_INPUT_FULLTEXT);
 		createPdf.setParamOCR(ocr);
 		this.derivateSteps.add(createPdf);
 	}

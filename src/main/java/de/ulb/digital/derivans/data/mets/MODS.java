@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 
-import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 
 /**
  * 
@@ -53,7 +53,7 @@ public class MODS {
 		} else if (properRelations.containsKey(MODSRelator.PUBLISHER)) {
 			return MODS.getSomeName(properRelations.get(MODSRelator.PUBLISHER));
 		}
-		return IMetadataStore.UNKNOWN;
+		return IDerivateer.UNKNOWN;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class MODS {
 				}
 			}
 		}
-		return IMetadataStore.UNKNOWN;
+		return IDerivateer.UNKNOWN;
 	}
 
 	private static Map<MODSRelator, List<Element>> getDesiredRelations(List<Element> nameSubtrees) {
@@ -123,7 +123,7 @@ public class MODS {
 				return optUrn.get().getTextTrim();
 			}
 		}
-		return IMetadataStore.UNKNOWN;
+		return IDerivateer.UNKNOWN;
 	}
 
 	public String getTitle() {
@@ -144,7 +144,7 @@ public class MODS {
 				return "Band";
 			}
 		}
-		return IMetadataStore.UNKNOWN;
+		return IDerivateer.UNKNOWN;
 	}
 
 	public String getIdentifierURN() {
@@ -154,7 +154,7 @@ public class MODS {
 		if (optUrn.isPresent()) {
 			return optUrn.get().getTextNormalize();
 		}
-		return IMetadataStore.UNKNOWN;
+		return IDerivateer.UNKNOWN;
 	}
 
 	public String getAccessCondition() {
@@ -162,7 +162,7 @@ public class MODS {
 		if (cond != null) {
 			return cond.getTextNormalize();
 		}
-		return IMetadataStore.UNKNOWN;
+		return IDerivateer.UNKNOWN;
 	}
 
 	public String getYearPublication() {
@@ -186,7 +186,7 @@ public class MODS {
 				return issued.getTextNormalize();
 			}
 		}
-		return IMetadataStore.UNKNOWN;
+		return IDerivateer.UNKNOWN;
 	}
 
 }

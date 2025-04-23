@@ -54,18 +54,22 @@ public class METSFile {
 	private List<METSContainer> linkedContainers = new ArrayList<>();
 
 	public METSFile(String id, String location) {
-		this("MAX", id, "image/jpeg", location, "URL");
+		this(id, location, "MAX", "image/jpeg", "URL");
 	}
 
-	public METSFile(String fileGroup, String id, String mimeType, String location) {
-		this(fileGroup, id, mimeType, location, "URL");
+	public METSFile(String id, String location, String fGroup) {
+		this(id, location, fGroup, "image/jpeg", "URL");
 	}
 
-	public METSFile(String fileGroup, String id, String mimeType, String location, String locationType) {
-		this.fileGroup = fileGroup;
+	public METSFile(String id, String location, String fileGroup, String mimeType) {
+		this(id, location, fileGroup, mimeType, "URL");
+	}
+
+	public METSFile(String id, String location, String fileGroup, String mimeType, String locationType) {
 		this.fileId = id;
-		this.mimeType = mimeType;
 		this.location = location;
+		this.fileGroup = fileGroup;
+		this.mimeType = mimeType;
 		this.locationType = locationType;
 	}
 
@@ -123,7 +127,7 @@ public class METSFile {
 		this.localRootPath = root;
 	}
 
-	public Path getLocalPath() throws DigitalDerivansException {
+	public Path getLocalPath(boolean testExists) throws DigitalDerivansException {
 		int lastSlashIndex = this.location.lastIndexOf('/');
 		if (lastSlashIndex > -1) { // even if it starts with leading slash
 			String[] tokens = this.location.split("/");
@@ -138,7 +142,7 @@ public class METSFile {
 			}
 			var theName = String.format("%s/%s", this.fileGroup, lastPart);
 			Path fileLoc = this.localRootPath.resolve(theName);
-			if (!Files.exists(fileLoc)) {
+			if (testExists && !Files.exists(fileLoc)) {
 				String alarma = String.format("Try to set invalid local path %s", fileLoc);
 				throw new DigitalDerivansException(alarma);
 			}

@@ -40,7 +40,7 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  * @author hartwig
  *
  */
-public class TestDerivansArguments {
+class TestDerivansArguments {
 
 	private static final String NAME_PDF = "the-name-of-the";
 
@@ -65,7 +65,7 @@ public class TestDerivansArguments {
 	public static void setupBeforeClass() throws Exception {
 
 		// arrange metadata and images
-		workDir = TestHelper.fixturePrint737429(tempDir);
+		workDir = TestHelper.fixturePrint737429(tempDir, "MAX");
 
 		// arrange configuration
 		// migration configuration with extended derivates
@@ -85,7 +85,8 @@ public class TestDerivansArguments {
 		Derivans derivans = new Derivans(dc);
 
 		// act
-		// derivans.create();
+		derivans.init(workDir.resolve("737429.xml"));
+		derivans.create();
 		derivateers = derivans.getDerivateers();
 		steps = derivans.getSteps();
 	}
@@ -158,18 +159,18 @@ public class TestDerivansArguments {
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 
 		// alter config
-		var pathConfig = configTargetDir.resolve("derivans.ini");
+		var pathConfig = configTargetDir.resolve("derivans_ulb.ini");
 		var identConfLine = "mods_identifier_xpath = //mods:mods/mods:titleInfo/mods:title";
 		Files.writeString(pathConfig, identConfLine + System.lineSeparator(), StandardOpenOption.APPEND);
 
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(pathConfig);
-		dp.setPathInput(thisDir.resolve("737429.xml"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 
 		// act
-		// derivans.create();
+		derivans.init(thisDir.resolve("737429.xml"));
+		derivans.create();
 
 		// assert
 		var optPdf = Files.list(thisDir)
@@ -198,19 +199,19 @@ public class TestDerivansArguments {
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 
 		// alter config
-		var pathConfig = configTargetDir.resolve("derivans.ini");
+		var pathConfig = configTargetDir.resolve("derivans_ulb.ini");
 		var identConfLine = "mods_identifier_xpath = //mods:mods/mods:titleInfo/mods:title";
 		Files.writeString(pathConfig, identConfLine + System.lineSeparator(), StandardOpenOption.APPEND);
 
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(pathConfig);
-		dp.setPathInput(thisDir.resolve("737429.xml"));
 		dp.setNamePDF(NAME_PDF);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 
 		// act
-		// derivans.create();
+		derivans.init(thisDir.resolve("737429.xml"));
+		derivans.create();
 
 		// assert
 		Path pdfWritten = thisDir.resolve(NAME_PDF_FILE);

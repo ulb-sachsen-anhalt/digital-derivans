@@ -18,7 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
@@ -34,6 +34,8 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  *
  */
 public class TestDerivansConfiguration {
+
+	private static final String ORIGINAL_SUB_DIR = "ORIGINAL";
 
 	/**
 	 * 
@@ -64,34 +66,24 @@ public class TestDerivansConfiguration {
 		assertEquals(4, dc.getPoolsize());
 
 		List<DerivateStep> steps = dc.getDerivateSteps();
-		assertEquals(3, steps.size());
+		assertEquals(2, steps.size());
 
-		// footer
-		assertTrue(steps.get(0) instanceof DerivateStepImageFooter);
-		DerivateStepImageFooter stepFooter = (DerivateStepImageFooter)steps.get(0);
-		assertEquals("jpg", stepFooter.getOutputType());
-		assertEquals(90, stepFooter.getQuality());
-		assertEquals("Universitäts- und Landesbibliothek Sachsen-Anhalt", stepFooter.getFooterLabel());
-		assertEquals("src/test/resources/config/footer_template.png", stepFooter.getPathTemplate().toString());
-		assertEquals(DerivateType.JPG_FOOTER, steps.get(0).getDerivateType());
-
-		// min derivate from footer
-		assertTrue(steps.get(1) instanceof DerivateStepImage);
-		DerivateStepImage stepMinImage = (DerivateStepImage) steps.get(1);
+		// min derivate
+		assertTrue(steps.get(0) instanceof DerivateStepImage);
+		DerivateStepImage stepMinImage = (DerivateStepImage) steps.get(0);
 		assertEquals("jpg", stepMinImage.getOutputType());
 		assertEquals(80, stepMinImage.getQuality());
-		assertEquals("IMAGE_FOOTER", stepMinImage.getInputSubDir().getFileName().toString());
-		assertEquals("IMAGE_80", stepMinImage.getOutputPath().getFileName().toString());
+		assertEquals("DEFAULT", stepMinImage.getInputSubDir());
+		assertEquals("IMAGE_80", stepMinImage.getOutputSubDir());
 		assertEquals(DerivateType.JPG, stepMinImage.getDerivateType());
 
 		// pdf
-		assertTrue(steps.get(2) instanceof DerivateStepPDF);
-		DerivateStepPDF stepPdf = (DerivateStepPDF) steps.get(2);
+		assertTrue(steps.get(1) instanceof DerivateStepPDF);
+		DerivateStepPDF stepPdf = (DerivateStepPDF) steps.get(1);
 		assertEquals("pdf", stepPdf.getOutputType());
 		assertEquals(DerivateType.PDF, stepPdf.getDerivateType());
 		assertTrue(stepPdf.isEnrichMetadata());
 	}
-
 
 	/**
 	 * 
@@ -130,10 +122,9 @@ public class TestDerivansConfiguration {
 		assertFalse(stepPDF.isEnrichMetadata());
 	}
 
-
 	/**
 	 * 
-	 * Default/Fallback configuration without 
+	 * Default/Fallback configuration without
 	 * metadata but default image sub dir (MAX)
 	 * and PDF introduced into METS
 	 * 
@@ -144,11 +135,11 @@ public class TestDerivansConfiguration {
 	void testDefaultLocalConfiguration(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		var imgDir = IMetadataStore.DEFAULT_INPUT_IMAGES;
+		var imgDir = IDerivateer.DEFAULT_INPUT_IMAGES;
 		Path pathInput = tempDir.resolve("default_local");
 		Path pathImageMax = pathInput.resolve(imgDir);
 		Files.createDirectories(pathImageMax);
-		TestHelper.generateImages(pathImageMax, 620, 877, 6,"%04d.jpg");
+		TestHelper.generateImages(pathImageMax, 620, 877, 6, "%04d.jpg");
 		var params = new DerivansParameter();
 		params.setPathInput(pathInput);
 
@@ -165,16 +156,15 @@ public class TestDerivansConfiguration {
 		// minimal derivate from images
 		assertEquals("jpg", steps.get(0).getOutputType());
 		// assertEquals(80, steps.get(0).getQuality());
-		assertEquals("MAX", steps.get(0).getInputSubDir().getFileName().toString());
-		assertEquals("IMAGE_80", steps.get(0).getOutputPath().getFileName().toString());
+		assertEquals("MAX", steps.get(0).getInputSubDir());
+		assertEquals("IMAGE_80", steps.get(0).getOutputSubDir());
 		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
 
 		// pdf
 		assertEquals("pdf", steps.get(1).getOutputType());
 		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
-		assertTrue(((DerivateStepPDF)steps.get(1)).isEnrichMetadata());
+		assertTrue(((DerivateStepPDF) steps.get(1)).isEnrichMetadata());
 	}
-
 
 	/**
 	 * 
@@ -187,7 +177,7 @@ public class TestDerivansConfiguration {
 	@Test
 	void testConfigurationRelativeImageDir(@TempDir Path tempDir) throws Exception {
 		// arrange
-		var customImageSubDir = "ORIGINAL";
+		var customImageSubDir = ORIGINAL_SUB_DIR;
 		Path pathInput = tempDir.resolve("default_local");
 		Path pathImageMax = pathInput.resolve(customImageSubDir);
 		Files.createDirectories(pathImageMax);
@@ -206,15 +196,14 @@ public class TestDerivansConfiguration {
 		// minimal derivate from images
 		assertEquals("jpg", steps.get(0).getOutputType());
 		// assertEquals(80, steps.get(0).getQuality());
-		assertEquals(customImageSubDir, steps.get(0).getInputSubDir().getFileName().toString());
-		assertEquals("IMAGE_80", steps.get(0).getOutputPath().getFileName().toString());
+		assertEquals(customImageSubDir, steps.get(0).getInputSubDir());
+		assertEquals("IMAGE_80", steps.get(0).getOutputSubDir());
 		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
 
 		// pdf
 		assertEquals("pdf", steps.get(1).getOutputType());
 		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
 	}
-
 
 	/**
 	 * 
@@ -248,15 +237,14 @@ public class TestDerivansConfiguration {
 		// minimal derivate from images
 		assertEquals("jpg", steps.get(0).getOutputType());
 		// assertEquals(80, steps.get(0).getQuality());
-		assertEquals(customImageSubDir, steps.get(0).getInputSubDir().getFileName().toString());
-		assertEquals("IMAGE_80", steps.get(0).getOutputPath().getFileName().toString());
+		assertEquals(customImageSubDir, steps.get(0).getInputSubDir());
+		assertEquals("IMAGE_80", steps.get(0).getOutputSubDir());
 		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
 
 		// pdf
 		assertEquals("pdf", steps.get(1).getOutputType());
 		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
 	}
-
 
 	/**
 	 * 
@@ -285,38 +273,37 @@ public class TestDerivansConfiguration {
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(testConfig);
 		// this is the mandatory point
-		dp.setImages("ORIGINAL");
+		dp.setImages(ORIGINAL_SUB_DIR);
 		Path pathTarget = tempDir.resolve("16359604");
 		dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
 		Path sourceImageDir = Path.of("src/test/resources/16359604");
 		TestHelper.copyTree(sourceImageDir, pathTarget);
 		// create artificial "ORIGINAL" testimages
-		Path imageDirOriginal = pathTarget.resolve("ORIGINAL");
+		Path imageDirOriginal = pathTarget.resolve(ORIGINAL_SUB_DIR);
 		List<String> ids = IntStream.range(5, 13)
 				.mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
 		// these are the least dimensions a newspaper page
 		// shall shrink to which was originally 7000x10000
 		TestHelper.generateJpgsFromList(imageDirOriginal, 700, 1000, ids);
 		// Derivans derivans = new Derivans(dc);
-		
+
 		// act
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 
 		// assert
 		var dSteps = dc.getDerivateSteps();
 		assertEquals(3, dSteps.size());
-		assertSame( DerivateType.PDF, dSteps.get(2).getDerivateType());
-		DerivateStepPDF pdfStep = (DerivateStepPDF)dSteps.get(2);
-		assertEquals("ORIGINAL", pdfStep.getParamImages());
-		assertEquals(imageDirOriginal, dSteps.get(0).getInputSubDir());
+		assertSame(DerivateType.PDF, dSteps.get(2).getDerivateType());
+		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(2);
+		assertEquals(ORIGINAL_SUB_DIR, pdfStep.getParamImages());
+		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputSubDir());
 	}
 
-
-	/** 
+	/**
 	 * Behavior if no explicite config => 2 fallback steps
 	 * just to generate a PDF from an image input group
 	 * 
-	 * If now images are in different group 
+	 * If now images are in different group
 	 * 'ORIGINAL' instead of default 'MAX',
 	 * ensure, overwriting fallback via CLI works too!
 	 * 
@@ -327,41 +314,33 @@ public class TestDerivansConfiguration {
 	void testFallbackButOverwriteImageGroup(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		// Path configTargetDir = tempDir.resolve("config");
-		// if (Files.exists(configTargetDir)) {
-		// 	Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-		// 	Files.delete(configTargetDir);
-		// }
-		// Path testConfig = configSourceDir.resolve("derivans.ini");
-		// Files.copy(testConfig, configTargetDir.resolve("derivans.ini"));
 		DerivansParameter dp = new DerivansParameter();
-		// dp.setPathConfig(testConfig);
 		// this is the mandatory point
-		dp.setImages("ORIGINAL");
+		dp.setImages(ORIGINAL_SUB_DIR);
 		Path pathTarget = tempDir.resolve("16359604");
 		dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
 		Path sourceImageDir = Path.of("src/test/resources/16359604");
 		TestHelper.copyTree(sourceImageDir, pathTarget);
 		// create artificial "ORIGINAL" testimages
-		Path imageDirOriginal = pathTarget.resolve("ORIGINAL");
+		Path imageDirOriginal = pathTarget.resolve(ORIGINAL_SUB_DIR);
 		List<String> ids = IntStream.range(5, 13)
 				.mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
 		// these are the least dimensions a newspaper page
 		// shall shrink to which was originally 7000x10000
 		TestHelper.generateJpgsFromList(imageDirOriginal, 700, 1000, ids);
 		// Derivans derivans = new Derivans(dc);
-		
+
 		// act
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 
 		// assert
 		var dSteps = dc.getDerivateSteps();
 		assertEquals(2, dSteps.size());
-		assertEquals(imageDirOriginal, dSteps.get(0).getInputSubDir());
-		assertSame( DerivateType.PDF, dSteps.get(1).getDerivateType());
-		DerivateStepPDF pdfStep = (DerivateStepPDF)dSteps.get(1);
-		assertEquals(pathTarget.resolve("IMAGE_80"), pdfStep.getInputSubDir());
-		assertEquals("ORIGINAL", pdfStep.getParamImages());
-		assertEquals(imageDirOriginal, dSteps.get(0).getInputSubDir());
+		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputSubDir());
+		assertSame(DerivateType.PDF, dSteps.get(1).getDerivateType());
+		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(1);
+		assertEquals("IMAGE_80", pdfStep.getInputSubDir());
+		assertEquals(ORIGINAL_SUB_DIR, pdfStep.getParamImages());
+		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputSubDir());
 	}
 }

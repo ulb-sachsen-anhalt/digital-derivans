@@ -3,19 +3,16 @@ package de.ulb.digital.derivans.derivate.pdf;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.IMetadataStore;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
@@ -102,11 +99,11 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	@Override
 	public int create() throws DigitalDerivansException {
-		Path pathToPDF = this.derivateStep.getPdfFilePath();
+		Path pathToPDF = this.derivateStep.getPathPDF();
 		// if output path points to a directory, use it's name for PDF-file
-		if (Files.isDirectory(pathToPDF)) {
-			pathToPDF = pathToPDF.resolve(pathToPDF.getFileName() + ".pdf");
-		}
+		// if (Files.isDirectory(pathToPDF)) {
+		// 	pathToPDF = pathToPDF.resolve(pathToPDF.getFileName() + ".pdf");
+		// }
 		if (this.derivate.getAllPages().isEmpty()) {
 			var msg = "No pages for PDF " + pathToPDF;
 			throw new DigitalDerivansException(msg);
@@ -131,8 +128,6 @@ public class PDFDerivateer extends BaseDerivateer {
 
 	private void enrichPDFInformation(Path pathtoPDF) throws DigitalDerivansException {
 		if (Files.exists(pathtoPDF)) {
-			// var store = this.optMetadataStore.get();
-			// var storePath = store.usedStore();
 			LOGGER.info("enrich created pdf '{}' in '{}'", pathtoPDF, this.mets.getPath());
 			String filename = pathtoPDF.getFileName().toString();
 			if(this.getOutputPrefix().isPresent()) {
@@ -147,14 +142,6 @@ public class PDFDerivateer extends BaseDerivateer {
 			throw new DigitalDerivansException(msg3);
 		}
 	}
-
-	/*
-	 * Set structure data for testing purposes
-	 * when no *real* metadata present
-	 */
-	// public void setStructure(DigitalStructureTree tree) {
-	// this.structure = tree;
-	// }
 
 	/**
 	 * 

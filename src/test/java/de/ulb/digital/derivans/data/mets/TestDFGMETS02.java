@@ -16,7 +16,7 @@ import de.ulb.digital.derivans.TestResource;
 /**
  * @author u.hartwig
  */
-class TestDFGMETS {
+class TestDFGMETS02 {
 	
 	@Test
 	void parseLegacyMETS() throws DigitalDerivansException {

@@ -8,9 +8,8 @@ import java.util.Optional;
 
 import org.jdom2.Element;
 
-import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
-import de.ulb.digital.derivans.data.IMetadataStore;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 
 /**
  * Encapsulate mets:div, i.e. all container elements in logical or physical
@@ -24,7 +23,7 @@ public class METSContainer {
 
 	private Map<METSContainerAttributeType, String> attributes = new EnumMap<>(METSContainerAttributeType.class);
 
-	private String label = IMetadataStore.UNKNOWN;
+	private String label = IDerivateer.UNKNOWN;
 
 	// associated parent container
 	private METSContainer parent;
@@ -116,7 +115,6 @@ public class METSContainer {
 		List<Element> kids = this.element.getChildren("div", METS.NS_METS);
 		if(! kids.isEmpty()) {
 			traverse(this);
-				// this.children.add(new METSContainer(kid));
 		}
 	}
 
@@ -196,6 +194,5 @@ public class METSContainer {
 			this.children.add(child);
 		}
 	}
-
 
 }

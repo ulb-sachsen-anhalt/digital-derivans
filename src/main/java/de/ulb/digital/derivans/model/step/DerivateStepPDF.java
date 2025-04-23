@@ -1,15 +1,11 @@
 package de.ulb.digital.derivans.model.step;
 
-import static de.ulb.digital.derivans.data.IMetadataStore.*;
-
 import java.nio.file.Path;
 import java.util.Optional;
 
-import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
-import de.ulb.digital.derivans.data.IMetadataStore;
-import de.ulb.digital.derivans.data.mets.DescriptiveMetadataBuilder;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -21,22 +17,21 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 public class DerivateStepPDF extends DerivateStep {
 
 	protected boolean enrichMetadata = true;
-	protected String paramOCR = DEFAULT_INPUT_FULLTEXT;
-	protected String paramImages = DEFAULT_INPUT_IMAGES;
+	protected String paramOCR = IDerivateer.DEFAULT_INPUT_FULLTEXT;
+	protected String paramImages = IDerivateer.DEFAULT_INPUT_IMAGES;
 	private int imageDpi = DefaultConfiguration.DEFAULT_IMAGE_DPI;
 	private Boolean debugRender = Boolean.FALSE;
 	private TypeConfiguration renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
 	private TypeConfiguration renderModus = DefaultConfiguration.DEFAULT_RENDER_VISIBILTY;
 	private Optional<String> modsIdentifierXPath = Optional.empty();
 	private String conformanceLevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
-	private String author = UNKNOWN;
-	private String title = UNKNOWN;
-	private String publicationYear = UNKNOWN;
+	private String author = IDerivateer.UNKNOWN;
+	private String title = IDerivateer.UNKNOWN;
+	private String publicationYear = IDerivateer.UNKNOWN;
 	private Optional<String> optCreator = Optional.empty();
 	private Optional<String> optLicense = Optional.empty();
 	private Optional<String> optKeywords = Optional.empty();
 	private Optional<String> optNamePDF = Optional.empty();
-	// private DescriptiveMetadata descriptiveData;
 	private Path pdfFilePath;
 
 	public boolean isEnrichMetadata() {
@@ -191,8 +186,8 @@ public class DerivateStepPDF extends DerivateStep {
 		this.pdfFilePath = pdfFilePath;
 	}
 
-	public Path getPdfFilePath() {
-		return this.pdfFilePath;
+	public Path getPathPDF() {
+		return this.pdfFilePath.normalize();
 	}
 
 }
