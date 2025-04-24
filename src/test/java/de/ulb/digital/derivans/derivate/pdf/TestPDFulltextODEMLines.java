@@ -59,8 +59,8 @@ public class TestPDFulltextODEMLines {
 		pdfStep.setImageDpi(300);
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		pdfStep.setDebugRender(true);
-		pdfStep.setInputSubDir(imageDir);
-		pdfStep.setOutputSubDir(workDir);
+		pdfStep.setInputDir(imageDir);
+		pdfStep.setOutputDir(workDir);
 		DerivansPathResolver resolver = new DerivansPathResolver(workDir);
 		List<DigitalPage> pages = resolver.resolveFromStep(pdfStep);
 		resolver.enrichOCRFromFilesystem(pages, targetOcr);

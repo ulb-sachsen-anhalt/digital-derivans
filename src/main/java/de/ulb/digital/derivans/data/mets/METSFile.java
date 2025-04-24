@@ -128,10 +128,11 @@ public class METSFile {
 	}
 
 	public Path getLocalPath(boolean testExists) throws DigitalDerivansException {
+		String lastPart = this.location;
 		int lastSlashIndex = this.location.lastIndexOf('/');
 		if (lastSlashIndex > -1) { // even if it starts with leading slash
 			String[] tokens = this.location.split("/");
-			String lastPart = tokens[tokens.length - 1];
+			lastPart = tokens[tokens.length - 1];
 			int lastDotIndex = lastPart.lastIndexOf('.');
 			if (lastDotIndex == -1) { // filename extension missing
 				if (this.mimeType.toLowerCase().contains("tif")) {
@@ -140,15 +141,14 @@ public class METSFile {
 					lastPart = lastPart + ".jpg";
 				}
 			}
-			var theName = String.format("%s/%s", this.fileGroup, lastPart);
-			Path fileLoc = this.localRootPath.resolve(theName);
-			if (testExists && !Files.exists(fileLoc)) {
-				String alarma = String.format("Try to set invalid local path %s", fileLoc);
-				throw new DigitalDerivansException(alarma);
-			}
-			return fileLoc;
 		}
-		return Path.of(this.location);
+		var theName = String.format("%s/%s", this.fileGroup, lastPart);
+		Path fileLoc = this.localRootPath.resolve(theName);
+		if (testExists && !Files.exists(fileLoc)) {
+			String alarma = String.format("Try to set invalid local path %s", fileLoc);
+			throw new DigitalDerivansException(alarma);
+		}
+		return fileLoc;
 	}
 
 	/**

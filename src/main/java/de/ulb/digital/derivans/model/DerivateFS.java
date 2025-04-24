@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 
 /**
  * 
@@ -38,7 +39,7 @@ public class DerivateFS implements IDerivate {
 
 	private String startFileExtension = ".jpg";
 
-	private String localStartDir = "DEFAULT";
+	private Path localStartDir;
 
 	private Path pathRootDir;
 
@@ -59,29 +60,30 @@ public class DerivateFS implements IDerivate {
 	 * to search images
 	 */
 	@Override
-	public void init(String localStartDir) throws DigitalDerivansException {
-		Path populateFrom = this.pathRootDir;
-		if (localStartDir == null) {
-			var guessStartDir = this.pathInput.resolve(this.localStartDir);
-			if (Files.notExists(guessStartDir)) {
-				guessStartDir = this.pathInput.resolve("ORIGINAL");
-				if (Files.notExists(guessStartDir)) {
-					guessStartDir = this.pathInput.resolve("."); // hard fallback
+	public void init(Path startPath) throws DigitalDerivansException {
+		if (startPath == null) {
+			startPath = this.pathInput.resolve(IDerivateer.IMAGE_DIR_DEFAULT); // 1st try: look for "DEFAULT"
+			if (Files.notExists(startPath)) {
+				startPath = this.pathInput.resolve(IDerivateer.IMAGE_DIR_ORIGINAL); // 2nd try: look for "ORIGINAL"
+				if (Files.notExists(startPath)) {
+					startPath = this.pathInput.resolve("."); // hard fallback
 				}
 			}
 		} else {
-			this.localStartDir = localStartDir;
-			populateFrom = this.pathRootDir.resolve(localStartDir);
+			if(!startPath.isAbsolute()) {
+				startPath = this.pathRootDir.resolve(startPath);
+			}
 		}
+		this.localStartDir = startPath;
 		var label = this.pathInput.getFileName().toString();
 		var orderNr = this.theOrder.get();
 		this.struct = new DerivateStruct(orderNr, label);
-		this.populateStruct(populateFrom, this.startFileExtension);
+		this.populateStruct(this.startFileExtension);
 		this.inited = true;
 	}
 
-	private void populateStruct(Path startDir, String fileExt) throws DigitalDerivansException {
-		List<Path> allFiles = this.filePathsFrom(startDir, fileExt);
+	private void populateStruct(String fileExt) throws DigitalDerivansException {
+		List<Path> allFiles = this.filePathsFrom(this.localStartDir, fileExt);
 		for (var file : allFiles) {
 			var currentOrder = this.theOrder.getAndIncrement();
 			DigitalPage dp = new DigitalPage(currentOrder, file);
@@ -153,15 +155,15 @@ public class DerivateFS implements IDerivate {
 		return this.inited;
 	}
 
-	@Override
-	public String getImageLocalDir() {
-		return this.localStartDir;
-	}
+	// @Override
+	// public String getImageLocalDir() {
+	// 	return this.localStartDir;
+	// }
 
-	@Override
-	public void setImageLocalDir(String localDir) {
-		this.localStartDir = localDir;
-	}
+	// @Override
+	// public void setImageLocalDir(String localDir) {
+	// 	this.localStartDir = localDir;
+	// }
 
 	@Override
 	public void setOcr(Path ocrPath) throws DigitalDerivansException {

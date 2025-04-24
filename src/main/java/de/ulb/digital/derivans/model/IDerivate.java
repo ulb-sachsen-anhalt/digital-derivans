@@ -18,7 +18,7 @@ import de.ulb.digital.derivans.data.mets.METS;
  */
 public interface IDerivate {
 
-	void init(String derivatetPath) throws DigitalDerivansException;
+	void init(Path startPath) throws DigitalDerivansException;
 	
 	boolean isInited();
 
@@ -32,9 +32,9 @@ public interface IDerivate {
 
 	void setOcr(Path ocrPath) throws DigitalDerivansException;
 
-	String getImageLocalDir();
+	// String getImageLocalDir();
 
-	void setImageLocalDir(String localSubDir);
+	// void setImageLocalDir(String localSubDir);
 
 	void setStartFileExtension(String startFileExtension);
 

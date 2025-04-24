@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 // import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -38,6 +39,7 @@ public class BaseDerivateer implements IDerivateer {
 
 	protected IDerivate derivate;
 
+	public static final String EXT_JPG = ".jpg";
 
 	public BaseDerivateer() {
 		this.outputPrefix = Optional.empty();
@@ -118,13 +120,31 @@ public class BaseDerivateer implements IDerivateer {
 
 	protected Path setOutpath(DigitalPage page) {
 		Path pathOut = page.getFile().withDirname(this.output.getSubDir());
+		var pathFnm = pathOut.getFileName();
+		var pathDir = pathOut.getParent();
+		String fName = this.setFileExtension(pathFnm);
 		if(this.getOutputPrefix().isPresent()) {
-			var pathDir = pathOut.getParent();
-			var pathFnm = pathOut.getFileName();
 			var optPrefix = this.getOutputPrefix().get();
-			var prefixedFile = Path.of(optPrefix + pathFnm.toString());
-			pathOut = pathDir.resolve(prefixedFile);
+			fName = optPrefix + fName;
 		}
+		pathOut = pathDir.resolve(fName);
 		return pathOut;
+	}
+
+	private String setFileExtension(Path fileName) {
+		String fnstr = fileName.toString();
+		if(fnstr.contains(".")) {
+			int rightOffset = fnstr.lastIndexOf(".");
+			String fileNamePrt = fnstr.substring(0,rightOffset);
+			String fileNameExt = fnstr.substring(rightOffset);
+			if ((this.derivateType == DerivateType.JPG || this.derivateType == DerivateType.JPG_FOOTER) && !EXT_JPG.equals(fileNameExt)) {
+				return fileNamePrt + EXT_JPG;
+			}
+			return fnstr;
+		} else if (this.derivateType == DerivateType.JPG || this.derivateType == DerivateType.JPG_FOOTER) {
+			return fnstr + EXT_JPG;
+		}
+		String msg = String.format("Fail to set any ext for %s, type %s", fileName, this.derivateType);
+		throw new DigitalDerivansRuntimeException(msg);
 	}
 }

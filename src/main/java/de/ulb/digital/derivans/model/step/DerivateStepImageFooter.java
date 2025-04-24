@@ -16,7 +16,10 @@ public class DerivateStepImageFooter extends DerivateStepImage {
 	protected Path pathTemplate;
 	protected String footerLabel;
 
-	public DerivateStepImageFooter() {}
+	public DerivateStepImageFooter() {
+		super();
+		this.setOutputType(DerivateType.JPG_FOOTER);
+	}
 
 	/**
 	 * 
@@ -26,7 +29,7 @@ public class DerivateStepImageFooter extends DerivateStepImage {
 	 */
 	public DerivateStepImageFooter(DerivateStepImage baseImageStep) {
 		super(baseImageStep);
-		this.setDerivateType(DerivateType.JPG_FOOTER);
+		this.setOutputType(DerivateType.JPG_FOOTER);
 	}
 
 	public Path getPathTemplate() {

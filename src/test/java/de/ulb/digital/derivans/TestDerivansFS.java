@@ -44,7 +44,6 @@ class TestDerivansFS {
 		// act
 		DerivansParameter dp = new DerivansParameter();
 		dp.setImages(".");
-		dp.setPathInput(pathTarget);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		List<IDerivateer> des = derivans.init(pathTarget);
@@ -76,6 +75,50 @@ class TestDerivansFS {
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(pathTarget);
 		dp.setImages("MAX");
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		Derivans derivans = new Derivans(dc);
+		derivans.init(pathTarget);
+		derivans.create();
+
+		// assert
+		Path pdfWritten = pathTarget.resolve("only_images.pdf");
+		assertTrue(Files.exists(pdfWritten));
+
+		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
+		assertNotNull(outline);
+		assertEquals("Outlines", outline.getLabel());
+		assertEquals(1, outline.getOutlineEntries().size());
+		PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
+		assertEquals("only_images", logRoot.getLabel());
+		assertEquals(4, logRoot.getOutlineEntries().size());
+	}
+
+
+		/**
+	 * 
+	 * Start images one level below actual start directory
+	 * 
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testDerivatesResolveTIFInput(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path configSourceDir = Path.of("src/test/resources/config");
+		Path configTargetDir = tempDir.resolve("config");
+		Files.createDirectories(configTargetDir);
+		Path srcConfig = configSourceDir.resolve("derivans_ulb_export.ini");
+		Path trgConfig = configTargetDir.resolve("derivans_ulb_export.ini");
+		Files.copy(srcConfig, trgConfig);
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(trgConfig);
+		Path pathTarget = tempDir.resolve("only_images");
+		Path pathImageMax = pathTarget.resolve("MAX");
+		Files.createDirectories(pathImageMax);
+		TestHelper.generateImages(pathImageMax, 150, 210, 2, "%04d.tif");
+
+		// act
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		derivans.init(pathTarget);

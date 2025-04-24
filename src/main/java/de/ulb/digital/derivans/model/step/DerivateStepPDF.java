@@ -17,8 +17,8 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 public class DerivateStepPDF extends DerivateStep {
 
 	protected boolean enrichMetadata = true;
-	protected String paramOCR = IDerivateer.DEFAULT_INPUT_FULLTEXT;
-	protected String paramImages = IDerivateer.DEFAULT_INPUT_IMAGES;
+	protected String paramOCR = IDerivateer.FULLTEXT_DIR;
+	protected String paramImages = IDerivateer.IMAGE_DIR_DEFAULT;
 	private int imageDpi = DefaultConfiguration.DEFAULT_IMAGE_DPI;
 	private Boolean debugRender = Boolean.FALSE;
 	private TypeConfiguration renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
@@ -33,6 +33,11 @@ public class DerivateStepPDF extends DerivateStep {
 	private Optional<String> optKeywords = Optional.empty();
 	private Optional<String> optNamePDF = Optional.empty();
 	private Path pdfFilePath;
+
+	public DerivateStepPDF() {
+		super();
+		this.setOutputType(DerivateType.PDF);
+	}
 
 	public boolean isEnrichMetadata() {
 		return enrichMetadata;

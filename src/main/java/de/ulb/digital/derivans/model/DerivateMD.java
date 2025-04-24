@@ -62,7 +62,6 @@ public class DerivateMD implements IDerivate {
 	private String identifierExpression;
 
 	public DerivateMD(Path pathInput) throws DigitalDerivansException {
-		// this.pathInput = pathInput;
 		METS m = new METS(pathInput);
 		m.determine(); // critical
 		this.mets = m;
@@ -74,11 +73,15 @@ public class DerivateMD implements IDerivate {
 	 * same directory to search for images
 	 */
 	@Override
-	public void init(String localStartDir) throws DigitalDerivansException {
+	public void init(Path startPath) throws DigitalDerivansException {
 		var orderNr = this.mdPageOrder.get();
 		METSContainer logicalRoot = this.mets.getLogicalRoot();
 		String logicalLabel = logicalRoot.determineLabel();
-		this.imageGroup = localStartDir;
+		if(startPath.isAbsolute()) {
+			this.imageGroup = startPath.getFileName().toString();
+		} else {
+			this.imageGroup = startPath.toString();
+		}
 		this.struct = new DerivateStruct(orderNr, logicalLabel);
 		this.populateStruct(logicalRoot, this.startFileExtension);
 		this.inited = true;
@@ -141,16 +144,6 @@ public class DerivateMD implements IDerivate {
 		return this.allPages;
 	}
 
-	// public static List<DigitalPage> getPages(DerivateStruct struct) {
-	// List<DigitalPage> currPages = struct.getPages();
-	// if (!struct.getChildren().isEmpty()) {
-	// for (var kid : struct.getChildren()) {
-	// currPages.addAll(DerivateFS.getPages(kid));
-	// }
-	// }
-	// return currPages;
-	// }
-
 	public Path getPathRootDir() {
 		return this.pathInputDir;
 	}
@@ -160,15 +153,15 @@ public class DerivateMD implements IDerivate {
 		return this.inited;
 	}
 
-	@Override
-	public String getImageLocalDir() {
-		return this.imageGroup;
-	}
+	// @Override
+	// public String getImageLocalDir() {
+	// 	return this.imageGroup;
+	// }
 
-	@Override
-	public void setImageLocalDir(String localDir) {
-		this.imageGroup = localDir;
-	}
+	// @Override
+	// public void setImageLocalDir(String localDir) {
+	// 	this.imageGroup = localDir;
+	// }
 
 	@Override
 	public void setOcr(Path ocrPath) throws DigitalDerivansException {
@@ -259,8 +252,7 @@ public class DerivateMD implements IDerivate {
 	}
 
 	public boolean isGranularIdentifierPresent() {
-		var allPages = this.getAllPages();
-		return allPages.stream()
+		return this.getAllPages().stream()
 				.filter(page -> page.optIdentifier().isPresent())
 				.map(page -> page.optIdentifier().get())
 				.findAny().isPresent();

@@ -1,7 +1,5 @@
 package de.ulb.digital.derivans.model.step;
 
-import java.nio.file.Path;
-
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 
 /**
@@ -13,43 +11,59 @@ import de.ulb.digital.derivans.config.DefaultConfiguration;
  */
 public abstract class DerivateStep {
 
-	protected String outputType;
+	protected String inputDir;
 
-	protected String inputSubDir;
+	/**
+	 * Kind of Data this step expects as input
+	 */
+	protected DerivateType inputType;
 
-	protected String outputSubDir;
+	protected String outputDir;
+
+	/**
+	 * Kind od Derivate this step will produce
+	 */
+	protected DerivateType outputType;
 
 	protected String outputPrefix;
 
-	protected DerivateType derivateType;
+	// protected DerivateType derivateType;
 
 	DerivateStep() {
-		this.outputType = DefaultConfiguration.DEFAULT_OUTPUT_TYPE;
-		this.derivateType = DerivateType.JPG;
+		this.outputType = DerivateType.JPG;
+		this.inputType = DerivateType.IMAGE;
 	}
 
-	public String getOutputType() {
+	public DerivateType getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(DerivateType inputType) {
+		this.inputType = inputType;
+	}
+
+	public DerivateType getOutputType() {
 		return outputType;
 	}
 
-	public void setOutputType(String outputType) {
+	public void setOutputType(DerivateType outputType) {
 		this.outputType = outputType;
 	}
 
-	public String getInputSubDir() {
-		return inputSubDir;
+	public String getInputDir() {
+		return inputDir;
 	}
 
-	public void setInputSubDir(String pathInput) {
-		this.inputSubDir = pathInput;
+	public void setInputDir(String pathInput) {
+		this.inputDir = pathInput;
 	}
 
-	public String getOutputSubDir() {
-		return this.outputSubDir;
+	public String getOutputDir() {
+		return this.outputDir;
 	}
 
-	public void setOutputSubDir(String outputSubDir) {
-		this.outputSubDir = outputSubDir;
+	public void setOutputDir(String outputSubDir) {
+		this.outputDir = outputSubDir;
 	}
 
 	public String getOutputPrefix() {
@@ -60,25 +74,23 @@ public abstract class DerivateStep {
 		this.outputPrefix = outputPrefix;
 	}
 
-	public DerivateType getDerivateType() {
-		return derivateType;
-	}
+	// public DerivateType getDerivateType() {
+	// return derivateType;
+	// }
 
-	public void setDerivateType(DerivateType derivateType) {
-		if (derivateType != null) {
-			this.derivateType = derivateType;
-		}
-	}
+	// public void setDerivateType(DerivateType derivateType) {
+	// if (derivateType != null) {
+	// this.derivateType = derivateType;
+	// }
+	// }
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(super.toString());
 		builder.append('{');
-		if (derivateType != null)
-			builder.append(derivateType).append(':');
-		if (inputSubDir != null)
-			builder.append(inputSubDir).append(':');
+		if (inputDir != null)
+			builder.append(inputDir).append(':');
 		builder.append('}');
 		return builder.toString();
 	}

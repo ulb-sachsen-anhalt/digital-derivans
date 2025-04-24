@@ -44,7 +44,7 @@ public class TestDerivansExportKitodo2 {
 	static int nExpectedImages = 17;
 
 	@BeforeAll
-	public static void setupBeforeClass() throws Exception {
+	static void setupBeforeClass() throws Exception {
 
 		// arrange metadata and images
 		var pathRes = Path.of("src/test/resources/058141367/058141367.xml");
@@ -60,7 +60,7 @@ public class TestDerivansExportKitodo2 {
 		}
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(configTargetDir.resolve("derivans_ulb.ini"));
+		dp.setPathConfig(configTargetDir.resolve("derivans-5steps.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 

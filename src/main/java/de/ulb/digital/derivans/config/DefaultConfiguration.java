@@ -43,7 +43,7 @@ public class DefaultConfiguration {
 	
 	public static final int DEFAULT_IMAGE_DPI = 300;
 
-	public static final String DEFAULT_OUTPUT_TYPE = DerivateType.JPG.toString().toLowerCase();
+	// public static final String DEFAULT_OUTPUT_TYPE = DerivateType.JPG.toString().toLowerCase();
 
 	public static final Integer DEFAULT_FONT_SIZE = 8;
 	

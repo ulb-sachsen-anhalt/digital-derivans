@@ -19,15 +19,25 @@ public interface IDerivateer {
 
 
 	/*
-	 * Default METS file group for images
+	 * Default METS file group required by DDB / DFG viewer
 	 */
-	String DEFAULT_INPUT_IMAGES = "DEFAULT";
+	String IMAGE_DIR_DEFAULT = "DEFAULT";
 
-/*
+	/*
+	 * METS file group used for OAI harvesting
+	 */
+	String IMAGE_DIR_MAX = "MAX";
+
+	/*
+	 * METS file group used by Kitodo.Presentation
+	 */
+	String IMAGE_DIR_ORIGINAL = "ORIGINAL";
+
+	/*
 	 * Default METS file group for OCR-data with, most likely,
 	 * MIMETYPE="application/alto+xml"
 	 */
-	String DEFAULT_INPUT_FULLTEXT = "FULLTEXT";
+	String FULLTEXT_DIR = "FULLTEXT";
 
 	/*
 	 * Mark all unresolved information about author, title, ...

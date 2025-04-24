@@ -106,17 +106,20 @@ public class Derivans {
         }
         this.derivateers = new ArrayList<>();
         for (DerivateStep step : this.steps) {
-            String pathInp = step.getInputSubDir();
-            String pathOut = step.getOutputSubDir();
-            DerivansData inputDerivansData = new DerivansData(this.derivate.getPathRootDir(), pathInp, DerivateType.IMAGE);
-            DerivansData outputDerivansData = new DerivansData(this.derivate.getPathRootDir(), pathOut, step.getDerivateType());
+            String pathInp = step.getInputDir();
+            String pathOut = step.getOutputDir();
+            DerivansData inputDerivansData = new DerivansData(this.derivate.getPathRootDir(), pathInp, step.getInputType());
+            DerivansData outputDerivansData = new DerivansData(this.derivate.getPathRootDir(), pathOut, step.getOutputType());
             if(inputDerivansData.getType() == DerivateType.TIF) {
                 this.derivate.setStartFileExtension(".tif");
             }
             if (!this.derivate.isInited()) {
-                this.derivate.init(step.getInputSubDir());
+                if(step.getInputType() == DerivateType.TIF) {
+                    this.derivate.setStartFileExtension(".tif");
+                }
+                this.derivate.init(Path.of(step.getInputDir()));
             }
-            DerivateType type = step.getDerivateType();
+            DerivateType type = step.getOutputType();
             IDerivateer derivateer = this.getForType(type);
             derivateer.setInput(inputDerivansData);
             derivateer.setOutput(outputDerivansData);
