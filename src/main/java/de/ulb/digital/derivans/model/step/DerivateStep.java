@@ -1,7 +1,5 @@
 package de.ulb.digital.derivans.model.step;
 
-import de.ulb.digital.derivans.config.DefaultConfiguration;
-
 /**
  * 
  * Basic Information for creating derivates
@@ -21,13 +19,11 @@ public abstract class DerivateStep {
 	protected String outputDir;
 
 	/**
-	 * Kind od Derivate this step will produce
+	 * Kind of Derivate this step will produce
 	 */
 	protected DerivateType outputType;
 
 	protected String outputPrefix;
-
-	// protected DerivateType derivateType;
 
 	DerivateStep() {
 		this.outputType = DerivateType.JPG;
@@ -42,12 +38,20 @@ public abstract class DerivateStep {
 		this.inputType = inputType;
 	}
 
+	public void setInputTypeFromLabel(String inputTypeLabel) {
+		this.inputType = DerivateType.forLabel(inputTypeLabel);
+	}
+
 	public DerivateType getOutputType() {
 		return outputType;
 	}
 
 	public void setOutputType(DerivateType outputType) {
 		this.outputType = outputType;
+	}
+
+	public void setOutputTypeFromLabel(String outputTypeLabel) {
+		this.outputType = DerivateType.forLabel(outputTypeLabel);
 	}
 
 	public String getInputDir() {

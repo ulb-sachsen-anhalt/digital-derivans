@@ -121,10 +121,10 @@ class TestDerivansArguments {
 	@Test
 	void testStepPDFLabel() {
 		DerivateStep theStep = steps.stream()
-				.filter(s -> s.getDerivateType() == DerivateType.PDF)
+				.filter(s -> s.getOutputType() == DerivateType.PDF)
 				.findFirst()
 				.get();
-		assertEquals(DerivateType.PDF, theStep.getDerivateType());
+		assertEquals(DerivateType.PDF, theStep.getOutputType());
 		var footerStep = (DerivateStepPDF) theStep;
 		assertEquals(NAME_PDF, footerStep.getNamePDF().get());
 	}
@@ -132,10 +132,10 @@ class TestDerivansArguments {
 	@Test
 	void testStepFooter() {
 		DerivateStep theStep = steps.stream()
-				.filter(s -> s.getDerivateType() == DerivateType.JPG_FOOTER)
+				.filter(s -> s.getOutputType() == DerivateType.JPG_FOOTER)
 				.findFirst()
 				.get();
-		assertEquals(DerivateType.JPG_FOOTER, theStep.getDerivateType());
+		assertEquals(DerivateType.JPG_FOOTER, theStep.getOutputType());
 		var footerStep = (DerivateStepImageFooter) theStep;
 		assertEquals(NAME_TEMPLATE, footerStep.getPathTemplate().getFileName().toString());
 	}

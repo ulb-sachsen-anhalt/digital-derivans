@@ -10,6 +10,7 @@ import de.ulb.digital.derivans.data.mets.DescriptiveMetadataBuilder;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.mets.METSContainer;
 import de.ulb.digital.derivans.data.mets.METSFile;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -35,11 +36,9 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  */
 public class DerivateMD implements IDerivate {
 
-	// private Path pathInput;
-
 	private String startFileExtension = ".jpg";
 
-	private String imageGroup = "MAX";
+	private String imageGroup = IDerivateer.IMAGE_DIR_MAX;
 
 	private String ocrLocalDir = "FULLTEXT";
 
@@ -77,6 +76,9 @@ public class DerivateMD implements IDerivate {
 		var orderNr = this.mdPageOrder.get();
 		METSContainer logicalRoot = this.mets.getLogicalRoot();
 		String logicalLabel = logicalRoot.determineLabel();
+		if (startPath == null) {
+			startPath = Path.of(IDerivateer.IMAGE_DIR_DEFAULT);
+		}
 		if(startPath.isAbsolute()) {
 			this.imageGroup = startPath.getFileName().toString();
 		} else {

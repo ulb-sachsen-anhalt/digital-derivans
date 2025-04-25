@@ -325,19 +325,14 @@ public class DerivansConfiguration {
 			throws DigitalDerivansException {
 
 		DerivateStep step = getStepFor(conf, stepSection);
-		// input dir
+		// input
 		String keyInputDir = stepSection + ".input_dir";
-		Optional<String> optInputDir = extractValue(conf, keyInputDir, String.class);
-		if (optInputDir.isPresent()) {
-			String inputDir = optInputDir.get();
-			step.setInputDir(inputDir);
-		}
-		// output dir
+		extractValue(conf, keyInputDir, String.class).ifPresent(step::setInputDir);
+		extractValue(conf, stepSection+ ".input_type", String.class).ifPresent(step::setInputTypeFromLabel);
+		// output
 		String keyOutputDir = stepSection + ".output_dir";
-		Optional<String> optOutputDir = extractValue(conf, keyOutputDir, String.class);
-		if (optOutputDir.isPresent()) {
-			step.setOutputDir(optOutputDir.get());
-		}
+		extractValue(conf, keyOutputDir, String.class).ifPresent(step::setOutputDir);
+		extractValue(conf, stepSection+ ".output_type", String.class).ifPresent(step::setOutputTypeFromLabel);
 		// optional output_prefix (used for additional derivates)
 		String keyOutPrefix = stepSection + ".output_prefix";
 		Optional<String> optOutPrefix = extractValue(conf, keyOutPrefix, String.class);

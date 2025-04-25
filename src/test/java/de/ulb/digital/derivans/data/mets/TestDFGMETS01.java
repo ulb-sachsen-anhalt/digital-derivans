@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.file.Path;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +15,7 @@ import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
+import de.ulb.digital.derivans.model.DigitalPage;
 
 /**
  * 
@@ -64,40 +68,43 @@ class TestDFGMETS01 {
 	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {
 
 		// act
-		//List<DigitalPage> pages = mets737429.getDigitalPagesInOrder();
-		// DerivateStruct struct = mets737429.mapStructureWithFilegroup("MAX");
+		DerivateMD derivateMD = new DerivateMD(mets737429.getPath());
+		assertNotNull(derivateMD);
+		derivateMD.setRessourceExists(false);
+		derivateMD.init(Path.of("MAX"));
+		List<DigitalPage> pages = derivateMD.getAllPages();
 
 		// // assert
-		// for (DigitalPage page : pages) {
-		// 	assertTrue(page.optIdentifier().isPresent());
-		// }
+		for (DigitalPage page : pages) {
+			assertTrue(page.optIdentifier().isPresent());
+		}
 
-		// String urn1 = "urn:nbn:de:gbv:3:3-21437-p0001-0";
-		// String urn2 = "urn:nbn:de:gbv:3:3-21437-p0004-6";
-		// assertEquals(urn1, pages.get(0).optIdentifier().get());
-		// assertEquals(urn2, pages.get(3).optIdentifier().get());
-		// assertEquals("MAX/737434.jpg", pages.get(0).getImageFile());
-		// assertEquals("MAX/737436.jpg", pages.get(1).getImageFile());
-		// assertEquals("MAX/737437.jpg", pages.get(2).getImageFile());
-		// assertEquals("MAX/737438.jpg", pages.get(3).getImageFile());
+		String urn1 = "urn:nbn:de:gbv:3:3-21437-p0001-0";
+		String urn2 = "urn:nbn:de:gbv:3:3-21437-p0004-6";
+		assertEquals(urn1, pages.get(0).optIdentifier().get());
+		assertEquals(urn2, pages.get(3).optIdentifier().get());
+		assertTrue(pages.get(0).getFile().getPath().toString().endsWith("MAX/737434.jpg"));
+		assertTrue(pages.get(1).getFile().getPath().toString().endsWith("MAX/737436.jpg"));
+		assertTrue(pages.get(3).getFile().getPath().toString().endsWith("MAX/737438.jpg"));
 	}
 
 	@Test
 	void testStructureOf737429() throws DigitalDerivansException {
 		DerivateMD derivateMD = new DerivateMD(mets737429.getPath());
 		assertNotNull(derivateMD);
-		derivateMD.init("MAX");
+		derivateMD.setRessourceExists(false);
+		derivateMD.init(Path.of("MAX"));
 
 		DerivateStruct struct = derivateMD.getStructure();
 		assertTrue(struct.getLabel().startsWith("Ode In Solemni Panegyri"));
 		assertEquals(1, struct.getOrder());
 
 		// level 1
-		// List<DigitalStructureTree> children = dst.getSubstructures();
+		List<DerivateStruct> children = struct.getChildren();
 		assertEquals(2, struct.getChildren().size());
-		// assertEquals("Titelblatt", children.get(0).getLabel());
-		// assertEquals(1, children.get(0).getPage());
-		// assertEquals("[Ode]", children.get(1).getLabel());
-		// assertEquals(2, children.get(1).getPage());
+		assertEquals("Titelblatt", children.get(0).getLabel());
+		assertEquals(1, children.get(0).getPages().size());
+		assertEquals("[Ode]", children.get(1).getLabel());
+		assertEquals(3, children.get(1).getPages().size());
 	}
 }

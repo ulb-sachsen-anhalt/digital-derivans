@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
+import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
@@ -23,20 +24,16 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  */
 class TestMetadataStoreKitodo2 {
 
-	static IMetadataStore mds143074601;
-
 	static DescriptiveMetadata dd143074601;
 
-	static IMetadataStore mds147573602;
-	
 	static DescriptiveMetadata dd147573602;
 
 	@BeforeAll
 	static void setup() throws Exception {
-		mds143074601 = new MetadataStore(TestResource.K2_Aa_143074601.get());
-		dd143074601 = mds143074601.getDescriptiveData();
-		mds147573602 = new MetadataStore(TestResource.K2_Aa_147573602.get());
-		dd147573602 = mds147573602.getDescriptiveData();
+		DerivateMD d143074601 = new DerivateMD(TestResource.K2_Aa_143074601.get());
+		dd143074601 = d143074601.getDescriptiveData();
+		DerivateMD d147573602 = new DerivateMD(TestResource.K2_Aa_147573602.get());
+		dd147573602 = d147573602.getDescriptiveData();
 	}
 
 	@Test
@@ -56,7 +53,8 @@ class TestMetadataStoreKitodo2 {
 
 	@Test
 	void testDigitalPagesWithoutGranularUrn143074601() throws DigitalDerivansException {
-		List<DigitalPage> pages = mds143074601.getDigitalPagesInOrder();
+		DerivateMD d143074601 = new DerivateMD(TestResource.K2_Aa_143074601.get());
+		List<DigitalPage> pages = d143074601.getAllPages();
 		for (DigitalPage page : pages) {
 			assertTrue(page.optIdentifier().isEmpty());
 		}
@@ -101,7 +99,7 @@ class TestMetadataStoreKitodo2 {
 	void testMetadataWithSingleSectionOnlyFromKitodo2() throws DigitalDerivansException {
 
 		// arrange
-		var mds = new MetadataStore(TestResource.K2_Hau_1748529021.get());
+		var mds = new DerivateMD(TestResource.K2_Hau_1748529021.get());
 
 		// act
 		var dd = mds.getDescriptiveData();
@@ -119,7 +117,7 @@ class TestMetadataStoreKitodo2 {
 	@Test
 	void testEnsureIdentifierPPNMatches() throws DigitalDerivansException {
 		// arrange
-		var mds1186819316 = new MetadataStore(TestResource.K2_Aa_1186819316.get());
+		var mds1186819316 = new DerivateMD(TestResource.K2_Aa_1186819316.get());
 
 		// act
 		var dd1186819316 = mds1186819316.getDescriptiveData();
@@ -135,8 +133,7 @@ class TestMetadataStoreKitodo2 {
 	@Test
 	void testFindRecordIdentifierPeriodicalVolume() throws DigitalDerivansException {
 		// arrange
-		var mds = new MetadataStore(TestResource.K2_AB_16740608619039.get());
-		mds.setStructure();
+		var mds = new DerivateMD(TestResource.K2_AB_16740608619039.get());
 
 		// act
 		var dd = mds.getDescriptiveData();

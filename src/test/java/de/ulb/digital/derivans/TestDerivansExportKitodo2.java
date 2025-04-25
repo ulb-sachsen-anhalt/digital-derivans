@@ -60,7 +60,7 @@ public class TestDerivansExportKitodo2 {
 		}
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(configTargetDir.resolve("derivans-5steps.ini"));
+		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_export.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 

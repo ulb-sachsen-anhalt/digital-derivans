@@ -51,12 +51,12 @@ public class TestDerivansExportKitodo3Issue {
 		Files.copy(pathRes, pathTargetMets);
 		TestHelper.generateImages(pathImageDir, 120, 200, 7, "%08d.tif");
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathInput(pathTargetMets);
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 
 		// act
-		// derivans.create();
+		derivans.init(pathTargetMets);
+		derivans.create();
 	}
 
 	@Test

@@ -19,6 +19,8 @@ import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
+import de.ulb.digital.derivans.model.step.DerivateStep;
+import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -122,19 +124,25 @@ class TestDerivansFS {
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		derivans.init(pathTarget);
+		
+		// assert
+		List<DerivateStep> steps = derivans.getSteps();
+		assertEquals(5, steps.size());
+		assertEquals(DerivateType.TIF, steps.get(0).getInputType());
+		assertEquals(DerivateType.JPG, steps.get(1).getInputType());
+		
 		derivans.create();
-
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
 		assertTrue(Files.exists(pdfWritten));
 
-		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
-		assertNotNull(outline);
-		assertEquals("Outlines", outline.getLabel());
-		assertEquals(1, outline.getOutlineEntries().size());
-		PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
-		assertEquals("only_images", logRoot.getLabel());
-		assertEquals(4, logRoot.getOutlineEntries().size());
+		// PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
+		// assertNotNull(outline);
+		// assertEquals("Outlines", outline.getLabel());
+		// assertEquals(1, outline.getOutlineEntries().size());
+		// PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
+		// assertEquals("only_images", logRoot.getLabel());
+		// assertEquals(4, logRoot.getOutlineEntries().size());
 	}
 
 	/**

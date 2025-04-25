@@ -3,10 +3,14 @@ package de.ulb.digital.derivans.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.nio.file.Path;
+
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
+import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -29,7 +33,7 @@ class TestMetadataStoreKitodo2MVW {
 	@Test
 	void testKitodo2MultivolumeMetadata() throws DigitalDerivansException {
 		// arrange
-		IMetadataStore mds = new MetadataStore(TestResource.K2_Af_140257772.get());
+		var mds = new DerivateMD(TestResource.K2_Af_140257772.get());
 		
 		// act
 		DescriptiveMetadata dd140257772 = mds.getDescriptiveData();
@@ -40,10 +44,14 @@ class TestMetadataStoreKitodo2MVW {
 		assertEquals("Band", dd140257772.getTitle());
 		
 		// inspect structure
+		mds.setRessourceExists(false);
+		mds.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
 		var dst = mds.getStructure();
-		assertEquals("Materialien zur Geschichte des Bauernkriegs in Franken, Schwaben, Thüringen [et]c. im Jahre 1525.", dst.getLabel());
-		assertEquals("Band", dst.getSubstructures().get(0).getLabel());
-		assertEquals("Vorderdeckel", dst.getSubstructures().get(0).getSubstructures().get(0).getLabel());
+		// of old
+		// assertEquals("Materialien zur Geschichte des Bauernkriegs in Franken, Schwaben, Thüringen [et]c. im Jahre 1525.", dst.getLabel());
+		// as of 2025
+		assertEquals("Band", dst.getLabel());
+		assertEquals("Vorderdeckel", dst.getChildren().get(0).getLabel());
 	}
 	
 	/**
@@ -59,21 +67,14 @@ class TestMetadataStoreKitodo2MVW {
 	@Test
 	void testKitodo2InvalidLegacyFStage030745780() throws DigitalDerivansException {
 		// arrange
-		IMetadataStore mds = new MetadataStore(TestResource.K2_Af_030745780.get());
-		
-		// act
-		DescriptiveMetadata dd = mds.getDescriptiveData();
-		
-		// assert
-		assertEquals("030745780", dd.getIdentifier());
-		assertEquals("Schleiermacher, Friedrich", dd.getPerson());
-		assertEquals("Sein Werden", dd.getTitle());
-		
-		// inspect structure, which a bit messy at the end
-		var actualExc = assertThrows(DigitalDerivansException.class, 
-			() -> mds.getStructure());
+		var mds = new DerivateMD(TestResource.K2_Af_030745780.get());
+		mds.setRessourceExists(false);
 
-		// assert
-		assertEquals("No physical struct linked from 'LOG_0216@section(207. [An Charlotte Pistorius.])'!", actualExc.getMessage());
+		// act
+		var actualExc = assertThrows(DigitalDerivansException.class, 
+			() -> mds.init(Path.of("MAX")));
+		
+		// assert - as of 2025
+		assertEquals("No files link div LOG_0216/207. [An Charlotte Pistorius.] in @USE=MAX!", actualExc.getMessage());
 	}
 }

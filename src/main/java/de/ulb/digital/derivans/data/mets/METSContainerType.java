@@ -128,7 +128,7 @@ public enum METSContainerType {
 
 	public static Optional<String> getTranslation(String label) {
 		Optional<METSContainerType> optMatch = Arrays.stream(METSContainerType.values())
-				.filter(struct -> struct.label.equals(label))
+				.filter(struct -> struct.label.toUpperCase().equals(label))
 				.findFirst();
 		if (optMatch.isPresent()) {
 			return Optional.of(optMatch.get().translation);

@@ -6,11 +6,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,17 +60,9 @@ public class METS {
 
 	private XMLHandler xmlHandler;
 
-	// private String primeId;
-
 	private MODS primeMods;
 
 	private Element primeLog;
-
-	private Map<String, List<METSFile>> files = new LinkedHashMap<>();
-
-	// private METSContainer structure;
-
-	// private Map<String, List<Integer>> logicalOrder = new LinkedHashMap<>();
 
 	public METS(Path metsfile) throws DigitalDerivansException {
 		this.file = metsfile;
@@ -160,63 +149,6 @@ public class METS {
 		throw new DigitalDerivansException("Can't determine mets:div with DMD identifier in " + this.getPath());
 	}
 
-	// public void setStructure() throws DigitalDerivansException {
-	// 	this.setContainer();
-	// 	this.setPages();
-	// }
-
-	// public void setFiles(String useGroup) throws DigitalDerivansException {
-	// 	var query = "//mets:fileGrp[@USE]";
-	// 	if (useGroup != null) {
-	// 		query = String.format("//mets:fileGrp[@USE='%s']", useGroup);
-	// 	}
-	// 	List<Element> fileGroups = this.evaluate(query);
-	// 	for (var group : fileGroups) {
-	// 		var fileGroup = group.getAttributeValue("USE");
-	// 		var theFiles = group.getChildren("file", NS_METS);
-	// 		for (var aFile : theFiles) {
-	// 			var pMimeType = aFile.getAttributeValue("MIMETYPE");
-	// 			var fId = aFile.getAttributeValue("ID");
-	// 			for (var fLoc : aFile.getChildren("FLocat", METS.NS_METS)) {
-	// 				var fRef = fLoc.getAttributeValue("href", METS.NS_XLINK);
-	// 				var f = new METSFile(fileGroup, fId, pMimeType, fRef);
-	// 				this.files.computeIfAbsent(fileGroup, k -> new ArrayList<METSFile>());
-	// 				this.files.computeIfPresent(fileGroup, (k, v) -> {
-	// 					v.add(f);
-	// 					return v;
-	// 				});
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	/**
-	 * With respect to DFG METS smLink mechanics and two different
-	 * structural container types (physical + logical)
-	 * 
-	 * @param metsFile
-	 * @throws DigitalDerivansException
-	 */
-	private void linkFile(METSFile metsFile) throws DigitalDerivansException {
-		String fileId = metsFile.getFileId();
-		List<Element> firstElements = this.evaluate(String.format("//mets:fptr[@FILEID='%s']", fileId));
-		if (firstElements.size() != 1) {
-			throw new DigitalDerivansException("File " + fileId + " invalid linked to " + firstElements);
-		}
-		var firstElementId = firstElements.get(0).getParentElement().getAttributeValue("ID");
-		var firstContainer = this.getContainerForId(firstElementId);
-		metsFile.addLinkedContainers(firstContainer);
-		List<Element> linkElements = this.evaluate(String.format("//mets:smLink[@xlink:to='%s']", firstElementId));
-		if (linkElements.isEmpty()) {
-			throw new DigitalDerivansException("Page " + firstElementId + " not linked to any logical section!");
-		}
-		for (var e : linkElements) {
-			String elementId = e.getAttributeValue("from", METS.NS_XLINK);
-			var cnt = this.getContainerForId(elementId);
-			metsFile.addLinkedContainers(cnt);
-		}
-	}
-
 	public Path getPath() {
 		return this.file;
 	}
@@ -231,54 +163,6 @@ public class METS {
 
 	public MODS getPrimeMODS() {
 		return this.primeMods;
-	}
-
-	// /**
-	// *
-	// * 2023-11-29
-	// *
-	// * Due conflicts with Kitodo3 Export XML ensure
-	// * that agent is inserted as very first element
-	// * if no other agent tags present or as last
-	// * agent entry
-	// *
-	// * @param fileId
-	// * @return
-	// */
-	// public String addAgent(String agentLabel, String agentNoteText) {
-	// Element agent = createAgentSection(agentLabel, agentNoteText);
-	// Element hdrSection = getMetsHdr();
-	// var agents = hdrSection.getChildren("agent", NS_METS);
-	// if (agents.isEmpty()) {
-	// hdrSection.addContent(0, agent);
-	// } else {
-	// hdrSection.addContent(agents.size() - 1, agent);
-	// }
-	// return agent.getChildText("note", NS_METS);
-	// }
-
-	// private Element createAgentSection(String agentLabel, String agentNoteText) {
-	// Element agent = new Element("agent", NS_METS);
-	// agent.setAttribute(METS_STRUCTMAP_TYPE, "OTHER");
-	// agent.setAttribute("ROLE", "OTHER");
-	// agent.setAttribute("OTHERTYPE", "SOFTWARE");
-	// Element agentName = new Element("name", NS_METS);
-	// agentName.setText(agentLabel);
-	// Element agentNote = new Element("note", NS_METS);
-	// agentNote.setText(agentNoteText);
-	// agent.addContent(List.of(agentName, agentNote));
-	// return agent;
-	// }
-
-	public List<METSFile> getFiles(String groupLabel) {
-		if (this.files.containsKey(groupLabel)) {
-			return this.files.get(groupLabel);
-		}
-		return new ArrayList<>();
-	}
-
-	public Map<String, List<METSFile>> getFiles() {
-		return this.files;
 	}
 
 	/**
@@ -389,146 +273,13 @@ public class METS {
 		return Optional.empty();
 	}
 
-	/**
-	 * 
-	 * If valid METS/MODS source metadata present,
-	 * use it's logical information
-	 * to build structural representation
-	 * 
-	 * @return
-	 * @throws DigitalDerivansException
-	 */
-	private void setContainer() throws DigitalDerivansException {
-		if (this.file != null) {
-			List<Element> firstChilds = this.evaluate("//mets:structMap[@TYPE='LOGICAL']/mets:div");
-			if (firstChilds.size() != 1) {
-				throw new DigitalDerivansException("Invalid structMap@TYPE=LOGICAL!");
-			}
-			Element rootElement = firstChilds.get(0);
-			String rootId = rootElement.getAttributeValue("ID");
-			METSContainer rootCnt = new METSContainer(rootId, rootElement);
-			// this.structure = rootCnt;
-			// this.logContainers.add(rootCnt);
-			List<Element> childElements = METS.evaluate(String.format("//mets:div[@ID='%s']/mets:div", rootId),
-					rootElement.getDocument());
-			for (var child : childElements) {
-				this.processContainer(rootCnt, child);
-			}
-			// ///////////////////////////////
-			// // VALIDATION SECTION ???????
-			// // review pageNr and pageOrder
-			// // var suspects = checkPageOrder(theRoot);
-			// // if (!suspects.isEmpty()) {
-			// // var excMessage = String.format("%s", suspects);
-			// // throw new DigitalDerivansException(excMessage);
-			// // }
-			// // // review invalid page links
-			// // clearInvalidPageLinks(theRoot);
-			// // // review redundant page links
-			// // clearRedundantPageLinks(theRoot);
-			// return theRoot;
-		}
-
-	}
-
 	public METSContainer getLogicalRoot() {
 		return new METSContainer(this.primeLog);
-	}
-
-	private void processContainer(METSContainer currentParent, Element currentElement) throws DigitalDerivansException {
-		String currentId = currentElement.getAttributeValue("ID");
-		METSContainer currentCnt = new METSContainer(currentId, currentElement);
-		currentCnt.setParent(currentParent);
-		currentParent.addChild(currentCnt);
-		List<Element> granElements = METS.evaluate(String.format("//mets:div[@ID='%s']/mets:div", currentId),
-				currentElement.getDocument());
-		for (var granElement : granElements) {
-			this.processContainer(currentCnt, granElement);
-		}
-	}
-
-	// public List<METSContainer> getLogContainers() {
-	// return this.logContainers;
-	// }
-
-	/**
-	 * Cruical part to resolve internal links between logical structs and
-	 * physical file assets in DFG-flavour via mets:smLink relations
-	 * with intermedia mets:div@TYPE="page" elements
-	 * 
-	 * Assumes correct ordering using mets:smLink => use first linked
-	 * file asset as "landing image" for given logical section
-	 * 
-	 * do *not* trust mets:div@TYPE="page" attribute @ORDER => might be corrupt
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	private void setPages() throws DigitalDerivansException {
-		// for (var cnt : this.logContainers) {
-		// var queryLinks =
-		// String.format("//mets:structLink/mets:smLink[@xlink:from='%s']",
-		// cnt.getId());
-		// List<Element> smLinks = this.evaluate(queryLinks);
-		// for (var smLink : smLinks) {
-		// var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
-		// if (STRUCT_PHYSICAL_ROOT.equalsIgnoreCase(pageId)) {
-		// continue;
-		// }
-		// List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']",
-		// pageId));
-		// for (var page : pages) {
-		// var pageOrder = page.getAttributeValue("ORDER");
-		// var theOrder = Integer.valueOf(pageOrder);
-		// METSContainer phyCnt = new METSContainer(pageId, page);
-		// // var expOrder = this.currOrder.getAndIncrement();
-		// // if (theOrder != expOrder) {
-		// // LOGGER.error("overwrite read @ORDER={} with expected:{}", theOrder,
-		// // expOrder);
-		// // theOrder = expOrder;
-		// // phyCnt.addAttribute(METSContainerAttributeType.ORDER,
-		// // String.valueOf(expOrder));
-		// // }
-		// // ensure each page is only added once even if
-		// // linked several times
-		// if (!this.phyContainers.contains(phyCnt)) {
-		// this.phyContainers.add(phyCnt);
-		// }
-		// this.logicalOrder.computeIfAbsent(cnt.getId(), k -> new
-		// ArrayList<>()).add(theOrder);
-		// var orders = this.logicalOrder.get(cnt.getId());
-		// orders.add(theOrder); // prevent "theOrder must be effectively final in
-		// scope"
-		// }
-		// }
-		// }
-	}
-
-	private METSContainer getContainerForId(String containerId) throws DigitalDerivansException {
-		List<METSContainer> allContainer = new ArrayList<>();
-		// allContainer.addAll(this.phyContainers);
-		List<METSContainer> matches = allContainer.stream()
-				.filter(c -> containerId.equals(c.getId()))
-				.collect(Collectors.toList());
-		if (matches.size() != 1) {
-			throw new DigitalDerivansException("Invalid matches " + matches + " for " + containerId);
-		}
-		return matches.get(0);
 	}
 
 	public boolean write() {
 		return this.xmlHandler.write(this.file);
 	}
-
-	// public DigitalStructureTree getLogicalStructure() throws
-	// DigitalDerivansException {
-	// var q = String.format("//mets:div[@DMDID='%s']", this.primeId);
-	// List<Element> logRoot = this.evaluate(q);
-	// String typeLabel = this.primeLog.getAttributeValue("TYPE");
-	// var t = METSContainerType.forLabel(typeLabel);
-
-	// return null;
-	// }
 
 	/**
 	 * 
@@ -570,6 +321,9 @@ public class METS {
 					String fileId = fileFromGroup.getAttributeValue("ID");
 					var fstLocat = fileFromGroup.getChildren("FLocat", METS.NS_METS).get(0);
 					String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
+					if(!hRef.endsWith(fileExt)) {
+						hRef += fileExt;
+					}
 					var thaFile = new METSFile(fileId, hRef, fileGroup);
 					thaFile.setPageLabel(pageLabel);
 					thaFile.setLocalRoot(this.getPath().getParent());
