@@ -71,17 +71,15 @@ public class TestDerivansConfiguration {
 		// min derivate
 		assertTrue(steps.get(0) instanceof DerivateStepImage);
 		DerivateStepImage stepMinImage = (DerivateStepImage) steps.get(0);
-		assertEquals("jpg", stepMinImage.getOutputType());
 		assertEquals(80, stepMinImage.getQuality());
 		assertEquals("DEFAULT", stepMinImage.getInputDir());
 		assertEquals("IMAGE_80", stepMinImage.getOutputDir());
-		assertEquals(DerivateType.JPG, stepMinImage.getDerivateType());
+		assertEquals(DerivateType.JPG, stepMinImage.getOutputType());
 
 		// pdf
 		assertTrue(steps.get(1) instanceof DerivateStepPDF);
 		DerivateStepPDF stepPdf = (DerivateStepPDF) steps.get(1);
-		assertEquals("pdf", stepPdf.getOutputType());
-		assertEquals(DerivateType.PDF, stepPdf.getDerivateType());
+		assertEquals(DerivateType.PDF, stepPdf.getOutputType());
 		assertTrue(stepPdf.isEnrichMetadata());
 	}
 
@@ -117,8 +115,7 @@ public class TestDerivansConfiguration {
 		assertEquals(3, steps.size());
 		assertTrue(steps.get(2) instanceof DerivateStepPDF);
 		var stepPDF = (DerivateStepPDF) steps.get(2);
-		assertEquals("pdf", stepPDF.getOutputType());
-		assertEquals(DerivateType.PDF, stepPDF.getDerivateType());
+		assertEquals(DerivateType.PDF, stepPDF.getOutputType());
 		assertFalse(stepPDF.isEnrichMetadata());
 	}
 
@@ -154,15 +151,13 @@ public class TestDerivansConfiguration {
 		assertEquals(2, steps.size());
 
 		// minimal derivate from images
-		assertEquals("jpg", steps.get(0).getOutputType());
 		// assertEquals(80, steps.get(0).getQuality());
 		assertEquals(IDerivateer.IMAGE_DIR_DEFAULT, steps.get(0).getInputDir());
 		assertEquals("IMAGE_80", steps.get(0).getOutputDir());
-		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
+		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
 
 		// pdf
-		assertEquals("pdf", steps.get(1).getOutputType());
-		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
+		assertEquals(DerivateType.PDF, steps.get(1).getOutputType());
 		assertTrue(((DerivateStepPDF) steps.get(1)).isEnrichMetadata());
 	}
 
@@ -194,15 +189,13 @@ public class TestDerivansConfiguration {
 		assertEquals(2, steps.size());
 
 		// minimal derivate from images
-		assertEquals("jpg", steps.get(0).getOutputType());
 		// assertEquals(80, steps.get(0).getQuality());
 		assertEquals(customImageSubDir, steps.get(0).getInputDir());
 		assertEquals("IMAGE_80", steps.get(0).getOutputDir());
-		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
+		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
 
 		// pdf
-		assertEquals("pdf", steps.get(1).getOutputType());
-		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
+		assertEquals(DerivateType.PDF, steps.get(1).getOutputType());
 	}
 
 	/**
@@ -235,15 +228,13 @@ public class TestDerivansConfiguration {
 		assertEquals(2, steps.size());
 
 		// minimal derivate from images
-		assertEquals("jpg", steps.get(0).getOutputType());
 		assertEquals(80, ((DerivateStepImage)steps.get(0)).getQuality());
 		assertEquals(pathImageMax.toString(), steps.get(0).getInputDir());
 		assertEquals("IMAGE_80", steps.get(0).getOutputDir());
-		assertEquals(DerivateType.JPG, steps.get(0).getDerivateType());
+		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
 
 		// pdf
-		assertEquals("pdf", steps.get(1).getOutputType());
-		assertEquals(DerivateType.PDF, steps.get(1).getDerivateType());
+		assertEquals(DerivateType.PDF, steps.get(1).getOutputType());
 	}
 
 	/**
@@ -292,7 +283,7 @@ public class TestDerivansConfiguration {
 		// assert
 		var dSteps = dc.getDerivateSteps();
 		assertEquals(3, dSteps.size());
-		assertSame(DerivateType.PDF, dSteps.get(2).getDerivateType());
+		assertSame(DerivateType.PDF, dSteps.get(2).getOutputType());
 		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(2);
 		assertEquals(ORIGINAL_SUB_DIR, pdfStep.getParamImages());
 		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputDir());
@@ -336,7 +327,7 @@ public class TestDerivansConfiguration {
 		var dSteps = dc.getDerivateSteps();
 		assertEquals(2, dSteps.size());
 		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputDir());
-		assertSame(DerivateType.PDF, dSteps.get(1).getDerivateType());
+		assertSame(DerivateType.PDF, dSteps.get(1).getOutputType());
 		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(1);
 		assertEquals("IMAGE_80", pdfStep.getInputDir());
 		assertEquals(ORIGINAL_SUB_DIR, pdfStep.getParamImages());

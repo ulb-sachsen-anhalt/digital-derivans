@@ -22,9 +22,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
@@ -61,8 +61,8 @@ class TestImageDerivateerJPGFooter {
 		Path sourcePath = sharedTempDir.resolve("IMAGE");
 		Path targetPath = sharedTempDir.resolve("IMAGE_FOOTER");
 		Files.createDirectory(targetPath);
-		DerivansData input = new DerivansData(sourcePath, DerivateType.JPG);
-		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
+		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
+		DerivansData output = new DerivansData(sharedTempDir, "IMAGE_FOOTER", DerivateType.JPG);
 
 		String templatePath = "src/test/resources/config/footer_template.png";
 		Path source = Paths.get(templatePath).toAbsolutePath();
@@ -76,10 +76,11 @@ class TestImageDerivateerJPGFooter {
 		// check template file found
 		assertTrue(Files.exists(target));
 
-		DerivansPathResolver resolver = new DerivansPathResolver();
 		// empty list at construction time is okay since we re-set the pages immediately
 		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, footer, new ArrayList<>(), 95);
-		derivateer.setDigitalPages(resolver.resolveFromPath(sourcePath));
+		DerivateFS dFs = new DerivateFS(sharedTempDir);
+		dFs.init(sourcePath);
+		derivateer.setDigitalPages(dFs.getAllPages());
 
 		// act
 		int outcome = derivateer.create();
@@ -106,8 +107,8 @@ class TestImageDerivateerJPGFooter {
 		Path sourceImage = Paths.get(resPath).toAbsolutePath();
 		Files.copy(sourceImage, imagePath.resolve(Path.of(resPath).getFileName()), 
 			StandardCopyOption.REPLACE_EXISTING);
-		DerivansData input = new DerivansData(imagePath, DerivateType.JPG);
-		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
+		DerivansData input = new DerivansData(tempDir,"IMAGE2",  DerivateType.JPG);
+		DerivansData output = new DerivansData(tempDir, "IMAGE_FOOTER2", DerivateType.JPG);
 		String templatePath = "src/test/resources/config/footer_template.png";
 		Path source = Paths.get(templatePath).toAbsolutePath();
 		Path targetDir = tempDir.resolve("footer");
@@ -115,10 +116,11 @@ class TestImageDerivateerJPGFooter {
 		Path target = targetDir.resolve("footer_template.png");
 		Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
 		DigitalFooter footer = new DigitalFooter("ULB", urn, target);
-		DerivansPathResolver resolver = new DerivansPathResolver();
 		// empty list at construction time is okay since we re-set the pages immediately
 		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, footer, new ArrayList<>(), 95);
-		derivateer.setDigitalPages(resolver.resolveFromPath(imagePath));
+		DerivateFS dFs = new DerivateFS(sharedTempDir);
+		dFs.init(imagePath);
+		derivateer.setDigitalPages(dFs.getAllPages());
 
 		// act
 		int outcome = derivateer.create();
@@ -153,8 +155,8 @@ class TestImageDerivateerJPGFooter {
 		Path imgPath = targetPath1.resolve("00000010.tif");
 		Path targetPath2 = tempDir.resolve("IMAGE_FOOTER3");
 		Files.copy(imgSource, imgPath, StandardCopyOption.REPLACE_EXISTING);
-		DerivansData input = new DerivansData(targetPath1, DerivateType.IMAGE);
-		DerivansData output = new DerivansData(targetPath2, DerivateType.JPG);
+		DerivansData input = new DerivansData(tempDir, "IMAGE3", DerivateType.IMAGE);
+		DerivansData output = new DerivansData(tempDir, "IMAGE_FOOTER3", DerivateType.JPG);
 		String templatePath = "src/test/resources/config/footer_template.png";
 		Path source = Paths.get(templatePath).toAbsolutePath();
 		Path targetDir = tempDir.resolve("footer");
@@ -162,10 +164,12 @@ class TestImageDerivateerJPGFooter {
 		Path target = targetDir.resolve("footer_template.png");
 		Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
 		DigitalFooter footer = new DigitalFooter("ULB", urn, target);
-		DerivansPathResolver resolver = new DerivansPathResolver();
 		// empty list at construction time is okay since we re-set the pages immediately
 		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, footer, new ArrayList<>(), 95);
-		derivateer.setDigitalPages(resolver.resolveFromPath(targetPath1));
+		DerivateFS dFs = new DerivateFS(sharedTempDir);
+		dFs.setStartFileExtension(".tif");
+		dFs.init(targetPath1);
+		derivateer.setDigitalPages(dFs.getAllPages());
 
 		// act
 		int outcome = derivateer.create();

@@ -117,6 +117,14 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 				throw new DigitalDerivansException(e);
 			}
 		}
+		if (this.digitalPages == null) {
+			throw new DigitalDerivansException("Invalid digitalPage input: null!");
+		}
+		if(this.digitalPages.isEmpty()) {
+			String msg = String.format("No digitalPages in %s/%s",
+				this.input.getRootDir(), this.input.getSubDir());
+			throw new DigitalDerivansException(msg);
+		}
 
 		String msg = String.format("process '%02d' images in %s/%s with quality %.2f in %02d threads",
 				this.digitalPages.size(), this.input.getRootDir(), this.input.getSubDir(),

@@ -16,6 +16,8 @@ public abstract class DerivateStep {
 	 */
 	protected DerivateType inputType;
 
+	protected String inputPrefix;
+
 	protected String outputDir;
 
 	/**
@@ -78,15 +80,13 @@ public abstract class DerivateStep {
 		this.outputPrefix = outputPrefix;
 	}
 
-	// public DerivateType getDerivateType() {
-	// return derivateType;
-	// }
+	public String getInputPrefix() {
+		return this.inputPrefix;
+	}
 
-	// public void setDerivateType(DerivateType derivateType) {
-	// if (derivateType != null) {
-	// this.derivateType = derivateType;
-	// }
-	// }
+	public void setInputPrefix(String inputPrefix) {
+		this.inputPrefix = inputPrefix;
+	}
 
 	@Override
 	public String toString() {

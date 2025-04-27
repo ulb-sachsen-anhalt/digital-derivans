@@ -100,7 +100,7 @@ class TestDerivansLegacyULB {
 	 * 
 	 * Due Bug "Fail to render granular URN #51"
 	 * https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/51
-	 * extended tests for clazz names
+	 * extended to check clazz names
 	 * 
 	 */
 	@Test

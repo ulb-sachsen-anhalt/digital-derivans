@@ -27,29 +27,25 @@ public class BaseDerivateer implements IDerivateer {
 
 	protected DerivansData output;
 
-	// protected Path inputDir;
-
-	// protected Path outputRootDir;
-
 	protected DerivateType derivateType;
 
 	protected List<DigitalPage> digitalPages;
 
-	protected Optional<String> outputPrefix;
+	protected Optional<String> inputPrefix = Optional.empty();
+
+	protected Optional<String> outputPrefix = Optional.empty();
 
 	protected IDerivate derivate;
 
 	public static final String EXT_JPG = ".jpg";
 
 	public BaseDerivateer() {
-		this.outputPrefix = Optional.empty();
 	}
 
 	public BaseDerivateer(DerivansData input, DerivansData output) {
 		this.input = input;
 		this.output = output;
 		this.derivateType = output.getType();
-		this.outputPrefix = Optional.empty();
 	}
 
 	/**
@@ -70,14 +66,20 @@ public class BaseDerivateer implements IDerivateer {
 		this.digitalPages = new ArrayList<>(pages);
 	}
 
+	public Optional<String> getInputPrefix() {
+		return this.inputPrefix;
+	}
+
+	public void setInputPrefix(String prefix) {
+		this.inputPrefix = Optional.of(prefix);
+	}
+
 	public Optional<String> getOutputPrefix() {
 		return outputPrefix;
 	}
 
 	public void setOutputPrefix(String prefix) {
-		if (prefix != null) {
-			this.outputPrefix = Optional.of(prefix);
-		}
+		this.outputPrefix = Optional.of(prefix);
 	}
 
 	@Override
@@ -118,26 +120,44 @@ public class BaseDerivateer implements IDerivateer {
 		return this.output;
 	}
 
+
+	protected Path setInpath(DigitalPage page) {
+		Path pathIn = page.getFile().withDirname(this.input.getSubDir());
+		var pathFnm = pathIn.getFileName();
+		var pathDir = pathIn.getParent();
+		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm));
+		this.getInputPrefix().ifPresent(prefix -> fName.insert(0, prefix));
+		// if (this.getOutputPrefix().isPresent()) {
+		// 	var optPrefix = this.getOutputPrefix().get();
+		// 	fName = optPrefix + fName;
+		// }
+		pathIn = pathDir.resolve(fName.toString());
+		return pathIn;		
+	}
+
 	protected Path setOutpath(DigitalPage page) {
 		Path pathOut = page.getFile().withDirname(this.output.getSubDir());
 		var pathFnm = pathOut.getFileName();
 		var pathDir = pathOut.getParent();
-		String fName = this.setFileExtension(pathFnm);
-		if(this.getOutputPrefix().isPresent()) {
-			var optPrefix = this.getOutputPrefix().get();
-			fName = optPrefix + fName;
-		}
-		pathOut = pathDir.resolve(fName);
+		// String fName = this.setFileExtension(pathFnm);
+		// if (this.getOutputPrefix().isPresent()) {
+		// 	var optPrefix = this.getOutputPrefix().get();
+		// 	fName = optPrefix + fName;
+		// }
+		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm));
+		this.getOutputPrefix().ifPresent(prefix -> fName.insert(0, prefix));
+		pathOut = pathDir.resolve(fName.toString());
 		return pathOut;
 	}
 
 	private String setFileExtension(Path fileName) {
 		String fnstr = fileName.toString();
-		if(fnstr.contains(".")) {
+		if (fnstr.contains(".")) {
 			int rightOffset = fnstr.lastIndexOf(".");
-			String fileNamePrt = fnstr.substring(0,rightOffset);
+			String fileNamePrt = fnstr.substring(0, rightOffset);
 			String fileNameExt = fnstr.substring(rightOffset);
-			if ((this.derivateType == DerivateType.JPG || this.derivateType == DerivateType.JPG_FOOTER) && !EXT_JPG.equals(fileNameExt)) {
+			if ((this.derivateType == DerivateType.JPG || this.derivateType == DerivateType.JPG_FOOTER)
+					&& !EXT_JPG.equals(fileNameExt)) {
 				return fileNamePrt + EXT_JPG;
 			}
 			return fnstr;

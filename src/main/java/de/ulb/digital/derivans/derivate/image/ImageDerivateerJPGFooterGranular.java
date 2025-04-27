@@ -59,7 +59,8 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	}
 
 	private void renderFooterGranular(DigitalPage page) {
-		Path pathIn = page.getFile().withDirname(this.input.getSubDir());
+		// Path pathIn = page.getFile().withDirname(this.input.getSubDir());
+		Path pathIn = this.setInpath(page);
 		if (!Files.exists(pathIn)) {
 			throw new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
 		}

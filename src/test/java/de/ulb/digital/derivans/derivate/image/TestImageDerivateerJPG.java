@@ -18,9 +18,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
@@ -38,9 +38,9 @@ class TestImageDerivateerJPG {
 	@BeforeAll
 	public static void setupBeforeClass() throws IOException {
 		Path imageDir = sharedTempDir.resolve("IMAGE");
-		int width = 3500;
-		int height = 5500;
-		int number = 8;
+		int width = 450;
+		int height = 700;
+		int number = 4;
 		TestHelper.generateImages(imageDir, width, height, number, "%04d.jpg");
 	}
 
@@ -49,18 +49,20 @@ class TestImageDerivateerJPG {
 		// arrange
 		Path sourcePath = sharedTempDir.resolve("IMAGE");
 		Path targetPath = sharedTempDir.resolve("IMAGE_80");
-		Files.createDirectory(targetPath);
-		DerivansData input = new DerivansData(sourcePath, DerivateType.JPG);
-		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
+		Files.createDirectory(targetPath); // mandatory, done in production by BaseDerivateer
+		DerivateFS dFs = new DerivateFS(targetPath);
+		dFs.init(sourcePath);
+
+		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
+		DerivansData output = new DerivansData(sharedTempDir, "IMAGE_80", DerivateType.JPG);
 		IDerivateer jpgs = new ImageDerivateerJPG(input, output, 80);
-		DerivansPathResolver resolver = new DerivansPathResolver();
-		jpgs.setDigitalPages(resolver.resolveFromPath(sourcePath));
+		jpgs.setDigitalPages(dFs.getAllPages());
 
 		// act
 		int outcome = jpgs.create();
 
 		// assert
-		assertEquals(8, outcome);
+		assertEquals(4, outcome);
 		Files.list(targetPath).forEach(p -> p.toFile().exists());
 	}
 
@@ -68,22 +70,23 @@ class TestImageDerivateerJPG {
 	void testRenderer70() throws DigitalDerivansException, IOException {
 		// arrange
 		Path sourcePath = sharedTempDir.resolve("IMAGE");
-		Path targetPath = sharedTempDir.resolve("IMAGE_70");
-		Files.createDirectory(targetPath);
-		DerivansData input = new DerivansData(sourcePath, DerivateType.JPG);
-		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
+		Path targetPath = sharedTempDir.resolve("image_70");
+		Files.createDirectory(targetPath); // mandatory, done in production by BaseDerivateer
+		DerivateFS dFs = new DerivateFS(targetPath);
+		dFs.init(sourcePath);
+		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
+		DerivansData output = new DerivansData(sharedTempDir, "image_70", DerivateType.JPG);
 		IDerivateer jpgs = new ImageDerivateerJPG(input, output, 70);
-		DerivansPathResolver resolver = new DerivansPathResolver();
-		jpgs.setDigitalPages(resolver.resolveFromPath(sourcePath));
+		jpgs.setDigitalPages(dFs.getAllPages());
 
 		// act
 		int outcome = jpgs.create();
 
 		// assert
-		assertEquals(8, outcome);
+		assertEquals(4, outcome);
 		Files.list(targetPath).forEach(p -> p.toFile().exists());
 		List<Path> paths = Files.list(targetPath).collect(Collectors.toList());
-		assertEquals(8, paths.size());
+		assertEquals(4, paths.size());
 		for (Path p : paths) {
 			assertTrue(Files.exists(p));
 		}
@@ -94,27 +97,28 @@ class TestImageDerivateerJPG {
 		// arrange
 		Path sourcePath = sharedTempDir.resolve("IMAGE");
 		Path targetPath = sharedTempDir.resolve("DEFAULT");
-		Files.createDirectory(targetPath);
-		DerivansData input = new DerivansData(sourcePath, DerivateType.JPG);
-		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
+		Files.createDirectory(targetPath); // mandatory, done in production by BaseDerivateer
+		DerivateFS dFs = new DerivateFS(targetPath);
+		dFs.init(sourcePath);
+		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
+		DerivansData output = new DerivansData(sharedTempDir, "DEFAULT", DerivateType.JPG);
 		ImageDerivateerJPG derivateer = new ImageDerivateerJPG(input, output, 70);
-		DerivansPathResolver resolver = new DerivansPathResolver();
-		derivateer.setDigitalPages(resolver.resolveFromPath(sourcePath));
-		derivateer.setMaximal(1000);
+		derivateer.setMaximal(256);
 		derivateer.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
+		derivateer.setDigitalPages(dFs.getAllPages());
 
 		// act
 		int outcome = derivateer.create();
 
 		// assert
-		assertEquals(8, outcome);
+		assertEquals(4, outcome);
 		List<Path> paths = Files.list(targetPath).collect(Collectors.toList());
-		assertEquals(8, paths.size());
+		assertEquals(4, paths.size());
 		for (Path p : paths) {
 			assertTrue(Files.exists(p));
 			BufferedImage bi = ImageIO.read(p.toFile());
-			assertEquals(1000, bi.getHeight());
-			assertEquals(636, bi.getWidth());
+			assertEquals(256, bi.getHeight());
+			assertEquals(164, bi.getWidth());
 			assertTrue(p.toString().contains("BUNDLE_BRANDED"));
 		}
 	}
@@ -134,36 +138,36 @@ class TestImageDerivateerJPG {
 		Path targetPath = sharedTempDir.resolve("PREVIEW");
 		Path finalPath = sharedTempDir.resolve("FINAL");
 		Files.createDirectory(targetPath);
-
-		DerivansData input = new DerivansData(sourcePath, DerivateType.JPG);
-		DerivansData output = new DerivansData(targetPath, DerivateType.JPG);
+		DerivateFS dFs = new DerivateFS(sharedTempDir);
+		dFs.init(sourcePath);
+		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
+		DerivansData output = new DerivansData(sharedTempDir, "PREVIEW", DerivateType.JPG);
 		ImageDerivateerJPG id1 = new ImageDerivateerJPG(input, output, 50);
-		DerivansPathResolver resolver = new DerivansPathResolver();
-		id1.setDigitalPages(resolver.resolveFromPath(sourcePath));
-		id1.setMaximal(800);
+		id1.setMaximal(256);
+		id1.setDigitalPages(dFs.getAllPages());
 		id1.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
 
-		DerivansData input2 = new DerivansData(targetPath, DerivateType.JPG);
-		DerivansData output2 = new DerivansData(finalPath, DerivateType.JPG);
+		DerivansData input2 = new DerivansData(sharedTempDir, "PREVIEW", DerivateType.JPG);
+		DerivansData output2 = new DerivansData(sharedTempDir, "FINAL", DerivateType.JPG);
 		ImageDerivateerJPG id2 = new ImageDerivateerJPG(input2, output2, 50);
-		resolver = new DerivansPathResolver();
-		id2.setDigitalPages(resolver.resolveFromPath(sourcePath));
-		id2.setMaximal(640);
+		id2.setMaximal(128);
+		id2.setInputPrefix("BUNDLE_BRANDED_PREVIEW__");
 		id2.setOutputPrefix("BUNDLE_HUMBLE__");
+		id2.setDigitalPages(dFs.getAllPages());
 
 		// act
 		id1.create();
 		int outcome = id2.create();
 
 		// assert
-		assertEquals(8, outcome);
+		assertEquals(4, outcome);
 		List<Path> paths = Files.list(finalPath).sorted().collect(Collectors.toList());
-		assertEquals(8, paths.size());
+		assertEquals(4, paths.size());
 		for (int i = 0; i < paths.size(); i++) {
 			Path p = paths.get(i);
 			assertTrue(Files.exists(p));
 			BufferedImage bi = ImageIO.read(p.toFile());
-			assertEquals(640, bi.getHeight());
+			assertEquals(128, bi.getHeight());
 			String fileName = p.getFileName().toString();
 			assertEquals(fileName, String.format("BUNDLE_HUMBLE__000%d.jpg", i + 1));
 		}
