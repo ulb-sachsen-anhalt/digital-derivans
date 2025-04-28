@@ -10,46 +10,43 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.jdom2.Element;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.data.mets.MetadataStore;
+import de.ulb.digital.derivans.model.DerivateMD;
+import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
- * 
- * Specification of {@link MetadataStore}
  * 
  * @author u.hartwig
  *
  */
 class TestMetadataStoreVLSMultivolumes {
 
-	static IMetadataStore mds19788;
+	static DerivateMD mds19788;
 
 	static DescriptiveMetadata dd19788;
 
-	static IMetadataStore mds11250807;
+	static DerivateMD mds11250807;
 
 	static DescriptiveMetadata dd11250807;
 
-	static IMetadataStore mds9427337;
+	static DerivateMD mds9427337;
 
 	static DescriptiveMetadata dd9427337;
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		mds19788 = new MetadataStore(TestResource.VD17_Af_19788.get());
+		mds19788 = new DerivateMD(TestResource.VD17_Af_19788.get());
 		dd19788 = mds19788.getDescriptiveData();
-		mds11250807 = new MetadataStore(TestResource.VD17_AF_11250807.get());
+		mds11250807 = new DerivateMD(TestResource.VD17_AF_11250807.get());
 		dd11250807 = mds11250807.getDescriptiveData();
-		mds9427337 = new MetadataStore(TestResource.VD18_Af_9427337.get());
+		mds9427337 = new DerivateMD(TestResource.VD18_Af_9427337.get());
 		dd9427337 = mds9427337.getDescriptiveData();
 	}
 
@@ -83,7 +80,7 @@ class TestMetadataStoreVLSMultivolumes {
 	@Test
 	void testDescriptiveDataFromVL12MenalibOAI() throws DigitalDerivansException {
 		// arrange
-		IMetadataStore mds = new MetadataStore(TestResource.MENA_Af_1237560.get());
+		var mds = new DerivateMD(TestResource.MENA_Af_1237560.get());
 
 		// act
 		DescriptiveMetadata dd = mds.getDescriptiveData();
@@ -102,7 +99,7 @@ class TestMetadataStoreVLSMultivolumes {
 	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {
 
 		// act
-		List<DigitalPage> pages = mds19788.getDigitalPagesInOrder();
+		List<DigitalPage> pages = mds19788.getAllPages();
 
 		// assert
 		for (DigitalPage page : pages) {
@@ -113,32 +110,32 @@ class TestMetadataStoreVLSMultivolumes {
 		String urn2 = "urn:nbn:de:gbv:3:1-2085-p0004-9";
 		assertEquals(urn1, pages.get(0).optIdentifier().get());
 		assertEquals(urn2, pages.get(3).optIdentifier().get());
-		assertEquals("MAX/61196.jpg", pages.get(0).getImageFile());
-		assertEquals("MAX/61201.jpg", pages.get(3).getImageFile());
+		assertEquals("MAX/61196.jpg", pages.get(0).getFile());
+		assertEquals("MAX/61201.jpg", pages.get(3).getFile());
 	}
 
 	@Test
 	void testStructureOf19788() throws DigitalDerivansException {
-		DigitalStructureTree dst = mds19788.getStructure();
+		DerivateStruct dst = mds19788.getStructure();
 		assertNotNull(dst);
 
 		// level 1 = C-Stage
 		assertTrue(dst.getLabel().startsWith("... Idea Summi"));
-		assertEquals(1, dst.getPage());
-		assertTrue(dst.hasSubstructures());
+		assertEquals(1, dst.getPages().size());
+		assertFalse(dst.getChildren().isEmpty());
 
 		// level 2 = F-Stage
-		List<DigitalStructureTree> children = dst.getSubstructures();
+		List<DerivateStruct> children = dst.getChildren();
 		assertEquals(1, children.size());
 		assertEquals("Disputatio Ethica Prima De Summo Bono Practico Quod Sit Et Quid Sit", children.get(0).getLabel());
-		assertEquals(1, children.get(0).getPage());
+		assertEquals(1, children.get(0).getPages().size());
 
 		// level 3 = F-Stage struct
-		List<DigitalStructureTree> grandchilds = children.get(0).getSubstructures();
+		List<DerivateStruct> grandchilds = children.get(0).getChildren();
 		assertEquals("Titelblatt", grandchilds.get(0).getLabel());
-		assertEquals(1, grandchilds.get(0).getPage());
+		assertEquals(1, grandchilds.get(0).getPages().size());
 		assertEquals("Widmung", grandchilds.get(1).getLabel());
-		assertEquals(2, grandchilds.get(1).getPage());
+		assertEquals(2, grandchilds.get(1).getPages().size());
 	}
 
 	@Test
@@ -152,20 +149,20 @@ class TestMetadataStoreVLSMultivolumes {
 
 	@Test
 	void testStructure11250807() throws DigitalDerivansException {
-		DigitalStructureTree dst = mds11250807.getStructure();
+		DerivateStruct dst = mds11250807.getStructure();
 
 		// level 1 = C-Stage
 		assertEquals("Cursus Philosophici Disputatio ...", dst.getLabel());
-		assertEquals(1, dst.getPage());
+		assertEquals(1, dst.getPages().size());
 
 		// level 2 = F-Stage
-		List<DigitalStructureTree> children = dst.getSubstructures();
+		List<DerivateStruct> children = dst.getChildren();
 		assertEquals(1, children.size());
 		assertEquals("De Compositione Syllogismi", children.get(0).getLabel());
-		assertEquals(1, children.get(0).getPage());
+		assertEquals(1, children.get(0).getPages().size());
 
 		// level 3 = F-Stage struct
-		List<DigitalStructureTree> grandchilds = children.get(0).getSubstructures();
+		List<DerivateStruct> grandchilds = children.get(0).getChildren();
 		// 4 structs: "cover_front", "title_page", "section", "cover_back"
 		assertEquals(4, grandchilds.size());
 	}
@@ -185,14 +182,14 @@ class TestMetadataStoreVLSMultivolumes {
 			Files.delete(targetPathFile);
 		}
 		Files.copy(TestResource.VD17_Af_19788.get(), targetPathFile);
-		IMetadataStore mds = new MetadataStore(targetPathFile);
+		var mds = new DerivateMD(targetPathFile);
 
 		// act
 		String identifier = mds.getDescriptiveData().getIdentifier();
-		boolean renderPDFOutcome = mds.enrichPDF(identifier);
+		var renderPDFOutcome = mds.getMets().enrichPDF(identifier);
 
 		// assert
-		assertTrue(renderPDFOutcome);
+		assertEquals("foo", renderPDFOutcome);
 	}
 
 	/**
@@ -220,45 +217,45 @@ class TestMetadataStoreVLSMultivolumes {
 	 */
 	@Test
 	void testStructureOf9427337() throws DigitalDerivansException {
-		DigitalStructureTree dst = mds9427337.getStructure();
+		DerivateStruct dst = mds9427337.getStructure();
 		assertNotNull(dst);
 
 		assertEquals(
 				"Sir James Stewarts, Baronets, Untersuchung der Grund-Säze von der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen",
 				dst.getLabel());
-		assertEquals(1, dst.getPage());
-		assertTrue(dst.hasSubstructures());
+		assertEquals(1, dst.getPages().size());
+		assertFalse(dst.getChildren().isEmpty());
 
 		// level 1 - F-Stage
-		List<DigitalStructureTree> children = dst.getSubstructures();
+		List<DerivateStruct> children = dst.getChildren();
 		assertEquals(1, children.size());
 		assertEquals(
 				"Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen",
 				children.get(0).getLabel());
-		assertEquals(1, children.get(0).getPage());
+		assertEquals(1, children.get(0).getPages().size());
 
 		// level 1+2 - F-Stage
-		assertTrue(children.get(0).hasSubstructures());
-		assertEquals(6, children.get(0).getSubstructures().size());
-		var grandChildren = children.get(0).getSubstructures();
+		assertFalse(children.get(0).getChildren().isEmpty());
+		assertEquals(6, children.get(0).getChildren().size());
+		var grandChildren = children.get(0).getChildren();
 		assertEquals("Exlibris", grandChildren.get(1).getLabel());
-		assertEquals(2, grandChildren.get(1).getPage());
+		assertEquals(2, grandChildren.get(1).getPages().size());
 		assertEquals("Untersuchung der Grundsäze der Staats-Wirthschaft Drittes Buch von Geld und Münze.",
 				grandChildren.get(4).getLabel());
-		assertEquals(7, grandChildren.get(4).getPage());
+		assertEquals(7, grandChildren.get(4).getPages().size());
 	}
 
 	@Test
 	void testIntermediateVD17State() throws DigitalDerivansException {
-		var mds = new MetadataStore(TestResource.VD17_AF_11250807.get());
+		var mds = new DerivateMD(TestResource.VD17_AF_11250807.get());
 		var dd = mds.getDescriptiveData();
 		var strct = mds.getStructure();
 
 		// assert
 		assertEquals("De Compositione Syllogismi", dd.getTitle());
 		assertEquals("Cursus Philosophici Disputatio ...", strct.getLabel());
-		assertEquals("De Compositione Syllogismi", strct.getSubstructures().get(0).getLabel());
-		assertEquals("Vorderdeckel", strct.getSubstructures().get(0).getSubstructures().get(0).getLabel());
+		assertEquals("De Compositione Syllogismi", strct.getChildren().get(0).getLabel());
+		assertEquals("Vorderdeckel", strct.getChildren().get(0).getChildren().get(0).getLabel());
 	}
 
 	/**
@@ -278,9 +275,10 @@ class TestMetadataStoreVLSMultivolumes {
 		Files.copy(sourceMETS, targetMETS);
 
 		// arrange
-		var mds = new MetadataStore(targetMETS);
+		var mds = new DerivateMD(targetMETS);
 
 		// act + assert
-		assertTrue(mds.enrichPDF("PDF_11250807"));
+		var result = mds.getMets().enrichPDF("PDF_11250807");
+		assertEquals("bar", result);
 	}
 }

@@ -22,7 +22,7 @@ import de.ulb.digital.derivans.model.step.DerivateStepImage;
  * @author hartwig
  *
  */
-public class TestDerivansFulltextODEM {
+class TestDerivansFulltextODEM {
 
 	@TempDir
 	static Path tempDir;
@@ -34,7 +34,7 @@ public class TestDerivansFulltextODEM {
 	static int nImages = 17;
 
 	@BeforeAll
-	public static void setupBeforeClass() throws Exception {
+	static void setupBeforeClass() throws Exception {
 		// arrange migration configuration with extended derivates
 		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
@@ -65,7 +65,7 @@ public class TestDerivansFulltextODEM {
 
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathInput(targetMets);
-		dp.setPathConfig(configTargetDir.resolve("derivans_ulb.ini"));
+		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_odem.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 
 		// apply some scaling, too

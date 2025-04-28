@@ -52,7 +52,6 @@ import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.MetadataType;

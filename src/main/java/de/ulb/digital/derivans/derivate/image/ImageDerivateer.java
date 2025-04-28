@@ -30,26 +30,20 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	protected static final Logger LOGGER = LogManager.getLogger(ImageDerivateer.class);
 
-	protected int poolSize;
+	protected int poolSize = DEFAULT_POOLSIZE;
 
 	protected int maximal;
 
 	protected int quality;
 
-	protected ImageProcessor imageProcessor;
+	protected ImageProcessor imageProcessor = new ImageProcessor();
 
 	protected ImageDerivateer() {
 		super();
-		this.poolSize = DEFAULT_POOLSIZE;
-		this.imageProcessor = new ImageProcessor();
 	}
 
 	protected ImageDerivateer(DerivansData input, DerivansData output) {
 		super(input, output);
-		this.poolSize = DEFAULT_POOLSIZE;
-		// this.inputDir = input.getRootDir().resolve(input.getSubDir());
-		// this.outputRootDir = output.getRootDir();
-		this.imageProcessor = new ImageProcessor();
 	}
 
 	public void setImageProcessor(ImageProcessor processor) {

@@ -333,14 +333,15 @@ public class DerivansConfiguration {
 		String keyOutputDir = stepSection + ".output_dir";
 		extractValue(conf, keyOutputDir, String.class).ifPresent(step::setOutputDir);
 		extractValue(conf, stepSection+ ".output_type", String.class).ifPresent(step::setOutputTypeFromLabel);
-		// optional output_prefix (used for additional derivates)
-		String keyOutPrefix = stepSection + ".output_prefix";
-		Optional<String> optOutPrefix = extractValue(conf, keyOutPrefix, String.class);
-		if (optOutPrefix.isPresent()) {
-			String prefix = optOutPrefix.get();
-			step.setOutputPrefix(prefix);
-			this.derivatePrefixes.add(prefix);
-		}
+		// optional prefixes (used for additional derivates)
+		extractValue(conf, stepSection + ".input_prefix", String.class).ifPresent(inPrefix -> {
+			step.setInputPrefix(inPrefix);
+			this.derivatePrefixes.add(inPrefix);
+		});
+		extractValue(conf, stepSection + ".output_prefix", String.class).ifPresent(outPrefix -> {
+			step.setOutputPrefix(outPrefix);
+			this.derivatePrefixes.add(outPrefix);
+		});
 		return step;
 	}
 

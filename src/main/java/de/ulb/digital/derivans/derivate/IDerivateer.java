@@ -24,9 +24,24 @@ public interface IDerivateer {
 	String IMAGE_DIR_DEFAULT = "DEFAULT";
 
 	/*
-	 * METS file group used for OAI harvesting
+	 * METS file group used for ULB OAI harvesting and OCR-ing
 	 */
 	String IMAGE_DIR_MAX = "MAX";
+
+	/**
+	 * ULB specific Workflow directories
+	 * IMAGE_FOOTER		: images with footer appended and quality set t
+	 * IMAGE_80			: jpg images with quality set to 80% and max dimension depending on media type
+	 * 					  (input for PDF generation)
+	 * (DSpace specific image bundles)
+	 * IMAGE_PREVIEW	: jpg images with max dimension forced to 1000px
+	 * IMAGE_THUMBNAIL	: jpg images with max dimension forced to 128px
+	 * 
+	*/
+	String IMAGE_FOOTER = "IMAGE_FOOTER";
+	String IMAGE_Q80 = "IMAGE_80";
+	String IMAGE_PREVIEW = "BUNDLE_BRANDED_PREVIEW__";
+	String IMAGE_THUMBNAIL = "BUNDLE_THUMBNAIL__";
 
 	/*
 	 * METS file group used by Kitodo.Presentation

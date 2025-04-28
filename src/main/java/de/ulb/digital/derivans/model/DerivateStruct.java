@@ -24,6 +24,12 @@ public class DerivateStruct {
         this.label = label;
     }
 
+    public DerivateStruct(int order, String label, List<DerivateStruct> subStructs) {
+        this.order = order;
+        this.label = label;
+        this.children = subStructs;
+    }
+
     public String getLabel() {
         return this.label;
     }

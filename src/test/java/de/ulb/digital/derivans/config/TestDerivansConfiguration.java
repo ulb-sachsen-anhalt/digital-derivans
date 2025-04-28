@@ -21,7 +21,6 @@ import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
-import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
@@ -259,7 +258,7 @@ public class TestDerivansConfiguration {
 			Files.delete(configTargetDir);
 		}
 		Files.createDirectories(configTargetDir);
-		Path testConfig = configSourceDir.resolve("derivans_ulb.ini");
+		Path testConfig = configSourceDir.resolve("derivans_ulb_odem.ini");
 		Files.copy(testConfig, configTargetDir.resolve("derivans.ini"));
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(testConfig);

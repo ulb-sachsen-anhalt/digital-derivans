@@ -18,7 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.DigitalStructureTree;
+import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 import de.ulb.digital.derivans.model.step.DerivateType;
@@ -26,7 +26,7 @@ import de.ulb.digital.derivans.model.step.DerivateType;
 /**
  * 
  * MWE:
- *  PDF with 10 pages, no Textlayer, no METS/MODS-metadata
+ *  PDF with 4 pages, no Textlayer, no METS/MODS-metadata
  *  synthetic structure tree, images differ in dimension
  * 
  * @author hartwig
@@ -39,31 +39,31 @@ class TestPDFImagesDiffer {
 	@BeforeAll
 	static void initAll(@TempDir Path tempDir) throws Exception {
 		// arrange
-		int nPages = 10;
-		Path pathImages = tempDir.resolve("MAX");
+		int nPages = 4;
+		Path pathImages = tempDir.resolve("DEFAULT");
 		Files.createDirectory(pathImages);
 		List<DigitalPage> pages = new ArrayList<>();
 		for (int i = 1; i <= nPages; i++) {
 			String imageName = String.format("%04d.jpg", i);
 			Path jpgFile = pathImages.resolve(imageName);
-			int width = (i % 2 == 0) ? 1000 : 700;
-			int heigth = 600;
+			int width = (i % 2 == 0) ? 300 : 250;
+			int heigth = 400;
 			BufferedImage bi2 = new BufferedImage(width, heigth, BufferedImage.TYPE_3BYTE_BGR);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
-			DigitalPage e = new DigitalPage(i, imageName);
+			DigitalPage e = new DigitalPage(i, jpgFile);
 			pages.add(e);
 		}
-		DigitalStructureTree kap1 = new DigitalStructureTree(1, "Teil 1");
-		DigitalStructureTree kap21 = new DigitalStructureTree(4, "Abschnitt 2.1");
-		DigitalStructureTree kap22 = new DigitalStructureTree(6, "Abschnitt 2.2");
-		DigitalStructureTree kap2 = new DigitalStructureTree(4, "Teil 2", List.of(kap21, kap22));
-		DigitalStructureTree tree = new DigitalStructureTree(1, "Buch 1", List.of(kap1, kap2));
+		DerivateStruct kap1 = new DerivateStruct(1, "Teil 1");
+		DerivateStruct kap21 = new DerivateStruct(4, "Abschnitt 2.1");
+		DerivateStruct kap22 = new DerivateStruct(6, "Abschnitt 2.2");
+		DerivateStruct kap2 = new DerivateStruct(4, "Teil 2", List.of(kap21, kap22));
+		DerivateStruct tree = new DerivateStruct(1, "Buch 1", List.of(kap1, kap2));
 
 		// act
 		String pdfName = String.format("pdf-image-%04d.pdf", nPages);
 		Path outPath = tempDir.resolve(pdfName);
-		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
-		DerivansData output = new DerivansData(outPath, DerivateType.PDF);
+		DerivansData input = new DerivansData(pathImages, "DEFAULT", DerivateType.JPG);
+		DerivansData output = new DerivansData(outPath, ".", DerivateType.PDF);
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.setImageDpi(300);
 		var handler = new PDFDerivateer(input, output, pages, pdfMeta);

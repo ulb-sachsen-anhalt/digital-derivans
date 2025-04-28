@@ -1,7 +1,6 @@
 package de.ulb.digital.derivans.model;
 
 import java.io.File;
-import java.util.List;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.pdf.PDFResult;

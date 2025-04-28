@@ -20,7 +20,6 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.DigitalStructureTree;
 import de.ulb.digital.derivans.model.IDerivate;
 // import de.ulb.digital.derivans.model.ITextElement;
 import de.ulb.digital.derivans.model.IPDFProcessor;
@@ -66,8 +65,6 @@ public class PDFBoxProcessor implements IPDFProcessor {
 
 	private float dpiScale = 1.0f;
 
-	private DigitalStructureTree structure = new DigitalStructureTree();
-
 	private PDDocument document;
 
 	private boolean debugRender;
@@ -89,7 +86,6 @@ public class PDFBoxProcessor implements IPDFProcessor {
 		this.renderModus = pdfStep.getRenderModus();
 		this.debugRender = pdfStep.getDebugRender();
 		this.setDpi(pdfStep.getImageDpi());
-		this.structure = structure;
 		this.pages = pages;
 	}
 
@@ -117,9 +113,7 @@ public class PDFBoxProcessor implements IPDFProcessor {
 		 	this.addMetadata();
 		 	var resultPages = this.addPages(pages);
 		 	this.reportDoc.addPages(resultPages);
-		 	if (this.structure != null) {
-		 		//this.addOutline(writer, resultPages.size());
-		 	}
+			//this.addOutline(writer, resultPages.size());
 		 	this.document.save(fileDescriptor);
 		 	this.document.close();
 		} catch (IOException exc) {
@@ -149,7 +143,7 @@ public class PDFBoxProcessor implements IPDFProcessor {
 
 	private PDFPage addPageAt(DigitalPage page, int pageNumber) throws IOException {
 		PDFPage resultPage = new PDFPage();
-		String imagePath = page.getImagePath().toString();
+		String imagePath = page.getFile().getPath().toString();
 		PDImageXObject img = PDImageXObject.createFromFile(imagePath, this.document);
 		float imageWidth = img.getWidth();
 		float imageHeight = img.getHeight();

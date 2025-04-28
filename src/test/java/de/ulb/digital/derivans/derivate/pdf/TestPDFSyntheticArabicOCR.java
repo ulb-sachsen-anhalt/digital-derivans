@@ -21,6 +21,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.ocr.OCRData;
@@ -66,7 +67,7 @@ class TestPDFSyntheticArabicOCR {
 
 	@BeforeAll
 	static void initAll(@TempDir Path tempDir) throws Exception {
-		Path pathImages = tempDir.resolve("MAX");
+		Path pathImages = tempDir.resolve(IDerivateer.IMAGE_DIR_MAX);
 		Files.createDirectory(pathImages);
 		String imageName = String.format("%04d.jpg", 1);
 		Path jpgFile = pathImages.resolve(imageName);
@@ -76,7 +77,7 @@ class TestPDFSyntheticArabicOCR {
 		g2d.fillRect(0, 0, orgwidth, orgHeight);
 		ImageIO.write(bi2, "JPG", jpgFile.toFile());
 
-		DigitalPage e = new DigitalPage(1, imageName);
+		DigitalPage e = new DigitalPage(1, jpgFile);
 		e.setOcrData(arabicOCR());
 		List<DigitalPage> pages = new ArrayList<>();
 		pages.add(e);
@@ -84,8 +85,8 @@ class TestPDFSyntheticArabicOCR {
 		// act
 		String pdfLineName = String.format("pdf-linelevel-%04d.pdf", N_PAGES);
 		Path outputLinePath = tempDir.resolve(pdfLineName);
-		DerivansData input = new DerivansData(pathImages, DerivateType.JPG);
-		DerivansData outputLine = new DerivansData(outputLinePath, DerivateType.PDF);
+		DerivansData input = new DerivansData(pathImages, IDerivateer.IMAGE_DIR_MAX, DerivateType.JPG);
+		DerivansData outputLine = new DerivansData(outputLinePath,".", DerivateType.PDF);
 		DerivateStepPDF pdfStep = new DerivateStepPDF();
 		pdfStep.setImageDpi(TEST_DPI);
 		pdfStep.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
@@ -99,7 +100,7 @@ class TestPDFSyntheticArabicOCR {
 
 		// act twice
 		var pdfWordName = String.format("pdf-wordlevel-%04d.pdf", N_PAGES);
-		var outputWord = new DerivansData(tempDir.resolve(pdfWordName), DerivateType.PDF);
+		var outputWord = new DerivansData(tempDir.resolve(pdfWordName), IDerivateer.IMAGE_DIR_MAX, DerivateType.PDF);
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		var handlerTwo = new PDFDerivateer(input, outputWord, pages, pdfStep);
 		handlerTwo.create();

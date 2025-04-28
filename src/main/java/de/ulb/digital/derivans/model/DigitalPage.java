@@ -1,12 +1,8 @@
 package de.ulb.digital.derivans.model;
 
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.OptionalInt;
 
-import de.ulb.digital.derivans.data.mets.METSFile;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**

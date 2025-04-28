@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
@@ -32,8 +33,8 @@ class TestPDFDerivateer {
 	void testInvalidPageArg() {
 
 		// arrange mwe
-		DerivansData input = new DerivansData(Path.of("."), DerivateType.JPG);
-		DerivansData output = new DerivansData(Path.of("."), DerivateType.PDF);
+		DerivansData input = new DerivansData(Path.of("."), IDerivateer.IMAGE_DIR_DEFAULT, DerivateType.JPG);
+		DerivansData output = new DerivansData(Path.of("."), ".", DerivateType.PDF);
 		DescriptiveMetadata dd = new DescriptiveMetadata();
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
 		pdfMeta.mergeDescriptiveData(dd);

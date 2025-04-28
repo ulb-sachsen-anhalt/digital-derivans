@@ -3,8 +3,10 @@ package de.ulb.digital.derivans;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -27,7 +29,7 @@ import de.ulb.digital.derivans.config.DerivansParameter;
  * @author hartwig
  *
  */
-public class TestDerivansExportKitodo3Issue {
+class TestDerivansExportKitodo3Issue {
 
 	@TempDir
 	static Path tempDir;
@@ -39,7 +41,7 @@ public class TestDerivansExportKitodo3Issue {
 	static String issueLabel = "253780594-18920720";
 
 	@BeforeAll
-	public static void setupBeforeClass() throws Exception {
+	static void setupBeforeClass() throws Exception {
 
 		workDir = tempDir.resolve(issueLabel);
 		Path pathTargetMets = workDir.resolve(issueLabel + ".xml");
@@ -50,7 +52,16 @@ public class TestDerivansExportKitodo3Issue {
 		var pathRes = TestResource.K3_ZD2_253780594.get();
 		Files.copy(pathRes, pathTargetMets);
 		TestHelper.generateImages(pathImageDir, 120, 200, 7, "%08d.tif");
+
+		Path configSourceDir = Path.of("src/test/resources/config");
+		Path configTargetDir = tempDir.resolve("config");
+		if (Files.exists(configTargetDir)) {
+			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			Files.delete(configTargetDir);
+		}
+		TestHelper.copyTree(configSourceDir, configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
+		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_export.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 

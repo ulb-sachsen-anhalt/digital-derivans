@@ -1,7 +1,5 @@
 package de.ulb.digital.derivans.config;
 
-import de.ulb.digital.derivans.model.step.DerivateType;
-
 import java.nio.file.Path;
 
 /**

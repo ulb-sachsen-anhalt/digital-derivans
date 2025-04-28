@@ -44,7 +44,6 @@ public class ImageDerivateerJPG extends ImageDerivateer {
 	}
 
 	private String render(DigitalPage page) {
-		// Path pathIn = page.getFile().withDirname(this.input.getSubDir());
 		Path pathIn = this.setInpath(page);
 		if (!Files.exists(pathIn)) {
 			throw new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");

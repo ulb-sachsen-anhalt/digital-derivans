@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
-// import de.ulb.digital.derivans.data.io.DerivansPathResolver;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
@@ -38,6 +37,8 @@ public class BaseDerivateer implements IDerivateer {
 	protected IDerivate derivate;
 
 	public static final String EXT_JPG = ".jpg";
+
+	public static final String EXT_TIF = ".tif";
 
 	public BaseDerivateer() {
 	}
@@ -71,7 +72,9 @@ public class BaseDerivateer implements IDerivateer {
 	}
 
 	public void setInputPrefix(String prefix) {
-		this.inputPrefix = Optional.of(prefix);
+		if (prefix != null) {
+			this.inputPrefix = Optional.of(prefix);
+		}
 	}
 
 	public Optional<String> getOutputPrefix() {
@@ -79,7 +82,9 @@ public class BaseDerivateer implements IDerivateer {
 	}
 
 	public void setOutputPrefix(String prefix) {
-		this.outputPrefix = Optional.of(prefix);
+		if (prefix != null) {
+			this.outputPrefix = Optional.of(prefix);
+		}
 	}
 
 	@Override
@@ -101,7 +106,6 @@ public class BaseDerivateer implements IDerivateer {
 	@Override
 	public void setInput(DerivansData input) {
 		this.input = input;
-		// this.inputDir = input.getRootDir();
 	}
 
 	@Override
@@ -112,7 +116,7 @@ public class BaseDerivateer implements IDerivateer {
 	@Override
 	public void setOutput(DerivansData output) {
 		this.output = output;
-		// this.outputRootDir = output.getRootDir();
+		this.derivateType = output.getType();
 	}
 
 	@Override
@@ -120,48 +124,40 @@ public class BaseDerivateer implements IDerivateer {
 		return this.output;
 	}
 
-
 	protected Path setInpath(DigitalPage page) {
 		Path pathIn = page.getFile().withDirname(this.input.getSubDir());
 		var pathFnm = pathIn.getFileName();
 		var pathDir = pathIn.getParent();
-		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm));
+		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm, this.input.getType()));
 		this.getInputPrefix().ifPresent(prefix -> fName.insert(0, prefix));
-		// if (this.getOutputPrefix().isPresent()) {
-		// 	var optPrefix = this.getOutputPrefix().get();
-		// 	fName = optPrefix + fName;
-		// }
 		pathIn = pathDir.resolve(fName.toString());
-		return pathIn;		
+		return pathIn;
 	}
 
 	protected Path setOutpath(DigitalPage page) {
 		Path pathOut = page.getFile().withDirname(this.output.getSubDir());
 		var pathFnm = pathOut.getFileName();
 		var pathDir = pathOut.getParent();
-		// String fName = this.setFileExtension(pathFnm);
-		// if (this.getOutputPrefix().isPresent()) {
-		// 	var optPrefix = this.getOutputPrefix().get();
-		// 	fName = optPrefix + fName;
-		// }
-		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm));
+		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm, this.output.getType()));
 		this.getOutputPrefix().ifPresent(prefix -> fName.insert(0, prefix));
 		pathOut = pathDir.resolve(fName.toString());
 		return pathOut;
 	}
 
-	private String setFileExtension(Path fileName) {
+	private String setFileExtension(Path fileName, DerivateType dType) {
 		String fnstr = fileName.toString();
-		if (fnstr.contains(".")) {
+		if (fnstr.contains(".")) { // common local file
 			int rightOffset = fnstr.lastIndexOf(".");
 			String fileNamePrt = fnstr.substring(0, rightOffset);
 			String fileNameExt = fnstr.substring(rightOffset);
-			if ((this.derivateType == DerivateType.JPG || this.derivateType == DerivateType.JPG_FOOTER)
+			if ((dType == DerivateType.JPG || dType == DerivateType.JPG_FOOTER)
 					&& !EXT_JPG.equals(fileNameExt)) {
 				return fileNamePrt + EXT_JPG;
+			} else if (dType == DerivateType.TIF) {
+				return fileNamePrt + EXT_TIF;
 			}
 			return fnstr;
-		} else if (this.derivateType == DerivateType.JPG || this.derivateType == DerivateType.JPG_FOOTER) {
+		} else if (dType == DerivateType.JPG || dType == DerivateType.JPG_FOOTER) { // loaded via OAI
 			return fnstr + EXT_JPG;
 		}
 		String msg = String.format("Fail to set any ext for %s, type %s", fileName, this.derivateType);

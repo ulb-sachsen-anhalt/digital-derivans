@@ -31,7 +31,7 @@ import de.ulb.digital.derivans.model.step.DerivateStep;
  * generate images, attach footnote, create PDF
  * (= 5 steps)
  * 
- * used config: src/test/resources/config/derivans-5steps.ini
+ * used config: src/test/resources/config/derivans_ulb_migration.ini
  * 
  * @author hartwig
  *
@@ -67,7 +67,7 @@ class TestDerivansLegacyULB {
 		}
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(configTargetDir.resolve("derivans-5steps.ini"));
+		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_migration.ini"));
 		Path input = workDir.resolve("737429.xml");
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);

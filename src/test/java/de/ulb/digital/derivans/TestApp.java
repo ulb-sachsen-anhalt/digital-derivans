@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import de.ulb.digital.derivans.derivate.IDerivateer;
+
 /**
  * 
  * @author hartwig
@@ -18,7 +20,7 @@ class TestApp {
 	/**
 	 * 
 	 * Testing the application bare boned (=config missing)
-	 * using default, implicite steps
+	 * using implicite default 2step flow compliant with DFG viewer
 	 * 
 	 * @param tempDir
 	 * @throws Exception
@@ -51,20 +53,21 @@ class TestApp {
 
 	/**
 	 * 
-	 * Behavor using common ULB configuration
+	 * Behavor using common 2step ULB configuration
+	 * using "MAX" images, not "DEFAULT"
 	 * 
 	 * @param tempDir
 	 * @throws Exception
 	 */
 	@Test
-	void testAppOdeWithConfigurationFile(@TempDir Path tempDir) throws Exception {
+	void testWithSampleConfigurationFile(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		Path pathTarget = TestHelper.fixturePrint737429(tempDir, "MAX");
+		Path pathTarget = TestHelper.fixturePrint737429(tempDir, IDerivateer.IMAGE_DIR_MAX);
 		
 		Path configDir = Path.of("src/test/resources/config");
 		Path configTempDir = tempDir.resolve("config");
-		Path configTemp = configTempDir.resolve("derivans_ulb.ini");
+		Path configTemp = configTempDir.resolve("derivans_ulb_odem.ini");
 		TestHelper.copyTree(configDir, configTempDir);
 
 		// act

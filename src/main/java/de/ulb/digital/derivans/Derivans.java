@@ -131,6 +131,7 @@ public class Derivans {
                 imgDerivateer.setPoolsize(imgStep.getPoolsize());
                 imgDerivateer.setMaximal(imgStep.getMaximal());
                 imgDerivateer.setOutputPrefix(imgStep.getOutputPrefix());
+                imgDerivateer.setInputPrefix(imgStep.getInputPrefix()); // check for chained derivates !!!!
             } else if (type == DerivateType.JPG_FOOTER) {
                 DerivateStepImageFooter stepFooter = (DerivateStepImageFooter) step;
                 var footerDerivateer = (ImageDerivateerJPGFooter) derivateer;

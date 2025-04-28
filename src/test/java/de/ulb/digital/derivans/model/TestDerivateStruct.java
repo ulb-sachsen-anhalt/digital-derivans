@@ -10,19 +10,19 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 
 /**
  * 
- * Specification for {@link DigitalStructureTree}
+ * Specification for {@link DerivateStruct}
  * 
  * @author hartwig
  *
  */
-public class TestDigitalStructureTree {
+class TestDerivateStruct {
 
 	@Test
 	void testCommonInstancesEquals() throws CmdLineException, DigitalDerivansException {
 
 		// arrange
-		var s1 = new DigitalStructureTree(6, "[Seite 8]");
-		var s2 = new DigitalStructureTree(6, "[Seite 8]");
+		var s1 = new DerivateStruct(6, "[Seite 8]");
+		var s2 = new DerivateStruct(6, "[Seite 8]");
 
 		// act
 		assertEquals(s1, s2);
@@ -32,8 +32,8 @@ public class TestDigitalStructureTree {
 	void testCommonInstancesDifferValue() throws CmdLineException {
 
 		// arrange
-		var s1 = new DigitalStructureTree(6, "[Seite 8]");
-		var s2 = new DigitalStructureTree(7, "[Seite 8]");
+		var s1 = new DerivateStruct(6, "[Seite 8]");
+		var s2 = new DerivateStruct(7, "[Seite 8]");
 
 		// act
 		assertNotEquals(s1, s2);
@@ -43,8 +43,8 @@ public class TestDigitalStructureTree {
 	void testCommonInstancesDifferLabel() throws CmdLineException {
 
 		// arrange
-		var s1 = new DigitalStructureTree(6, "[Seite 8]");
-		var s2 = new DigitalStructureTree(6, "[Tabelle]");
+		var s1 = new DerivateStruct(6, "[Seite 8]");
+		var s2 = new DerivateStruct(6, "[Tabelle]");
 
 		// act
 		assertNotEquals(s1, s2);
@@ -54,8 +54,8 @@ public class TestDigitalStructureTree {
 	void testCommonInstancesDifferBoth() throws CmdLineException {
 
 		// arrange
-		var s1 = new DigitalStructureTree(6, "[Seite 8]");
-		var s2 = new DigitalStructureTree(7, "[Tabelle]");
+		var s1 = new DerivateStruct(6, "[Seite 8]");
+		var s2 = new DerivateStruct(7, "[Tabelle]");
 
 		// act
 		assertNotEquals(s1, s2);

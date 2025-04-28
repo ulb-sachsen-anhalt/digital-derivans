@@ -95,8 +95,7 @@ class TestDerivansFS {
 		assertEquals(4, logRoot.getOutlineEntries().size());
 	}
 
-
-		/**
+	/**
 	 * 
 	 * Start images one level below actual start directory
 	 * 
@@ -124,19 +123,20 @@ class TestDerivansFS {
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		derivans.init(pathTarget);
-		
+
 		// assert
 		List<DerivateStep> steps = derivans.getSteps();
 		assertEquals(5, steps.size());
 		assertEquals(DerivateType.TIF, steps.get(0).getInputType());
 		assertEquals(DerivateType.JPG, steps.get(1).getInputType());
-		
+
 		derivans.create();
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
 		assertTrue(Files.exists(pdfWritten));
 
-		// PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
+		// PDFOutlineEntry outline = new
+		// TestHelper.PDFInspector(pdfWritten).getOutline();
 		// assertNotNull(outline);
 		// assertEquals("Outlines", outline.getLabel());
 		// assertEquals(1, outline.getOutlineEntries().size());
@@ -174,39 +174,9 @@ class TestDerivansFS {
 		assertTrue(Files.exists(pdfWritten));
 	}
 
-	
-	@Test
-	void testDerivatesFSFiveSteps(@TempDir Path tempDir) throws Exception {
-
-		// arrange
-		Path configSourceDir = Path.of("src/test/resources/config");
-		Path configTargetDir = tempDir.resolve("config");
-		Files.createDirectories(configTargetDir);
-		Path testConfig = configSourceDir.resolve("derivans-5steps.ini");
-		Files.copy(testConfig, configTargetDir.resolve("derivans-5steps.ini"));
-		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(testConfig);
-		Path pathTarget = tempDir.resolve("only_images");
-		Path pathImageMax = pathTarget.resolve("MAX");
-		Files.createDirectories(pathImageMax);
-		TestHelper.generateImages(pathImageMax, 300, 420, 4, "%04d.jpg");
-
-		// act
-		dp.setPathInput(pathTarget);
-		DerivansConfiguration dc = new DerivansConfiguration(dp);
-		dc.setParamImages("MAX");
-		Derivans derivans = new Derivans(dc);
-		derivans.init(pathTarget);
-		derivans.create();
-
-		// assert
-		Path pdfWritten = pathTarget.resolve("only_images.pdf");
-		assertTrue(Files.exists(pdfWritten));
-	}
-
 	/**
 	 * 
-	 * Behavior if OCR data present in sub directory 'ALTO3' and 
+	 * Behavior if OCR data present in sub directory 'ALTO3' and
 	 * images in directory 'ORIGINAL'
 	 * 
 	 * @param tempDir

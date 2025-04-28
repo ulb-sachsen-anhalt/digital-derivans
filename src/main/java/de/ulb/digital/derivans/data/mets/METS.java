@@ -172,10 +172,10 @@ public class METS {
 	 * @throws DigitalDerivansException
 	 */
 	public String addDownloadFile(String useGroup, String identifier, String mimeType) throws DigitalDerivansException {
-		Element fileElement = new METSFile(useGroup, identifier, mimeType, identifier + ".pdf").asElement();
+		Element fileElement = new METSFile(identifier, identifier + ".pdf", useGroup, mimeType).asElement();
 		// attach or re-use existing group
-		var existingGroups = this.evaluate(String.format("//mets:fileGrp[@USE='%s']", useGroup));
 		Element fileGrp = null;
+		var existingGroups = this.evaluate(String.format("//mets:fileGrp[@USE='%s']", useGroup));
 		if (existingGroups.size() == 1) {
 			fileGrp = existingGroups.get(0);
 		} else {
@@ -321,7 +321,7 @@ public class METS {
 					String fileId = fileFromGroup.getAttributeValue("ID");
 					var fstLocat = fileFromGroup.getChildren("FLocat", METS.NS_METS).get(0);
 					String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
-					if(!hRef.endsWith(fileExt)) {
+					if (!hRef.endsWith(fileExt)) {
 						hRef += fileExt;
 					}
 					var thaFile = new METSFile(fileId, hRef, fileGroup);
@@ -346,7 +346,7 @@ public class METS {
 		throw new UnsupportedOperationException("Unimplemented method 'setIdentifierExpression'");
 	}
 
-	public void enrichPDF(String identifier) throws DigitalDerivansException {
+	public String enrichPDF(String identifier) throws DigitalDerivansException {
 		String mimeType = "application/pdf";
 		String fileGroup = "DOWNLOAD";
 		LOGGER.info("enrich pdf '{}' as '{}' in '{}'", identifier, mimeType, fileGroup);
@@ -354,6 +354,7 @@ public class METS {
 		var resultText = this.addDownloadFile("DOWNLOAD", fileId, "application/pdf");
 		LOGGER.info("integrated pdf fileId '{}' in '{}'", fileId, this.file);
 		LOGGER.info("integrated mets:agent {}", resultText);
+		return resultText;
 	}
 
 }

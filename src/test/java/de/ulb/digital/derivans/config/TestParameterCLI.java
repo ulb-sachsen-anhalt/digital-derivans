@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.model;
+package de.ulb.digital.derivans.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -8,18 +8,16 @@ import org.junit.jupiter.api.Test;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
-import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.config.DerivansParameter;
 
 /**
  * 
  * @author hartwig
  *
  */
-public class TestDerivansParameter {
+class TestParameterCLI {
 
 	@Test
-	void testConfigurationDefaults() throws CmdLineException, DigitalDerivansException {
+	void testConfigurationDefaults() throws CmdLineException {
 
 		// arrange
 		DerivansParameter dp = new DerivansParameter();
@@ -34,7 +32,7 @@ public class TestDerivansParameter {
 	}
 
 	@Test
-	void testConfigurationInvalid() throws CmdLineException {
+	void testConfigurationInvalid() {
 
 		// arrange
 		DerivansParameter dp = new DerivansParameter();

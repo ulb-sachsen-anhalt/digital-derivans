@@ -25,7 +25,7 @@ import de.ulb.digital.derivans.model.step.DerivateStepPDF;
  * @author hartwig
  *
  */
-public class TestDerivansFulltextRahbar {
+class TestDerivansFulltextRahbar {
 
 	@TempDir
 	static Path tempDir;
@@ -45,7 +45,7 @@ public class TestDerivansFulltextRahbar {
 	 * @throws Exception
 	 */
 	@BeforeAll
-	public static void setupBeforeClass() throws Exception {
+	static void setupBeforeClass() throws Exception {
 		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
