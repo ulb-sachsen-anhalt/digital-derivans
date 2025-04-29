@@ -24,7 +24,7 @@ public class TestDigitalStructureTreeDeepIssue {
 	static void setupClazz() throws Exception {
 		Path testData = TestResource.METS_ZD_ISSUE_182327845018001101.get();
 		DerivateMD devmd = new DerivateMD(testData);
-		devmd.setRessourceExists(false);
+		devmd.checkRessources(false);
 		devmd.init(testData.getParent());
 		deepIssue = devmd.getStructure();
 	}

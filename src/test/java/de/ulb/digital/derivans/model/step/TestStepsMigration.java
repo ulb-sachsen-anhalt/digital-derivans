@@ -39,13 +39,11 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  * @author hartwig
  *
  */
-class TestExportSteps {
+class TestStepsMigration {
 
-	private static final String NAME_PDF = "the-name-of-the";
+	private static final String NAME_PDF = "the-name-of-foo";
 
-	private static final String NAME_PDF_FILE = NAME_PDF + ".pdf";
-
-	private static final String NAME_TEMPLATE = "footer_template_without_dfg_logo.png";
+	private static final String NAME_TEMPLATE = "foo_template_without_bar.png";
 
 	@TempDir
 	static Path tempDir;
@@ -64,20 +62,19 @@ class TestExportSteps {
 	static void setupBeforeClass() throws Exception {
 
 		// arrange metadata and images
-		workDir = TestHelper.fixturePrint737429(tempDir, "MAX");
+		TestStepsMigration.workDir = TestHelper.fixturePrint737429(TestStepsMigration.tempDir, "MAX");
 
 		// arrange configuration
 		// migration configuration with extended derivates
 		Path configSourceDir = Path.of("src/test/resources/config");
-		Path configTargetDir = tempDir.resolve("config");
+		Path configTargetDir = TestStepsMigration.tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_export.ini"));
-		dp.setPathInput(workDir.resolve("737429.xml"));
+		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_migration.ini"));
 		dp.setNamePDF(NAME_PDF);
 		dp.setPathFooter(configTargetDir.resolve(NAME_TEMPLATE));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
@@ -92,18 +89,18 @@ class TestExportSteps {
 
 	@Test
 	void testStepFooter() {
-		DerivateStep theStep = TestExportSteps.steps.stream()
-				.filter(s -> s.getOutputType() == DerivateType.JPG_FOOTER)
+		DerivateStep theStep = TestStepsMigration.steps.stream()
+				.filter(DerivateStepImageFooter.class::isInstance)
 				.findFirst()
 				.get();
-		assertEquals(DerivateType.JPG_FOOTER, theStep.getOutputType());
+		assertEquals(DerivateType.JPG, theStep.getOutputType());
 		var footerStep = (DerivateStepImageFooter) theStep;
 		assertEquals(NAME_TEMPLATE, footerStep.getPathTemplate().getFileName().toString());
 	}
 
 	@Test
 	void testStepPDFLabel() {
-		DerivateStep theStep = TestExportSteps.steps.stream()
+		DerivateStep theStep = TestStepsMigration.steps.stream()
 				.filter(s -> s.getOutputType() == DerivateType.PDF)
 				.findFirst()
 				.get();

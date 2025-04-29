@@ -46,7 +46,7 @@ public class DerivateMD implements IDerivate {
 
 	private boolean inited;
 
-	private boolean testRessourceExists = true;
+	private boolean checkRessources = true;
 
 	private final AtomicInteger mdPageOrder = new AtomicInteger(1);
 
@@ -93,7 +93,7 @@ public class DerivateMD implements IDerivate {
 		if (root.getChildren().isEmpty()) {
 			List<METSFile> digiFiles = this.mets.getFiles(root, this.imageGroup, fileExt);
 			for (var digiFile : digiFiles) {
-				Path filePath = this.pathInputDir.resolve(digiFile.getLocalPath(this.testRessourceExists));
+				Path filePath = this.pathInputDir.resolve(digiFile.getLocalPath(this.checkRessources));
 				int currOrder = this.mdPageOrder.getAndIncrement();
 				DigitalPage page = new DigitalPage(currOrder, filePath);
 				this.struct.getPages().add(page);
@@ -122,7 +122,7 @@ public class DerivateMD implements IDerivate {
 		}
 		List<METSFile> digiFiles = this.mets.getFiles(currentCnt, this.imageGroup, fileExt);
 		for (var digiFile : digiFiles) {
-			Path localFilePath = digiFile.getLocalPath(this.testRessourceExists);
+			Path localFilePath = digiFile.getLocalPath(this.checkRessources);
 			int currOrder = this.mdPageOrder.getAndIncrement();
 			DigitalPage page = new DigitalPage(currOrder, localFilePath);
 			if (digiFile.getPageLabel() != null) {
@@ -249,8 +249,12 @@ public class DerivateMD implements IDerivate {
 		return this.mets;
 	}
 
-	public void setRessourceExists(boolean check) {
-		this.testRessourceExists = check;
+	/**
+	 * Disable local file resolving to test metadata separate
+	 * @param check
+	 */
+	public void checkRessources(boolean check) {
+		this.checkRessources = check;
 	}
 
 	public boolean isGranularIdentifierPresent() {

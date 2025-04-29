@@ -34,7 +34,7 @@ class TestMetadataStoreKitodo3 {
 
 		// 
 		dZD2.setStartFileExtension(".tif");
-		dZD2.setRessourceExists(false);
+		dZD2.checkRessources(false);
 		dZD2.init(Path.of("MAX"));
 		var digiPages = dZD2.getAllPages();
 

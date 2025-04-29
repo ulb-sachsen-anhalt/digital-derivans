@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
@@ -28,47 +29,53 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  */
 class TestMetadataStoreVLSMultivolumes {
 
-	static DerivateMD mds19788;
+	static DerivateMD derivate19788;
 
-	static DescriptiveMetadata dd19788;
+	static DescriptiveMetadata dmd19788;
 
-	static DerivateMD mds11250807;
+	static DerivateMD derivate11250807;
 
-	static DescriptiveMetadata dd11250807;
+	static DescriptiveMetadata dmd11250807;
 
-	static DerivateMD mds9427337;
+	static DerivateMD derivate9427337;
 
-	static DescriptiveMetadata dd9427337;
+	static DescriptiveMetadata dmd9427337;
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		mds19788 = new DerivateMD(TestResource.VD17_Af_19788.get());
-		dd19788 = mds19788.getDescriptiveData();
-		mds11250807 = new DerivateMD(TestResource.VD17_AF_11250807.get());
-		dd11250807 = mds11250807.getDescriptiveData();
-		mds9427337 = new DerivateMD(TestResource.VD18_Af_9427337.get());
-		dd9427337 = mds9427337.getDescriptiveData();
+		derivate19788 = new DerivateMD(TestResource.VD17_Af_19788.get());
+		derivate19788.checkRessources(false);
+		derivate19788.init(TestHelper.ULB_MAX_PATH);
+		dmd19788 = derivate19788.getDescriptiveData();
+		derivate11250807 = new DerivateMD(TestResource.VD17_AF_11250807.get());
+		derivate11250807.checkRessources(false);
+		derivate11250807.init(TestHelper.ULB_MAX_PATH);
+		dmd11250807 = derivate11250807.getDescriptiveData();
+		derivate9427337 = new DerivateMD(TestResource.VD18_Af_9427337.get());
+		derivate9427337.checkRessources(false);
+		derivate9427337.init(TestHelper.ULB_MAX_PATH);
+		dmd9427337 = derivate9427337.getDescriptiveData();
 	}
 
 	@Test
 	void testDescriptiveDataVD17Volume() throws DigitalDerivansException {
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
-		assertEquals("005209242", dd19788.getIdentifier());
+		assertEquals("005209242", dmd19788.getIdentifier());
 		// mods:titleInfo/mods:title
-		assertTrue(dd19788.getTitle().startsWith("Disputatio Ethica Prima De Summo"));
+		assertTrue(dmd19788.getTitle().startsWith("Disputatio Ethica Prima De Summo"));
 		// mods:identifier[@type="urn"]
-		assertEquals("urn:nbn:de:gbv:3:1-2085", dd19788.getUrn());
+		assertEquals("urn:nbn:de:gbv:3:1-2085", dmd19788.getUrn());
 		// METS/MODS contains no license information
-		assertFalse(dd19788.getLicense().isEmpty());
+		assertFalse(dmd19788.getLicense().isEmpty());
 		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
-		assertEquals("1654", dd19788.getYearPublished());
+		assertEquals("1654", dmd19788.getYearPublished());
 		// mods:role/mods:displayForm/text()
 		// OR
 		// mods:namePart[@type="family"]/text()
 		// WITH
 		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut"
 		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl
-		assertEquals("Schwertner, David", dd19788.getPerson());
+		assertEquals("Schwertner, David", dmd19788.getPerson());
 	}
 
 	/**
@@ -99,7 +106,7 @@ class TestMetadataStoreVLSMultivolumes {
 	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {
 
 		// act
-		List<DigitalPage> pages = mds19788.getAllPages();
+		List<DigitalPage> pages = derivate19788.getAllPages();
 
 		// assert
 		for (DigitalPage page : pages) {
@@ -110,13 +117,13 @@ class TestMetadataStoreVLSMultivolumes {
 		String urn2 = "urn:nbn:de:gbv:3:1-2085-p0004-9";
 		assertEquals(urn1, pages.get(0).optIdentifier().get());
 		assertEquals(urn2, pages.get(3).optIdentifier().get());
-		assertEquals("MAX/61196.jpg", pages.get(0).getFile());
-		assertEquals("MAX/61201.jpg", pages.get(3).getFile());
+		assertTrue(pages.get(0).getFile().getPath().endsWith("MAX/61196.jpg"));
+		assertTrue(pages.get(3).getFile().getPath().endsWith("MAX/61201.jpg"));
 	}
 
 	@Test
 	void testStructureOf19788() throws DigitalDerivansException {
-		DerivateStruct dst = mds19788.getStructure();
+		DerivateStruct dst = derivate19788.getStructure();
 		assertNotNull(dst);
 
 		// level 1 = C-Stage
@@ -140,16 +147,16 @@ class TestMetadataStoreVLSMultivolumes {
 
 	@Test
 	void testDescriptiveData11250807() throws DigitalDerivansException {
-		assertEquals("urn:nbn:de:gbv:3:1-699854", dd11250807.getUrn());
-		assertEquals("005836395", dd11250807.getIdentifier());
-		assertEquals("Martini, Jakob", dd11250807.getPerson());
-		assertEquals("De Compositione Syllogismi", dd11250807.getTitle());
-		assertEquals("1616", dd11250807.getYearPublished());
+		assertEquals("urn:nbn:de:gbv:3:1-699854", dmd11250807.getUrn());
+		assertEquals("005836395", dmd11250807.getIdentifier());
+		assertEquals("Martini, Jakob", dmd11250807.getPerson());
+		assertEquals("De Compositione Syllogismi", dmd11250807.getTitle());
+		assertEquals("1616", dmd11250807.getYearPublished());
 	}
 
 	@Test
 	void testStructure11250807() throws DigitalDerivansException {
-		DerivateStruct dst = mds11250807.getStructure();
+		DerivateStruct dst = derivate11250807.getStructure();
 
 		// level 1 = C-Stage
 		assertEquals("Cursus Philosophici Disputatio ...", dst.getLabel());
@@ -200,13 +207,13 @@ class TestMetadataStoreVLSMultivolumes {
 	 */
 	@Test
 	void testDescriptiveDataOf9427337() throws DigitalDerivansException {
-		assertEquals("urn:nbn:de:gbv:3:1-635986", dd9427337.getUrn());
-		assertEquals("Steuart, James", dd9427337.getPerson());
-		assertEquals("1771", dd9427337.getYearPublished());
+		assertEquals("urn:nbn:de:gbv:3:1-635986", dmd9427337.getUrn());
+		assertEquals("Steuart, James", dmd9427337.getPerson());
+		assertEquals("1771", dmd9427337.getYearPublished());
 		assertEquals(
 				"Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen",
-				dd9427337.getTitle());
-		assertEquals("211999628", dd9427337.getIdentifier());
+				dmd9427337.getTitle());
+		assertEquals("211999628", dmd9427337.getIdentifier());
 	}
 
 	/**
@@ -217,7 +224,7 @@ class TestMetadataStoreVLSMultivolumes {
 	 */
 	@Test
 	void testStructureOf9427337() throws DigitalDerivansException {
-		DerivateStruct dst = mds9427337.getStructure();
+		DerivateStruct dst = derivate9427337.getStructure();
 		assertNotNull(dst);
 
 		assertEquals(
@@ -248,6 +255,8 @@ class TestMetadataStoreVLSMultivolumes {
 	@Test
 	void testIntermediateVD17State() throws DigitalDerivansException {
 		var mds = new DerivateMD(TestResource.VD17_AF_11250807.get());
+		mds.checkRessources(false);
+		mds.init(TestHelper.ULB_MAX_PATH);
 		var dd = mds.getDescriptiveData();
 		var strct = mds.getStructure();
 
@@ -279,6 +288,6 @@ class TestMetadataStoreVLSMultivolumes {
 
 		// act + assert
 		var result = mds.getMets().enrichPDF("PDF_11250807");
-		assertEquals("bar", result);
+		assertTrue(result.contains("PDF FileGroup for PDF_PDF_11250807 created"));
 	}
 }

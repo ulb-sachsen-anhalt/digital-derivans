@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DerivateMD;
 
@@ -24,10 +25,12 @@ class TestMetadataStoreShareIt {
 	@Test
 	void testStructureContainsLabelForEachPage() throws DigitalDerivansException {
 		// arrange
-		var mdsZD2 = new DerivateMD(TestResource.SHARE_IT_VD18_MIG.get());
+		var derivate = new DerivateMD(TestResource.SHARE_IT_VD18_MIG.get());
+		derivate.checkRessources(false);
+		derivate.init(TestHelper.ULB_MAX_PATH);
 
         // act
-        var strucTree = mdsZD2.getStructure();
+        var strucTree = derivate.getStructure();
 
         // assert
         assertEquals("Dissertatio Inavgvralis Ivridica De Avxiliatoribvs Fvrvm Oder: Von Diebs-Helffern", strucTree.getLabel());

@@ -109,7 +109,7 @@ public class DerivansConfiguration {
 		// inspect parameters which *might* override
 		// any previously configured settings
 		if (params.getNamePDF() != null) {
-			var pdfStep = this.pick(DerivateType.PDF);
+			var pdfStep = this.pickByClazz("DerivateStepPDF");
 			var pdfName = params.getNamePDF();
 			if (pdfStep.isPresent()) {
 				((DerivateStepPDF) pdfStep.get()).setNamePDF(pdfName);
@@ -120,14 +120,14 @@ public class DerivansConfiguration {
 		}
 		if (params.getPathFooter() != null) {
 			var newTemplate = params.getPathFooter();
-			var theStep = this.pick(DerivateType.JPG_FOOTER);
+			var theStep = this.pickByClazz("DerivateStepImageFooter");
 			if (theStep.isPresent()) {
 				if (!newTemplate.isAbsolute()) {
 					newTemplate = this.pathConfigFile.getParent().resolve(newTemplate);
 				}
 				DerivateStepImageFooter footerStep = (DerivateStepImageFooter) theStep.get();
 				var footerPrev = footerStep.getPathTemplate();
-				LOGGER.info("force footer template {} with {}",
+				LOGGER.info("set footer template {} to {}",
 						footerPrev, newTemplate);
 				footerStep.setPathTemplate(newTemplate);
 			} else {
@@ -213,10 +213,10 @@ public class DerivansConfiguration {
 		List<HierarchicalConfiguration<ImmutableNode>> section = conf.childConfigurationsAt(derivateSection);
 		while (!section.isEmpty()) {
 			DerivateStep step = getDerivateStepCommons(conf, derivateSection);
-			if (createsImageDerivates(step)) {
+			if (step instanceof DerivateStepImage) {
 				this.enrichImageDerivateInformation((DerivateStepImage) step, conf, derivateSection);
 				// propably some more information required
-				if (step.getOutputType() == DerivateType.JPG_FOOTER) {
+				if (step instanceof DerivateStepImageFooter) {
 					this.enrichImageFooterInformation((DerivateStepImageFooter) step, conf, derivateSection);
 				}
 				// if very first step and param image set, exchange
@@ -224,7 +224,7 @@ public class DerivansConfiguration {
 					var images = paramImages.get();
 					step.setInputDir(images);
 				}
-			} else if (step.getOutputType() == DerivateType.PDF) {
+			} else if (step instanceof DerivateStepPDF) {
 				enrichPDFDerivateInformation((DerivateStepPDF) step, conf, derivateSection);
 			}
 			this.derivateSteps.add(step);
@@ -323,16 +323,15 @@ public class DerivansConfiguration {
 	 */
 	public DerivateStep getDerivateStepCommons(INIConfiguration conf, String stepSection)
 			throws DigitalDerivansException {
-
 		DerivateStep step = getStepFor(conf, stepSection);
 		// input
 		String keyInputDir = stepSection + ".input_dir";
 		extractValue(conf, keyInputDir, String.class).ifPresent(step::setInputDir);
-		extractValue(conf, stepSection+ ".input_type", String.class).ifPresent(step::setInputTypeFromLabel);
+		extractValue(conf, stepSection + ".input_type", String.class).ifPresent(step::setInputTypeFromLabel);
 		// output
 		String keyOutputDir = stepSection + ".output_dir";
 		extractValue(conf, keyOutputDir, String.class).ifPresent(step::setOutputDir);
-		extractValue(conf, stepSection+ ".output_type", String.class).ifPresent(step::setOutputTypeFromLabel);
+		extractValue(conf, stepSection + ".output_type", String.class).ifPresent(step::setOutputTypeFromLabel);
 		// optional prefixes (used for additional derivates)
 		extractValue(conf, stepSection + ".input_prefix", String.class).ifPresent(inPrefix -> {
 			step.setInputPrefix(inPrefix);
@@ -348,27 +347,18 @@ public class DerivansConfiguration {
 	protected void enrichImageDerivateInformation(DerivateStepImage step, INIConfiguration conf, String stepSection)
 			throws DigitalDerivansException {
 		// poolsize
+		step.setPoolsize(this.getPoolsize());
 		String keyPoolsize = stepSection + ".poolsize";
-		Optional<Integer> optPoolsize = extractValue(conf, keyPoolsize, Integer.class);
-		if (optPoolsize.isPresent()) {
-			step.setPoolsize(optPoolsize.get());
-		} else {
-			if (this.getPoolsize() != null) {
-				step.setPoolsize(this.getPoolsize());
-			}
-		}
+		extractValue(conf, keyPoolsize, Integer.class).ifPresent(step::setPoolsize);
 		// quality
+		step.setQuality(this.getQuality());
 		String keyQuality = stepSection + ".quality";
-		Optional<Integer> valQuality = extractValue(conf, keyQuality, Integer.class);
-		if (valQuality.isPresent()) {
-			step.setQuality(valQuality.get());
-		}
-
+		extractValue(conf, keyQuality, Integer.class).ifPresent(step::setQuality);
 		// maximal dimension, width or height
 		String keyMaximal = stepSection + ".maximal";
-		Optional<Integer> valMaximal = extractValue(conf, keyMaximal, Integer.class);
-		if (valMaximal.isPresent()) {
-			step.setMaximal(valMaximal.get());
+		Optional<Integer> optMaximal = extractValue(conf, keyMaximal, Integer.class);
+		if (optMaximal.isPresent()) {
+			step.setMaximal(optMaximal.get()); // might raise Exception
 		}
 	}
 
@@ -484,11 +474,6 @@ public class DerivansConfiguration {
 		this.paramImages.ifPresent(step::setParamImages);
 	}
 
-	private static boolean createsImageDerivates(DerivateStep step) {
-		var aType = step.getOutputType();
-		return aType == DerivateType.IMAGE || aType == DerivateType.JPG || aType == DerivateType.JPG_FOOTER;
-	}
-
 	private static boolean isFooterDerivateSection(INIConfiguration conf, String section) {
 		Iterator<String> itKeys = conf.configurationAt(section).getKeys();
 		while (itKeys.hasNext()) {
@@ -556,8 +541,8 @@ public class DerivansConfiguration {
 	 * @param type
 	 * @return
 	 */
-	private Optional<DerivateStep> pick(DerivateType type) {
+	private Optional<DerivateStep> pickByClazz(String clazzLabel) {
 		return this.derivateSteps.stream()
-				.filter(s -> s.getOutputType() == type).findFirst();
+				.filter(s -> s.getClass().getSimpleName().equals(clazzLabel)).findFirst();
 	}
 }

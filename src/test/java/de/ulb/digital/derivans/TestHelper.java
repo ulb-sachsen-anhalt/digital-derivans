@@ -62,6 +62,8 @@ public class TestHelper {
 	static String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 	static String METS_SCHEMA = "http://www.loc.gov/METS/";
 
+	public static final Path ULB_MAX_PATH = Path.of("MAX");
+
 	public static void generateImages(Path imageDir, int width, int height, int number, String labelFormat)
 			throws IOException {
 		if (Files.exists(imageDir)) {

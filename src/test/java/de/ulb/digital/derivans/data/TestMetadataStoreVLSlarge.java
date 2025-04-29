@@ -11,9 +11,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
@@ -30,6 +37,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
+@Disabled
 class TestMetadataStoreVLSlarge {
 
 	static DerivateMD mds737429;
@@ -46,9 +54,31 @@ class TestMetadataStoreVLSlarge {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
+
+
+		try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            SAXParser saxParser = factory.newSAXParser();
+            DefaultHandler handler = new DefaultHandler() {
+                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+                    System.out.println("Start Element: " + qName);
+                }
+                public void endElement(String uri, String localName, String qName) throws SAXException {
+                    System.out.println("End Element: " + qName);
+                }
+                public void characters(char[] ch, int start, int length) throws SAXException {
+                    System.out.println("Content: " + new String(ch, start, length));
+                }
+            };
+            saxParser.parse(TestResource.HD_Aa_201517.get().toFile(), handler);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
 		TestMetadataStoreVLSlarge.mds201517 = new DerivateMD(TestResource.HD_Aa_201517.get());
-		TestMetadataStoreVLSlarge.mds201517.setRessourceExists(false);
-		// TestMetadataStoreVLSlarge.mds201517.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
+		TestMetadataStoreVLSlarge.mds201517.checkRessources(false);
+		TestMetadataStoreVLSlarge.mds201517.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
 		dd201517 = mds201517.getDescriptiveData();
 	}
 

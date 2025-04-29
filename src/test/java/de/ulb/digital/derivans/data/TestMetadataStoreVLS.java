@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
@@ -68,6 +69,8 @@ class TestMetadataStoreVLS {
 
 		// arrange
 		var mds = new DerivateMD(TestResource.VD18_Aa_VD18_MIG.get());
+		mds.checkRessources(false);
+		mds.init(TestHelper.ULB_MAX_PATH);
 
 		// act
 		DerivateStruct tree = mds.getStructure();
@@ -113,6 +116,8 @@ class TestMetadataStoreVLS {
 
 		// arrange
 		var mds = new DerivateMD(TestResource.VD18P_14163614.get());
+		mds.checkRessources(false);
+		mds.init(TestHelper.ULB_MAX_PATH);
 
 		// act
 		DerivateStruct tree = mds.getStructure();

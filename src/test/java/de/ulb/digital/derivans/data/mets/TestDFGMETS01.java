@@ -70,7 +70,7 @@ class TestDFGMETS01 {
 		// act
 		DerivateMD derivateMD = new DerivateMD(mets737429.getPath());
 		assertNotNull(derivateMD);
-		derivateMD.setRessourceExists(false);
+		derivateMD.checkRessources(false);
 		derivateMD.init(Path.of("MAX"));
 		List<DigitalPage> pages = derivateMD.getAllPages();
 
@@ -92,7 +92,7 @@ class TestDFGMETS01 {
 	void testStructureOf737429() throws DigitalDerivansException {
 		DerivateMD derivateMD = new DerivateMD(mets737429.getPath());
 		assertNotNull(derivateMD);
-		derivateMD.setRessourceExists(false);
+		derivateMD.checkRessources(false);
 		derivateMD.init(Path.of("MAX"));
 
 		DerivateStruct struct = derivateMD.getStructure();

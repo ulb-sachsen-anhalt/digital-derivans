@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivateMD;
@@ -32,7 +33,7 @@ class TestMetadataStoreVLSmedium {
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
 		TestMetadataStoreVLSmedium.mds5175671 = new DerivateMD(TestResource.HD_Aa_5175671.get());
-		TestMetadataStoreVLSmedium.mds5175671.setRessourceExists(false);
+		TestMetadataStoreVLSmedium.mds5175671.checkRessources(false);
 		TestMetadataStoreVLSmedium.mds5175671.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
 		dd5175671 = mds5175671.getDescriptiveData();
 	}
@@ -91,6 +92,8 @@ class TestMetadataStoreVLSmedium {
 
 		// arrange
 		var mds = new DerivateMD(TestResource.VD18_Aa_VD18_MIG.get());
+		mds.checkRessources(false);
+		mds.init(TestHelper.ULB_MAX_PATH);
 
 		// act
 		DerivateStruct tree = mds.getStructure();
@@ -136,6 +139,8 @@ class TestMetadataStoreVLSmedium {
 
 		// arrange
 		var mds = new DerivateMD(TestResource.VD18P_14163614.get());
+		mds.checkRessources(false);
+		mds.init(TestHelper.ULB_MAX_PATH);
 
 		// act
 		DerivateStruct tree = mds.getStructure();

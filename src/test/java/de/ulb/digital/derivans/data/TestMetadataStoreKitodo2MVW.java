@@ -44,7 +44,7 @@ class TestMetadataStoreKitodo2MVW {
 		assertEquals("Band", dd140257772.getTitle());
 		
 		// inspect structure
-		mds.setRessourceExists(false);
+		mds.checkRessources(false);
 		mds.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
 		var dst = mds.getStructure();
 		// of old
@@ -68,7 +68,7 @@ class TestMetadataStoreKitodo2MVW {
 	void testKitodo2InvalidLegacyFStage030745780() throws DigitalDerivansException {
 		// arrange
 		var mds = new DerivateMD(TestResource.K2_Af_030745780.get());
-		mds.setRessourceExists(false);
+		mds.checkRessources(false);
 
 		// act
 		var actualExc = assertThrows(DigitalDerivansException.class, 

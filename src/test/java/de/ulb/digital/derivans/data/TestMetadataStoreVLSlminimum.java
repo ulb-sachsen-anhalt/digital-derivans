@@ -39,7 +39,7 @@ class TestMetadataStoreVLSminimum {
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
 		TestMetadataStoreVLSminimum.mds737429 = new DerivateMD(TestResource.HD_Aa_737429.get());
-		TestMetadataStoreVLSminimum.mds737429.setRessourceExists(false);
+		TestMetadataStoreVLSminimum.mds737429.checkRessources(false);
 		TestMetadataStoreVLSminimum.mds737429.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
 		dd737429 = mds737429.getDescriptiveData();
 	}
