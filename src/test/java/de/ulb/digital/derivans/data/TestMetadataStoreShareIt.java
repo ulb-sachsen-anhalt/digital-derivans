@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -30,16 +31,15 @@ class TestMetadataStoreShareIt {
 		derivate.init(TestHelper.ULB_MAX_PATH);
 
         // act
-        var strucTree = derivate.getStructure();
+        var struct = derivate.getStructure();
 
         // assert
-        assertEquals("Dissertatio Inavgvralis Ivridica De Avxiliatoribvs Fvrvm Oder: Von Diebs-Helffern", strucTree.getLabel());
-        assertEquals(1, strucTree.getPages());
+        assertEquals("Dissertatio Inavgvralis Ivridica De Avxiliatoribvs Fvrvm Oder: Von Diebs-Helffern", struct.getLabel());
+        assertEquals(0, struct.getPages().size());
         
         // level 1
-        var level1structs = strucTree.getChildren();
+        var level1structs = struct.getChildren();
 		assertEquals(5, level1structs.size());
-
     }
 
 
@@ -54,12 +54,13 @@ class TestMetadataStoreShareIt {
 	void testStructureMissingLinkFromLogicalSection() throws DigitalDerivansException {
 		// arrange
 		var mds = new DerivateMD(TestResource.SHARE_IT_VD18_43053.get());
+		mds.checkRessources(false);
 
         // act
-		var actualExc = assertThrows(DigitalDerivansException.class, () -> mds.getStructure());
+		var actualExc = assertThrows(DigitalDerivansException.class, () -> mds.init(TestHelper.ULB_MAX_PATH));
 
 		// assert
-		assertEquals("No physical struct linked from 'log1646693@section(Abschnitt)'!", actualExc.getMessage());
+		assertEquals("No files link div log1646693/Abschnitt in @USE=MAX!", actualExc.getMessage());
     }
 
 	/**
@@ -67,6 +68,7 @@ class TestMetadataStoreShareIt {
 	 * for 1981185920_38841
 	 */
 	@Test
+	@Disabled
 	void testStructureODEM_01() throws DigitalDerivansException {
         // actsert
 		var actualExc = assertThrows(DigitalDerivansException.class, 

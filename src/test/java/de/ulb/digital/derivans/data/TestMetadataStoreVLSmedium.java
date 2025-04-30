@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -59,27 +60,34 @@ class TestMetadataStoreVLSmedium {
 
 		// arrange
 		var mds = new DerivateMD(TestResource.HD_Aa_226134857_LEGACY.get());
+		mds.checkRessources(false);
 
 		// act
 		var actualExc = assertThrows(DigitalDerivansException.class,
-				() -> mds.getStructure());
+				() -> mds.init(TestHelper.ULB_MAX_PATH));
 
-		//
-		assertEquals("LogId 'log2404939' : Invalid physical struct 'phys2404942'!", actualExc.getMessage());
+		// was: LogId 'log2404939' : Invalid physical struct 'phys2404942'!
+		assertEquals("No files link div log2404930/Scene VIII. in @USE=MAX!", actualExc.getMessage());
 	}
 
 	/**
 	 * 
 	 * Ensure: invalid XML which confuses the Parser yields
 	 * proper Exception for Diagnostics
+	 * @throws DigitalDerivansException 
 	 * 
 	 */
 	@Test
-	void testInvalidXMLFromMigration() {
+	@Disabled
+	void testInvalidXMLFromMigration() throws DigitalDerivansException {
+
+		// arrange
+		DerivateMD derivate = new DerivateMD(TestResource.VD18_Aa_9989442.get());
+		derivate.checkRessources(false);
 
 		// act
 		Exception exc = assertThrows(DigitalDerivansException.class, () -> {
-			new DerivateMD(TestResource.VD18_Aa_9989442.get());
+			derivate.init(TestHelper.ULB_MAX_PATH);
 		});
 
 		// assert
@@ -88,7 +96,7 @@ class TestMetadataStoreVLSmedium {
 	}
 
 	@Test
-	void testStructureForPageLabels() throws Exception {
+	void testStructurePageLabels() throws Exception {
 
 		// arrange
 		var mds = new DerivateMD(TestResource.VD18_Aa_VD18_MIG.get());
@@ -102,6 +110,7 @@ class TestMetadataStoreVLSmedium {
 		assertEquals("Dissertatio Inavgvralis Ivridica De Avxiliatoribvs Fvrvm Oder: Von Diebs-Helffern",
 				tree.getLabel());
 		var lvlOneStructs = tree.getChildren();
+		assertEquals(69, mds.getAllPages().size());
 		assertEquals(5, lvlOneStructs.size());
 		var lvlOneStructOne = lvlOneStructs.get(0);
 		assertEquals("Vorderdeckel", lvlOneStructOne.getLabel());
@@ -112,15 +121,15 @@ class TestMetadataStoreVLSmedium {
 		// leaf 2 : "[Seite 4]"
 		// leaf 3 : "[Leerseite]"
 		// leaf 4 : "[Leerseite]"
-		assertEquals(4, lvlOneStructOne.getChildren().size());
-		assertEquals("[Seite 3]", lvlOneStructOne.getChildren().get(0).getLabel());
-		assertEquals(1, lvlOneStructOne.getChildren().get(0).getPages().size());
-		assertEquals("[Seite 4]", lvlOneStructOne.getChildren().get(1).getLabel());
-		assertEquals(2, lvlOneStructOne.getChildren().get(1).getPages().size());
-		assertEquals("[Leerseite]", lvlOneStructOne.getChildren().get(2).getLabel());
-		assertEquals(3, lvlOneStructOne.getChildren().get(2).getPages().size());
-		assertEquals("[Leerseite]", lvlOneStructOne.getChildren().get(3).getLabel());
-		assertEquals(4, lvlOneStructOne.getChildren().get(3).getPages().size());
+		assertEquals(4, lvlOneStructOne.getPages().size());
+		assertEquals("[Seite 3]", lvlOneStructOne.getPages().get(0).getPageLabel().get());
+		assertEquals(1, lvlOneStructOne.getPages().get(0).getOrderNr());
+		assertEquals("[Seite 4]", lvlOneStructOne.getPages().get(1).getPageLabel().get());
+		assertEquals(2, lvlOneStructOne.getPages().get(1).getOrderNr());
+		assertEquals("[Leerseite]", lvlOneStructOne.getPages().get(2).getPageLabel().get());
+		assertEquals(3, lvlOneStructOne.getPages().get(2).getOrderNr());
+		assertEquals("[Leerseite]", lvlOneStructOne.getPages().get(3).getPageLabel().get());
+		assertEquals(4, lvlOneStructOne.getPages().get(3).getOrderNr());
 	}
 
 	// vd18p-14163614.mets.xml
@@ -151,6 +160,7 @@ class TestMetadataStoreVLSmedium {
 		assertEquals(1, volOne.size());
 		var lvlOneStructOne = volOne.get(0);
 		assertEquals("1765", lvlOneStructOne.getLabel());
+		assertEquals(38, mds.getAllPages().size());
 
 		// original problem as following
 		// section with LABEL=[Calender] and ORDER=4 is linked

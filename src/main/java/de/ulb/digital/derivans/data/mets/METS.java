@@ -277,6 +277,42 @@ public class METS {
 		return new METSContainer(this.primeLog);
 	}
 
+	/**
+	 * Depending on Type of digital object returns
+	 * 
+	 * => nothing meaningfull for monographies
+	 * => periodical/multivolume_work for volumes
+	 * => newspaper for issues
+	 * 
+	 * @return
+	 * @throws DigitalDerivansException 
+	 */
+	public Optional<METSContainer> optParentStruct() throws DigitalDerivansException {
+		String typeLabel = this.primeLog.getAttributeValue("TYPE");
+		METSContainerType metsType = METSContainerType.forLabel(typeLabel);
+		if (metsType == METSContainerType.MONOGRAPH || metsType == METSContainerType.MANUSCRIPT) {
+			return Optional.empty();
+		}
+		var optParent = this.getParent(metsType);
+		if (optParent.isPresent()) {
+			return Optional.of(new METSContainer(optParent.get()));
+		}
+		return Optional.empty();
+	}
+
+	private Optional<Element> getParent(METSContainerType metsType) {
+		if(metsType == METSContainerType.VOLUME) {
+			return Optional.of(this.primeLog.getParentElement());
+		} else if (metsType == METSContainerType.ISSUE || metsType == METSContainerType.ADDITIONAL) {
+			Element parent = this.primeLog.getParentElement();
+			while (!parent.getAttributeValue("TYPE").equals("newspaper")) {
+				parent = parent.getParentElement();
+			}
+			return Optional.of(parent);
+		}
+		return Optional.empty();
+	}
+
 	public boolean write() {
 		return this.xmlHandler.write(this.file);
 	}

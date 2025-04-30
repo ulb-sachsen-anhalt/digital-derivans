@@ -74,39 +74,52 @@ public class DerivateMD implements IDerivate {
 	@Override
 	public void init(Path startPath) throws DigitalDerivansException {
 		var orderNr = this.mdPageOrder.get();
-		METSContainer logicalRoot = this.mets.getLogicalRoot();
-		String logicalLabel = logicalRoot.determineLabel();
+		METSContainer containerRoot = this.mets.getLogicalRoot();
+		String logicalLabel = containerRoot.determineLabel();
 		if (startPath == null) {
 			startPath = Path.of(IDerivateer.IMAGE_DIR_DEFAULT);
 		}
-		if(startPath.isAbsolute()) {
+		if (startPath.isAbsolute()) {
 			this.imageGroup = startPath.getFileName().toString();
 		} else {
 			this.imageGroup = startPath.toString();
 		}
-		this.struct = new DerivateStruct(orderNr, logicalLabel);
-		this.populateStruct(logicalRoot, this.startFileExtension);
+		// look for higher structs
+		var optParent = this.mets.optParentStruct();
+		if (optParent.isPresent()) {
+			METSContainer parentContainer = optParent.get();
+			String parentLabel = parentContainer.determineLabel();
+			DerivateStruct structParent = new DerivateStruct(orderNr, parentLabel);
+			DerivateStruct structRoot = new DerivateStruct(orderNr, logicalLabel);
+			structParent.getChildren().add(structRoot);
+			this.struct = structParent;
+			this.populateStruct(structRoot, containerRoot, this.startFileExtension);
+		} else {
+			this.struct = new DerivateStruct(orderNr, logicalLabel);
+			this.populateStruct(this.struct, containerRoot, this.startFileExtension);
+		}
 		this.inited = true;
 	}
 
-	private void populateStruct(METSContainer root, String fileExt) throws DigitalDerivansException {
-		if (root.getChildren().isEmpty()) {
-			List<METSFile> digiFiles = this.mets.getFiles(root, this.imageGroup, fileExt);
+	private void populateStruct(DerivateStruct parent, METSContainer container, String fileExt)
+			throws DigitalDerivansException {
+		if (container.getChildren().isEmpty()) {
+			List<METSFile> digiFiles = this.mets.getFiles(container, this.imageGroup, fileExt);
 			for (var digiFile : digiFiles) {
 				Path filePath = this.pathInputDir.resolve(digiFile.getLocalPath(this.checkRessources));
 				int currOrder = this.mdPageOrder.getAndIncrement();
 				DigitalPage page = new DigitalPage(currOrder, filePath);
-				this.struct.getPages().add(page);
-				this.allPages.add(page); // also store in derivate's list
+				parent.getPages().add(page);
+				this.allPages.add(page); // also remeber in derivate's list
 			}
 		} else {
-			for (var subContainer : root.getChildren()) {
-				this.traverseStruct(subContainer, this.struct, fileExt);
+			for (var subContainer : container.getChildren()) {
+				this.traverseStruct(parent, subContainer, fileExt);
 			}
 		}
 	}
 
-	private void traverseStruct(METSContainer currentCnt, DerivateStruct parentStruct,
+	private void traverseStruct(DerivateStruct parentStruct, METSContainer currentCnt,
 			String fileExt) throws DigitalDerivansException {
 		String logicalLabel = currentCnt.determineLabel();
 		Integer structOrder = -1;
@@ -117,7 +130,7 @@ public class DerivateMD implements IDerivate {
 		parentStruct.getChildren().add(currentStruct);
 		if (!currentCnt.getChildren().isEmpty()) {
 			for (var subContainer : currentCnt.getChildren()) {
-				this.traverseStruct(subContainer, currentStruct, fileExt);
+				this.traverseStruct(currentStruct, subContainer, fileExt);
 			}
 		}
 		List<METSFile> digiFiles = this.mets.getFiles(currentCnt, this.imageGroup, fileExt);
@@ -157,12 +170,12 @@ public class DerivateMD implements IDerivate {
 
 	// @Override
 	// public String getImageLocalDir() {
-	// 	return this.imageGroup;
+	// return this.imageGroup;
 	// }
 
 	// @Override
 	// public void setImageLocalDir(String localDir) {
-	// 	this.imageGroup = localDir;
+	// this.imageGroup = localDir;
 	// }
 
 	@Override
@@ -251,6 +264,7 @@ public class DerivateMD implements IDerivate {
 
 	/**
 	 * Disable local file resolving to test metadata separate
+	 * 
 	 * @param check
 	 */
 	public void checkRessources(boolean check) {

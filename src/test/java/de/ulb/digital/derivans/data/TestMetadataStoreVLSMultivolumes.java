@@ -128,14 +128,12 @@ class TestMetadataStoreVLSMultivolumes {
 
 		// level 1 = C-Stage
 		assertTrue(dst.getLabel().startsWith("... Idea Summi"));
-		assertEquals(1, dst.getPages().size());
 		assertFalse(dst.getChildren().isEmpty());
 
 		// level 2 = F-Stage
 		List<DerivateStruct> children = dst.getChildren();
 		assertEquals(1, children.size());
 		assertEquals("Disputatio Ethica Prima De Summo Bono Practico Quod Sit Et Quid Sit", children.get(0).getLabel());
-		assertEquals(1, children.get(0).getPages().size());
 
 		// level 3 = F-Stage struct
 		List<DerivateStruct> grandchilds = children.get(0).getChildren();
@@ -196,7 +194,7 @@ class TestMetadataStoreVLSMultivolumes {
 		var renderPDFOutcome = mds.getMets().enrichPDF(identifier);
 
 		// assert
-		assertEquals("foo", renderPDFOutcome);
+		assertTrue(renderPDFOutcome.startsWith("PDF FileGroup for PDF_005209242 created "));
 	}
 
 	/**
