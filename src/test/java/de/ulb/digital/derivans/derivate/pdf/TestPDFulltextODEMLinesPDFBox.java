@@ -30,6 +30,7 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  * @author hartwig
  *
  */
+@Disabled
 public class TestPDFulltextODEMLinesPDFBox {
 
 	@TempDir

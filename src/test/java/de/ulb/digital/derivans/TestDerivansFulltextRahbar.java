@@ -34,7 +34,7 @@ class TestDerivansFulltextRahbar {
 
 	static Path pdfPathWord;
 
-	static Path pdfPathLine;
+	static Path pdfLines;
 
 	static String rahbar88120Page10 = "1981185920_88120_00000010";
 
@@ -58,17 +58,19 @@ class TestDerivansFulltextRahbar {
 		String line = "1981185920_88120_line";
 		var workDirLine = setWorkdir(tempDir, line);
 		var dConfLine = configure(configTargetDir, workDirLine, TypeConfiguration.RENDER_LEVEL_LINE);
-		Derivans derivansLineLevel = new Derivans(dConfLine);
-		pdfPathLine = workDirLine.resolve(line + ".pdf");
-		// derivansLineLevel.create();
+		Derivans derivansLines = new Derivans(dConfLine);
+		derivansLines.init(workDirLine);
+		pdfLines = workDirLine.resolve(line + ".pdf");
+		derivansLines.create();
 
 		// arrange 02
 		String word = "1981185920_88120_word";
 		workDirWord = setWorkdir(tempDir, word);
 		var dConf = configure(configTargetDir, workDirWord, TypeConfiguration.RENDER_LEVEL_WORD);
-		Derivans derivansWordLevel = new Derivans(dConf);
+		Derivans derivansWord = new Derivans(dConf);
 		pdfPathWord = workDirWord.resolve(word + ".pdf");
-		// derivansWordLevel.create();
+		derivansWord.init(workDirWord);
+		derivansWord.create();
 	}
 
 	static Path setWorkdir(Path root, String subDir) throws Exception {
@@ -90,7 +92,7 @@ class TestDerivansFulltextRahbar {
 	static DerivansConfiguration configure(Path configDir, Path workDir, TypeConfiguration renderLevel) throws Exception {
 		DerivansParameter dParams = new DerivansParameter();
 		dParams.setPathInput(workDir);
-		dParams.setPathConfig(configDir.resolve("derivans.ini"));
+		dParams.setPathConfig(configDir.resolve("derivans_ulb_odem.ini"));
 		dParams.setDebugPdfRender(true);
 		DerivansConfiguration dConf = new DerivansConfiguration(dParams);
 		int maximal = 2339; // scale A4 with 200 DPI
@@ -127,7 +129,7 @@ class TestDerivansFulltextRahbar {
 
 	@Test
 	void testPDFLineLevelWritten() {
-		assertTrue(Files.exists(pdfPathLine));
+		assertTrue(Files.exists(pdfLines));
 	}
 
 	/**
@@ -141,7 +143,7 @@ class TestDerivansFulltextRahbar {
 	 */
 	@Test
 	void testLineLevelPage01TextLength() throws Exception {
-		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathLine, 1);
+		var textPage07 = TestHelper.getTextAsSingleLine(pdfLines, 1);
 		assertEquals(1614, textPage07.length());
 	}
 }

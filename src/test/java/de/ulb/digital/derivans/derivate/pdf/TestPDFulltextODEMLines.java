@@ -62,12 +62,14 @@ public class TestPDFulltextODEMLines {
 		pdfStep.setDebugRender(true);
 		pdfStep.setInputDir(IDerivateer.IMAGE_DIR_MAX);
 		pdfStep.setOutputDir(".");
+		pdfStep.setPathPDF(workDir.resolve("148811035.pdf"));
 		DerivateFS derivate = new DerivateFS(workDir);
-		derivate.init(imageDir);
+		derivate.init(TestHelper.ULB_MAX_PATH);
 		List<DigitalPage> pages = derivate.getAllPages();
 		// List<DigitalPage> pages = resolver.resolveFromStep(pdfStep);
 		// resolver.enrichOCRFromFilesystem(pages, targetOcr);
 		var handler = new PDFDerivateer(input, output, pages, pdfStep);
+		handler.setDerivate(derivate);
 
 		// act
 		handler.create();

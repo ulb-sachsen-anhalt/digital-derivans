@@ -19,10 +19,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.ITextElement;
 import de.ulb.digital.derivans.model.ocr.OCRData;
@@ -51,9 +53,9 @@ class TestPDFSyntheticWesteuropeOCR {
 
 	private static final int TEST_DPI = 144;
 
-	static PDFResult pdfWithLines;
+	static PDFResult pdfLines;
 
-	static PDFResult pdfWithWords;
+	static PDFResult pdfWords;
 
 	static PDFTextElement pdfLinelvlFirstLine;
 
@@ -93,31 +95,40 @@ class TestPDFSyntheticWesteuropeOCR {
 		pdfStep.setImageDpi(TEST_DPI);
 		pdfStep.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
 		pdfStep.setDebugRender(true);
+		pdfStep.setPathPDF(outputLinePath);
 		
 		// act once
-		var handlerOne = new PDFDerivateer(input, outputLine, pages, pdfStep);
-		handlerOne.create();
-		pdfWithLines = handlerOne.getPDFResult();
-		pdfLinelvlFirstLine = pdfWithLines.getPdfPages().get(0).getTextcontent().get().get(0);
+		DerivateFS derivateLines = new DerivateFS(tempDir);
+		derivateLines.init(TestHelper.ULB_MAX_PATH);
+		var dOne = new PDFDerivateer(input, outputLine, pages, pdfStep);
+		dOne.setDerivate(derivateLines);
+		dOne.create();
+		pdfLines = dOne.getPDFResult();
+		pdfLinelvlFirstLine = pdfLines.getPdfPages().get(0).getTextcontent().get().get(0);
 
 		// act twice
 		var pdfWordName = String.format("pdf-word-%04d.pdf", N_PAGES);
+		Path outputWordPath = tempDir.resolve(pdfWordName);
 		var outputWord = new DerivansData(tempDir, ".", DerivateType.PDF);
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
-		var handlerTwo = new PDFDerivateer(input, outputWord, pages, pdfStep);
-		handlerTwo.create();
-		pdfWithWords = handlerTwo.getPDFResult();
-		pdfWordlvlFirstLine = pdfWithWords.getPdfPages().get(0).getTextcontent().get().get(0);
+		pdfStep.setPathPDF(outputWordPath);
+		// DerivateFS derivateWords = new DerivateFS(tempDir);
+		// derivateWords.init(TestHelper.ULB_MAX_PATH);
+		var dTwo = new PDFDerivateer(input, outputWord, pages, pdfStep);
+		dTwo.setDerivate(derivateLines);
+		dTwo.create();
+		pdfWords = dTwo.getPDFResult();
+		pdfWordlvlFirstLine = pdfWords.getPdfPages().get(0).getTextcontent().get().get(0);
 	}
 	
 	@Test
 	void pdfLinelevelExists() {
-		assertTrue(Files.exists(pdfWithLines.getPath()));
+		assertTrue(Files.exists(pdfLines.getPath()));
 	}
 
 	@Test
 	void numberOfAddedPages() {
-		assertEquals(1, pdfWithLines.getPdfPages().size());
+		assertEquals(1, pdfLines.getPdfPages().size());
 	}
 
 	/**
@@ -126,12 +137,12 @@ class TestPDFSyntheticWesteuropeOCR {
 	 */
 	@Test
 	void ensureNoOutlinePresent() {
-		assertEquals(0, pdfWithLines.getOutline().size());
+		assertEquals(0, pdfLines.getOutline().size());
 	}
 
 	@Test
 	void inspectPageOneNumber() {
-		var pageOne = pdfWithLines.getPdfPages().get(0);
+		var pageOne = pdfLines.getPdfPages().get(0);
 		assertEquals(1, pageOne.getNumber());
 	}
 
@@ -147,7 +158,7 @@ class TestPDFSyntheticWesteuropeOCR {
 	 */
 	@Test
 	void inspectPageOneDimension() {
-		var pageOne = pdfWithLines.getPdfPages().get(0);
+		var pageOne = pdfLines.getPdfPages().get(0);
 		assertEquals(orgwidth / 2, pageOne.getDimension().getWidth());
 		assertEquals(orgHeight / 2, pageOne.getDimension().getHeight());
 	}
@@ -243,7 +254,7 @@ class TestPDFSyntheticWesteuropeOCR {
 
 	@Test
 	void pdfWordLevelExists() {
-		assertTrue(Files.exists(pdfWithWords.getPath()));
+		assertTrue(Files.exists(pdfWords.getPath()));
 	}
 
 

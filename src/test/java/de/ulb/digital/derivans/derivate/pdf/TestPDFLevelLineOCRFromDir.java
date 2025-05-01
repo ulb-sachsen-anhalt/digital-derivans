@@ -63,21 +63,24 @@ class TestPDFLevelLineOCRFromDir {
 		DerivansData output = new DerivansData(pathTarget, ".", DerivateType.PDF);
 	
 		// arrange pdf path and pages
-		DerivateStepPDF step = new DerivateStepPDF();
-		step.setOutputDir(".");
-		step.setInputDir(IDerivateer.IMAGE_DIR_MAX);
-		step.setDebugRender(true);
-		step.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
+		DerivateStepPDF stepPdf = new DerivateStepPDF();
+		stepPdf.setOutputDir(".");
+		stepPdf.setInputDir(IDerivateer.IMAGE_DIR_MAX);
+		stepPdf.setDebugRender(true);
+		stepPdf.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
+		stepPdf.setPathPDF(pathTarget.resolve("zd1.pdf"));
 		// DescriptiveData dd = new DescriptiveData();
 		DerivateFS derivate = new DerivateFS(pathTarget);
-		derivate.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
+		derivate.init(TestHelper.ULB_MAX_PATH);
 		List<DigitalPage> pages = derivate.getAllPages();
 		//resolver.enrichOCRFromFilesystem(pages, targetDir);
-		PDFDerivateer handler = new PDFDerivateer(input, output, pages, step);
+		PDFDerivateer d = new PDFDerivateer(input, output, pages, stepPdf);
+		d.setDerivate(derivate);
+		d.setPDFStep(stepPdf);
 	
 		// act
-		handler.create();
-		resultDoc = handler.getPDFResult();
+		d.create();
+		resultDoc = d.getPDFResult();
 	}
 	
 	@Test

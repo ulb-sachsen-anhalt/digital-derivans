@@ -227,6 +227,9 @@ public class TestHelper {
 		 * @throws DigitalDerivansException
 		 */
 		public String getPageText(int pageNr) throws DigitalDerivansException {
+			if(!Files.exists(this.pdfPath)) {
+				throw new DigitalDerivansException("Invalid PDF file path "+pdfPath);
+			}
 			try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfPath))) {
 				var stripper = new PDFTextStripper();
 				stripper.setStartPage(pageNr);
