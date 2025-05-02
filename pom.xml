@@ -31,7 +31,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler-plugin.version>3.8.1</maven.compiler-plugin.version>
 		<maven.surefire-plugin.version>2.22.1</maven.surefire-plugin.version>
-		<maven.jacoco-plugin.version>0.8.5</maven.jacoco-plugin.version>
+		<maven.jacoco-plugin.version>0.8.13</maven.jacoco-plugin.version>
 		<maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
 		<maven-shade-plugin.version>3.2.0</maven-shade-plugin.version>
 		<git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
