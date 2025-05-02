@@ -173,14 +173,16 @@ public class METSFile {
 		if (lastSlashIndex > -1) { // even if it starts with leading slash
 			String[] tokens = this.location.split("/");
 			lastPart = tokens[tokens.length - 1];
-			int lastDotIndex = lastPart.lastIndexOf('.');
-			if (lastDotIndex == -1) { // filename extension missing
-				if (this.mimeType.toLowerCase().contains("tif")) {
-					lastPart = lastPart + ".tiff";
-				} else {
-					lastPart = lastPart + ".jpg";
-				}
-			}
+			// int lastDotIndex = lastPart.lastIndexOf('.');
+			// if (lastDotIndex == -1) { // filename extension missing
+			// 	if (this.mimeType.toLowerCase().contains("tif") && !lastPart.endsWith(".tif")) {
+			// 		lastPart = lastPart + ".tif";
+			// 	} else if (this.mimeType.toLowerCase().contains("xml") && !lastPart.endsWith(".xml")) {
+			// 		lastPart = lastPart + ".xml";
+			// 	} else (this.mimeType.toLowerCase().contains("xml") && !lastPart.endsWith(".xml")) {
+			// 		lastPart = lastPart + ".jpg";
+			// 	}
+			// }
 		}
 		var theName = String.format("%s/%s", this.fileGroup, lastPart);
 		Path fileLoc = this.localRootPath.resolve(theName);

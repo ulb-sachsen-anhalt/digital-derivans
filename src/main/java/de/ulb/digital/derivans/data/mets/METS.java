@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +22,7 @@ import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
+import de.ulb.digital.derivans.derivate.IDerivateer;
 
 /**
  * 
@@ -46,6 +49,10 @@ public class METS {
 	static final String METS_CONTAINER_ID = "ID";
 	static final String METS_STRUCTMAP_TYPE = "TYPE";
 
+	private String imgFileGroup = IDerivateer.IMAGE_DIR_DEFAULT;
+
+	private String ocrFileGroup = IDerivateer.FULLTEXT_DIR;
+
 	public static final DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder()
 			.appendPattern("YYYY-MM-dd")
 			.appendLiteral('T')
@@ -66,6 +73,13 @@ public class METS {
 
 	public METS(Path metsfile) throws DigitalDerivansException {
 		this.file = metsfile;
+		this.xmlHandler = new XMLHandler(file);
+		this.document = this.xmlHandler.getDocument();
+	}
+
+	public METS(Path metsfile, String imageFileGroup) throws DigitalDerivansException {
+		this.file = metsfile;
+		this.imgFileGroup = imageFileGroup;
 		this.xmlHandler = new XMLHandler(file);
 		this.document = this.xmlHandler.getDocument();
 	}
@@ -285,7 +299,7 @@ public class METS {
 	 * => newspaper for issues
 	 * 
 	 * @return
-	 * @throws DigitalDerivansException 
+	 * @throws DigitalDerivansException
 	 */
 	public Optional<METSContainer> optParentStruct() throws DigitalDerivansException {
 		String typeLabel = this.primeLog.getAttributeValue("TYPE");
@@ -301,7 +315,7 @@ public class METS {
 	}
 
 	private Optional<Element> getParent(METSContainerType metsType) {
-		if(metsType == METSContainerType.VOLUME) {
+		if (metsType == METSContainerType.VOLUME) {
 			return Optional.of(this.primeLog.getParentElement());
 		} else if (metsType == METSContainerType.ISSUE || metsType == METSContainerType.ADDITIONAL) {
 			Element parent = this.primeLog.getParentElement();
@@ -341,7 +355,7 @@ public class METS {
 		for (Element smLink : smLinks) {
 			var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
 			List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']", pageId));
-			for (var page : pages) {
+			for (Element page : pages) {
 				METSContainer pageContainer = new METSContainer(page);
 				String cid = pageContainer.getAttribute("CONTENTIDS");
 				String pageLabel = pageContainer.determineLabel();
@@ -378,6 +392,88 @@ public class METS {
 		return metsFiles;
 	}
 
+	public List<METSContainer> getPages(METSContainer div)
+			throws DigitalDerivansException {
+		String logID = div.getId();
+		String q01 = String.format("//mets:structLink/mets:smLink[@xlink:from='%s']", logID);
+		List<Element> smLinks = this.evaluate(q01);
+		List<METSContainer> cntnrs = new ArrayList<>();
+		for (Element smLink : smLinks) {
+			var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
+			List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']", pageId));
+			for (Element page : pages) {
+				METSContainer pageContainer = new METSContainer(page);
+				cntnrs.add(pageContainer);
+			}
+		}
+		if (cntnrs.isEmpty()) {
+			String alert = String.format("No files link div %s/%s in @USE=%s!",
+					logID, div.determineLabel(), this.imgFileGroup);
+			throw new DigitalDerivansException(alert);
+		}
+		return cntnrs;
+	}
+
+	public METSFilePack getPageFiles(METSContainer container)
+			throws DigitalDerivansException {
+		List<Element> allFiles = container.get().getChildren("fptr", METS.NS_METS);
+		List<String> fileIds = allFiles.stream().map(aFile -> aFile.getAttributeValue("FILEID"))
+				.collect(Collectors.toList());
+		METSFile imgFile = this.pickFromGroup(fileIds, this.imgFileGroup, true);
+		imgFile.setLocalRoot(this.getPath().getParent());
+		METSFile ocrFile = this.pickFromGroup(fileIds, this.ocrFileGroup, false);
+		METSFilePack pack = new METSFilePack();
+		pack.imageFile = imgFile;
+		if(ocrFile != null) {
+			ocrFile.setLocalRoot(this.getPath().getParent());
+			pack.ocrFile = Optional.of(ocrFile);
+		}
+		return pack;
+	}
+
+	private METSFile pickFromGroup(List<String> fileIds, String fileGroupUse, boolean check) throws DigitalDerivansException {
+		Element theElement = null;
+		for (String theId : fileIds) {
+			String queryFile = String.format("//mets:fileGrp[@USE='%s']/mets:file[@ID='%s']", fileGroupUse, theId);
+			List<Element> filesFromGroup = this.evaluate(queryFile);
+			if (filesFromGroup.isEmpty()) {
+				continue;
+			}
+			theElement = filesFromGroup.get(0);
+			break;
+		}
+		if (theElement == null) {
+			if (check) {
+				throw new DigitalDerivansException("fileGroupUse");
+			} else {
+				return null;
+			}
+		}
+		String mimeType = theElement.getAttributeValue("MIMETYPE");
+		String fileId = theElement.getAttributeValue("ID");
+		var fstLocat = theElement.getChildren("FLocat", METS.NS_METS).get(0);
+		String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
+		if (isTypeJPG(mimeType) && !hRef.endsWith(".jpg")) {
+			hRef += ".jpg";
+		}
+		if (isTypeXML(mimeType) && !hRef.endsWith(".xml")) {
+			hRef += ".xml";
+		}
+		METSFile metsFile = new METSFile(fileId, hRef, fileGroupUse);
+		return metsFile;
+	}
+
+	private boolean isTypeJPG(String mimeType) {
+		if (mimeType != null && mimeType.contains("image")) {
+			return mimeType.contains("jpeg") || mimeType.contains("jpg");
+		}
+		return false;
+	}
+
+	private boolean isTypeXML(String mimeType) {
+		return mimeType != null && mimeType.contains("xml");
+	}
+
 	public void setIdentifierExpression(String xpressiob) {
 		throw new UnsupportedOperationException("Unimplemented method 'setIdentifierExpression'");
 	}
@@ -393,4 +489,8 @@ public class METS {
 		return resultText;
 	}
 
+	public static class METSFilePack {
+		public METSFile imageFile;
+		public Optional<METSFile> ocrFile = Optional.empty();
+	}
 }

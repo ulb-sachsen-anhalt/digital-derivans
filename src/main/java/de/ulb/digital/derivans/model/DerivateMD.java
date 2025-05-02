@@ -61,7 +61,7 @@ public class DerivateMD implements IDerivate {
 	private String identifierExpression;
 
 	public DerivateMD(Path pathInput) throws DigitalDerivansException {
-		METS m = new METS(pathInput);
+		METS m = new METS(pathInput, this.imageGroup);
 		m.determine(); // critical
 		this.mets = m;
 		this.pathInputDir = pathInput.getParent();
@@ -104,14 +104,21 @@ public class DerivateMD implements IDerivate {
 	private void populateStruct(DerivateStruct parent, METSContainer container, String fileExt)
 			throws DigitalDerivansException {
 		if (container.getChildren().isEmpty()) {
-			List<METSFile> digiFiles = this.mets.getFiles(container, this.imageGroup, fileExt);
-			for (METSFile digiFile : digiFiles) {
-				String currId = digiFile.getFileId();
-				Path filePath = this.pathInputDir.resolve(digiFile.getLocalPath(this.checkRessources));
+			// List<METSFile> digiFiles = this.mets.getFiles(container, this.imageGroup,
+			// fileExt);
+			List<METSContainer> pages = this.mets.getPages(container);
+			for (METSContainer digiFile : pages) {
+				METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
+				var imgFile = pack.imageFile;
+				Path filePath = this.pathInputDir.resolve(imgFile.getLocalPath(this.checkRessources));
 				int currOrder = this.mdPageOrder.getAndIncrement();
-				DigitalPage page = new DigitalPage(currId, currOrder, filePath);
+				DigitalPage page = new DigitalPage(imgFile.getFileId(), currOrder, filePath);
+				if (pack.ocrFile.isPresent()) {
+					METSFile ocrFile = pack.ocrFile.get();
+					page.setOcrFile(ocrFile.getLocalPath(this.checkRessources));
+				}
 				parent.getPages().add(page);
-				this.allPages.add(page); // also remeber in derivate's list
+				this.allPages.add(page); // also remember in derivate's list
 			}
 		} else {
 			for (var subContainer : container.getChildren()) {
@@ -134,18 +141,33 @@ public class DerivateMD implements IDerivate {
 				this.traverseStruct(currentStruct, subContainer, fileExt);
 			}
 		}
-		List<METSFile> digiFiles = this.mets.getFiles(currentCnt, this.imageGroup, fileExt);
-		for (METSFile digiFile : digiFiles) {
-			String currId = digiFile.getFileId();
-			Path filePath = digiFile.getLocalPath(this.checkRessources);
+		// List<METSFile> digiFiles = this.mets.getFiles(currentCnt, this.imageGroup,
+		// fileExt);
+		// for (METSFile digiFile : digiFiles) {
+		// String currId = digiFile.getFileId();
+		// Path filePath = digiFile.getLocalPath(this.checkRessources);
+		// int currOrder = this.mdPageOrder.getAndIncrement();
+		// DigitalPage newPage = new DigitalPage(currId, currOrder, filePath);
+		// if (digiFile.getPageLabel() != null) {
+		// newPage.setPageLabel(digiFile.getPageLabel());
+		// }
+		// digiFile.getContentIds().ifPresent(newPage::setContentIds);
+		// currentStruct.getPages().add(newPage);
+		// this.allPages.add(newPage); // also store in derivate's list
+		// }
+		List<METSContainer> pages = this.mets.getPages(currentCnt);
+		for (METSContainer digiFile : pages) {
+			METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
+			var imgFile = pack.imageFile;
+			Path filePath = this.pathInputDir.resolve(imgFile.getLocalPath(this.checkRessources));
 			int currOrder = this.mdPageOrder.getAndIncrement();
-			DigitalPage newPage = new DigitalPage(currId, currOrder, filePath);
-			if (digiFile.getPageLabel() != null) {
-				newPage.setPageLabel(digiFile.getPageLabel());
+			DigitalPage page = new DigitalPage(imgFile.getFileId(), currOrder, filePath);
+			if (pack.ocrFile.isPresent()) {
+				METSFile ocrFile = pack.ocrFile.get();
+				page.setOcrFile(ocrFile.getLocalPath(this.checkRessources));
 			}
-			digiFile.getContentIds().ifPresent(newPage::setContentIds);
-			currentStruct.getPages().add(newPage);
-			this.allPages.add(newPage); // also store in derivate's list
+			currentStruct.getPages().add(page);
+			this.allPages.add(page); // also remember in derivate's list
 		}
 	}
 
