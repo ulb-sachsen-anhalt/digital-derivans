@@ -77,7 +77,7 @@ class TestPDFSyntheticArabicOCR {
 		g2d.fillRect(0, 0, orgwidth, orgHeight);
 		ImageIO.write(bi2, "JPG", jpgFile.toFile());
 
-		DigitalPage e = new DigitalPage(1, jpgFile);
+		DigitalPage e = new DigitalPage("MAX_0001", 1, jpgFile);
 		e.setOcrData(arabicOCR());
 		List<DigitalPage> pages = new ArrayList<>();
 		pages.add(e);
