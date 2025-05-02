@@ -81,9 +81,11 @@ class TestImageDerivateerJPGFooterGranular {
 		// generate synthetic digital pages with granular URNs
 		List<DigitalPage> pages = new ArrayList<>();
 		for (int i = 1; i < 4; i++) {
-			DigitalPage page = new DigitalPage(i, sharedTempDir.resolve("IMAGE").resolve(String.format("%04d.jpg", i)));
+			String currId = String.format("FILE_%04d", i);
+			Path currPath = sharedTempDir.resolve("IMAGE").resolve(String.format("%04d.jpg", i));
+			DigitalPage page = new DigitalPage(currId, i, currPath);
 			String currentURN = String.format("urn:nbn:3:1-123-%02d", i);
-			page.setIdentifier(currentURN);
+			page.setContentIds(currentURN);
 			pages.add(page);
 		}
 		
@@ -137,11 +139,13 @@ class TestImageDerivateerJPGFooterGranular {
 		// generate synthetic digital pages with granular URNs
 		List<DigitalPage> pages = new ArrayList<>();
 		for (int i = 1; i < 4; i++) {
-			DigitalPage page = new DigitalPage(i, sharedTempDir.resolve("IMAGE").resolve(String.format("%04d.jpg", i)));
+			String currId = String.format("FILE_%04d", i);
+			Path currPath = sharedTempDir.resolve("IMAGE").resolve(String.format("%04d.jpg", i));
+			DigitalPage page = new DigitalPage(currId, i, currPath);
 			String currentURN = String.format("urn:nbn:3:1-123-%02d", i);
 			// skip page 2 
 			if (i % 2 != 0) {
-				page.setIdentifier(currentURN);
+				page.setContentIds(currentURN);
 			}
 			pages.add(page);
 		}

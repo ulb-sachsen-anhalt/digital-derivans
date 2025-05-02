@@ -56,7 +56,7 @@ class TestMetadataStoreKitodo2 {
 		DerivateMD d143074601 = new DerivateMD(TestResource.K2_Aa_143074601.get());
 		List<DigitalPage> pages = d143074601.getAllPages();
 		for (DigitalPage page : pages) {
-			assertTrue(page.optIdentifier().isEmpty());
+			assertTrue(page.optContentIds().isEmpty());
 		}
 	}
 

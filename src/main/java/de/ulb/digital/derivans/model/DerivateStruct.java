@@ -46,5 +46,17 @@ public class DerivateStruct {
         return this.children;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if(! (other instanceof DerivateStruct)) {
+            return false;
+        } else {
+            DerivateStruct otherStruct = (DerivateStruct) other;
+            if (otherStruct.getOrder() != this.getOrder()) {
+                return false;
+            }
+            return otherStruct.getLabel().equals(this.label);
+        }
+    }
 
 }

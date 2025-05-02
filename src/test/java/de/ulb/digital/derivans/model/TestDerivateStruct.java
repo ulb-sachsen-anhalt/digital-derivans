@@ -3,10 +3,8 @@ package de.ulb.digital.derivans.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import org.junit.jupiter.api.Test;
-import org.kohsuke.args4j.CmdLineException;
-
-import de.ulb.digital.derivans.DigitalDerivansException;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * 
@@ -17,45 +15,30 @@ import de.ulb.digital.derivans.DigitalDerivansException;
  */
 class TestDerivateStruct {
 
-	@Test
-	void testCommonInstancesEquals() throws CmdLineException, DigitalDerivansException {
+	@ParameterizedTest
+	@CsvSource({ "6,[Seite 8],6,[Seite 8]",
+			"7,[Tabelle],7,[Tabelle]" })
+	void testInstancesEquals(int order1, String label1, int order2, String label2) {
 
 		// arrange
-		var s1 = new DerivateStruct(6, "[Seite 8]");
-		var s2 = new DerivateStruct(6, "[Seite 8]");
+		var s1 = new DerivateStruct(order1, label1);
+		var s2 = new DerivateStruct(order2, label2);
 
 		// act
 		assertEquals(s1, s2);
 	}
 
-	@Test
-	void testCommonInstancesDifferValue() throws CmdLineException {
+	@ParameterizedTest
+	@CsvSource({ "6,[Seite 8],7,[Seite 8]",
+			"6,[Seite 8],6,[Tabelle]",
+			"6,[Seite 8],7,[Tabelle]",
+			"7,[Tabelle],7,[TAbelle]",
+	})
+	void testInstancesDiffer(int order1, String label1, int order2, String label2) {
 
 		// arrange
-		var s1 = new DerivateStruct(6, "[Seite 8]");
-		var s2 = new DerivateStruct(7, "[Seite 8]");
-
-		// act
-		assertNotEquals(s1, s2);
-	}
-
-	@Test
-	void testCommonInstancesDifferLabel() throws CmdLineException {
-
-		// arrange
-		var s1 = new DerivateStruct(6, "[Seite 8]");
-		var s2 = new DerivateStruct(6, "[Tabelle]");
-
-		// act
-		assertNotEquals(s1, s2);
-	}
-
-	@Test
-	void testCommonInstancesDifferBoth() throws CmdLineException {
-
-		// arrange
-		var s1 = new DerivateStruct(6, "[Seite 8]");
-		var s2 = new DerivateStruct(7, "[Tabelle]");
+		var s1 = new DerivateStruct(order1, label1);
+		var s2 = new DerivateStruct(order2, label2);
 
 		// act
 		assertNotEquals(s1, s2);

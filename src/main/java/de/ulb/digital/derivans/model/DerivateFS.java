@@ -84,9 +84,10 @@ public class DerivateFS implements IDerivate {
 
 	private void populateStruct(String fileExt) throws DigitalDerivansException {
 		List<Path> allFiles = this.filePathsFrom(this.localStartDir, fileExt);
-		for (var file : allFiles) {
+		for (int i=1; i < allFiles.size(); i++) {
 			var currentOrder = this.theOrder.getAndIncrement();
-			DigitalPage dp = new DigitalPage(currentOrder, file);
+			String currentId = String.format("FILE_%d04", i);
+			DigitalPage dp = new DigitalPage(currentId, currentOrder, allFiles.get(i));
 			dp.setPageLabel(String.format("[%d]", currentOrder));
 			this.struct.getPages().add(dp);
 		}

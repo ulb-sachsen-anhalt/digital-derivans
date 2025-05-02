@@ -23,6 +23,8 @@ public class DigitalPage {
 
 	private Integer orderNr = 0;
 
+	private String pageId;
+
 	private String pageLabel;
 
 	/**
@@ -41,7 +43,7 @@ public class DigitalPage {
 	 */
 	private Optional<OCRData> ocrData = Optional.empty();
 
-	private Optional<String> uniqueIdentifier = Optional.empty();
+	private Optional<String> contentIds = Optional.empty();
 	
 	/**
 	 * If Image was extended by Footer vertical, store the added amount.
@@ -50,11 +52,8 @@ public class DigitalPage {
 	private Optional<Integer> footerHeight = Optional.empty();
 
 	
-	public DigitalPage(int orderNr) {
-		this.orderNr = orderNr;
-	}
-	
-	public DigitalPage(int orderNr, Path localFilePath) {
+	public DigitalPage(String pageId, int orderNr, Path localFilePath) {
+		this.pageId = pageId;
 		this.orderNr = orderNr;
 		DigitalPage.File dFile = new File(FileType.IMAGE, localFilePath);
 		this.file = dFile;
@@ -72,6 +71,10 @@ public class DigitalPage {
 		return Optional.empty();
 	}
 
+	public String getPageId() {
+		return this.pageId;
+	}
+
 	public Integer getOrderNr() {
 		return orderNr;
 	}
@@ -80,23 +83,15 @@ public class DigitalPage {
 		return this.file;
 	}
 
-	public void setIdentifier(String id) {
+	public void setContentIds(String id) {
 		if (id != null) {
-			this.uniqueIdentifier = Optional.of(id);
+			this.contentIds = Optional.of(id);
 		}
 	}
 
-	public Optional<String> optIdentifier() {
-		return this.uniqueIdentifier;
+	public Optional<String> optContentIds() {
+		return this.contentIds;
 	}
-
-	// public Path getImagePath() {
-	// 	return this.imgFile.physicalPath;
-	// }
-
-	// public void setImagePath(Path path) {
-	// 	this.imgFile = new File(FileType.IMAGE, path);
-	// }
 
 	public Optional<OCRData> getOcrData() {
 		return ocrData;

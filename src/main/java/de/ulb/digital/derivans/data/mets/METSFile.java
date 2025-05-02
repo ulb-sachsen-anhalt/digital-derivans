@@ -32,17 +32,25 @@ public class METSFile {
 
 	private String fileId;
 
-	private String contentIds;
+	private Optional<String> contentIds;
 
 	private String pageLabel;
 
-	private String mimeType;
+	private Path localRootPath;
 
 	private String location;
 
-	private Path localRootPath;
-
 	private String locationType;
+
+	private String mimeType;
+
+	private Optional<String> checksum;
+
+	private Optional<String> checksumType;
+
+	private Optional<Long> size;
+
+	private Optional<String> created;
 
 	/*
 	 * List any containers this File has been attached.
@@ -73,9 +81,9 @@ public class METSFile {
 		this.locationType = locationType;
 	}
 
-	public void addLinkedContainers(METSContainer container) {
-		this.linkedContainers.add(container);
-	}
+	// public void addLinkedContainers(METSContainer container) {
+	// 	this.linkedContainers.add(container);
+	// }
 
 	/**
 	 * 
@@ -84,7 +92,7 @@ public class METSFile {
 	 * 
 	 * @return
 	 */
-	public String getContentIds() {
+	public Optional<String> getContentIds() {
 		if (!this.linkedContainers.isEmpty()) {
 			PredicatePage predPage = new PredicatePage();
 			Optional<String> optCid = this.linkedContainers.stream()
@@ -93,14 +101,14 @@ public class METSFile {
 					.filter(Objects::nonNull)
 					.findFirst();
 			if (optCid.isPresent()) {
-				this.contentIds = optCid.get();
+				this.contentIds = optCid;
 			}
 		}
 		return this.contentIds;
 	}
 
 	public void setContentIds(String cid) {
-		this.contentIds = cid;
+		this.contentIds = Optional.of(cid);
 	}
 
 	public String getPageLabel() {
@@ -125,6 +133,38 @@ public class METSFile {
 
 	public void setLocalRoot(Path root) {
 		this.localRootPath = root;
+	}
+
+	public Optional<String> getChecksum() {
+		return checksum;
+	}
+
+	public void setChecksum(String checksum) {
+		this.checksum = Optional.of(checksum);
+	}
+
+	public Optional<String> getChecksumType() {
+		return checksumType;
+	}
+
+	public void setChecksumType(String checksumType) {
+		this.checksumType = Optional.of(checksumType);
+	}
+
+	public Optional<Long> getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = Optional.of(size);
+	}
+
+	public Optional<String> getCreated() {
+		return created;
+	}
+
+	public void setCreated(String created) {
+		this.created = Optional.of(created);
 	}
 
 	public Path getLocalPath(boolean testExists) throws DigitalDerivansException {
@@ -154,7 +194,7 @@ public class METSFile {
 	/**
 	 * 
 	 * Integrate a new mets:file Element
-	 * for adding assets (like PDF file)
+	 * for adding assets like PDF file
 	 * 
 	 * @return
 	 */
@@ -179,14 +219,21 @@ public class METSFile {
 			return false;
 		}
 		METSFile otherFile = (METSFile) other;
+		if (otherFile.getChecksum() != null && this.checksum != null) {
+			return otherFile.getChecksum().equals(this.checksum);
+		}
 		return this.fileId.equals(otherFile.getFileId());
 	}
 
 	@Override
 	public int hashCode() {
 		int h = 0;
-		for (int o = 0; o < this.fileId.length(); o++) {
-			h += this.fileId.codePointAt(o);
+		String useAttribute = this.fileId;
+		if(this.checksum.isPresent()) {
+			useAttribute = this.checksum.get();
+		}
+		for (int o = 0; o < useAttribute.length(); o++) {
+			h += useAttribute.codePointAt(o);
 		}
 		return h;
 	}

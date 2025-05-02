@@ -105,10 +105,11 @@ public class DerivateMD implements IDerivate {
 			throws DigitalDerivansException {
 		if (container.getChildren().isEmpty()) {
 			List<METSFile> digiFiles = this.mets.getFiles(container, this.imageGroup, fileExt);
-			for (var digiFile : digiFiles) {
+			for (METSFile digiFile : digiFiles) {
+				String currId = digiFile.getFileId();
 				Path filePath = this.pathInputDir.resolve(digiFile.getLocalPath(this.checkRessources));
 				int currOrder = this.mdPageOrder.getAndIncrement();
-				DigitalPage page = new DigitalPage(currOrder, filePath);
+				DigitalPage page = new DigitalPage(currId, currOrder, filePath);
 				parent.getPages().add(page);
 				this.allPages.add(page); // also remeber in derivate's list
 			}
@@ -134,18 +135,17 @@ public class DerivateMD implements IDerivate {
 			}
 		}
 		List<METSFile> digiFiles = this.mets.getFiles(currentCnt, this.imageGroup, fileExt);
-		for (var digiFile : digiFiles) {
-			Path localFilePath = digiFile.getLocalPath(this.checkRessources);
+		for (METSFile digiFile : digiFiles) {
+			String currId = digiFile.getFileId();
+			Path filePath = digiFile.getLocalPath(this.checkRessources);
 			int currOrder = this.mdPageOrder.getAndIncrement();
-			DigitalPage page = new DigitalPage(currOrder, localFilePath);
+			DigitalPage newPage = new DigitalPage(currId, currOrder, filePath);
 			if (digiFile.getPageLabel() != null) {
-				page.setPageLabel(digiFile.getPageLabel());
+				newPage.setPageLabel(digiFile.getPageLabel());
 			}
-			if (digiFile.getContentIds() != null) {
-				page.setIdentifier(digiFile.getContentIds());
-			}
-			currentStruct.getPages().add(page);
-			this.allPages.add(page); // also store in derivate's list
+			digiFile.getContentIds().ifPresent(newPage::setContentIds);
+			currentStruct.getPages().add(newPage);
+			this.allPages.add(newPage); // also store in derivate's list
 		}
 	}
 
@@ -273,8 +273,8 @@ public class DerivateMD implements IDerivate {
 
 	public boolean isGranularIdentifierPresent() {
 		return this.getAllPages().stream()
-				.filter(page -> page.optIdentifier().isPresent())
-				.map(page -> page.optIdentifier().get())
+				.filter(page -> page.optContentIds().isPresent())
+				.map(page -> page.optContentIds().get())
 				.findAny().isPresent();
 	}
 

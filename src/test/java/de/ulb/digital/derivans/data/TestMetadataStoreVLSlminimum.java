@@ -81,13 +81,13 @@ class TestMetadataStoreVLSminimum {
 		// assert
 		assertEquals(4, pages.size());
 		for (DigitalPage page : pages) {
-			assertTrue(page.optIdentifier().isPresent());
+			assertTrue(page.optContentIds().isPresent());
 		}
 
 		String urn1 = "urn:nbn:de:gbv:3:3-21437-p0001-0";
 		String urn2 = "urn:nbn:de:gbv:3:3-21437-p0004-6";
-		assertEquals(urn1, pages.get(0).optIdentifier().get());
-		assertEquals(urn2, pages.get(3).optIdentifier().get());
+		assertEquals(urn1, pages.get(0).optContentIds().get());
+		assertEquals(urn2, pages.get(3).optContentIds().get());
 		assertTrue(pages.get(0).getFile().getPath().toString().endsWith("MAX/737434.jpg"));
 		assertTrue(pages.get(3).getFile().getPath().toString().endsWith("MAX/737438.jpg"));
 	}
