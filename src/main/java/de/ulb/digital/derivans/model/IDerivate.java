@@ -21,15 +21,9 @@ public interface IDerivate {
 
 	List<DigitalPage> getAllPages();
 
-	Path getPathRootDir();
+	Path getRootDir();
 
 	boolean isMetadataPresent();
-
-	void setOcr(Path ocrPath) throws DigitalDerivansException;
-
-	// String getImageLocalDir();
-
-	// void setImageLocalDir(String localSubDir);
 
 	void setStartFileExtension(String startFileExtension);
 

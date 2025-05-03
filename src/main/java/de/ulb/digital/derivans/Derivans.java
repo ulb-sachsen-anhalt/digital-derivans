@@ -87,7 +87,7 @@ public class Derivans {
         }
 
         LOGGER.info("finished %02d steps at %s", this.steps.size(),
-                this.derivate.getPathRootDir());
+                this.derivate.getRootDir());
     }
 
     /**
@@ -108,11 +108,8 @@ public class Derivans {
         for (DerivateStep step : this.steps) {
             String pathInp = step.getInputDir();
             String pathOut = step.getOutputDir();
-            DerivansData inputDerivansData = new DerivansData(this.derivate.getPathRootDir(), pathInp, step.getInputType());
-            DerivansData outputDerivansData = new DerivansData(this.derivate.getPathRootDir(), pathOut, step.getOutputType());
-            if(inputDerivansData.getType() == DerivateType.TIF) {
-                this.derivate.setStartFileExtension(".tif");
-            }
+            DerivansData inputDerivansData = new DerivansData(this.derivate.getRootDir(), pathInp, step.getInputType());
+            DerivansData outputDerivansData = new DerivansData(this.derivate.getRootDir(), pathOut, step.getOutputType());
             if (!this.derivate.isInited()) {
                 if(step.getInputType() == DerivateType.TIF) {
                     this.derivate.setStartFileExtension(".tif");
@@ -158,14 +155,12 @@ public class Derivans {
                 pdfStep.setConformanceLevel(pdfALevel);
                 pdfStep.setDebugRender(config.isDebugPdfRender());
                 this.setPDFPath(pdfStep);
-                if (pdfStep.getParamOCR() != null) {
-                    Path ocrPath = this.derivate.getPathRootDir().resolve(pdfStep.getParamOCR());
-                    if (Files.isDirectory(ocrPath)) {
-                        LOGGER.info("enrich optional ocr from directory %s", pdfStep.getParamOCR());
-                        this.derivate.setOcr(ocrPath);
-                    }
+                GeneratorPDF genPDF = (GeneratorPDF) theGenerator;
+                genPDF.setPDFStep(pdfStep);
+                if(this.derivate.isMetadataPresent()) {
+                    genPDF.setMETS(((DerivateMD)this.derivate).getMets());
                 }
-                ((GeneratorPDF) theGenerator).setPDFStep(pdfStep);
+                genPDF.setStructure(this.derivate.getStructure());
             }
             this.generators.add(theGenerator);
         }
@@ -204,7 +199,7 @@ public class Derivans {
     }
 
     private void setPDFPath(DerivateStepPDF pdfStep) throws DigitalDerivansException {
-        Path   rootDir = this.derivate.getPathRootDir();
+        Path   rootDir = this.derivate.getRootDir();
         String pdfName = rootDir.getFileName().toString() + ".pdf"; // default PDF name like workdir
         if (this.derivate instanceof DerivateMD) {
             var derivateMd = (DerivateMD) this.derivate;
@@ -212,7 +207,7 @@ public class Derivans {
             DescriptiveMetadata descriptiveData = derivateMd.getDescriptiveData();
             pdfName = descriptiveData.getIdentifier()+ ".pdf"; // if metadata present, use as PDF name
         }
-        String finalPDFName = pdfStep.getNamePDF().orElse(pdfName); // id arg passed, use as PDF name
+        String finalPDFName = pdfStep.getNamePDF().orElse(pdfName); // if name arg passed, use as PDF name
         if(!finalPDFName.endsWith(".pdf")) {
             finalPDFName += ".pdf";
         }

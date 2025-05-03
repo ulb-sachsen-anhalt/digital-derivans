@@ -44,7 +44,7 @@ public class DerivateFS implements IDerivate {
 
 	private Path fulltextDir;
 
-	private Path pathRootDir;
+	private Path rootDir;
 
 	private boolean inited;
 
@@ -52,7 +52,7 @@ public class DerivateFS implements IDerivate {
 
 	public DerivateFS(Path pathInput) {
 		this.pathInput = pathInput;
-		this.pathRootDir = pathInput;
+		this.rootDir = pathInput;
 	}
 
 	/**
@@ -74,11 +74,11 @@ public class DerivateFS implements IDerivate {
 			}
 		} else {
 			if (!startPath.isAbsolute()) {
-				startPath = this.pathRootDir.resolve(startPath);
+				startPath = this.rootDir.resolve(startPath);
 			}
 		}
-		if (Files.exists(this.pathRootDir.resolve(IDerivans.FULLTEXT_DIR))) {
-			this.fulltextDir = this.pathRootDir.resolve(IDerivans.FULLTEXT_DIR);
+		if (Files.exists(this.rootDir.resolve(IDerivans.FULLTEXT_DIR))) {
+			this.fulltextDir = this.rootDir.resolve(IDerivans.FULLTEXT_DIR);
 		}
 		this.localStartDir = startPath;
 		var label = this.pathInput.getFileName().toString();
@@ -165,8 +165,8 @@ public class DerivateFS implements IDerivate {
 	}
 
 	@Override
-	public Path getPathRootDir() {
-		return this.pathRootDir;
+	public Path getRootDir() {
+		return this.rootDir;
 	}
 
 	@Override
@@ -177,33 +177,6 @@ public class DerivateFS implements IDerivate {
 	@Override
 	public boolean isInited() {
 		return this.inited;
-	}
-
-	// @Override
-	// public String getImageLocalDir() {
-	// return this.localStartDir;
-	// }
-
-	// @Override
-	// public void setImageLocalDir(String localDir) {
-	// this.localStartDir = localDir;
-	// }
-
-	@Override
-	public void setOcr(Path ocrPath) throws DigitalDerivansException {
-		var ocrDir = this.pathInput.resolve(ocrPath);
-		List<Path> ocrFiles = this.filePathsFrom(ocrDir, ".xml");
-		for (var p : this.getAllPages()) {
-			// var currPageName =
-			// p.getImagePath().getFileName().toString().replaceAll("(?<!^)[.][^.]*$", "");
-			// for (int i = 0; i < ocrFiles.size(); i++) {
-			// String ocrFile = ocrFiles.get(i).getFileName();
-			// if (ocrFile.toString().startsWith(currPageName)) {
-			// p.setOcrFile(ocrFiles.get(i));
-			// break;
-			// }
-			// }
-		}
 	}
 
 }

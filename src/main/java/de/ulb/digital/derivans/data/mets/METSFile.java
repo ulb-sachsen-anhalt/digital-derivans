@@ -4,7 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -81,34 +80,12 @@ public class METSFile {
 		this.locationType = locationType;
 	}
 
-	// public void addLinkedContainers(METSContainer container) {
-	// 	this.linkedContainers.add(container);
-	// }
-
-	/**
-	 * 
-	 * Get @CONTAINERIDS attribute from corresponding physical page
-	 * if present, otherwise use current set value
-	 * 
-	 * @return
-	 */
-	public Optional<String> getContentIds() {
-		if (!this.linkedContainers.isEmpty()) {
-			PredicatePage predPage = new PredicatePage();
-			Optional<String> optCid = this.linkedContainers.stream()
-					.filter(predPage)
-					.map(c -> c.getAttribute("CONTENTIDS"))
-					.filter(Objects::nonNull)
-					.findFirst();
-			if (optCid.isPresent()) {
-				this.contentIds = optCid;
-			}
-		}
-		return this.contentIds;
-	}
-
 	public void setContentIds(String cid) {
 		this.contentIds = Optional.of(cid);
+	}
+
+	public Optional<String> optContentIds() {
+		return this.contentIds;
 	}
 
 	public String getPageLabel() {
@@ -173,16 +150,6 @@ public class METSFile {
 		if (lastSlashIndex > -1) { // even if it starts with leading slash
 			String[] tokens = this.location.split("/");
 			lastPart = tokens[tokens.length - 1];
-			// int lastDotIndex = lastPart.lastIndexOf('.');
-			// if (lastDotIndex == -1) { // filename extension missing
-			// 	if (this.mimeType.toLowerCase().contains("tif") && !lastPart.endsWith(".tif")) {
-			// 		lastPart = lastPart + ".tif";
-			// 	} else if (this.mimeType.toLowerCase().contains("xml") && !lastPart.endsWith(".xml")) {
-			// 		lastPart = lastPart + ".xml";
-			// 	} else (this.mimeType.toLowerCase().contains("xml") && !lastPart.endsWith(".xml")) {
-			// 		lastPart = lastPart + ".jpg";
-			// 	}
-			// }
 		}
 		var theName = String.format("%s/%s", this.fileGroup, lastPart);
 		Path fileLoc = this.localRootPath.resolve(theName);

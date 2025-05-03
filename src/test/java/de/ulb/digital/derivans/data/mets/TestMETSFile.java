@@ -1,7 +1,6 @@
 package de.ulb.digital.derivans.data.mets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +20,6 @@ class TestMETSFile {
 
 		var file = new METSFile(identifier, identifier + ".pdf", useGroup, mimeType);
 
-		assertNull(file.getContentIds());
 		assertEquals(identifier, file.getFileId());
 		assertEquals("DOWNLOAD", file.getFileGroup());
 		assertEquals(identifier + ".pdf", file.getLocation());

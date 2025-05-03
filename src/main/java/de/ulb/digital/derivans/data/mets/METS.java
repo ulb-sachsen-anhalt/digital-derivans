@@ -95,7 +95,7 @@ public class METS {
 	 * <li>2nd, inspect the structural Linkings</li>
 	 * </ol>
 	 */
-	public void determine() throws DigitalDerivansException {
+	public void init() throws DigitalDerivansException {
 		Optional<String> optRoot = this.oneRoot();
 		String primeId = null;
 		if (optRoot.isPresent()) {
@@ -361,7 +361,6 @@ public class METS {
 			List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']", pageId));
 			for (Element page : pages) {
 				METSContainer pageContainer = new METSContainer(page);
-				String cid = pageContainer.getAttribute("CONTENTIDS");
 				String pageLabel = pageContainer.determineLabel();
 				var allFiles = page.getChildren("fptr", METS.NS_METS);
 				for (var aFile : allFiles) {
@@ -381,9 +380,7 @@ public class METS {
 					var thaFile = new METSFile(fileId, hRef, fileGroup);
 					thaFile.setPageLabel(pageLabel);
 					thaFile.setLocalRoot(this.getPath().getParent());
-					if (cid != null) {
-						thaFile.setContentIds(cid);
-					}
+					pageContainer.getAttribute("CONTENTIDS").ifPresent(thaFile::setContentIds);
 					metsFiles.add(thaFile);
 				}
 			}
@@ -425,6 +422,7 @@ public class METS {
 				.collect(Collectors.toList());
 		METSFile imgFile = this.pickFromGroup(fileIds, this.imgFileGroup, true);
 		imgFile.setLocalRoot(this.getPath().getParent());
+
 		METSFile ocrFile = this.pickFromGroup(fileIds, this.ocrFileGroup, false);
 		METSFilePack pack = new METSFilePack();
 		pack.imageFile = imgFile;
@@ -457,11 +455,18 @@ public class METS {
 		String fileId = theElement.getAttributeValue("ID");
 		var fstLocat = theElement.getChildren("FLocat", METS.NS_METS).get(0);
 		String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
-		if (isTypeJPG(mimeType) && !hRef.endsWith(".jpg")) {
-			hRef += ".jpg";
+		int offsetCtx = hRef.lastIndexOf('/');
+		if (offsetCtx > 0) {
+			hRef = hRef.substring(offsetCtx+1);
 		}
-		if (isTypeXML(mimeType) && !hRef.endsWith(".xml")) {
-			hRef += ".xml";
+		int offsetExt = hRef.lastIndexOf('.');
+		if (offsetExt < 0) { // no extension detected, make a guess
+			if (isTypeJPG(mimeType) && !hRef.endsWith(".jpg")) {
+				hRef += ".jpg";
+			}
+			if (isTypeXML(mimeType) && !hRef.endsWith(".xml")) {
+				hRef += ".xml";
+			}
 		}
 		METSFile metsFile = new METSFile(fileId, hRef, fileGroupUse);
 		return metsFile;

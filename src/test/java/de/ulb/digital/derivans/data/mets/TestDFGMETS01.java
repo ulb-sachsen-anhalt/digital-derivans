@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.IDerivans;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
@@ -32,7 +33,7 @@ class TestDFGMETS01 {
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
 		mets737429 = new METS(TestResource.VLS_HD_Aa_737429.get());
-		mets737429.determine();
+		mets737429.init();
 	}
 	
 	/**
@@ -71,10 +72,10 @@ class TestDFGMETS01 {
 		DerivateMD derivateMD = new DerivateMD(mets737429.getPath());
 		assertNotNull(derivateMD);
 		derivateMD.checkRessources(false);
-		derivateMD.init(Path.of("MAX"));
+		derivateMD.init(TestHelper.ULB_MAX_PATH);
 		List<DigitalPage> pages = derivateMD.getAllPages();
 
-		// // assert
+		// assert
 		for (DigitalPage page : pages) {
 			assertTrue(page.optContentIds().isPresent());
 		}

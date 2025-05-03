@@ -40,7 +40,7 @@ public class DerivateMD implements IDerivate {
 
 	private String imageGroup = IDerivans.IMAGE_DIR_MAX;
 
-	private Path pathInputDir;
+	private Path rootDir;
 
 	private boolean inited;
 
@@ -59,18 +59,17 @@ public class DerivateMD implements IDerivate {
 	private String identifierExpression;
 
 	public DerivateMD(Path pathInput) throws DigitalDerivansException {
-		METS m = new METS(pathInput, this.imageGroup);
-		m.determine(); // critical
-		this.mets = m;
-		this.pathInputDir = pathInput.getParent();
+		this.mets = new METS(pathInput, this.imageGroup);
+		this.rootDir = pathInput.getParent();
 	}
-
+	
 	/**
 	 * Include minimal resolving of image sub dirs: => MAX, DEFAULT, if exist => use
 	 * same directory to search for images
 	 */
 	@Override
 	public void init(Path startPath) throws DigitalDerivansException {
+		this.mets.init(); // critical
 		var orderNr = this.mdPageOrder.get();
 		METSContainer containerRoot = this.mets.getLogicalRoot();
 		String logicalLabel = containerRoot.determineLabel();
@@ -108,7 +107,7 @@ public class DerivateMD implements IDerivate {
 			for (METSContainer digiFile : pages) {
 				METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
 				var imgFile = pack.imageFile;
-				Path filePath = this.pathInputDir.resolve(imgFile.getLocalPath(this.checkRessources));
+				Path filePath = this.rootDir.resolve(imgFile.getLocalPath(this.checkRessources));
 				int currOrder = this.mdPageOrder.getAndIncrement();
 				DigitalPage page = new DigitalPage(imgFile.getFileId(), currOrder, filePath);
 				if (pack.ocrFile.isPresent()) {
@@ -129,8 +128,9 @@ public class DerivateMD implements IDerivate {
 			String fileExt) throws DigitalDerivansException {
 		String logicalLabel = currentCnt.determineLabel();
 		Integer structOrder = -1;
-		if (currentCnt.getAttribute("ORDER") != null) {
-			structOrder = Integer.valueOf(currentCnt.getAttribute("ORDER"));
+		if (currentCnt.getAttribute("ORDER").isPresent()) {
+			String ord = currentCnt.getAttribute("ORDER").get();
+			structOrder = Integer.valueOf(ord);
 		}
 		DerivateStruct currentStruct = new DerivateStruct(structOrder, logicalLabel);
 		parentStruct.getChildren().add(currentStruct);
@@ -143,10 +143,11 @@ public class DerivateMD implements IDerivate {
 		for (METSContainer digiFile : pages) {
 			METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
 			var imgFile = pack.imageFile;
-			Path filePath = this.pathInputDir.resolve(imgFile.getLocalPath(this.checkRessources));
+			Path filePath = this.rootDir.resolve(imgFile.getLocalPath(this.checkRessources));
 			int currOrder = this.mdPageOrder.getAndIncrement();
 			DigitalPage page = new DigitalPage(imgFile.getFileId(), currOrder, filePath);
 			page.setPageLabel(digiFile.determineLabel());
+			digiFile.getAttribute("CONTENTIDS").ifPresent(page::setContentIds);
 			if (pack.ocrFile.isPresent()) {
 				METSFile ocrFile = pack.ocrFile.get();
 				page.setOcrFile(ocrFile.getLocalPath(this.checkRessources));
@@ -166,17 +167,13 @@ public class DerivateMD implements IDerivate {
 		return this.allPages;
 	}
 
-	public Path getPathRootDir() {
-		return this.pathInputDir;
+	public Path getRootDir() {
+		return this.rootDir;
 	}
 
 	@Override
 	public boolean isInited() {
 		return this.inited;
-	}
-
-	@Override
-	public void setOcr(Path ocrPath) throws DigitalDerivansException {
 	}
 
 	public void setIdentifierExpression(String xpressiob) {

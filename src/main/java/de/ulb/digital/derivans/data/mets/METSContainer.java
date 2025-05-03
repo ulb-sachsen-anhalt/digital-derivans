@@ -154,12 +154,12 @@ public class METSContainer {
 		this.attributes.put(type, value);
 	}
 
-	public String getAttribute(String label) throws DigitalDerivansRuntimeException {
+	public Optional<String> getAttribute(String label) throws DigitalDerivansRuntimeException {
 		var t = METSContainerAttributeType.get(label);
 		if (this.attributes.containsKey(t)) {
-			return this.attributes.get(t);
+			return Optional.of(this.attributes.get(t));
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	@Override

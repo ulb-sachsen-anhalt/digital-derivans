@@ -32,7 +32,7 @@ class TestDFGMETS02 {
 	void parseContainerStructureVD18PVLS() throws DigitalDerivansException {
 		var path = TestResource.VLS_VD18P_14163614.get();
 		var m = new METS(path);
-		m.determine();
+		m.init();
 		var containerStructure = m.getLogicalRoot();
 		assertEquals(METSContainerType.VOLUME, containerStructure.getType());
 		assertEquals("1765", containerStructure.determineLabel());
