@@ -78,7 +78,7 @@ class TestDerivansFulltextODEM {
 
 		// act
 		derivans.init(targetMets);
-		derivans.create();
+		derivans.forward();
 		pdfPath = workDir.resolve("148811035.pdf");
 	}
 

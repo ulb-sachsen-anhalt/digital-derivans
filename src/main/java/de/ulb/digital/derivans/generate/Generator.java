@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate;
+package de.ulb.digital.derivans.generate;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  * @author M3ssman
  *
  */
-public class BaseDerivateer implements IDerivateer {
+public class Generator implements IDerivateer {
 
 	protected DerivansData input;
 
@@ -40,10 +40,10 @@ public class BaseDerivateer implements IDerivateer {
 
 	public static final String EXT_TIF = ".tif";
 
-	public BaseDerivateer() {
+	public Generator() {
 	}
 
-	public BaseDerivateer(DerivansData input, DerivansData output) {
+	public Generator(DerivansData input, DerivansData output) {
 		this.input = input;
 		this.output = output;
 		this.derivateType = output.getType();

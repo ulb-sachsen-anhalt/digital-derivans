@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -17,17 +17,17 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 public class DerivateStepPDF extends DerivateStep {
 
 	protected boolean enrichMetadata = true;
-	protected String paramOCR = IDerivateer.FULLTEXT_DIR;
-	protected String paramImages = IDerivateer.IMAGE_DIR_DEFAULT;
+	protected String paramOCR = IDerivans.FULLTEXT_DIR;
+	protected String paramImages = IDerivans.IMAGE_DIR_DEFAULT;
 	private int imageDpi = DefaultConfiguration.DEFAULT_IMAGE_DPI;
 	private Boolean debugRender = Boolean.FALSE;
 	private TypeConfiguration renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
 	private TypeConfiguration renderModus = DefaultConfiguration.DEFAULT_RENDER_VISIBILTY;
 	private Optional<String> modsIdentifierXPath = Optional.empty();
 	private String conformanceLevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
-	private String author = IDerivateer.UNKNOWN;
-	private String title = IDerivateer.UNKNOWN;
-	private String publicationYear = IDerivateer.UNKNOWN;
+	private String author = IDerivans.UNKNOWN;
+	private String title = IDerivans.UNKNOWN;
+	private String publicationYear = IDerivans.UNKNOWN;
 	private Optional<String> optCreator = Optional.empty();
 	private Optional<String> optLicense = Optional.empty();
 	private Optional<String> optKeywords = Optional.empty();

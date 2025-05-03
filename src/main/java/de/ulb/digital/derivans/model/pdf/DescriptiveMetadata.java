@@ -2,7 +2,7 @@ package de.ulb.digital.derivans.model.pdf;
 
 import java.util.Optional;
 
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 
 /**
  * 
@@ -30,15 +30,15 @@ import de.ulb.digital.derivans.derivate.IDerivateer;
  */
 public class DescriptiveMetadata {
 
-	private String urn = IDerivateer.UNKNOWN;
+	private String urn = IDerivans.UNKNOWN;
 
-	private String identifier = IDerivateer.UNKNOWN;
+	private String identifier = IDerivans.UNKNOWN;
 
-	private String title = IDerivateer.UNKNOWN;
+	private String title = IDerivans.UNKNOWN;
 
-	private String person = IDerivateer.UNKNOWN;
+	private String person = IDerivans.UNKNOWN;
 
-	private String yearPublished = IDerivateer.UNKNOWN;
+	private String yearPublished = IDerivans.UNKNOWN;
 
 	private Optional<String> license = Optional.empty();
 
@@ -81,7 +81,7 @@ public class DescriptiveMetadata {
 	}
 
 	public void setYearPublished(String yearPublished) {
-		if (IDerivateer.UNKNOWN.equals(yearPublished))
+		if (IDerivans.UNKNOWN.equals(yearPublished))
 			yearPublished = "0";
 		this.yearPublished = yearPublished;
 	}
@@ -93,7 +93,7 @@ public class DescriptiveMetadata {
 	public void setLicense(Optional<String> labelLicense) {
 		if (labelLicense.isPresent()) {
 			String newLicence = labelLicense.get();
-			if (!IDerivateer.UNKNOWN.equals(newLicence)) {
+			if (!IDerivans.UNKNOWN.equals(newLicence)) {
 				this.license = labelLicense;
 			}
 		}

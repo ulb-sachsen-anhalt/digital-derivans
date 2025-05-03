@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate.image;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

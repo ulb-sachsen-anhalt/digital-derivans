@@ -19,7 +19,8 @@ import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.generate.Generator;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
@@ -56,7 +57,7 @@ class TestStepsMigration {
 
 	static List<DerivateStep> steps;
 
-	static List<IDerivateer> derivateers;
+	static List<Generator> generators;
 
 	@BeforeAll
 	static void setupBeforeClass() throws Exception {
@@ -82,7 +83,7 @@ class TestStepsMigration {
 
 		// act
 		derivans.init(workDir.resolve("737429.xml"));
-		derivateers = derivans.getDerivateers();
+		generators = derivans.getDerivateers();
 		steps = derivans.getSteps();
 	}
 

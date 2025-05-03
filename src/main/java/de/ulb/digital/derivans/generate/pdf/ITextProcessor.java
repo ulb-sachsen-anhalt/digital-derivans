@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.pdf;
+package de.ulb.digital.derivans.generate.pdf;
 
 import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
@@ -101,12 +101,13 @@ public class ITextProcessor implements IPDFProcessor {
 
 	private DerivateStepPDF pdfStep;
 
-	private IDerivate derivate;
+	// private IDerivate derivate;
+	private DerivateStruct structure;
 
 	// private DigitalStructureTree structure = new DigitalStructureTree();
 	// private List<DigitalPage> pages;
 
-	private int pageNumber = 1;
+	// private int pageNumber = 1;
 
 	private PdfFont font;
 
@@ -136,9 +137,18 @@ public class ITextProcessor implements IPDFProcessor {
 		this.setDpi(pdfStep.getImageDpi());
 		// this.structure = structure;
 		// this.pages = pages;
-		this.derivate = derivate;
+		// this.derivate = derivate;
 		this.font = this.loadFont("ttf/DejaVuSans.ttf");
 		this.rtlStyle = this.rtlStyle.setFont(this.font);
+	}
+
+	public DerivateStruct getStructure() {
+		return structure;
+	}
+
+	@Override
+	public void setStructure(DerivateStruct structure) {
+		this.structure = structure;
 	}
 
 	private void setDpi(int dpi) throws DigitalDerivansException {
@@ -220,19 +230,19 @@ public class ITextProcessor implements IPDFProcessor {
 
 	private List<PDFPage> addContents() throws DigitalDerivansException {
 		PdfOutline baseOutline = this.iTextPDFDocument.getOutlines(true);
-		DerivateStruct rootStruct = this.derivate.getStructure();
-		String rootLabel = rootStruct.getLabel();
+		// DerivateStruct rootStruct = this.derivate.getStructure();
+		String rootLabel = this.structure.getLabel();
 		List<PDFPage> processedPdfPages = new ArrayList<>();
 		// outline the very first page with logical root
 		PdfOutline logRootOutline = baseOutline.addOutline(rootLabel);
 		logRootOutline.setTitle(rootLabel);
-		if (rootStruct.getChildren().isEmpty()) {
-			List<PDFPage> processed = this.addPages(rootStruct.getPages(), logRootOutline);
+		if (this.structure.getChildren().isEmpty()) {
+			List<PDFPage> processed = this.addPages(this.structure.getPages(), logRootOutline);
 			processedPdfPages.addAll(processed);
 			PdfPage startPage = this.iTextPDFDocument.getPage(1);
 			logRootOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(startPage)));
 		} else {
-			for (DerivateStruct currentStruct : rootStruct.getChildren()) {
+			for (DerivateStruct currentStruct : this.structure.getChildren()) {
 				String childLabel = currentStruct.getLabel();
 				PdfOutline childLine = logRootOutline.addOutline(childLabel);
 				this.traverse(childLine, currentStruct, processedPdfPages);
@@ -266,7 +276,7 @@ public class ITextProcessor implements IPDFProcessor {
 	private PdfPage requestDestinationPage(int n) throws DigitalDerivansException {
 		// pre-check
 		int nPdfPages = this.iTextPDFDocument.getNumberOfPages();
-		if(nPdfPages < n) {
+		if (nPdfPages < n) {
 			String msg = String.format("request invalid page number %02d (total: %02d)", n, nPdfPages);
 			throw new DigitalDerivansException(msg);
 		}
@@ -285,6 +295,7 @@ public class ITextProcessor implements IPDFProcessor {
 		try {
 			for (int i = 0; i < pages.size(); i++) {
 				DigitalPage pageIn = pages.get(i);
+				int orderN = pageIn.getOrderNr();
 				String imagePath = pageIn.getFile().getPath().toString();
 				Image image = new Image(ImageDataFactory.create(imagePath));
 				float imageWidth = image.getImageWidth();
@@ -295,8 +306,8 @@ public class ITextProcessor implements IPDFProcessor {
 					imageHeight = image.getImageScaledHeight();
 					LOGGER.trace("rescale image: {}x{}", imageWidth, imageHeight);
 				}
-				PDFPage pdfPage = new PDFPage(new Dimension((int) imageWidth, (int) imageHeight), i);
-				pdfPage.setNumber(i + 1);
+				PDFPage pdfPage = new PDFPage(new Dimension((int) imageWidth, (int) imageHeight), orderN);
+				// pdfPage.setNumber(orderN);
 				pdfPage.setImageDimensionOriginal((int) image.getImageWidth(), (int) image.getImageHeight());
 				pdfPage.passOCR(pageIn);
 				this.append(image, /* font, */ pdfPage);
@@ -544,7 +555,7 @@ public class ITextProcessor implements IPDFProcessor {
 		}
 		PDFOutlineEntry root = new PDFOutlineEntry(label, dest);
 		if (!pdfOutline.getAllChildren().isEmpty()) {
-			for(var child : pdfOutline.getAllChildren()) {
+			for (var child : pdfOutline.getAllChildren()) {
 				traverseOutline(root, child);
 			}
 		}
@@ -560,7 +571,7 @@ public class ITextProcessor implements IPDFProcessor {
 		PDFOutlineEntry nextChild = new PDFOutlineEntry(label, dest);
 		currParent.getOutlineEntries().add(nextChild);
 		List<PdfOutline> nextChildren = currChild.getAllChildren();
-		for (var nextOutlineChild: nextChildren) {
+		for (var nextOutlineChild : nextChildren) {
 			traverseOutline(nextChild, nextOutlineChild);
 		}
 	}

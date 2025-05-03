@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import de.ulb.digital.derivans.derivate.IDerivateer;
 
 /**
  * 
@@ -63,7 +62,7 @@ class TestApp {
 	void testWithSampleConfigurationFile(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		Path pathTarget = TestHelper.fixturePrint737429(tempDir, IDerivateer.IMAGE_DIR_MAX);
+		Path pathTarget = TestHelper.fixturePrint737429(tempDir, IDerivans.IMAGE_DIR_MAX);
 		
 		Path configDir = Path.of("src/test/resources/config");
 		Path configTempDir = tempDir.resolve("config");

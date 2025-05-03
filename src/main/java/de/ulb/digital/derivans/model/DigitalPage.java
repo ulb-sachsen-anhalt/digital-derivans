@@ -1,8 +1,12 @@
 package de.ulb.digital.derivans.model;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
+import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.data.ocr.OCRReader;
+import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 
 /**
@@ -59,8 +63,11 @@ public class DigitalPage {
 		this.file = dFile;
 	}
 
-	public void setOcrFile(Path ocrPath) {
+	public void setOcrFile(Path ocrPath) throws DigitalDerivansException {
 		this.ocrFile = Optional.of(new File(FileType.OCR, ocrPath));
+		if(Files.exists(ocrPath)) { // due testing reasons
+			this.ocrData = Optional.of(OCRReaderFactory.from(ocrPath).get(ocrPath));
+		}
 	}
 
 	public Optional<Path> getOcrFile() {

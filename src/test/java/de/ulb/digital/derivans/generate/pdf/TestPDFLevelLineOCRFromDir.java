@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.pdf;
+package de.ulb.digital.derivans.generate.pdf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,7 +18,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.TypeConfiguration;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.generate.GeneratorPDF;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -46,26 +47,26 @@ class TestPDFLevelLineOCRFromDir {
 		Path sourceOcr = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
 		assertTrue(Files.exists(sourceOcr, LinkOption.NOFOLLOW_LINKS));
 		Path sourceFile = sourceOcr.getFileName();
-		Path targetDir = pathTarget.resolve(IDerivateer.FULLTEXT_DIR);
+		Path targetDir = pathTarget.resolve(IDerivans.FULLTEXT_DIR);
 		Files.createDirectories(targetDir);
 		Path targetOcr = targetDir.resolve(sourceFile);
 		Files.copy(sourceOcr, targetOcr);
 	
 		// arrange image data
-		Path pathImageMax = pathTarget.resolve(IDerivateer.IMAGE_DIR_MAX);
+		Path pathImageMax = pathTarget.resolve(IDerivans.IMAGE_DIR_MAX);
 		Files.createDirectory(pathImageMax);
 		Path imagePath = pathImageMax.resolve("1667524704_J_0150_0512.jpg");
 		// original dimensions: 7544,10536
 		TestHelper.writeImage(imagePath, 754, 1053, BufferedImage.TYPE_BYTE_GRAY, "JPG");
 	
 		// arrange base derivateer
-		DerivansData input = new DerivansData(pathTarget, IDerivateer.IMAGE_DIR_MAX, DerivateType.JPG);
+		DerivansData input = new DerivansData(pathTarget, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
 		DerivansData output = new DerivansData(pathTarget, ".", DerivateType.PDF);
 	
 		// arrange pdf path and pages
 		DerivateStepPDF stepPdf = new DerivateStepPDF();
 		stepPdf.setOutputDir(".");
-		stepPdf.setInputDir(IDerivateer.IMAGE_DIR_MAX);
+		stepPdf.setInputDir(IDerivans.IMAGE_DIR_MAX);
 		stepPdf.setDebugRender(true);
 		stepPdf.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		stepPdf.setPathPDF(pathTarget.resolve("zd1.pdf"));
@@ -74,7 +75,7 @@ class TestPDFLevelLineOCRFromDir {
 		derivate.init(TestHelper.ULB_MAX_PATH);
 		List<DigitalPage> pages = derivate.getAllPages();
 		//resolver.enrichOCRFromFilesystem(pages, targetDir);
-		PDFDerivateer d = new PDFDerivateer(input, output, pages, stepPdf);
+		GeneratorPDF d = new GeneratorPDF(input, output, pages, stepPdf);
 		d.setDerivate(derivate);
 		d.setPDFStep(stepPdf);
 	

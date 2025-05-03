@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate.image;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -22,7 +22,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.generate.Generator;
+import de.ulb.digital.derivans.generate.GeneratorImageJPGFooter;
+// import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DigitalFooter;
@@ -48,7 +50,7 @@ class TestImageDerivateerJPGFooter {
 	public static void setupBeforeClass() throws IOException {
 		Path defaultMaxDir = sharedTempDir.resolve("IMAGE");
 		Files.createDirectory(defaultMaxDir);
-		for (int i = 1; i < 5; i++) {
+		for (int i = 1; i < 3; i++) {
 			Path jpgFile = defaultMaxDir.resolve("000" + i + ".jpg");
 			BufferedImage bi2 = new BufferedImage(3500, height, BufferedImage.TYPE_3BYTE_BGR);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
@@ -77,13 +79,13 @@ class TestImageDerivateerJPGFooter {
 		assertTrue(Files.exists(target));
 
 		// empty list at construction time is okay since we re-set the pages immediately
-		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, footer, new ArrayList<>(), 95);
+		Generator gen = new GeneratorImageJPGFooter(input, output, footer, new ArrayList<>(), 95);
 		DerivateFS dFs = new DerivateFS(sharedTempDir);
 		dFs.init(sourcePath);
-		derivateer.setDigitalPages(dFs.getAllPages());
+		gen.setDigitalPages(dFs.getAllPages());
 
 		// act
-		int outcome = derivateer.create();
+		int outcome = gen.create();
 
 		// assert
 		assertEquals(4, outcome);
@@ -117,13 +119,13 @@ class TestImageDerivateerJPGFooter {
 		Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
 		DigitalFooter footer = new DigitalFooter("ULB", urn, target);
 		// empty list at construction time is okay since we re-set the pages immediately
-		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, footer, new ArrayList<>(), 95);
+		Generator gen = new GeneratorImageJPGFooter(input, output, footer, new ArrayList<>(), 95);
 		DerivateFS dFs = new DerivateFS(sharedTempDir);
 		dFs.init(imagePath);
-		derivateer.setDigitalPages(dFs.getAllPages());
+		gen.setDigitalPages(dFs.getAllPages());
 
 		// act
-		int outcome = derivateer.create();
+		int outcome = gen.create();
 
 		// assert
 		assertEquals(1, outcome);
@@ -165,14 +167,14 @@ class TestImageDerivateerJPGFooter {
 		Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
 		DigitalFooter footer = new DigitalFooter("ULB", urn, target);
 		// empty list at construction time is okay since we re-set the pages immediately
-		IDerivateer derivateer = new ImageDerivateerJPGFooter(input, output, footer, new ArrayList<>(), 95);
+		Generator gen = new GeneratorImageJPGFooter(input, output, footer, new ArrayList<>(), 95);
 		DerivateFS dFs = new DerivateFS(sharedTempDir);
 		dFs.setStartFileExtension(".tif");
 		dFs.init(targetPath1);
-		derivateer.setDigitalPages(dFs.getAllPages());
+		gen.setDigitalPages(dFs.getAllPages());
 
 		// act
-		int outcome = derivateer.create();
+		int outcome = gen.create();
 
 		// assert
 		assertEquals(1, outcome);

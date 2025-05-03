@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.derivate.BaseDerivateer;
+import de.ulb.digital.derivans.generate.image.ImageProcessor;
 import de.ulb.digital.derivans.model.DerivansData;
 
 /**
@@ -20,7 +20,7 @@ import de.ulb.digital.derivans.model.DerivansData;
  * @author hartwig
  *
  */
-public abstract class ImageDerivateer extends BaseDerivateer {
+public abstract class GeneratorImage extends Generator {
 
 	public static final Integer DEFAULT_QUALITY = 80;
 
@@ -28,7 +28,7 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	public static final int MIN_FREE_CORES = 1;
 
-	protected static final Logger LOGGER = LogManager.getLogger(ImageDerivateer.class);
+	protected static final Logger LOGGER = LogManager.getLogger(GeneratorImage.class);
 
 	protected int poolSize = DEFAULT_POOLSIZE;
 
@@ -38,11 +38,11 @@ public abstract class ImageDerivateer extends BaseDerivateer {
 
 	protected ImageProcessor imageProcessor = new ImageProcessor();
 
-	protected ImageDerivateer() {
+	protected GeneratorImage() {
 		super();
 	}
 
-	protected ImageDerivateer(DerivansData input, DerivansData output) {
+	protected GeneratorImage(DerivansData input, DerivansData output) {
 		super(input, output);
 	}
 

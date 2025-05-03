@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.pdf;
+package de.ulb.digital.derivans.generate.pdf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,9 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.TestHelper;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -89,7 +90,7 @@ class TestPDFSyntheticWesteuropeOCR {
 		// act
 		String pdfLineName = String.format("pdf-line-%04d.pdf", N_PAGES);
 		Path outputLinePath = tempDir.resolve(pdfLineName);
-		DerivansData input = new DerivansData(tempDir, IDerivateer.IMAGE_DIR_MAX, DerivateType.JPG);
+		DerivansData input = new DerivansData(tempDir, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
 		DerivansData outputLine = new DerivansData(tempDir, ".", DerivateType.PDF);
 		DerivateStepPDF pdfStep = new DerivateStepPDF();
 		pdfStep.setImageDpi(TEST_DPI);
@@ -100,7 +101,7 @@ class TestPDFSyntheticWesteuropeOCR {
 		// act once
 		DerivateFS derivateLines = new DerivateFS(tempDir);
 		derivateLines.init(TestHelper.ULB_MAX_PATH);
-		var dOne = new PDFDerivateer(input, outputLine, pages, pdfStep);
+		var dOne = new GeneratorPDF(input, outputLine, pages, pdfStep);
 		dOne.setDerivate(derivateLines);
 		dOne.create();
 		pdfLines = dOne.getPDFResult();
@@ -114,7 +115,7 @@ class TestPDFSyntheticWesteuropeOCR {
 		pdfStep.setPathPDF(outputWordPath);
 		// DerivateFS derivateWords = new DerivateFS(tempDir);
 		// derivateWords.init(TestHelper.ULB_MAX_PATH);
-		var dTwo = new PDFDerivateer(input, outputWord, pages, pdfStep);
+		var dTwo = new GeneratorPDF(input, outputWord, pages, pdfStep);
 		dTwo.setDerivate(derivateLines);
 		dTwo.create();
 		pdfWords = dTwo.getPDFResult();

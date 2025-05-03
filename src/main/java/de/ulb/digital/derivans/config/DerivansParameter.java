@@ -7,7 +7,7 @@ import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.ParserProperties;
 
 import static de.ulb.digital.derivans.config.DefaultConfiguration.*;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 
 /**
  * 
@@ -35,13 +35,13 @@ public class DerivansParameter {
 			+
 			"If in local mode, stands for directory containing images.\n" +
 			"If metadata present, stands for required image fileGroup label.\n" +
-			"(default: '" + IDerivateer.IMAGE_DIR_DEFAULT + "').\n")
+			"(default: '" + IDerivans.IMAGE_DIR_DEFAULT + "').\n")
 	private String images;
 
 	@Option(name = "-o", aliases = { "--ocr" }, required = false, usage = "Identify OCR-Data, depending on context.\n" +
 			"If in local mode, stands for directory containing ocr files.\n" +
 			"If metadata present, stands for required ocr fileGroup label.\n" +
-			"(default: '" + IDerivateer.FULLTEXT_DIR + "').\n")
+			"(default: '" + IDerivans.FULLTEXT_DIR + "').\n")
 	private String ocr;
 
 	@Option(name = "-d", aliases = {

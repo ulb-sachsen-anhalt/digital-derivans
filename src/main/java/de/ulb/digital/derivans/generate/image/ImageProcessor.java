@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate.image;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -84,7 +84,7 @@ public class ImageProcessor {
 		return newImage;
 	}
 
-	BufferedImage clone(BufferedImage original) {
+	public BufferedImage clone(BufferedImage original) {
 		BufferedImage b = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
 		Graphics2D g = b.createGraphics();
 		g.drawImage(original, 0, 0, null);

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -52,7 +52,7 @@ class TestDFGMETS01 {
 		// mods:identifier[@type="urn"]
 		assertEquals("urn:nbn:de:gbv:3:3-21437", mets737429.getPrimeMODS().getIdentifierURN());
 		// METS/MODS contains no license information, therefore unknown
-		assertEquals(IDerivateer.UNKNOWN, mets737429.getPrimeMODS().getAccessCondition());
+		assertEquals(IDerivans.UNKNOWN, mets737429.getPrimeMODS().getAccessCondition());
 		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
 		assertEquals("1731", mets737429.getPrimeMODS().getYearPublication());
 		// mods:role/mods:displayForm/text()

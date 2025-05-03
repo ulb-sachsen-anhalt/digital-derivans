@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate.image;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -23,7 +23,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.generate.Generator;
+import de.ulb.digital.derivans.generate.GeneratorImageJPGFooter;
+import de.ulb.digital.derivans.generate.GeneratorImageJPGFooterGranular;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -31,12 +33,12 @@ import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
- * Test Specification for {@link ImageDerivateerJPGFooterGranular}
+ * Test Specification for {@link GeneratorImageJPGFooterGranular}
  * 
  * @author hartwig
  *
  */
-class TestImageDerivateerJPGFooterGranular {
+class TestImageGeneratorFooter {
 
 	private static String urn = "my:urn:bibliothek-123-4-1";
 
@@ -90,7 +92,7 @@ class TestImageDerivateerJPGFooterGranular {
 		}
 		
 		// act
-		IDerivateer derivateerGranular = new ImageDerivateerJPGFooterGranular(input, output, footer, pages, 95);
+		Generator derivateerGranular = new GeneratorImageJPGFooter(input, output, footer, pages, 95);
 		int outcome = derivateerGranular.create();
 
 		// assert
@@ -106,7 +108,7 @@ class TestImageDerivateerJPGFooterGranular {
 			assertEquals(250, image.getWidth());
 		}
 
-		assertEquals(3, ((ImageDerivateerJPGFooterGranular) derivateerGranular).getNumberOfGranularIdentifiers());
+		assertEquals(3, ((GeneratorImageJPGFooter) derivateerGranular).getNumberOfGranularIdentifiers());
 	}
 
 	/**
@@ -151,17 +153,17 @@ class TestImageDerivateerJPGFooterGranular {
 		}
 		
 		// enrich target path
-		IDerivateer jpgs = new ImageDerivateerJPGFooterGranular(input, output, footer, pages, 95);
+		GeneratorImageJPGFooter gen = new GeneratorImageJPGFooter(input, output, footer, pages, 95);
 
 		// act
-		int outcome = jpgs.create();
+		int outcome = gen.create();
 
 		// assert
 		assertEquals(3, outcome);
 		List<Path> resultPaths = Files.list(sharedTempDir.resolve("IMAGE_FOOTER2")).collect(Collectors.toList());
 
 		// difference since there are 3 images, but only two of them have granular urn
-		assertEquals(2, ((ImageDerivateerJPGFooterGranular) jpgs).getNumberOfGranularIdentifiers());
+		assertEquals(2, gen.getNumberOfGranularIdentifiers());
 
 		// ToDo: Specify behavior
 		assertEquals(3, resultPaths.size());

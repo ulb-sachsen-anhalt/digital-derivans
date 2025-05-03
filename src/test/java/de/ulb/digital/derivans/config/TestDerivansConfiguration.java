@@ -18,7 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
@@ -131,7 +131,7 @@ public class TestDerivansConfiguration {
 	void testDefaultLocalConfiguration(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		var imgDir = IDerivateer.IMAGE_DIR_DEFAULT;
+		var imgDir = IDerivans.IMAGE_DIR_DEFAULT;
 		Path pathInput = tempDir.resolve("default_local");
 		Path pathImageDir = pathInput.resolve(imgDir);
 		Files.createDirectories(pathImageDir);
@@ -151,7 +151,7 @@ public class TestDerivansConfiguration {
 
 		// minimal derivate from images
 		// assertEquals(80, steps.get(0).getQuality());
-		assertEquals(IDerivateer.IMAGE_DIR_DEFAULT, steps.get(0).getInputDir());
+		assertEquals(IDerivans.IMAGE_DIR_DEFAULT, steps.get(0).getInputDir());
 		assertEquals("IMAGE_80", steps.get(0).getOutputDir());
 		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
 

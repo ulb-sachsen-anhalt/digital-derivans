@@ -20,7 +20,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
-import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
@@ -71,14 +70,14 @@ class TestDerivansExportKitodo2 {
 		assertTrue(Files.exists(input));
 		derivans.init(input);
 		TestDerivansExportKitodo2.steps = derivans.getSteps();
-		derivans.create();
+		derivans.forward();
 	}
 
 	@Test
 	void testStep01() {
 		var step01 = TestDerivansExportKitodo2.steps.get(0);
-		assertEquals(IDerivateer.IMAGE_DIR_MAX, step01.getInputDir());
-		assertEquals(IDerivateer.IMAGE_FOOTER, step01.getOutputDir());
+		assertEquals(IDerivans.IMAGE_DIR_MAX, step01.getInputDir());
+		assertEquals(IDerivans.IMAGE_FOOTER, step01.getOutputDir());
 		assertEquals(DerivateType.TIF, step01.getInputType());
 		assertEquals(DerivateType.JPG, step01.getOutputType());
 	}
@@ -86,20 +85,20 @@ class TestDerivansExportKitodo2 {
 	@Test
 	void testStep04() {
 		var theStep = TestDerivansExportKitodo2.steps.get(3);
-		assertEquals(IDerivateer.IMAGE_FOOTER, theStep.getInputDir());
-		assertEquals(IDerivateer.IMAGE_PREVIEW, theStep.getOutputDir());
+		assertEquals(IDerivans.IMAGE_FOOTER, theStep.getInputDir());
+		assertEquals(IDerivans.IMAGE_PREVIEW, theStep.getOutputDir());
 		assertEquals(DerivateType.JPG, theStep.getInputType());
 		assertEquals(DerivateType.JPG, theStep.getOutputType());
-		assertEquals(IDerivateer.IMAGE_PREVIEW, theStep.getOutputPrefix());
+		assertEquals(IDerivans.IMAGE_PREVIEW, theStep.getOutputPrefix());
 	}
 
 	@Test
 	void testStep05() {
 		var theStep = TestDerivansExportKitodo2.steps.get(4);
-		assertEquals(IDerivateer.IMAGE_PREVIEW, theStep.getInputDir());
-		assertEquals(IDerivateer.IMAGE_THUMBNAIL, theStep.getOutputDir());
+		assertEquals(IDerivans.IMAGE_PREVIEW, theStep.getInputDir());
+		assertEquals(IDerivans.IMAGE_THUMBNAIL, theStep.getOutputDir());
 		assertEquals(DerivateType.JPG, theStep.getInputType());
-		assertEquals(IDerivateer.IMAGE_PREVIEW, theStep.getInputPrefix());
+		assertEquals(IDerivans.IMAGE_PREVIEW, theStep.getInputPrefix());
 	}
 
 	@Test
@@ -114,20 +113,20 @@ class TestDerivansExportKitodo2 {
 
 	@Test
 	void testPreviewImagesWritten() throws Exception {
-		Path previewDir = TestDerivansExportKitodo2.workDir.resolve(IDerivateer.IMAGE_PREVIEW);
+		Path previewDir = TestDerivansExportKitodo2.workDir.resolve(IDerivans.IMAGE_PREVIEW);
 		assertTrue(Files.exists(previewDir));
 		for (int i = 1; i < nExpectedImages; i++) {
-			var imageLabel = String.format("%s%08d.jpg", IDerivateer.IMAGE_PREVIEW, i);
+			var imageLabel = String.format("%s%08d.jpg", IDerivans.IMAGE_PREVIEW, i);
 			assertTrue(previewDir.resolve(imageLabel).toFile().exists());
 		}
 	}
 
 	@Test
 	void testThumbnailsWritten() throws Exception {
-		Path thumbsDir = TestDerivansExportKitodo2.workDir.resolve(IDerivateer.IMAGE_THUMBNAIL);
+		Path thumbsDir = TestDerivansExportKitodo2.workDir.resolve(IDerivans.IMAGE_THUMBNAIL);
 		assertTrue(Files.exists(thumbsDir));
 		for (int i = 1; i < nExpectedImages; i++) {
-			var imageLabel = String.format("%s%08d.jpg", IDerivateer.IMAGE_THUMBNAIL, i);
+			var imageLabel = String.format("%s%08d.jpg", IDerivans.IMAGE_THUMBNAIL, i);
 			assertTrue(thumbsDir.resolve(imageLabel).toFile().exists());
 		}
 	}

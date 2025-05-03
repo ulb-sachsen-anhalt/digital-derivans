@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.pdf;
+package de.ulb.digital.derivans.generate.pdf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

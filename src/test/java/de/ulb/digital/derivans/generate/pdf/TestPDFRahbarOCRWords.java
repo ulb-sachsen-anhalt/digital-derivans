@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.pdf;
+package de.ulb.digital.derivans.generate.pdf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,7 +14,8 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.config.TypeConfiguration;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
+import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -58,13 +59,13 @@ public class TestPDFRahbarOCRWords {
 		Files.copy(sourceImg, pathImageMax.resolve(sourceImg.getFileName()));
 
 		// arrange base derivateer
-		DerivansData input = new DerivansData(workDirWord, IDerivateer.IMAGE_DIR_MAX, DerivateType.JPG);
+		DerivansData input = new DerivansData(workDirWord, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
 		DerivansData output = new DerivansData(workDirWord, ".", DerivateType.PDF);
 
 		// arrange pdf path and pages
 		DerivateStepPDF step = new DerivateStepPDF();
 		step.setOutputDir(".");
-		step.setInputDir(IDerivateer.IMAGE_DIR_MAX);
+		step.setInputDir(IDerivans.IMAGE_DIR_MAX);
 		DerivateFS derivate = new DerivateFS(workDirWord);
 		derivate.init(pathImageMax);
 		List<DigitalPage> pages = derivate.getAllPages();
@@ -72,7 +73,7 @@ public class TestPDFRahbarOCRWords {
 		step.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		step.setDebugRender(true);
 		step.setImageDpi(300); // prevent re-scaling for testing
-		PDFDerivateer wordLvlDerivateer = new PDFDerivateer(input, output, pages, step);
+		GeneratorPDF wordLvlDerivateer = new GeneratorPDF(input, output, pages, step);
 
 		// act
 		wordLvlDerivateer.create();

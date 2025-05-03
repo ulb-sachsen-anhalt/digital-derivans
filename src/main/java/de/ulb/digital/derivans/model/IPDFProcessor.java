@@ -40,6 +40,9 @@ public interface IPDFProcessor {
 	 */
 	void addMetadata();
 	
+
+	void setStructure(DerivateStruct struct);
+
 	/**
 	 * 
 	 * Write PDF file to given file descriptor

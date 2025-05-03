@@ -70,7 +70,7 @@ class TestDerivansParameter {
 		assertTrue(step instanceof DerivateStepPDF);
 		DerivateStepPDF stepPdf = (DerivateStepPDF) step;
 		assertEquals(xPath, stepPdf.getModsIdentifierXPath().get());
-		derivans.create();
+		derivans.forward();
 
 		// assert
 		var optPdf = Files.list(thisDir)
@@ -111,7 +111,7 @@ class TestDerivansParameter {
 
 		// act
 		derivans.init(thisDir.resolve("737429.xml"));
-		derivans.create();
+		derivans.forward();
 
 		// assert
 		Path pdfWritten = thisDir.resolve(NAME_PDF_FILE);

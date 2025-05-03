@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -6,7 +6,6 @@ import java.nio.file.Path;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
-import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 
@@ -17,10 +16,10 @@ import de.ulb.digital.derivans.model.DigitalPage;
  * @author hartwig
  *
  */
-public class ImageDerivateerJPG extends ImageDerivateer {
+public class GeneratorImageJPG extends GeneratorImage {
 
 
-	public ImageDerivateerJPG() {
+	public GeneratorImageJPG() {
 		super();
 	}
 
@@ -32,12 +31,12 @@ public class ImageDerivateerJPG extends ImageDerivateer {
 	 * @param output
 	 * @param quality
 	 */
-	public ImageDerivateerJPG(DerivansData input, DerivansData output, Integer quality) {
+	public GeneratorImageJPG(DerivansData input, DerivansData output, Integer quality) {
 		super(input, output);
 		this.imageProcessor.setQuality(quality);
 	}
 
-	public ImageDerivateerJPG(BaseDerivateer base, Integer quality) {
+	public GeneratorImageJPG(Generator base, Integer quality) {
 		super(base.getInput(), base.getOutput());
 		this.digitalPages = base.getDigitalPages();
 		this.imageProcessor.setQuality(quality);

@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,11 +10,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.data.font.FontHandler;
-import de.ulb.digital.derivans.derivate.BaseDerivateer;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -26,7 +26,7 @@ import de.ulb.digital.derivans.model.DigitalPage;
  * @author hartwig
  *
  */
-public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
+public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 
 	protected static final Integer DEFAULT_FOOTER_HEIGHT = 120;
 
@@ -42,17 +42,19 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 
 	private Font footerFont;
 
-	public ImageDerivateerJPGFooter() {
+	private AtomicInteger nGranulars = new AtomicInteger();
+
+	public GeneratorImageJPGFooter() {
 		super();
 	}
 
-	public ImageDerivateerJPGFooter(ImageDerivateerJPGFooter copy) {
+	public GeneratorImageJPGFooter(GeneratorImageJPGFooter copy) {
 		super(copy.input, copy.output, copy.quality);
 		this.poolSize = copy.getPoolSize();
 		this.maximal = copy.getMaximal();
 	}
 
-	public ImageDerivateerJPGFooter(DerivansData input, DerivansData output, DigitalFooter footer,
+	public GeneratorImageJPGFooter(DerivansData input, DerivansData output, DigitalFooter footer,
 			List<DigitalPage> pages, Integer quality) {
 		super(input, output, quality);
 		this.footer = footer;
@@ -60,7 +62,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 		this.init();
 	}
 
-	public ImageDerivateerJPGFooter(ImageDerivateerJPGFooter jpgFooter, int quality) {
+	public GeneratorImageJPGFooter(GeneratorImageJPGFooter jpgFooter, int quality) {
 		super(jpgFooter.getInput(), jpgFooter.getOutput(), quality);
 		this.footer = jpgFooter.getDigitalFooter();
 		this.digitalPages = jpgFooter.getDigitalPages();
@@ -76,7 +78,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	 * @param footer
 	 * @param pages
 	 */
-	public ImageDerivateerJPGFooter(BaseDerivateer base, Integer quality, DigitalFooter footer) {
+	public GeneratorImageJPGFooter(Generator base, Integer quality, DigitalFooter footer) {
 		super(base.getInput(), base.getOutput(), quality);
 		this.digitalPages = base.getDigitalPages();
 		this.footer = footer;
@@ -108,16 +110,37 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 	}
 
 	private String renderFooter(DigitalPage page) {
-		Path pathFile = page.getFile().withDirname(this.input.getSubDir());
-		if (!Files.exists(pathFile)) {
-			throw new DigitalDerivansRuntimeException("input '" + pathFile + "' missing!");
+		Path pathIn = page.getFile().withDirname(this.input.getSubDir());
+		if (!Files.exists(pathIn)) {
+			throw new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
 		}
 		Path pathOut = this.setOutpath(page);
 		try {
-			BufferedImage currentFooter = imageProcessor.clone(footerBuffer);
-			BufferedImage textFooterBuffer = addTextLayer2Footer(currentFooter, footer);
-			int newHeight = imageProcessor.writeJPGwithFooter(pathFile, pathOut, textFooterBuffer);
+			BufferedImage footerBuffer = this.imageProcessor.clone(this.footerBuffer);
+			String urn = "";
+			var optUrn = page.optContentIds();
+			if (optUrn.isPresent()) {
+				urn = optUrn.get();
+				DigitalFooter footer = new DigitalFooter(this.footer.getText().get(0), urn, footerBuffer);
+				footerBuffer = footer.getBufferedImage();
+				nGranulars.getAndIncrement();
+			}
+			BufferedImage textBuffer = this.addTextLayer2Footer(footerBuffer, this.footer);
+			int newHeight = this.imageProcessor.writeJPGwithFooter(pathIn, pathOut, textBuffer);
 			page.setFooterHeight(newHeight);
+			// String urn = "";
+			// var optUrn = page.optIdentifier();
+			// if (optUrn.isPresent()) {
+			// 	urn = optUrn.get();
+			// } else {
+			// 	throw new DigitalDerivansException("No granular URN: " + page.getImagePath()+ "!");
+			// }
+			// BufferedImage footerBuffer = this.imageProcessor.clone(this.footerBuffer);
+			// DigitalFooter footer = new DigitalFooter(this.footer.getText().get(0), urn, footerBuffer);
+			// BufferedImage footerBuffer = footer.getBufferedImage();
+			// BufferedImage textBuffer = this.addTextLayer2Footer(footerBuffer, this.footer);
+			// int newHeight = this.imageProcessor.writeJPGwithFooter(pathIn, pathOut, textBuffer);
+			// page.setFooterHeight(newHeight);
 		} catch (IOException | DigitalDerivansException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", pathOut, footer, e.getMessage());
 		}
@@ -157,4 +180,7 @@ public class ImageDerivateerJPGFooter extends ImageDerivateerJPG {
 		return this.runWithPool(() -> this.getDigitalPages().parallelStream().forEach(this::renderFooter));
 	}
 
+	public int getNumberOfGranularIdentifiers() {
+		return nGranulars.get();
+	}
 }

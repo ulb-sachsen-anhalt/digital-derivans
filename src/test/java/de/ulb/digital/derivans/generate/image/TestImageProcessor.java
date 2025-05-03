@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate.image;
 
 import static de.ulb.digital.derivans.data.image.ImageMetadata.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;

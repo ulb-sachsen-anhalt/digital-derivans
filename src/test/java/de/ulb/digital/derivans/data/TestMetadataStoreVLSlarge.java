@@ -24,7 +24,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -78,7 +78,7 @@ class TestMetadataStoreVLSlarge {
 
 		TestMetadataStoreVLSlarge.mds201517 = new DerivateMD(TestResource.HD_Aa_201517.get());
 		TestMetadataStoreVLSlarge.mds201517.checkRessources(false);
-		TestMetadataStoreVLSlarge.mds201517.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
+		TestMetadataStoreVLSlarge.mds201517.init(Path.of(IDerivans.IMAGE_DIR_MAX));
 		dd201517 = mds201517.getDescriptiveData();
 	}
 

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.generate.Generator;
 import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 
@@ -49,7 +49,7 @@ class TestDerivansLegacyULB {
 
 	static List<DerivateStep> steps;
 
-	static List<IDerivateer> derivateers;
+	static List<Generator> generators;
 
 	@BeforeAll
 	static void setupBeforeClass() throws Exception {
@@ -74,8 +74,8 @@ class TestDerivansLegacyULB {
 
 		// act
 		derivans.init(input);
-		derivans.create();
-		derivateers = derivans.getDerivateers();
+		derivans.forward();
+		generators = derivans.getDerivateers();
 		steps = derivans.getSteps();
 	}
 
@@ -93,7 +93,7 @@ class TestDerivansLegacyULB {
 
 	@Test
 	void testNumberOfCreatedDerivateers() {
-		assertEquals(5, derivateers.size());
+		assertEquals(5, generators.size());
 	}
 
 	/**
@@ -105,15 +105,15 @@ class TestDerivansLegacyULB {
 	 */
 	@Test
 	void testTypesOfDerivateers()  {
-		assertNotEquals("ImageDerivateerJPGFooter", derivateers.get(0).getClass().getSimpleName());
-		assertEquals("ImageDerivateerJPGFooterGranular", derivateers.get(0).getClass().getSimpleName());
-		assertEquals("ImageDerivateerJPG", derivateers.get(1).getClass().getSimpleName());
-		assertEquals("PDFDerivateer", derivateers.get(2).getClass().getSimpleName());
+		assertNotEquals("ImageDerivateerJPGFooter", generators.get(0).getClass().getSimpleName());
+		assertEquals("ImageDerivateerJPGFooterGranular", generators.get(0).getClass().getSimpleName());
+		assertEquals("ImageDerivateerJPG", generators.get(1).getClass().getSimpleName());
+		assertEquals("PDFDerivateer", generators.get(2).getClass().getSimpleName());
 	}
 
 	@Test
 	void ensurePathsDerivateer01() {
-		var d = derivateers.get(0);
+		var d = generators.get(0);
 		assertTrue(d.getInput().getRootDir().toString().endsWith("737429"));
 		assertEquals("MAX", d.getInput().getSubDir());
 		assertTrue(d.getOutput().getRootDir().toString().endsWith("737429"));
@@ -122,7 +122,7 @@ class TestDerivansLegacyULB {
 
 	@Test
 	void ensurePathsDerivateer02() {
-		var d = derivateers.get(1);
+		var d = generators.get(1);
 		assertTrue(d.getInput().getRootDir().toString().endsWith("737429"));
 		assertEquals("IMAGE_FOOTER", d.getInput().getSubDir());
 		assertEquals("IMAGE_80", d.getOutput().getSubDir());

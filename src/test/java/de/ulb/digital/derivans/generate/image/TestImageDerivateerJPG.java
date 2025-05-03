@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate.image;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.generate.GeneratorImageJPG;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.step.DerivateType;
@@ -55,7 +55,7 @@ class TestImageDerivateerJPG {
 
 		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
 		DerivansData output = new DerivansData(sharedTempDir, "IMAGE_80", DerivateType.JPG);
-		IDerivateer jpgs = new ImageDerivateerJPG(input, output, 80);
+		GeneratorImageJPG jpgs = new GeneratorImageJPG(input, output, 80);
 		jpgs.setDigitalPages(dFs.getAllPages());
 
 		// act
@@ -76,7 +76,7 @@ class TestImageDerivateerJPG {
 		dFs.init(sourcePath);
 		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
 		DerivansData output = new DerivansData(sharedTempDir, "image_70", DerivateType.JPG);
-		IDerivateer jpgs = new ImageDerivateerJPG(input, output, 70);
+		GeneratorImageJPG jpgs = new GeneratorImageJPG(input, output, 70);
 		jpgs.setDigitalPages(dFs.getAllPages());
 
 		// act
@@ -102,7 +102,7 @@ class TestImageDerivateerJPG {
 		dFs.init(sourcePath);
 		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
 		DerivansData output = new DerivansData(sharedTempDir, "DEFAULT", DerivateType.JPG);
-		ImageDerivateerJPG derivateer = new ImageDerivateerJPG(input, output, 70);
+		GeneratorImageJPG derivateer = new GeneratorImageJPG(input, output, 70);
 		derivateer.setMaximal(256);
 		derivateer.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
 		derivateer.setDigitalPages(dFs.getAllPages());
@@ -142,14 +142,14 @@ class TestImageDerivateerJPG {
 		dFs.init(sourcePath);
 		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
 		DerivansData output = new DerivansData(sharedTempDir, "PREVIEW", DerivateType.JPG);
-		ImageDerivateerJPG id1 = new ImageDerivateerJPG(input, output, 50);
+		GeneratorImageJPG id1 = new GeneratorImageJPG(input, output, 50);
 		id1.setMaximal(256);
 		id1.setDigitalPages(dFs.getAllPages());
 		id1.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
 
 		DerivansData input2 = new DerivansData(sharedTempDir, "PREVIEW", DerivateType.JPG);
 		DerivansData output2 = new DerivansData(sharedTempDir, "FINAL", DerivateType.JPG);
-		ImageDerivateerJPG id2 = new ImageDerivateerJPG(input2, output2, 50);
+		GeneratorImageJPG id2 = new GeneratorImageJPG(input2, output2, 50);
 		id2.setMaximal(128);
 		id2.setInputPrefix("BUNDLE_BRANDED_PREVIEW__");
 		id2.setOutputPrefix("BUNDLE_HUMBLE__");

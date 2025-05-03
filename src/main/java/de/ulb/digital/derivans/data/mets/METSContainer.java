@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.jdom2.Element;
 
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 
 /**
  * Encapsulate mets:div, i.e. all container elements in logical or physical
@@ -23,7 +23,7 @@ public class METSContainer {
 
 	private Map<METSContainerAttributeType, String> attributes = new EnumMap<>(METSContainerAttributeType.class);
 
-	private String label = IDerivateer.UNKNOWN;
+	private String label = IDerivans.UNKNOWN;
 
 	// associated parent container
 	private METSContainer parent;

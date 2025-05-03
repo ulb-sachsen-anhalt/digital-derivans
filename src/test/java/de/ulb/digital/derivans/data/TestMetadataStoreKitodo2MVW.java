@@ -8,8 +8,8 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
@@ -45,7 +45,7 @@ class TestMetadataStoreKitodo2MVW {
 		
 		// inspect structure
 		mds.checkRessources(false);
-		mds.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
+		mds.init(Path.of(IDerivans.IMAGE_DIR_MAX));
 		var dst = mds.getStructure();
 		// of old
 		// assertEquals("Materialien zur Geschichte des Bauernkriegs in Franken, Schwaben, Thüringen [et]c. im Jahre 1525.", dst.getLabel());

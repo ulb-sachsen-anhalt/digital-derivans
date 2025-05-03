@@ -6,12 +6,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 
 /**
  * 
@@ -41,6 +42,8 @@ public class DerivateFS implements IDerivate {
 
 	private Path localStartDir;
 
+	private Path fulltextDir;
+
 	private Path pathRootDir;
 
 	private boolean inited;
@@ -62,17 +65,20 @@ public class DerivateFS implements IDerivate {
 	@Override
 	public void init(Path startPath) throws DigitalDerivansException {
 		if (startPath == null) {
-			startPath = this.pathInput.resolve(IDerivateer.IMAGE_DIR_DEFAULT); // 1st try: look for "DEFAULT"
+			startPath = this.pathInput.resolve(IDerivans.IMAGE_DIR_DEFAULT); // 1st try: look for "DEFAULT"
 			if (Files.notExists(startPath)) {
-				startPath = this.pathInput.resolve(IDerivateer.IMAGE_DIR_ORIGINAL); // 2nd try: look for "ORIGINAL"
+				startPath = this.pathInput.resolve(IDerivans.IMAGE_DIR_ORIGINAL); // 2nd try: look for "ORIGINAL"
 				if (Files.notExists(startPath)) {
 					startPath = this.pathInput.resolve("."); // hard fallback
 				}
 			}
 		} else {
-			if(!startPath.isAbsolute()) {
+			if (!startPath.isAbsolute()) {
 				startPath = this.pathRootDir.resolve(startPath);
 			}
+		}
+		if (Files.exists(this.pathRootDir.resolve(IDerivans.FULLTEXT_DIR))) {
+			this.fulltextDir = this.pathRootDir.resolve(IDerivans.FULLTEXT_DIR);
 		}
 		this.localStartDir = startPath;
 		var label = this.pathInput.getFileName().toString();
@@ -84,11 +90,28 @@ public class DerivateFS implements IDerivate {
 
 	private void populateStruct(String fileExt) throws DigitalDerivansException {
 		List<Path> allFiles = this.filePathsFrom(this.localStartDir, fileExt);
-		for (int i=1; i < allFiles.size(); i++) {
+		List<Path> fulltextFiles = new ArrayList<>();
+		if (this.fulltextDir != null) {
+			fulltextFiles = this.filePathsFrom(this.fulltextDir, ".xml");
+		}
+		for (int i = 0; i < allFiles.size(); i++) {
 			var currentOrder = this.theOrder.getAndIncrement();
-			String currentId = String.format("FILE_%d04", i);
-			DigitalPage dp = new DigitalPage(currentId, currentOrder, allFiles.get(i));
+			Path currPath = allFiles.get(i);
+			String currentId = String.format("FILE_%d04", i + 1);
+			DigitalPage dp = new DigitalPage(currentId, currentOrder, currPath);
 			dp.setPageLabel(String.format("[%d]", currentOrder));
+			String fileName = currPath.getFileName().toString().split(fileExt)[0];
+			Optional<Path> fulltextMatch = fulltextFiles.stream()
+					.filter(file -> { String pathName = file.getFileName().toString();
+									  int offSet = pathName.lastIndexOf('.');
+									  String stem = pathName.substring(0, offSet);
+									  return fileName.equals(stem);
+									})
+					.findFirst();
+			if(fulltextMatch.isPresent()){
+				Path match = fulltextMatch.get();
+				dp.setOcrFile(match);
+			}
 			this.struct.getPages().add(dp);
 		}
 	}
@@ -158,12 +181,12 @@ public class DerivateFS implements IDerivate {
 
 	// @Override
 	// public String getImageLocalDir() {
-	// 	return this.localStartDir;
+	// return this.localStartDir;
 	// }
 
 	// @Override
 	// public void setImageLocalDir(String localDir) {
-	// 	this.localStartDir = localDir;
+	// this.localStartDir = localDir;
 	// }
 
 	@Override

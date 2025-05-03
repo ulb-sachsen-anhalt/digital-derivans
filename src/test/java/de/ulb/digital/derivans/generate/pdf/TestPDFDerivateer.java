@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.pdf;
+package de.ulb.digital.derivans.generate.pdf;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,7 +8,8 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
+import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
@@ -33,7 +34,7 @@ class TestPDFDerivateer {
 	void testInvalidPageArg() {
 
 		// arrange mwe
-		DerivansData input = new DerivansData(Path.of("."), IDerivateer.IMAGE_DIR_DEFAULT, DerivateType.JPG);
+		DerivansData input = new DerivansData(Path.of("."), IDerivans.IMAGE_DIR_DEFAULT, DerivateType.JPG);
 		DerivansData output = new DerivansData(Path.of("."), ".", DerivateType.PDF);
 		DescriptiveMetadata dd = new DescriptiveMetadata();
 		DerivateStepPDF pdfMeta = new DerivateStepPDF();
@@ -41,7 +42,7 @@ class TestPDFDerivateer {
 
 		// act
 		var thrown = assertThrows(DigitalDerivansException.class, () -> {
-			new PDFDerivateer(input, output, null, pdfMeta);
+			new GeneratorPDF(input, output, null, pdfMeta);
 		});
 
 		// assert

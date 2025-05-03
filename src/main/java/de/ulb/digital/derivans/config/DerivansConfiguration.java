@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
@@ -262,7 +262,7 @@ public class DerivansConfiguration {
 		DerivateStepImage create80sJpgs = new DerivateStepImage();
 		create80sJpgs.setOutputType(DerivateType.JPG);
 		var output = DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL;
-		var imgDir = this.paramImages.orElse(IDerivateer.IMAGE_DIR_DEFAULT);
+		var imgDir = this.paramImages.orElse(IDerivans.IMAGE_DIR_DEFAULT);
 		create80sJpgs.setInputDir(imgDir);
 		create80sJpgs.setOutputDir(output);
 		create80sJpgs.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
@@ -275,7 +275,7 @@ public class DerivansConfiguration {
 		// handle optional image group too
 		this.paramImages.ifPresent(createPdf::setParamImages);
 		// handle optional OCR data
-		var ocr = this.paramOCR.orElse(IDerivateer.FULLTEXT_DIR);
+		var ocr = this.paramOCR.orElse(IDerivans.FULLTEXT_DIR);
 		createPdf.setParamOCR(ocr);
 		this.derivateSteps.add(createPdf);
 	}

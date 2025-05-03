@@ -67,7 +67,7 @@ class TestDerivansExportKitodo3Issue {
 
 		// act
 		derivans.init(pathTargetMets);
-		derivans.create();
+		derivans.forward();
 	}
 
 	@Test

@@ -61,7 +61,7 @@ class TestDerivansFulltextRahbar {
 		Derivans derivansLines = new Derivans(dConfLine);
 		derivansLines.init(workDirLine);
 		pdfLines = workDirLine.resolve(line + ".pdf");
-		derivansLines.create();
+		derivansLines.forward();
 
 		// arrange 02
 		String word = "1981185920_88120_word";
@@ -70,7 +70,7 @@ class TestDerivansFulltextRahbar {
 		Derivans derivansWord = new Derivans(dConf);
 		pdfPathWord = workDirWord.resolve(word + ".pdf");
 		derivansWord.init(workDirWord);
-		derivansWord.create();
+		derivansWord.forward();
 	}
 
 	static Path setWorkdir(Path root, String subDir) throws Exception {

@@ -9,7 +9,7 @@ import org.jdom2.Element;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -21,19 +21,19 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  */
 public class DescriptiveMetadataBuilder {
 
-	private String urn = IDerivateer.UNKNOWN;
+	private String urn = IDerivans.UNKNOWN;
 
-	private String person = IDerivateer.UNKNOWN;
+	private String person = IDerivans.UNKNOWN;
 
-	private String identifier = IDerivateer.UNKNOWN;
+	private String identifier = IDerivans.UNKNOWN;
 
 	private Optional<String> optIdentXpr = Optional.empty();
 
-	private String title = IDerivateer.UNKNOWN;
+	private String title = IDerivans.UNKNOWN;
 
-	private String year = IDerivateer.UNKNOWN;
+	private String year = IDerivans.UNKNOWN;
 
-	private String accessCondition = IDerivateer.UNKNOWN;
+	private String accessCondition = IDerivans.UNKNOWN;
 
 	private METS mets;
 
@@ -86,7 +86,7 @@ public class DescriptiveMetadataBuilder {
 			return this.mets.getPrimeMODS().getPerson();
 
 		}
-		return IDerivateer.UNKNOWN;
+		return IDerivans.UNKNOWN;
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class DescriptiveMetadataBuilder {
 			}
 		}
 		var ident = this.mets.getPrimeMODS().getIdentifier();
-		if (ident.equals(IDerivateer.UNKNOWN)) {
+		if (ident.equals(IDerivans.UNKNOWN)) {
 			throw new DigitalDerivansException("found no valid recordIdentifier");
 		}
 		return ident;
@@ -146,28 +146,28 @@ public class DescriptiveMetadataBuilder {
 		if (this.mets.getPrimeMODS() != null) {
 			return this.mets.getPrimeMODS().getTitle();
 		}
-		return IDerivateer.UNKNOWN;
+		return IDerivans.UNKNOWN;
 	}
 
 	String getURN() {
 		if (this.mets.getPrimeMODS() != null) {
 			return this.mets.getPrimeMODS().getIdentifierURN();
 		}
-		return IDerivateer.UNKNOWN;
+		return IDerivans.UNKNOWN;
 	}
 
 	String getAccessCondition() {
 		if (this.mets.getPrimeMODS() != null) {
 			return this.mets.getPrimeMODS().getAccessCondition();
 		}
-		return IDerivateer.UNKNOWN;
+		return IDerivans.UNKNOWN;
 	}
 
 	String getYear() {
 		if (this.mets.getPrimeMODS() != null) {
 			return this.mets.getPrimeMODS().getYearPublication();
 		}
-		return IDerivateer.UNKNOWN;
+		return IDerivans.UNKNOWN;
 	}
 
 	public void setMetadataStore(METS mets) {

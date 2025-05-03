@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.data.mets.DescriptiveMetadataBuilder;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.mets.METSContainer;
 import de.ulb.digital.derivans.data.mets.METSFile;
-import de.ulb.digital.derivans.derivate.IDerivateer;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -38,9 +38,7 @@ public class DerivateMD implements IDerivate {
 
 	private String startFileExtension = ".jpg";
 
-	private String imageGroup = IDerivateer.IMAGE_DIR_MAX;
-
-	private String ocrLocalDir = "FULLTEXT";
+	private String imageGroup = IDerivans.IMAGE_DIR_MAX;
 
 	private Path pathInputDir;
 
@@ -77,12 +75,14 @@ public class DerivateMD implements IDerivate {
 		METSContainer containerRoot = this.mets.getLogicalRoot();
 		String logicalLabel = containerRoot.determineLabel();
 		if (startPath == null) {
-			startPath = Path.of(IDerivateer.IMAGE_DIR_DEFAULT);
+			startPath = Path.of(IDerivans.IMAGE_DIR_DEFAULT);
+			this.mets.setImgFileGroup(startPath.toString());
 		}
 		if (startPath.isAbsolute()) {
 			this.imageGroup = startPath.getFileName().toString();
 		} else {
 			this.imageGroup = startPath.toString();
+			this.mets.setImgFileGroup(startPath.toString());
 		}
 		// look for higher structs
 		var optParent = this.mets.optParentStruct();
@@ -104,8 +104,6 @@ public class DerivateMD implements IDerivate {
 	private void populateStruct(DerivateStruct parent, METSContainer container, String fileExt)
 			throws DigitalDerivansException {
 		if (container.getChildren().isEmpty()) {
-			// List<METSFile> digiFiles = this.mets.getFiles(container, this.imageGroup,
-			// fileExt);
 			List<METSContainer> pages = this.mets.getPages(container);
 			for (METSContainer digiFile : pages) {
 				METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
@@ -141,20 +139,6 @@ public class DerivateMD implements IDerivate {
 				this.traverseStruct(currentStruct, subContainer, fileExt);
 			}
 		}
-		// List<METSFile> digiFiles = this.mets.getFiles(currentCnt, this.imageGroup,
-		// fileExt);
-		// for (METSFile digiFile : digiFiles) {
-		// String currId = digiFile.getFileId();
-		// Path filePath = digiFile.getLocalPath(this.checkRessources);
-		// int currOrder = this.mdPageOrder.getAndIncrement();
-		// DigitalPage newPage = new DigitalPage(currId, currOrder, filePath);
-		// if (digiFile.getPageLabel() != null) {
-		// newPage.setPageLabel(digiFile.getPageLabel());
-		// }
-		// digiFile.getContentIds().ifPresent(newPage::setContentIds);
-		// currentStruct.getPages().add(newPage);
-		// this.allPages.add(newPage); // also store in derivate's list
-		// }
 		List<METSContainer> pages = this.mets.getPages(currentCnt);
 		for (METSContainer digiFile : pages) {
 			METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
@@ -190,36 +174,8 @@ public class DerivateMD implements IDerivate {
 		return this.inited;
 	}
 
-	// @Override
-	// public String getImageLocalDir() {
-	// return this.imageGroup;
-	// }
-
-	// @Override
-	// public void setImageLocalDir(String localDir) {
-	// this.imageGroup = localDir;
-	// }
-
 	@Override
 	public void setOcr(Path ocrPath) throws DigitalDerivansException {
-		// var ocrDir = this.pathInput.resolve(ocrPath);
-		// List<Path> ocrFiles = new ArrayList<>();
-		// try {
-		// this.traverseDirectory(ocrDir, ocrFiles, ".xml");
-		// } catch (IOException e) {
-		// throw new DigitalDerivansException(e);
-		// }
-		// for (var p : this.getAllPages()) {
-		// var currPageName =
-		// p.getImagePath().getFileName().toString().replaceAll("(?<!^)[.][^.]*$", "");
-		// for (int i = 0; i < ocrFiles.size(); i++) {
-		// var ocrFile = ocrFiles.get(i).getFileName();
-		// if (ocrFile.toString().startsWith(currPageName)) {
-		// p.setOcrFile(ocrFiles.get(i));
-		// ocrFiles.remove(i);
-		// }
-		// }
-		// }
 	}
 
 	public void setIdentifierExpression(String xpressiob) {
@@ -250,31 +206,6 @@ public class DerivateMD implements IDerivate {
 	public void setStartFileExtension(String startFileExtension) {
 		this.startFileExtension = startFileExtension;
 	}
-
-	// public Path setPDFPath(Path pdfDir, String identifier, DerivateStepPDF step)
-	// {
-	// // String identifier = dd.getIdentifier();
-	// // if metadata is *not* present, the identifier must be invalid ("n.a.")
-	// if (identifier.equals(IMetadataStore.UNKNOWN)) {
-	// identifier = pdfDir.getFileName().toString();
-	// // LOGGER.warn("invalid descriptive data, use '{}' to name PDF-file",
-	// identifier);
-	// }
-	// if(step.getNamePDF().isPresent()) {
-	// var namePDF = step.getNamePDF().get();
-	// identifier = namePDF;
-	// }
-	// // LOGGER.info("use '{}' to name PDF-file", identifier);
-	// String fileName = identifier;
-	// if (! identifier.endsWith(".pdf")) {
-	// fileName = fileName + ".pdf";
-	// }
-	// String prefix = step.getOutputPrefix();
-	// if (prefix != null && (!prefix.isBlank())) {
-	// fileName = prefix.concat(fileName);
-	// }
-	// return pdfDir.resolve(fileName).normalize();
-	// }
 
 	public String getIdentifierURN() {
 		return this.mets.getPrimeMODS().getIdentifierURN();

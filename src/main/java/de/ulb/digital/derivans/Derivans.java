@@ -13,11 +13,11 @@ import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
-import de.ulb.digital.derivans.derivate.IDerivateer;
-import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPG;
-import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPGFooter;
-import de.ulb.digital.derivans.derivate.image.ImageDerivateerJPGFooterGranular;
-import de.ulb.digital.derivans.derivate.pdf.PDFDerivateer;
+// import de.ulb.digital.derivans.generate.IDerivateer;
+import de.ulb.digital.derivans.generate.Generator;
+import de.ulb.digital.derivans.generate.GeneratorImageJPG;
+import de.ulb.digital.derivans.generate.GeneratorImageJPGFooter;
+import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateMD;
@@ -44,7 +44,7 @@ public class Derivans {
 
     List<DerivateStep> steps;
 
-    List<IDerivateer> derivateers;
+    List<Generator> generators;
 
     private IDerivate derivate;
 
@@ -71,10 +71,10 @@ public class Derivans {
         this.steps = new ArrayList<>(this.config.getDerivateSteps());
     }
 
-    public void create() throws DigitalDerivansException {
-        for (IDerivateer derivateer : this.derivateers) {
+    public void forward() throws DigitalDerivansException {
+        for (Generator generator : this.generators) {
             Instant start = Instant.now();
-            int results = derivateer.create();
+            int results = generator.create();
             Instant finish = Instant.now();
             long secsElapsed = Duration.between(start, finish).toSecondsPart();
             long minsElapsed = Duration.between(start, finish).toMinutesPart();
@@ -83,7 +83,7 @@ public class Derivans {
                         secsElapsed);
             }
             LOGGER.info("finished derivate step %s: %s",
-                    derivateer.getClass().getSimpleName(), true);
+                    generator.getClass().getSimpleName(), true);
         }
 
         LOGGER.info("finished %02d steps at %s", this.steps.size(),
@@ -97,14 +97,14 @@ public class Derivans {
      * @return
      * @throws DigitalDerivansException
      */
-    public List<IDerivateer> init(Path theInput) throws DigitalDerivansException {
+    public List<Generator> init(Path theInput) throws DigitalDerivansException {
         LOGGER.info("set derivate in %s", theInput);
         if (Files.isDirectory(theInput)) {
             this.derivate = new DerivateFS(theInput);
         } else if (Files.isRegularFile(theInput, LinkOption.NOFOLLOW_LINKS)) {
             this.derivate = new DerivateMD(theInput);
         }
-        this.derivateers = new ArrayList<>();
+        this.generators = new ArrayList<>();
         for (DerivateStep step : this.steps) {
             String pathInp = step.getInputDir();
             String pathOut = step.getOutputDir();
@@ -120,36 +120,36 @@ public class Derivans {
                 this.derivate.init(Path.of(step.getInputDir()));
             }
             DerivateType type = step.getOutputType();
-            IDerivateer derivateer = this.getForType(type);
-            derivateer.setInput(inputDerivansData);
-            derivateer.setOutput(outputDerivansData);
-            derivateer.setDerivate(derivate);
+            Generator theGenerator = this.getForType(type);
+            theGenerator.setInput(inputDerivansData);
+            theGenerator.setOutput(outputDerivansData);
+            theGenerator.setDerivate(derivate);
             if (type == DerivateType.JPG) {
                 DerivateStepImage imgStep = (DerivateStepImage) step;
-                var imgDerivateer = (ImageDerivateerJPG) derivateer;
-                imgDerivateer.setQuality(imgStep.getQuality());
-                imgDerivateer.setPoolsize(imgStep.getPoolsize());
-                imgDerivateer.setMaximal(imgStep.getMaximal());
-                imgDerivateer.setOutputPrefix(imgStep.getOutputPrefix());
-                imgDerivateer.setInputPrefix(imgStep.getInputPrefix()); // check for chained derivates !!!!
+                var genImage = (GeneratorImageJPG) theGenerator;
+                genImage.setQuality(imgStep.getQuality());
+                genImage.setPoolsize(imgStep.getPoolsize());
+                genImage.setMaximal(imgStep.getMaximal());
+                genImage.setOutputPrefix(imgStep.getOutputPrefix());
+                genImage.setInputPrefix(imgStep.getInputPrefix()); // check for chained derivates !!!!
             } else if (type == DerivateType.JPG_FOOTER) {
                 DerivateStepImageFooter stepFooter = (DerivateStepImageFooter) step;
-                var footerDerivateer = (ImageDerivateerJPGFooter) derivateer;
+                var footerDerivateer = (GeneratorImageJPGFooter) theGenerator;
                 String footerLabel = stepFooter.getFooterLabel();
                 int quality = stepFooter.getQuality();
                 footerDerivateer.setQuality(quality);
                 Path pathTemplate = stepFooter.getPathTemplate();
-                DigitalFooter footerUnknown = new DigitalFooter(footerLabel, IDerivateer.UNKNOWN, pathTemplate);
+                DigitalFooter footerUnknown = new DigitalFooter(footerLabel, IDerivans.UNKNOWN, pathTemplate);
                 footerDerivateer.setFooter(footerUnknown);
                 if (this.derivate.isMetadataPresent()) {
                     var derivateMD = (DerivateMD) this.derivate;
                     String workIdentifier = derivateMD.getIdentifierURN();
                     DigitalFooter footerWithIdent = new DigitalFooter(footerLabel, workIdentifier, pathTemplate);
                     if (derivateMD.isGranularIdentifierPresent()) {
-                        footerDerivateer = new ImageDerivateerJPGFooterGranular(footerDerivateer);
+                        footerDerivateer = new GeneratorImageJPGFooter(footerDerivateer);
                     }
                     footerDerivateer.setFooter(footerWithIdent);
-                    derivateer = footerDerivateer;
+                    theGenerator = footerDerivateer;
                 }
                 footerDerivateer.setDerivate(derivate);
             } else if (type == DerivateType.PDF) {
@@ -165,11 +165,11 @@ public class Derivans {
                         this.derivate.setOcr(ocrPath);
                     }
                 }
-                ((PDFDerivateer) derivateer).setPDFStep(pdfStep);
+                ((GeneratorPDF) theGenerator).setPDFStep(pdfStep);
             }
-            this.derivateers.add(derivateer);
+            this.generators.add(theGenerator);
         }
-        return this.derivateers;
+        return this.generators;
     }
 
     /**
@@ -188,17 +188,17 @@ public class Derivans {
      * 
      * @return
      */
-    public List<IDerivateer> getDerivateers() {
-        return this.derivateers;
+    public List<Generator> getDerivateers() {
+        return this.generators;
     }
 
-    public IDerivateer getForType(DerivateType dType) throws DigitalDerivansException {
+    public Generator getForType(DerivateType dType) throws DigitalDerivansException {
         if (dType == DerivateType.JPG || dType == DerivateType.IMAGE) {
-            return new ImageDerivateerJPG();
+            return new GeneratorImageJPG();
         } else if( dType == DerivateType.JPG_FOOTER) {
-            return new ImageDerivateerJPGFooter();
+            return new GeneratorImageJPGFooter();
         } else if (dType == DerivateType.PDF) {
-            return new PDFDerivateer();
+            return new GeneratorPDF();
         }
         throw new DigitalDerivansException("Unknown type "+dType);
     }

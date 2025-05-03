@@ -22,7 +22,7 @@ import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 
 /**
  * 
@@ -49,9 +49,9 @@ public class METS {
 	static final String METS_CONTAINER_ID = "ID";
 	static final String METS_STRUCTMAP_TYPE = "TYPE";
 
-	private String imgFileGroup = IDerivateer.IMAGE_DIR_DEFAULT;
+	private String imgFileGroup = IDerivans.IMAGE_DIR_DEFAULT;
 
-	private String ocrFileGroup = IDerivateer.FULLTEXT_DIR;
+	private String ocrFileGroup = IDerivans.FULLTEXT_DIR;
 
 	public static final DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder()
 			.appendPattern("YYYY-MM-dd")
@@ -82,6 +82,10 @@ public class METS {
 		this.imgFileGroup = imageFileGroup;
 		this.xmlHandler = new XMLHandler(file);
 		this.document = this.xmlHandler.getDocument();
+	}
+
+	public void setImgFileGroup(String imgFileGroup) {
+		this.imgFileGroup = imgFileGroup;
 	}
 
 	/**

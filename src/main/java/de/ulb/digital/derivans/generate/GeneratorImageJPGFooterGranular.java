@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.image;
+package de.ulb.digital.derivans.generate;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,11 +20,11 @@ import de.ulb.digital.derivans.model.DigitalPage;
  * @author hartwig
  *
  */
-public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
+public class GeneratorImageJPGFooterGranular extends GeneratorImageJPGFooter {
 
 	private AtomicInteger nGranulars = new AtomicInteger();
 
-	public ImageDerivateerJPGFooterGranular() {
+	public GeneratorImageJPGFooterGranular() {
 		super();
 	}
 
@@ -38,7 +38,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 * @param footer
 	 * @param pages
 	 */
-	public ImageDerivateerJPGFooterGranular(DerivansData input, DerivansData output,
+	public GeneratorImageJPGFooterGranular(DerivansData input, DerivansData output,
 			DigitalFooter footer, List<DigitalPage> pages, Integer quality) {
 		super(input, output, footer, pages, quality);
 		this.digitalPages = pages;
@@ -50,7 +50,7 @@ public class ImageDerivateerJPGFooterGranular extends ImageDerivateerJPGFooter {
 	 * 
 	 * @param d
 	 */
-	public ImageDerivateerJPGFooterGranular(ImageDerivateerJPGFooter d) {
+	public GeneratorImageJPGFooterGranular(GeneratorImageJPGFooter d) {
 		super(d);
 	}
 

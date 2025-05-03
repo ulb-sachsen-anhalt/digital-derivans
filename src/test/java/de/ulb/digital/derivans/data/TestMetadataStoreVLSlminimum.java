@@ -17,7 +17,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -40,7 +40,7 @@ class TestMetadataStoreVLSminimum {
 	static void setupClazz() throws DigitalDerivansException {
 		TestMetadataStoreVLSminimum.mds737429 = new DerivateMD(TestResource.HD_Aa_737429.get());
 		TestMetadataStoreVLSminimum.mds737429.checkRessources(false);
-		TestMetadataStoreVLSminimum.mds737429.init(Path.of(IDerivateer.IMAGE_DIR_MAX));
+		TestMetadataStoreVLSminimum.mds737429.init(Path.of(IDerivans.IMAGE_DIR_MAX));
 		dd737429 = mds737429.getDescriptiveData();
 	}
 

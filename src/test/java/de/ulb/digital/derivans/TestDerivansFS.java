@@ -17,7 +17,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
-import de.ulb.digital.derivans.derivate.IDerivateer;
+import de.ulb.digital.derivans.generate.Generator;
 import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateType;
@@ -48,9 +48,9 @@ class TestDerivansFS {
 		dp.setImages(".");
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
-		List<IDerivateer> des = derivans.init(pathTarget);
+		List<Generator> des = derivans.init(pathTarget);
 		assertEquals(2, des.size());
-		derivans.create();
+		derivans.forward();
 
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
@@ -80,7 +80,7 @@ class TestDerivansFS {
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		derivans.init(pathTarget);
-		derivans.create();
+		derivans.forward();
 
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
@@ -130,7 +130,7 @@ class TestDerivansFS {
 		assertEquals(DerivateType.TIF, steps.get(0).getInputType());
 		assertEquals(DerivateType.JPG, steps.get(1).getInputType());
 
-		derivans.create();
+		derivans.forward();
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
 		assertTrue(Files.exists(pdfWritten));
@@ -167,7 +167,7 @@ class TestDerivansFS {
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 		derivans.init(pathTarget);
-		derivans.create();
+		derivans.forward();
 
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
@@ -213,7 +213,7 @@ class TestDerivansFS {
 
 		// act
 		derivans.init(pathTarget);
-		derivans.create();
+		derivans.forward();
 
 		// assert
 		String pdfName = "16359604.pdf";

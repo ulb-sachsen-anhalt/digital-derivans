@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.pdf;
+package de.ulb.digital.derivans.generate.pdf;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -19,6 +19,7 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 // import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.data.io.JarResource;
+import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
 // import de.ulb.digital.derivans.model.ITextElement;
@@ -289,5 +290,11 @@ public class PDFBoxProcessor implements IPDFProcessor {
 	public String loadFont(String path) throws DigitalDerivansException {
 		JarResource tmpResHandler = new JarResource(path);
 		return tmpResHandler.extract("derivans-tmp-font-", ".ttf");
+	}
+
+	@Override
+	public void setStructure(DerivateStruct struct) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'setStructure'");
 	}
 }

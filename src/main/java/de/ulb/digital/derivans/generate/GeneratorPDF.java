@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.derivate.pdf;
+package de.ulb.digital.derivans.generate;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.mets.METS;
-import de.ulb.digital.derivans.derivate.BaseDerivateer;
+import de.ulb.digital.derivans.generate.pdf.ITextProcessor;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -30,9 +30,9 @@ import de.ulb.digital.derivans.model.step.DerivateStepPDF;
  * @author hartwig
  *
  */
-public class PDFDerivateer extends BaseDerivateer {
+public class GeneratorPDF extends Generator {
 
-	private static final Logger LOGGER = LogManager.getLogger(PDFDerivateer.class);
+	private static final Logger LOGGER = LogManager.getLogger(GeneratorPDF.class);
 
 	private DerivateStepPDF derivateStep;
 
@@ -43,14 +43,14 @@ public class PDFDerivateer extends BaseDerivateer {
 	private PDFResult pdfResult;
 
 
-	public PDFDerivateer(){
+	public GeneratorPDF(){
 		super();
 		this.pdfProcessor = new ITextProcessor();
 	}
 
 	/**
 	 * 
-	 * Create new instance on top of {@link BaseDerivateer}
+	 * Create new instance on top of {@link Generator}
 	 * 
 	 * @param input
 	 * @param output
@@ -58,13 +58,13 @@ public class PDFDerivateer extends BaseDerivateer {
 	 * @param derivateStep
 	 * @throws DigitalDerivansException
 	 */
-	public PDFDerivateer(DerivansData input, DerivansData output, List<DigitalPage> pages,
+	public GeneratorPDF(DerivansData input, DerivansData output, List<DigitalPage> pages,
 			DerivateStepPDF derivateStep) throws DigitalDerivansException {
 		super(input, output);
-		if (pages == null) {
-			throw new DigitalDerivansException("Miss pages for PDF!");
-		}
-		this.digitalPages = pages;
+//		if (pages == null) {
+//			throw new DigitalDerivansException("Miss pages for PDF!");
+//		}
+//		this.digitalPages = pages;
 		this.derivateStep = derivateStep;
 		this.pdfProcessor = new ITextProcessor();
 	}
