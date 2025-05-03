@@ -15,44 +15,44 @@ public enum TestResource {
 	/**
 	 * rather large digital object (+2.000 pages, complex structure)
 	 */
-	HD_Aa_201517(Path.of("src/test/resources/mets/vls/hd-Aa-201517.xml")),
+	VLS_HD_Aa_201517(Path.of("src/test/resources/mets/vls/hd-Aa-201517.xml")),
 
 	/**
 	 * rather small digital object (4 pages only)
 	 */
-	HD_Aa_737429(Path.of("src/test/resources/mets/vls/hd-Aa-737429.mets.xml")),
-	HD_Aa_737429_OCR(Path.of("src/test/resources/mets/vls/hd-Aa-737429-ocr.mets.xml")),
+	VLS_HD_Aa_737429(Path.of("src/test/resources/mets/vls/hd-Aa-737429.mets.xml")),
+	VLS_HD_Aa_737429_OCR(Path.of("src/test/resources/mets/vls/hd-Aa-737429-ocr.mets.xml")),
 	OCR_737429(Path.of("src/test/resources/alto/737429")),
 
 	/**
 	 * contains titleInfo but child node title is missing
 	 */
-	HD_Aa_5175671(Path.of("src/test/resources/mets/vls/5175671.mets.xml")),
+	VLS_HD_Aa_5175671(Path.of("src/test/resources/mets/vls/5175671.mets.xml")),
 
 	/**
 	 * contains logical links to non-existing physical structures
 	 */
-	HD_Aa_226134857_LEGACY(Path.of("src/test/resources/mets/vls/hd-Aa-226134857.prep.xml")),
+	VLS_HD_Aa_226134857_LEGACY(Path.of("src/test/resources/mets/vls/hd-Aa-226134857.prep.xml")),
 
-	MENA_Af_1237560(Path.of("src/test/resources/mets/vls/mena-Af-1237560.ulb.xml")),
+	VLS_MENA_Af_1237560(Path.of("src/test/resources/mets/vls/mena-Af-1237560.ulb.xml")),
 
-	VD17_Af_19788(Path.of("src/test/resources/mets/vls/vd17-Af-19788.ulb.xml")),
-	VD17_AF_11250807(Path.of("src/test/resources/mets/vls/vd17-AF-11250807.ulb.xml")),
+	VLS_VD17_Af_19788(Path.of("src/test/resources/mets/vls/vd17-Af-19788.ulb.xml")),
+	VLS_VD17_AF_11250807(Path.of("src/test/resources/mets/vls/vd17-AF-11250807.ulb.xml")),
 
-	VD18_Af_9427337(Path.of("src/test/resources/mets/vls/vd18-Af-9427337.ulb.xml")),
-	VD18_Aa_9989442(Path.of("src/test/resources/mets/vls/vd18-9989442.ulb.xml")),
+	VLS_VD18_Af_9427337(Path.of("src/test/resources/mets/vls/vd18-Af-9427337.ulb.xml")),
+	VLS_VD18_Aa_9989442(Path.of("src/test/resources/mets/vls/vd18-9989442.ulb.xml")),
 
 	/**
 	 * contains duplicated logical structure
 	 */
-	VD18P_14163614(Path.of("src/test/resources/mets/vls/vd18p-14163614.mets.xml")),
+	VLS_VD18P_14163614(Path.of("src/test/resources/mets/vls/vd18p-14163614.mets.xml")),
 
 
 	/**
 	 * OCR formats
 	 */
-	VD_18_ALTO3(Path.of("src/test/resources/alto/148811035/FULLTEXT/320808.xml")),
-	VD_18_ALTO4(Path.of("src/test/resources/alto/148811035/FULLTEXT/320811.xml")),
+	VD_18_148811035_ALTO3(Path.of("src/test/resources/alto/148811035/FULLTEXT/320808.xml")),
+	VD_18_148811035_ALTO4(Path.of("src/test/resources/alto/148811035/FULLTEXT/320811.xml")),
 
 	/**
 	 * Kitodo 2
@@ -93,7 +93,7 @@ public enum TestResource {
 	 * both METS belong together, they describe the same digital object
 	 */
 	SHARE_IT_VD18_MIG(Path.of("src/test/resources/mets/share_it/1981185920_79009.xml")),
-	VD18_Aa_VD18_MIG(Path.of("src/test/resources/mets/vls/vd18-Aa-16372279.mets.xml")),
+	VLS_VD18_Aa_16372279(Path.of("src/test/resources/mets/vls/vd18-Aa-16372279.mets.xml")),
 
 	SHARE_IT_VD18_43053(Path.of("src/test/resources/mets/share_it/1981185920_43053.xml")),
 	SHARE_IT_RAHBAR_88120_LEGACY(Path.of("src/test/resources/alto/1981185920_88120/1981185920_88120_00000010_legacy.xml")),
@@ -113,7 +113,7 @@ public enum TestResource {
 	 * Contains Issue with deep logical structs
 	 * 
 	 */
-	METS_ZD_ISSUE_182327845018001101(Path.of("src/test/resources/mets/zdp-182327845018001101.xml")),
+	VLS_ZD_ISSUE_182327845018001101(Path.of("src/test/resources/mets/zdp-182327845018001101.xml")),
 
 	/**
 	 * 

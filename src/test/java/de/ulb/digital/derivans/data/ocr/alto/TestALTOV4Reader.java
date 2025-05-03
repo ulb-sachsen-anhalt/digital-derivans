@@ -131,7 +131,7 @@ class TestALTOV4Reader {
 	void testALTOfromVLS320808() throws Exception {
 
 		// arrange
-		Path input = TestResource.VD_18_ALTO4.get();
+		Path input = TestResource.VD_18_148811035_ALTO4.get();
 		ALTOReader reader = new ALTOReader(Type.ALTO_V4);
 
 		// act

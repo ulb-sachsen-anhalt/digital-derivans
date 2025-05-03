@@ -70,13 +70,13 @@ class TestMetadataStoreVLSlarge {
                     System.out.println("Content: " + new String(ch, start, length));
                 }
             };
-            saxParser.parse(TestResource.HD_Aa_201517.get().toFile(), handler);
+            saxParser.parse(TestResource.VLS_HD_Aa_201517.get().toFile(), handler);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-		TestMetadataStoreVLSlarge.mds201517 = new DerivateMD(TestResource.HD_Aa_201517.get());
+		TestMetadataStoreVLSlarge.mds201517 = new DerivateMD(TestResource.VLS_HD_Aa_201517.get());
 		TestMetadataStoreVLSlarge.mds201517.checkRessources(false);
 		TestMetadataStoreVLSlarge.mds201517.init(Path.of(IDerivans.IMAGE_DIR_MAX));
 		dd201517 = mds201517.getDescriptiveData();

@@ -12,6 +12,7 @@ import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.generate.pdf.ITextProcessor;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateMD;
+import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
@@ -37,6 +38,8 @@ public class GeneratorPDF extends Generator {
 	private DerivateStepPDF derivateStep;
 
 	private METS mets;
+
+	// private DerivateStruct structure;
 
 	private IPDFProcessor pdfProcessor;
 
@@ -69,13 +72,26 @@ public class GeneratorPDF extends Generator {
 		this.pdfProcessor = new ITextProcessor();
 	}
 
-	@Override
-	public void setDerivate(IDerivate derivate) {
-		this.derivate = derivate;
-		if (this.derivate instanceof DerivateMD) {
-			this.mets = ((DerivateMD) this.derivate).getMets();
-		}
+	public void setMETS(METS mets) {
+		this.mets = mets;
 	}
+
+	// public DerivateStruct getStructure() {
+	// 	return this.pdfProcessor.structure;
+	// }
+
+	public void setStructure(DerivateStruct structure) {
+		// this.structure = structure;
+		this.pdfProcessor.setStructure(structure);
+	}
+
+	// @Override
+	// public void setDerivate(IDerivate derivate) {
+	// 	this.derivate = derivate;
+	// 	if (this.derivate instanceof DerivateMD) {
+	// 		this.mets = ((DerivateMD) this.derivate).getMets();
+	// 	}
+	// }
 
 	public void setPDFStep(DerivateStepPDF step) {
 		this.derivateStep = step;
@@ -104,7 +120,7 @@ public class GeneratorPDF extends Generator {
 		// if (Files.isDirectory(pathToPDF)) {
 		// 	pathToPDF = pathToPDF.resolve(pathToPDF.getFileName() + ".pdf");
 		// }
-		if (this.derivate.getAllPages().isEmpty()) {
+		if (this.digitalPages.isEmpty()) {
 			var msg = "No pages for PDF " + pathToPDF;
 			throw new DigitalDerivansException(msg);
 		}

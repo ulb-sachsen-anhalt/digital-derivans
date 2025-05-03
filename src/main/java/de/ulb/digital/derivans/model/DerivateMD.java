@@ -146,6 +146,7 @@ public class DerivateMD implements IDerivate {
 			Path filePath = this.pathInputDir.resolve(imgFile.getLocalPath(this.checkRessources));
 			int currOrder = this.mdPageOrder.getAndIncrement();
 			DigitalPage page = new DigitalPage(imgFile.getFileId(), currOrder, filePath);
+			page.setPageLabel(digiFile.determineLabel());
 			if (pack.ocrFile.isPresent()) {
 				METSFile ocrFile = pack.ocrFile.get();
 				page.setOcrFile(ocrFile.getLocalPath(this.checkRessources));

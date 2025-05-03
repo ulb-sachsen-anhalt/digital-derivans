@@ -25,7 +25,7 @@ class TestDerivateStructDeepIssue {
 
 	@BeforeAll
 	static void setupClazz() throws Exception {
-		Path testData = TestResource.METS_ZD_ISSUE_182327845018001101.get();
+		Path testData = TestResource.VLS_ZD_ISSUE_182327845018001101.get();
 		DerivateMD devmd = new DerivateMD(testData);
 		devmd.checkRessources(false);
 		devmd.init(TestHelper.ULB_MAX_PATH);

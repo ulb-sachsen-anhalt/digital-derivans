@@ -157,11 +157,11 @@ public class TestHelper {
 	}
 
 	public static Path fixturePrint737429(Path tempDir) throws IOException {
-		return fixturePrint737429(tempDir, TestResource.HD_Aa_737429.get(), "MAX");
+		return fixturePrint737429(tempDir, TestResource.VLS_HD_Aa_737429.get(), "MAX");
 	}
 
 	public static Path fixturePrint737429(Path tempDir, String imageSubDir) throws IOException {
-		return fixturePrint737429(tempDir, TestResource.HD_Aa_737429.get(),imageSubDir);
+		return fixturePrint737429(tempDir, TestResource.VLS_HD_Aa_737429.get(),imageSubDir);
 	}
 
 	public static String getText(Path writtenData, int pageNr) throws Exception {

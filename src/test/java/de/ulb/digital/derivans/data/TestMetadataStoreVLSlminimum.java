@@ -38,7 +38,7 @@ class TestMetadataStoreVLSminimum {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		TestMetadataStoreVLSminimum.mds737429 = new DerivateMD(TestResource.HD_Aa_737429.get());
+		TestMetadataStoreVLSminimum.mds737429 = new DerivateMD(TestResource.VLS_HD_Aa_737429.get());
 		TestMetadataStoreVLSminimum.mds737429.checkRessources(false);
 		TestMetadataStoreVLSminimum.mds737429.init(Path.of(IDerivans.IMAGE_DIR_MAX));
 		dd737429 = mds737429.getDescriptiveData();
@@ -124,7 +124,7 @@ class TestMetadataStoreVLSminimum {
 		if (Files.exists(targetPathFile)) {
 			Files.delete(targetPathFile);
 		}
-		Files.copy(TestResource.HD_Aa_737429.get(), targetPathFile);
+		Files.copy(TestResource.VLS_HD_Aa_737429.get(), targetPathFile);
 		var mds = new DerivateMD(targetPathFile);
 
 		// act

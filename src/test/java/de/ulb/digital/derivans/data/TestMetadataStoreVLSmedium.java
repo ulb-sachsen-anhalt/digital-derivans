@@ -33,7 +33,7 @@ class TestMetadataStoreVLSmedium {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		TestMetadataStoreVLSmedium.mds5175671 = new DerivateMD(TestResource.HD_Aa_5175671.get());
+		TestMetadataStoreVLSmedium.mds5175671 = new DerivateMD(TestResource.VLS_HD_Aa_5175671.get());
 		TestMetadataStoreVLSmedium.mds5175671.checkRessources(false);
 		TestMetadataStoreVLSmedium.mds5175671.init(Path.of(IDerivans.IMAGE_DIR_MAX));
 		dd5175671 = mds5175671.getDescriptiveData();
@@ -59,7 +59,7 @@ class TestMetadataStoreVLSmedium {
 	void testInvalidStructure226134857() throws Exception {
 
 		// arrange
-		var mds = new DerivateMD(TestResource.HD_Aa_226134857_LEGACY.get());
+		var mds = new DerivateMD(TestResource.VLS_HD_Aa_226134857_LEGACY.get());
 		mds.checkRessources(false);
 
 		// act
@@ -82,7 +82,7 @@ class TestMetadataStoreVLSmedium {
 	void testInvalidXMLFromMigration() throws DigitalDerivansException {
 
 		// arrange
-		DerivateMD derivate = new DerivateMD(TestResource.VD18_Aa_9989442.get());
+		DerivateMD derivate = new DerivateMD(TestResource.VLS_VD18_Aa_9989442.get());
 		derivate.checkRessources(false);
 
 		// act
@@ -99,18 +99,18 @@ class TestMetadataStoreVLSmedium {
 	void testStructurePageLabels() throws Exception {
 
 		// arrange
-		var mds = new DerivateMD(TestResource.VD18_Aa_VD18_MIG.get());
-		mds.checkRessources(false);
-		mds.init(TestHelper.ULB_MAX_PATH);
+		var devMD = new DerivateMD(TestResource.VLS_VD18_Aa_16372279.get());
+		devMD.checkRessources(false);
+		devMD.init(TestHelper.ULB_MAX_PATH);
 
 		// act
-		DerivateStruct tree = mds.getStructure();
+		DerivateStruct tree = devMD.getStructure();
 
 		// assert
 		assertEquals("Dissertatio Inavgvralis Ivridica De Avxiliatoribvs Fvrvm Oder: Von Diebs-Helffern",
 				tree.getLabel());
 		var lvlOneStructs = tree.getChildren();
-		assertEquals(69, mds.getAllPages().size());
+		assertEquals(69, devMD.getAllPages().size());
 		assertEquals(5, lvlOneStructs.size());
 		var lvlOneStructOne = lvlOneStructs.get(0);
 		assertEquals("Vorderdeckel", lvlOneStructOne.getLabel());
@@ -147,7 +147,7 @@ class TestMetadataStoreVLSmedium {
 	void testStructureDuplicatesDropped() throws Exception {
 
 		// arrange
-		var mds = new DerivateMD(TestResource.VD18P_14163614.get());
+		var mds = new DerivateMD(TestResource.VLS_VD18P_14163614.get());
 		mds.checkRessources(false);
 		mds.init(TestHelper.ULB_MAX_PATH);
 

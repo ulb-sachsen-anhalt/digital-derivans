@@ -69,12 +69,15 @@ public class TestPDFulltextODEMLines {
 		DerivateMD derivate = new DerivateMD(targetMets);
 		derivate.init(TestHelper.ULB_MAX_PATH);
 		List<DigitalPage> pages = derivate.getAllPages();
-		var handler = new GeneratorPDF(input, output, pages, pdfStep);
-		handler.setDerivate(derivate);
+		GeneratorPDF generator = new GeneratorPDF(input, output, pages, pdfStep);
+		// generator.setDerivate(derivate);
+		generator.setMETS(derivate.getMets());
+		generator.setStructure(derivate.getStructure());
+		generator.setDigitalPages(pages);
 
 		// act
-		handler.create();
-		resultDoc = handler.getPDFResult();
+		generator.create();
+		resultDoc = generator.getPDFResult();
 		pdfPath = resultDoc.getPath();
 	}
 

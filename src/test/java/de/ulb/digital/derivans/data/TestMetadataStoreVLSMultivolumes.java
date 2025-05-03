@@ -43,15 +43,15 @@ class TestMetadataStoreVLSMultivolumes {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		derivate19788 = new DerivateMD(TestResource.VD17_Af_19788.get());
+		derivate19788 = new DerivateMD(TestResource.VLS_VD17_Af_19788.get());
 		derivate19788.checkRessources(false);
 		derivate19788.init(TestHelper.ULB_MAX_PATH);
 		dmd19788 = derivate19788.getDescriptiveData();
-		derivate11250807 = new DerivateMD(TestResource.VD17_AF_11250807.get());
+		derivate11250807 = new DerivateMD(TestResource.VLS_VD17_AF_11250807.get());
 		derivate11250807.checkRessources(false);
 		derivate11250807.init(TestHelper.ULB_MAX_PATH);
 		dmd11250807 = derivate11250807.getDescriptiveData();
-		derivate9427337 = new DerivateMD(TestResource.VD18_Af_9427337.get());
+		derivate9427337 = new DerivateMD(TestResource.VLS_VD18_Af_9427337.get());
 		derivate9427337.checkRessources(false);
 		derivate9427337.init(TestHelper.ULB_MAX_PATH);
 		dmd9427337 = derivate9427337.getDescriptiveData();
@@ -87,7 +87,7 @@ class TestMetadataStoreVLSMultivolumes {
 	@Test
 	void testDescriptiveDataFromVL12MenalibOAI() throws DigitalDerivansException {
 		// arrange
-		var mds = new DerivateMD(TestResource.MENA_Af_1237560.get());
+		var mds = new DerivateMD(TestResource.VLS_MENA_Af_1237560.get());
 
 		// act
 		DescriptiveMetadata dd = mds.getDescriptiveData();
@@ -186,7 +186,7 @@ class TestMetadataStoreVLSMultivolumes {
 		if (Files.exists(targetPathFile)) {
 			Files.delete(targetPathFile);
 		}
-		Files.copy(TestResource.VD17_Af_19788.get(), targetPathFile);
+		Files.copy(TestResource.VLS_VD17_Af_19788.get(), targetPathFile);
 		var mds = new DerivateMD(targetPathFile);
 
 		// act
@@ -252,7 +252,7 @@ class TestMetadataStoreVLSMultivolumes {
 
 	@Test
 	void testIntermediateVD17State() throws DigitalDerivansException {
-		var mds = new DerivateMD(TestResource.VD17_AF_11250807.get());
+		var mds = new DerivateMD(TestResource.VLS_VD17_AF_11250807.get());
 		mds.checkRessources(false);
 		mds.init(TestHelper.ULB_MAX_PATH);
 		var dd = mds.getDescriptiveData();
@@ -277,7 +277,7 @@ class TestMetadataStoreVLSMultivolumes {
 	@Test
 	void testIntermediateVD17PDFInsertion(@TempDir Path tempDir) throws DigitalDerivansException, IOException {
 		// arrange
-		Path sourceMETS = TestResource.VD17_AF_11250807.get();
+		Path sourceMETS = TestResource.VLS_VD17_AF_11250807.get();
 		Path targetMETS = tempDir.resolve("11250807.xml");
 		Files.copy(sourceMETS, targetMETS);
 

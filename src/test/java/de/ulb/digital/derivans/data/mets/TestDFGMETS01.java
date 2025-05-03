@@ -31,7 +31,7 @@ class TestDFGMETS01 {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		mets737429 = new METS(TestResource.HD_Aa_737429.get());
+		mets737429 = new METS(TestResource.VLS_HD_Aa_737429.get());
 		mets737429.determine();
 	}
 	

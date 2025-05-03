@@ -16,7 +16,7 @@ class TestDFGMETS02 {
 	
 	@Test
 	void parseLegacyMETS() throws DigitalDerivansException {
-		var path = TestResource.VD18P_14163614.get();
+		var path = TestResource.VLS_VD18P_14163614.get();
 		var m = new METS(path);
 		assertNotNull(m);
 		assertTrue(m.getPath().toString().endsWith(".xml"));
@@ -30,7 +30,7 @@ class TestDFGMETS02 {
 	 */
 	@Test
 	void parseContainerStructureVD18PVLS() throws DigitalDerivansException {
-		var path = TestResource.VD18P_14163614.get();
+		var path = TestResource.VLS_VD18P_14163614.get();
 		var m = new METS(path);
 		m.determine();
 		var containerStructure = m.getLogicalRoot();

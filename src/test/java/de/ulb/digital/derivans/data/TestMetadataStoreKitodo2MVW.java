@@ -33,10 +33,10 @@ class TestMetadataStoreKitodo2MVW {
 	@Test
 	void testKitodo2MultivolumeMetadata() throws DigitalDerivansException {
 		// arrange
-		var mds = new DerivateMD(TestResource.K2_Af_140257772.get());
+		var devMD = new DerivateMD(TestResource.K2_Af_140257772.get());
 		
 		// act
-		DescriptiveMetadata dd140257772 = mds.getDescriptiveData();
+		DescriptiveMetadata dd140257772 = devMD.getDescriptiveData();
 		
 		// assert
 		assertEquals("140257772", dd140257772.getIdentifier());
@@ -44,9 +44,9 @@ class TestMetadataStoreKitodo2MVW {
 		assertEquals("Band", dd140257772.getTitle());
 		
 		// inspect structure
-		mds.checkRessources(false);
-		mds.init(Path.of(IDerivans.IMAGE_DIR_MAX));
-		var dst = mds.getStructure();
+		devMD.checkRessources(false);
+		devMD.init(Path.of(IDerivans.IMAGE_DIR_MAX));
+		var dst = devMD.getStructure();
 		// of old
 		// assertEquals("Materialien zur Geschichte des Bauernkriegs in Franken, Schwaben, Thüringen [et]c. im Jahre 1525.", dst.getLabel());
 		// as of 2025
