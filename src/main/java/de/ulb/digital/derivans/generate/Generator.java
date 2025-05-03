@@ -20,7 +20,7 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  * @author M3ssman
  *
  */
-public class Generator implements IDerivateer {
+public class Generator {
 
 	protected DerivansData input;
 
@@ -49,20 +49,14 @@ public class Generator implements IDerivateer {
 		this.derivateType = output.getType();
 	}
 
-	/**
-	 * Dummy implementation of Interface
-	 */
-	@Override
 	public int create() throws DigitalDerivansException {
 		return 0;
 	}
 
-	@Override
 	public List<DigitalPage> getDigitalPages() {
 		return this.digitalPages;
 	}
 
-	@Override
 	public void setDigitalPages(List<DigitalPage> pages) {
 		this.digitalPages = new ArrayList<>(pages);
 	}
@@ -87,39 +81,32 @@ public class Generator implements IDerivateer {
 		}
 	}
 
-	@Override
 	public DerivateType getType() {
 		return this.derivateType;
 	}
 
-	@Override
 	public void setDerivate(IDerivate derivate) {
 		this.derivate = derivate;
 		this.digitalPages = this.derivate.getAllPages();
 	}
 
-	@Override
 	public IDerivate getDerivate() {
 		return this.derivate;
 	}
 
-	@Override
 	public void setInput(DerivansData input) {
 		this.input = input;
 	}
 
-	@Override
 	public DerivansData getInput() {
 		return this.input;
 	}
 
-	@Override
 	public void setOutput(DerivansData output) {
 		this.output = output;
 		this.derivateType = output.getType();
 	}
 
-	@Override
 	public DerivansData getOutput() {
 		return this.output;
 	}
