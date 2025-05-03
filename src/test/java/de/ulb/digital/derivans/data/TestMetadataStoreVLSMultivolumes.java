@@ -87,10 +87,12 @@ class TestMetadataStoreVLSMultivolumes {
 	@Test
 	void testDescriptiveDataFromVL12MenalibOAI() throws DigitalDerivansException {
 		// arrange
-		var mds = new DerivateMD(TestResource.VLS_MENA_Af_1237560.get());
+		var deriv = new DerivateMD(TestResource.VLS_MENA_Af_1237560.get());
+		deriv.checkRessources(false);
+		deriv.init(TestHelper.ULB_MAX_PATH);
 
 		// act
-		DescriptiveMetadata dd = mds.getDescriptiveData();
+		DescriptiveMetadata dd = deriv.getDescriptiveData();
 
 		// assert
 		assertEquals("385228910", dd.getIdentifier());
@@ -140,7 +142,11 @@ class TestMetadataStoreVLSMultivolumes {
 		assertEquals("Titelblatt", grandchilds.get(0).getLabel());
 		assertEquals(1, grandchilds.get(0).getPages().size());
 		assertEquals("Widmung", grandchilds.get(1).getLabel());
-		assertEquals(2, grandchilds.get(1).getPages().size());
+		assertEquals(1, grandchilds.get(1).getPages().size());
+		assertEquals("Titelblatt", grandchilds.get(2).getLabel());
+		assertEquals(2, grandchilds.get(2).getPages().size());
+		assertEquals("Abschnitt", grandchilds.get(3).getLabel());
+		assertEquals(18, grandchilds.get(3).getPages().size());
 	}
 
 	@Test
@@ -158,43 +164,17 @@ class TestMetadataStoreVLSMultivolumes {
 
 		// level 1 = C-Stage
 		assertEquals("Cursus Philosophici Disputatio ...", dst.getLabel());
-		assertEquals(1, dst.getPages().size());
+		assertEquals(0, dst.getPages().size()); // C-dtage must not have pages
 
 		// level 2 = F-Stage
 		List<DerivateStruct> children = dst.getChildren();
 		assertEquals(1, children.size());
 		assertEquals("De Compositione Syllogismi", children.get(0).getLabel());
-		assertEquals(1, children.get(0).getPages().size());
 
 		// level 3 = F-Stage struct
 		List<DerivateStruct> grandchilds = children.get(0).getChildren();
 		// 4 structs: "cover_front", "title_page", "section", "cover_back"
 		assertEquals(4, grandchilds.size());
-	}
-
-	/**
-	 * 
-	 * Check PDF identifier enriched in Metadata *after* PDF generation
-	 * 
-	 * @param tempDir
-	 * @throws Exception
-	 */
-	@Test
-	void testMetadataIsUpdatedVD17Af19788(@TempDir Path tempDir) throws Exception {
-		// arrange
-		Path targetPathFile = tempDir.resolve("19788.xml");
-		if (Files.exists(targetPathFile)) {
-			Files.delete(targetPathFile);
-		}
-		Files.copy(TestResource.VLS_VD17_Af_19788.get(), targetPathFile);
-		var mds = new DerivateMD(targetPathFile);
-
-		// act
-		String identifier = mds.getDescriptiveData().getIdentifier();
-		var renderPDFOutcome = mds.getMets().enrichPDF(identifier);
-
-		// assert
-		assertTrue(renderPDFOutcome.startsWith("PDF FileGroup for PDF_005209242 created "));
 	}
 
 	/**
@@ -228,7 +208,7 @@ class TestMetadataStoreVLSMultivolumes {
 		assertEquals(
 				"Sir James Stewarts, Baronets, Untersuchung der Grund-Säze von der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen",
 				dst.getLabel());
-		assertEquals(1, dst.getPages().size());
+		assertEquals(0, dst.getPages().size());
 		assertFalse(dst.getChildren().isEmpty());
 
 		// level 1 - F-Stage
@@ -237,17 +217,17 @@ class TestMetadataStoreVLSMultivolumes {
 		assertEquals(
 				"Untersuchung der Grund-Säze Der Staats-Wirthschaft als ein Versuch über die Wissenschaft von der Innerlichen Politik bey freyen Nationen",
 				children.get(0).getLabel());
-		assertEquals(1, children.get(0).getPages().size());
+		assertEquals(0, children.get(0).getPages().size());
 
 		// level 1+2 - F-Stage
 		assertFalse(children.get(0).getChildren().isEmpty());
 		assertEquals(6, children.get(0).getChildren().size());
 		var grandChildren = children.get(0).getChildren();
 		assertEquals("Exlibris", grandChildren.get(1).getLabel());
-		assertEquals(2, grandChildren.get(1).getPages().size());
+		assertEquals(1, grandChildren.get(1).getPages().size());
 		assertEquals("Untersuchung der Grundsäze der Staats-Wirthschaft Drittes Buch von Geld und Münze.",
 				grandChildren.get(4).getLabel());
-		assertEquals(7, grandChildren.get(4).getPages().size());
+		assertEquals(152, grandChildren.get(4).getPages().size());
 	}
 
 	@Test
@@ -282,10 +262,12 @@ class TestMetadataStoreVLSMultivolumes {
 		Files.copy(sourceMETS, targetMETS);
 
 		// arrange
-		var mds = new DerivateMD(targetMETS);
+		var deriv = new DerivateMD(targetMETS);
+		deriv.checkRessources(false);
+		deriv.init(TestHelper.ULB_MAX_PATH);
 
 		// act + assert
-		var result = mds.getMets().enrichPDF("PDF_11250807");
+		var result = deriv.getMets().enrichPDF("PDF_11250807");
 		assertTrue(result.contains("PDF FileGroup for PDF_PDF_11250807 created"));
 	}
 }

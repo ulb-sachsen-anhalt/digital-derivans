@@ -116,6 +116,7 @@ public enum METSContainerType {
 	// this is peculiar since not listed at Strukturdatenset
 	// *but* DFG METS heavy relies on it for it's physical line out
 	PAGE("page", "Seite"),
+	PHYSSEQUENCE("physSequence","Seiten"),
 	;
 
 	private METSContainerType(String label, String translation) {

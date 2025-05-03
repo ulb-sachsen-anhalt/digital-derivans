@@ -60,6 +60,27 @@ public class METSFile {
 	 */
 	private List<METSContainer> linkedContainers = new ArrayList<>();
 
+	public METSFile(Element element, String fileGroup) {
+		this.mimeType = element.getAttributeValue("MIMETYPE");
+		this.fileId = element.getAttributeValue("ID");
+		var fstLocat = element.getChildren("FLocat", METS.NS_METS).get(0);
+		String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
+		int offsetCtx = hRef.lastIndexOf('/');
+		if (offsetCtx > 0) {
+			hRef = hRef.substring(offsetCtx + 1);
+		}
+		int offsetExt = hRef.lastIndexOf('.');
+		if (offsetExt < 0) { // no extension detected, make a guess
+			if (isTypeJPG(mimeType) && !hRef.endsWith(".jpg")) {
+				hRef += ".jpg";
+			}
+			if (isTypeXML(mimeType) && !hRef.endsWith(".xml")) {
+				hRef += ".xml";
+			}
+		}
+		this.location = hRef;
+	}
+
 	public METSFile(String id, String location) {
 		this(id, location, "MAX", "image/jpeg", "URL");
 	}
@@ -198,13 +219,24 @@ public class METSFile {
 	public int hashCode() {
 		int h = 0;
 		String useAttribute = this.fileId;
-		if(this.checksum.isPresent()) {
+		if (this.checksum.isPresent()) {
 			useAttribute = this.checksum.get();
 		}
 		for (int o = 0; o < useAttribute.length(); o++) {
 			h += useAttribute.codePointAt(o);
 		}
 		return h;
+	}
+
+	private boolean isTypeJPG(String mimeType) {
+		if (mimeType != null && mimeType.contains("image")) {
+			return mimeType.contains("jpeg") || mimeType.contains("jpg");
+		}
+		return false;
+	}
+
+	private boolean isTypeXML(String mimeType) {
+		return mimeType != null && mimeType.contains("xml");
 	}
 }
 

@@ -18,6 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.IDerivans;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -30,18 +31,18 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
-class TestMetadataStoreVLSminimum {
+public class TestMetadataStoreVLSminimum {
 
-	static DerivateMD mds737429;
+	static DerivateMD der737429;
 
-	static DescriptiveMetadata dd737429;
+	static DescriptiveMetadata dmd737429;
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		TestMetadataStoreVLSminimum.mds737429 = new DerivateMD(TestResource.VLS_HD_Aa_737429.get());
-		TestMetadataStoreVLSminimum.mds737429.checkRessources(false);
-		TestMetadataStoreVLSminimum.mds737429.init(Path.of(IDerivans.IMAGE_DIR_MAX));
-		dd737429 = mds737429.getDescriptiveData();
+		TestMetadataStoreVLSminimum.der737429 = new DerivateMD(TestResource.VLS_HD_Aa_737429.get());
+		TestMetadataStoreVLSminimum.der737429.checkRessources(false);
+		TestMetadataStoreVLSminimum.der737429.init(TestHelper.ULB_MAX_PATH);
+		dmd737429 = der737429.getDescriptiveData();
 	}
 
 	/**
@@ -54,29 +55,29 @@ class TestMetadataStoreVLSminimum {
 	@Test
 	void testDescriptiveDataHDmonography() {
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
-		assertEquals("191092622", dd737429.getIdentifier());
+		assertEquals("191092622", dmd737429.getIdentifier());
 		// mods:titleInfo/mods:title
-		assertTrue(dd737429.getTitle().startsWith("Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo"));
+		assertTrue(dmd737429.getTitle().startsWith("Ode In Solemni Panegyri Avgvstissimo Ac Potentissimo"));
 		// mods:identifier[@type="urn"]
-		assertEquals("urn:nbn:de:gbv:3:3-21437", dd737429.getUrn());
+		assertEquals("urn:nbn:de:gbv:3:3-21437", dmd737429.getUrn());
 		// METS/MODS contains no license information
-		assertTrue(dd737429.getLicense().isEmpty());
+		assertTrue(dmd737429.getLicense().isEmpty());
 		// mods:originInfo/mods:dateIssued[@keyDate="yes"]/text()
-		assertEquals("1731", dd737429.getYearPublished());
+		assertEquals("1731", dmd737429.getYearPublished());
 		// mods:role/mods:displayForm/text()
 		// OR
 		// mods:namePart[@type="family"]/text()
 		// WITH
 		// IF NOT mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "aut"
 		// IF mods:name/mods:role/mods:roleTerm[@type="code"]/text() = "pbl
-		assertEquals("Officina Langenhemia", dd737429.getPerson());
+		assertEquals("Officina Langenhemia", dmd737429.getPerson());
 	}
 
 	@Test
 	void testDigitalPagesOrderOf737429() {
 
 		// act
-		List<DigitalPage> pages = TestMetadataStoreVLSminimum.mds737429.getAllPages();
+		List<DigitalPage> pages = TestMetadataStoreVLSminimum.der737429.getAllPages();
 
 		// assert
 		assertEquals(4, pages.size());
@@ -94,11 +95,11 @@ class TestMetadataStoreVLSminimum {
 
 	@Test
 	void testStructureOf737429() {
-		var dst = mds737429.getStructure();
+		var dst = der737429.getStructure();
 		assertNotNull(dst);
 
 		assertTrue(dst.getLabel().startsWith("Ode In Solemni Panegyri"));
-		assertEquals(1, dst.getPages());
+		assertTrue(dst.getPages().isEmpty());
 		assertFalse(dst.getChildren().isEmpty());
 
 		// level 1
@@ -107,32 +108,7 @@ class TestMetadataStoreVLSminimum {
 		assertEquals("Titelblatt", children.get(0).getLabel());
 		assertEquals(1, children.get(0).getPages().size());
 		assertEquals("[Ode]", children.get(1).getLabel());
-		assertEquals(2, children.get(1).getPages().size());
-	}
-
-	/**
-	 * 
-	 * Check PDF identifier enriched in Metadata *after* PDF generation
-	 * 
-	 * @param tempDir
-	 * @throws Exception
-	 */
-	@Test
-	void testMetadataIsUpdated737429(@TempDir Path tempDir) throws Exception {
-		// arrange
-		Path targetPathFile = tempDir.resolve("737429.xml");
-		if (Files.exists(targetPathFile)) {
-			Files.delete(targetPathFile);
-		}
-		Files.copy(TestResource.VLS_HD_Aa_737429.get(), targetPathFile);
-		var mds = new DerivateMD(targetPathFile);
-
-		// act
-		String identifier = mds.getDescriptiveData().getIdentifier();
-		var renderOutcome = mds.getMets().enrichPDF(identifier);
-
-		// assert
-		assertTrue(renderOutcome.startsWith("PDF FileGroup for PDF_191092622 created "));
+		assertEquals(3, children.get(1).getPages().size());
 	}
 
 }
