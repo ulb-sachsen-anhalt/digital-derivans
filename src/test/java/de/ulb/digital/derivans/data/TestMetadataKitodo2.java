@@ -22,7 +22,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author hartwig
  *
  */
-class TestMetadataStoreKitodo2 {
+class TestMetadataKitodo2 {
 
 	static DescriptiveMetadata dd143074601;
 

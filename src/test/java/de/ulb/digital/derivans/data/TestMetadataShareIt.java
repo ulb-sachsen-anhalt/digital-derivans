@@ -15,7 +15,7 @@ import de.ulb.digital.derivans.model.DerivateMD;
 /**
  * @author Uwe Hartwig
  */
-class TestMetadataStoreShareIt {
+class TestMetadataShareIt {
    
     /**
 	 * 

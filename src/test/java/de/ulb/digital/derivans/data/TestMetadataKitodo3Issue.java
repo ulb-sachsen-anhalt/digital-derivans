@@ -18,7 +18,7 @@ import de.ulb.digital.derivans.model.DerivateMD;
  * @author hartwig
  *
  */
-class TestMetadataStoreKitodo3 {
+class TestMetadataKitodo3Issue {
 
 	/**
 	 * 

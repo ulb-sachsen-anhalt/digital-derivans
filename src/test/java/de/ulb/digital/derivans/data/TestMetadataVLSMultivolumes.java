@@ -27,7 +27,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
-class TestMetadataStoreVLSMultivolumes {
+class TestMetadataVLSMultivolumes {
 
 	static DerivateMD derivate19788;
 

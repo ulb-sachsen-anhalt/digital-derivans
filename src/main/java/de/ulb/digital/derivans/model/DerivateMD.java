@@ -38,7 +38,7 @@ public class DerivateMD implements IDerivate {
 
 	private String startFileExtension = ".jpg";
 
-	private String imageGroup = IDerivans.IMAGE_DIR_MAX;
+	private String imageGroup = IDerivans.IMAGE_DIR_DEFAULT;
 
 	private Path rootDir;
 
@@ -69,10 +69,6 @@ public class DerivateMD implements IDerivate {
 	 */
 	@Override
 	public void init(Path startPath) throws DigitalDerivansException {
-		this.mets.init(); // critical
-		var orderNr = this.mdPageOrder.get();
-		METSContainer containerRoot = this.mets.getLogicalRoot();
-		String logicalLabel = containerRoot.determineLabel();
 		if (startPath == null) {
 			startPath = Path.of(IDerivans.IMAGE_DIR_DEFAULT);
 			this.mets.setImgFileGroup(startPath.toString());
@@ -83,6 +79,10 @@ public class DerivateMD implements IDerivate {
 			this.imageGroup = startPath.toString();
 			this.mets.setImgFileGroup(startPath.toString());
 		}
+		this.mets.init(); // critical
+		var orderNr = this.mdPageOrder.get();
+		METSContainer containerRoot = this.mets.getLogicalRoot();
+		String logicalLabel = containerRoot.determineLabel();
 		// look for higher structs
 		var optParent = this.mets.optParentStruct();
 		if (optParent.isPresent()) {

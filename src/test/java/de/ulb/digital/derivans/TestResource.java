@@ -13,26 +13,26 @@ import java.nio.file.Path;
 public enum TestResource {
 
 	/**
-	 * rather large digital object (+2.000 pages, complex structure)
+	 * large digital object (+2.300 pages, complex structure)
 	 */
 	VLS_HD_Aa_201517(Path.of("src/test/resources/mets/vls/hd-Aa-201517.xml")),
 
 	/**
-	 * rather small digital object (4 pages only)
+	 * small digital object (4 pages only)
 	 */
 	VLS_HD_Aa_737429(Path.of("src/test/resources/mets/vls/hd-Aa-737429.mets.xml")),
 	VLS_HD_Aa_737429_OCR(Path.of("src/test/resources/mets/vls/hd-Aa-737429-ocr.mets.xml")),
 	OCR_737429(Path.of("src/test/resources/alto/737429")),
 
 	/**
-	 * contains titleInfo but child node title is missing
+	 * medium digital object contains titleInfo but child node title missing
 	 */
 	VLS_HD_Aa_5175671(Path.of("src/test/resources/mets/vls/5175671.mets.xml")),
 
 	/**
 	 * contains logical links to non-existing physical structures
 	 */
-	VLS_HD_Aa_226134857_LEGACY(Path.of("src/test/resources/mets/vls/hd-Aa-226134857.prep.xml")),
+	VLS_HD_Aa_226134857(Path.of("src/test/resources/mets/vls/hd-Aa-226134857.prep.xml")),
 
 	VLS_MENA_Af_1237560(Path.of("src/test/resources/mets/vls/mena-Af-1237560.ulb.xml")),
 

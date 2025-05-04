@@ -20,7 +20,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author hartwig
  *
  */
-class TestMetadataStoreKitodo2MVW {
+class TestMetadataKitodo2MVW {
 
 	/**
 	 * 

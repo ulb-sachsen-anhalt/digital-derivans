@@ -2,22 +2,16 @@ package de.ulb.digital.derivans.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
@@ -31,7 +25,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
-public class TestMetadataStoreVLSminimum {
+public class TestMetadataVLSminimum {
 
 	static DerivateMD der737429;
 
@@ -39,9 +33,9 @@ public class TestMetadataStoreVLSminimum {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		TestMetadataStoreVLSminimum.der737429 = new DerivateMD(TestResource.VLS_HD_Aa_737429.get());
-		TestMetadataStoreVLSminimum.der737429.checkRessources(false);
-		TestMetadataStoreVLSminimum.der737429.init(TestHelper.ULB_MAX_PATH);
+		TestMetadataVLSminimum.der737429 = new DerivateMD(TestResource.VLS_HD_Aa_737429.get());
+		TestMetadataVLSminimum.der737429.checkRessources(false);
+		TestMetadataVLSminimum.der737429.init(TestHelper.ULB_MAX_PATH);
 		dmd737429 = der737429.getDescriptiveData();
 	}
 
@@ -77,7 +71,7 @@ public class TestMetadataStoreVLSminimum {
 	void testDigitalPagesOrderOf737429() {
 
 		// act
-		List<DigitalPage> pages = TestMetadataStoreVLSminimum.der737429.getAllPages();
+		List<DigitalPage> pages = TestMetadataVLSminimum.der737429.getAllPages();
 
 		// assert
 		assertEquals(4, pages.size());

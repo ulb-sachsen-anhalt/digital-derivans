@@ -75,7 +75,9 @@ public class METS {
 
 	private Element primeLog;
 
-	private HashMap<String, METSFile> metsFiles = new LinkedHashMap<>();
+	private HashMap<String, METSFile> imageFiles = new LinkedHashMap<>();
+
+	private HashMap<String, METSFile> ocrFiles = new LinkedHashMap<>();
 
 	private HashMap<String, METSContainer> physContainer = new LinkedHashMap<>();
 
@@ -124,16 +126,19 @@ public class METS {
 		Filter<Element> fileGrpFilter = Filters.element(NS_METS).refine(Filters.element("fileGrp", NS_METS));
 		Iterator<Element> fileGrpIterator = this.document.getDescendants(fileGrpFilter);
 		// files
-		Element grpUseImage= null;
+		Element useImageGrp= null;
 		Optional<Element> optImageGrp = this.search(fileGrpIterator, "USE", this.imgFileGroup);
 		if (optImageGrp.isPresent()) {
-			grpUseImage = optImageGrp.get();
+			useImageGrp = optImageGrp.get();
 		}
-		List<Element> files = grpUseImage.getChildren("file", NS_METS);
+		if(useImageGrp == null) {
+			throw new DigitalDerivansException("Invalid mets:fileGrp "+this.imgFileGroup+"!");
+		}
+		List<Element> files = useImageGrp.getChildren("file", NS_METS);
 		for(Element fileElement: files) {
 			String fileId = fileElement.getAttributeValue("ID");
 			METSFile metsFile = new METSFile(fileElement, this.imgFileGroup);
-			this.metsFiles.put(fileId, metsFile);
+			this.imageFiles.put(fileId, metsFile);
 		}
 		Element groupUseFulltext= null;
 		Optional<Element> optOcrGrp = this.search(fileGrpIterator, "USE", this.ocrFileGroup);
@@ -143,7 +148,7 @@ public class METS {
 			for(Element ocrFile: ocrFiles) {
 				String fileId = ocrFile.getAttributeValue("ID");
 				METSFile metsFile = new METSFile(ocrFile, this.imgFileGroup);
-				this.metsFiles.put(fileId, metsFile);
+				this.ocrFiles.put(fileId, metsFile);
 			}
 		}
 
@@ -497,8 +502,8 @@ public class METS {
 		// METSFile imgFile = this.pickFromGroup(fileIds, this.imgFileGroup, true);
 		METSFile imgFile = null;
 		for(String fileId : fileIds) {
-			if(this.metsFiles.containsKey(fileId)) {
-				imgFile = this.metsFiles.get(fileId);
+			if(this.imageFiles.containsKey(fileId)) {
+				imgFile = this.imageFiles.get(fileId);
 				break;
 			}
 		}
@@ -508,8 +513,8 @@ public class METS {
 		//METSFile ocrFile = this.pickFromGroup(fileIds, this.ocrFileGroup, false);
 		METSFile ocrFile = null;
 		for(String fileId : fileIds) {
-			if(this.metsFiles.containsKey(fileId)) {
-				ocrFile = this.metsFiles.get(fileId);
+			if(this.ocrFiles.containsKey(fileId)) {
+				ocrFile = this.imageFiles.get(fileId);
 				break;
 			}
 		}
@@ -560,7 +565,7 @@ public class METS {
 		// METSFile metsFile = new METSFile(theElement, fileGroupUse);
 		// return metsFile;
 
-		return this.metsFiles.get(fileIds.get(0));
+		return this.imageFiles.get(fileIds.get(0));
 	}
 
 	// private boolean isTypeJPG(String mimeType) {

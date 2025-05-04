@@ -105,10 +105,13 @@ class TestDerivansLegacyULB {
 	 */
 	@Test
 	void testTypesOfDerivateers()  {
-		assertNotEquals("ImageDerivateerJPGFooter", generators.get(0).getClass().getSimpleName());
-		assertEquals("ImageDerivateerJPGFooterGranular", generators.get(0).getClass().getSimpleName());
-		assertEquals("ImageDerivateerJPG", generators.get(1).getClass().getSimpleName());
-		assertEquals("PDFDerivateer", generators.get(2).getClass().getSimpleName());
+		assertEquals(5, generators.size());
+		assertNotEquals("GeneratorImageJPGFooter", generators.get(0).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(0).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPGFooter", generators.get(1).getClass().getSimpleName());
+		assertEquals("GeneratorPDF", generators.get(2).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(2).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(2).getClass().getSimpleName());
 	}
 
 	@Test

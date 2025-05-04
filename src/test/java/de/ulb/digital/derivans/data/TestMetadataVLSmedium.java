@@ -25,7 +25,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
-class TestMetadataStoreVLSmedium {
+class TestMetadataVLSmedium {
 
 	static DerivateMD mds5175671;
 
@@ -33,9 +33,9 @@ class TestMetadataStoreVLSmedium {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		TestMetadataStoreVLSmedium.mds5175671 = new DerivateMD(TestResource.VLS_HD_Aa_5175671.get());
-		TestMetadataStoreVLSmedium.mds5175671.checkRessources(false);
-		TestMetadataStoreVLSmedium.mds5175671.init(Path.of(IDerivans.IMAGE_DIR_MAX));
+		TestMetadataVLSmedium.mds5175671 = new DerivateMD(TestResource.VLS_HD_Aa_5175671.get());
+		TestMetadataVLSmedium.mds5175671.checkRessources(false);
+		TestMetadataVLSmedium.mds5175671.init(Path.of(IDerivans.IMAGE_DIR_MAX));
 		dd5175671 = mds5175671.getDescriptiveData();
 	}
 
@@ -59,7 +59,7 @@ class TestMetadataStoreVLSmedium {
 	void testInvalidStructure226134857() throws Exception {
 
 		// arrange
-		var mds = new DerivateMD(TestResource.VLS_HD_Aa_226134857_LEGACY.get());
+		var mds = new DerivateMD(TestResource.VLS_HD_Aa_226134857.get());
 		mds.checkRessources(false);
 
 		// act

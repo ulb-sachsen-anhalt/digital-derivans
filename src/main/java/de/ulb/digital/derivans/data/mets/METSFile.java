@@ -61,6 +61,7 @@ public class METSFile {
 	private List<METSContainer> linkedContainers = new ArrayList<>();
 
 	public METSFile(Element element, String fileGroup) {
+		this.fileGroup = fileGroup;
 		this.mimeType = element.getAttributeValue("MIMETYPE");
 		this.fileId = element.getAttributeValue("ID");
 		var fstLocat = element.getChildren("FLocat", METS.NS_METS).get(0);

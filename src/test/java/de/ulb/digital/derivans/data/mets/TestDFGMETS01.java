@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.data.mets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
@@ -33,6 +34,7 @@ class TestDFGMETS01 {
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
 		mets737429 = new METS(TestResource.VLS_HD_Aa_737429.get());
+		mets737429.setImgFileGroup("MAX");
 		mets737429.init();
 	}
 	
@@ -107,5 +109,13 @@ class TestDFGMETS01 {
 		assertEquals(1, children.get(0).getPages().size());
 		assertEquals("[Ode]", children.get(1).getLabel());
 		assertEquals(3, children.get(1).getPages().size());
+	}
+
+	@Test
+	void testInvalidImageFileGroup() throws DigitalDerivansException {
+		METS mets737429 = new METS(TestResource.VLS_HD_Aa_737429.get());
+		mets737429.setImgFileGroup("FOO");
+		var result = assertThrows(DigitalDerivansException.class, () -> mets737429.init());
+		assertEquals("Invalid mets:fileGrp FOO!", result.getMessage());
 	}
 }
