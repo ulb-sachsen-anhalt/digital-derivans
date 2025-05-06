@@ -70,12 +70,9 @@ public class TestPDFulltextODEMLines {
 		derivate.init(TestHelper.ULB_MAX_PATH);
 		List<DigitalPage> pages = derivate.getAllPages();
 		GeneratorPDF generator = new GeneratorPDF(input, output, pages, pdfStep);
-		// generator.setDerivate(derivate);
 		generator.setMETS(derivate.getMets());
 		generator.setStructure(derivate.getStructure());
 		generator.setDigitalPages(pages);
-
-		// act
 		generator.create();
 		resultDoc = generator.getPDFResult();
 		pdfPath = resultDoc.getPath();
@@ -106,7 +103,7 @@ public class TestPDFulltextODEMLines {
 	 */
 	@Test
 	void testPage07ContainsText() throws Exception {
-		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
+		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 6);
 		assertTrue(textPage07.contains("Chriſtliche Majeſt")); // PDFBox
 	}
 
@@ -120,7 +117,7 @@ public class TestPDFulltextODEMLines {
 	 */
 	@Test
 	void testPage07HasCertainLength() throws Exception {
-		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
+		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 6);
 		assertEquals(3382, textPage07.length());
 	}
 

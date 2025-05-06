@@ -26,6 +26,7 @@ import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
+import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.ITextElement;
 import de.ulb.digital.derivans.model.ocr.OCRData;
@@ -82,40 +83,42 @@ class TestPDFSyntheticWesteuropeOCR {
 		g2d.fillRect(0, 0, orgwidth, orgHeight);
 		ImageIO.write(bi2, "JPG", jpgFile.toFile());
 		
-		DigitalPage e = new DigitalPage("MAX_0001", 1, jpgFile);
-		e.setOcrData(italianOCR());
+		DigitalPage digiPage = new DigitalPage("MAX_0001", 1, jpgFile);
+		digiPage.setOcrData(italianOCR());
 		List<DigitalPage> pages = new ArrayList<>();
-		pages.add(e);
+		pages.add(digiPage);
+		DerivateStruct testStruct = new DerivateStruct(1, tempDir.getFileName().toString());
 
 		// act
 		String pdfLineName = String.format("pdf-line-%04d.pdf", N_PAGES);
 		Path outputLinePath = tempDir.resolve(pdfLineName);
 		DerivansData input = new DerivansData(tempDir, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
 		DerivansData outputLine = new DerivansData(tempDir, ".", DerivateType.PDF);
-		DerivateStepPDF pdfStep = new DerivateStepPDF();
-		pdfStep.setImageDpi(TEST_DPI);
-		pdfStep.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
-		pdfStep.setDebugRender(true);
-		pdfStep.setPathPDF(outputLinePath);
+		DerivateStepPDF pdfStep1 = new DerivateStepPDF();
+		pdfStep1.setImageDpi(TEST_DPI);
+		pdfStep1.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
+		pdfStep1.setDebugRender(true);
+		pdfStep1.setPathPDF(outputLinePath);
 		
 		// act once
 		DerivateFS derivateLines = new DerivateFS(tempDir);
 		derivateLines.init(TestHelper.ULB_MAX_PATH);
-		var dOne = new GeneratorPDF(input, outputLine, pages, pdfStep);
-		dOne.setDerivate(derivateLines);
-		dOne.create();
-		pdfLines = dOne.getPDFResult();
+		derivateLines.getAllPages().addAll(pages);
+		GeneratorPDF generatorLine = new GeneratorPDF(input, outputLine, pages, pdfStep1);
+		generatorLine.setDerivate(derivateLines);
+		generatorLine.setStructure(derivateLines.getStructure());
+		// generatorLine.setDigitalPages(pages);
+		generatorLine.create();
+		pdfLines = generatorLine.getPDFResult();
 		pdfLinelvlFirstLine = pdfLines.getPdfPages().get(0).getTextcontent().get().get(0);
 
 		// act twice
 		var pdfWordName = String.format("pdf-word-%04d.pdf", N_PAGES);
 		Path outputWordPath = tempDir.resolve(pdfWordName);
 		var outputWord = new DerivansData(tempDir, ".", DerivateType.PDF);
-		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
-		pdfStep.setPathPDF(outputWordPath);
-		// DerivateFS derivateWords = new DerivateFS(tempDir);
-		// derivateWords.init(TestHelper.ULB_MAX_PATH);
-		var dTwo = new GeneratorPDF(input, outputWord, pages, pdfStep);
+		pdfStep1.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
+		pdfStep1.setPathPDF(outputWordPath);
+		var dTwo = new GeneratorPDF(input, outputWord, pages, pdfStep1);
 		dTwo.setDerivate(derivateLines);
 		dTwo.create();
 		pdfWords = dTwo.getPDFResult();

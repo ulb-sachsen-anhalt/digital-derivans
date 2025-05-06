@@ -135,6 +135,16 @@ public class DerivateFS implements IDerivate {
 		return this.struct;
 	}
 
+	/**
+	 * 
+	 * Intended for testing purposes *ONLY*
+	 * 
+	 * @param testRoot
+	 */
+	public void setStructure(DerivateStruct testRoot) {
+		this.struct = testRoot;
+	}
+
 	@Override
 	public List<DigitalPage> getAllPages() {
 		List<DigitalPage> pages = new ArrayList<>(this.struct.getPages());

@@ -57,27 +57,24 @@ public class TestPDFRahbarOCRWords {
 		Path sourceImg = Path.of("src/test/resources/images/1981185920_88120_00000010.jpg");
 		assertTrue(Files.exists(sourceImg));
 		Files.copy(sourceImg, pathImageMax.resolve(sourceImg.getFileName()));
-
-		// arrange base derivateer
 		DerivansData input = new DerivansData(workDirWord, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
 		DerivansData output = new DerivansData(workDirWord, ".", DerivateType.PDF);
-
-		// arrange pdf path and pages
-		DerivateStepPDF step = new DerivateStepPDF();
-		step.setOutputDir(".");
-		step.setInputDir(IDerivans.IMAGE_DIR_MAX);
+		DerivateStepPDF pdfStep = new DerivateStepPDF();
+		pdfStep.setImageDpi(300); // prevent re-scaling for testing
+		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
+		pdfStep.setDebugRender(true);
+		pdfStep.setInputDir(IDerivans.IMAGE_DIR_MAX);
+		pdfStep.setOutputDir(".");
+		pdfStep.setPathPDF(workDirWord.resolve("1981185920_88120_word.pdf"));
 		DerivateFS derivate = new DerivateFS(workDirWord);
-		derivate.init(pathImageMax);
+		derivate.init(TestHelper.ULB_MAX_PATH);
 		List<DigitalPage> pages = derivate.getAllPages();
-		// resolver.enrichOCRFromFilesystem(pages, targetOcrDir);
-		step.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
-		step.setDebugRender(true);
-		step.setImageDpi(300); // prevent re-scaling for testing
-		GeneratorPDF wordLvlDerivateer = new GeneratorPDF(input, output, pages, step);
-
-		// act
-		wordLvlDerivateer.create();
-		wordLvlResult = wordLvlDerivateer.getPDFResult();
+		GeneratorPDF generator = new GeneratorPDF(input, output, pages, pdfStep);
+		generator.setDerivate(derivate);
+		generator.setStructure(derivate.getStructure());
+		generator.setDigitalPages(pages);
+		generator.create();
+		wordLvlResult = generator.getPDFResult();
 	}
 
 	@Test

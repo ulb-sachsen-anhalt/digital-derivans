@@ -22,6 +22,7 @@ import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
+import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
@@ -70,18 +71,17 @@ class TestPDFLevelLineOCRFromDir {
 		stepPdf.setDebugRender(true);
 		stepPdf.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		stepPdf.setPathPDF(pathTarget.resolve("zd1.pdf"));
-		// DescriptiveData dd = new DescriptiveData();
 		DerivateFS derivate = new DerivateFS(pathTarget);
 		derivate.init(TestHelper.ULB_MAX_PATH);
 		List<DigitalPage> pages = derivate.getAllPages();
-		//resolver.enrichOCRFromFilesystem(pages, targetDir);
 		GeneratorPDF d = new GeneratorPDF(input, output, pages, stepPdf);
 		d.setDerivate(derivate);
 		d.setPDFStep(stepPdf);
-	
-		// act
-		d.create();
-		resultDoc = d.getPDFResult();
+		GeneratorPDF generator = new GeneratorPDF(input, output, pages, stepPdf);
+		generator.setStructure(derivate.getStructure());
+		generator.setDigitalPages(pages);
+		generator.create();
+		resultDoc = generator.getPDFResult();
 	}
 	
 	@Test
