@@ -103,7 +103,8 @@ class TestMetadataVLSmedium {
 		assertEquals("Dissertatio Inavgvralis Ivridica De Avxiliatoribvs Fvrvm Oder: Von Diebs-Helffern",
 				tree.getLabel());
 		var lvlOneStructs = tree.getChildren();
-		assertEquals(69, devMD.getAllPages().size());
+		// of old there was 69 which was false enough
+		assertEquals(42, devMD.getAllPages().size());
 		assertEquals(5, lvlOneStructs.size());
 		var lvlOneStructOne = lvlOneStructs.get(0);
 		assertEquals("Vorderdeckel", lvlOneStructOne.getLabel());

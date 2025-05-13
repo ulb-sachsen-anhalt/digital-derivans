@@ -77,9 +77,7 @@ public class METS {
 
 	private boolean isInited;
 
-	private HashMap<String, METSFile> imageFiles = new LinkedHashMap<>();
-
-	private HashMap<String, METSFile> ocrFiles = new LinkedHashMap<>();
+	private HashMap<String, METSFile> metsFiles = new LinkedHashMap<>();
 
 	private HashMap<String, METSContainer> physContainer = new LinkedHashMap<>();
 
@@ -141,7 +139,7 @@ public class METS {
 		for (Element fileElement : files) {
 			String fileId = fileElement.getAttributeValue("ID");
 			METSFile metsFile = new METSFile(fileElement, this.imgFileGroup);
-			this.imageFiles.put(fileId, metsFile);
+			this.metsFiles.put(fileId, metsFile);
 		}
 		Element groupUseFulltext = null;
 		Optional<Element> optOcrGrp = this.search(fileGrpIterator, "USE", this.ocrFileGroup);
@@ -151,7 +149,7 @@ public class METS {
 			for (Element ocrFile : ocrFiles) {
 				String fileId = ocrFile.getAttributeValue("ID");
 				METSFile metsFile = new METSFile(ocrFile, this.ocrFileGroup);
-				this.ocrFiles.put(fileId, metsFile);
+				this.metsFiles.put(fileId, metsFile);
 			}
 		}
 
@@ -412,68 +410,6 @@ public class METS {
 		return this.xmlHandler.write(this.file);
 	}
 
-	/**
-	 * 
-	 * Get any files, which are linked to given logical container.
-	 * 
-	 * Uses METS 1.12 DFG interlinking flavor:
-	 * div => smLink => div@TYPE=page => file
-	 * 
-	 * If no files linked to given container, yield exception:
-	 * There must not be an empty logical section!
-	 * 
-	 * @param div
-	 * @param fileGroup
-	 * @return
-	 * @throws DigitalDerivansException
-	 */
-	// public List<METSFile> getFiles(METSContainer div, String fileGroup, String
-	// fileExt)
-	// throws DigitalDerivansException {
-	// String logID = div.getId();
-	// String q01 = String.format("//mets:structLink/mets:smLink[@xlink:from='%s']",
-	// logID);
-	// List<Element> smLinks = this.evaluate(q01);
-	// List<METSFile> metsFiles = new ArrayList<>();
-	// for (Element smLink : smLinks) {
-	// var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
-	// List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']",
-	// pageId));
-	// for (Element page : pages) {
-	// METSContainer pageContainer = new METSContainer(page);
-	// String pageLabel = pageContainer.determineLabel();
-	// var allFiles = page.getChildren("fptr", METS.NS_METS);
-	// for (var aFile : allFiles) {
-	// String ptrId = aFile.getAttributeValue("FILEID");
-	// String q02 = String.format("//mets:fileGrp[@USE='%s']/mets:file[@ID='%s']",
-	// fileGroup, ptrId);
-	// List<Element> filesFromGroup = this.evaluate(q02);
-	// if (filesFromGroup.isEmpty()) {
-	// continue;
-	// }
-	// Element fileFromGroup = filesFromGroup.get(0);
-	// String fileId = fileFromGroup.getAttributeValue("ID");
-	// var fstLocat = fileFromGroup.getChildren("FLocat", METS.NS_METS).get(0);
-	// String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
-	// if (!hRef.endsWith(fileExt)) {
-	// hRef += fileExt;
-	// }
-	// var thaFile = new METSFile(fileId, hRef, fileGroup);
-	// thaFile.setPageLabel(pageLabel);
-	// thaFile.setLocalRoot(this.getPath().getParent());
-	// pageContainer.getAttribute("CONTENTIDS").ifPresent(thaFile::setContentIds);
-	// metsFiles.add(thaFile);
-	// }
-	// }
-	// }
-	// if (metsFiles.isEmpty()) {
-	// String alert = String.format("No files link div %s/%s in @USE=%s!",
-	// logID, div.determineLabel(), fileGroup);
-	// throw new DigitalDerivansException(alert);
-	// }
-	// return metsFiles;
-	// }
-
 	public List<METSContainer> getPages(METSContainer div)
 			throws DigitalDerivansException {
 		String logID = div.getId();
@@ -500,9 +436,12 @@ public class METS {
 				.collect(Collectors.toList());
 		METSFile imgFile = null;
 		for (String fileId : fileIds) {
-			if (this.imageFiles.containsKey(fileId)) {
-				imgFile = this.imageFiles.get(fileId);
-				break;
+			if (this.metsFiles.containsKey(fileId)) {
+				METSFile tmpFile = this.metsFiles.get(fileId);
+				if (tmpFile.getFileGroup().equals(this.imgFileGroup)) {
+					imgFile = tmpFile;
+					break;
+				}
 			}
 		}
 		imgFile.setLocalRoot(this.getPath().getParent());
@@ -510,9 +449,12 @@ public class METS {
 		pack.imageFile = imgFile;
 		METSFile ocrFile = null;
 		for (String fileId : fileIds) {
-			if (this.ocrFiles.containsKey(fileId)) {
-				ocrFile = this.ocrFiles.get(fileId);
-				break;
+			if (this.metsFiles.containsKey(fileId)) {
+				METSFile tmpFile = this.metsFiles.get(fileId);
+				if (tmpFile.getFileGroup().equals(this.ocrFileGroup)) {
+					ocrFile = this.metsFiles.get(fileId);
+					break;
+				}
 			}
 		}
 		if (ocrFile != null) {

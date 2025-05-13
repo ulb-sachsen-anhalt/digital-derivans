@@ -2,7 +2,9 @@ package de.ulb.digital.derivans.model;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -52,7 +54,7 @@ public class DerivateMD implements IDerivate {
 
 	private DerivateStruct struct;
 
-	private final List<DigitalPage> allPages = new ArrayList<>();
+	private final Map<String, DigitalPage> pageIndex = new LinkedHashMap<>();
 
 	private String identifierExpression;
 
@@ -65,7 +67,7 @@ public class DerivateMD implements IDerivate {
 		this.mets = new METS(pathInput, imageGroup);
 		this.rootDir = pathInput.getParent();
 	}
-	
+
 	/**
 	 * Include minimal resolving of image sub dirs: => MAX, DEFAULT, if exist => use
 	 * same directory to search for images
@@ -106,23 +108,34 @@ public class DerivateMD implements IDerivate {
 	private void populateStruct(DerivateStruct parent, METSContainer container, String fileExt)
 			throws DigitalDerivansException {
 		if (container.getChildren().isEmpty()) {
-			List<METSContainer> pages = this.mets.getPages(container);
-			for (METSContainer digiFile : pages) {
+			this.handlePages(parent, container);
+		} else {
+			for (var subContainer : container.getChildren()) {
+				this.traverseStruct(parent, subContainer, fileExt);
+			}
+		}
+	}
+
+	private void handlePages(DerivateStruct parent, METSContainer container) throws DigitalDerivansException {
+		List<METSContainer> pages = this.mets.getPages(container);
+		for (METSContainer digiFile : pages) {
+			String pageId = digiFile.getId();
+			if (this.pageIndex.containsKey(pageId)) {
+				DigitalPage existingPage = this.pageIndex.get(pageId);
+				parent.getPages().add(existingPage);
+			} else {
 				METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
 				var imgFile = pack.imageFile;
 				Path filePath = this.rootDir.resolve(imgFile.getLocalPath(this.checkRessources));
 				int currOrder = this.mdPageOrder.getAndIncrement();
 				DigitalPage page = new DigitalPage(imgFile.getFileId(), currOrder, filePath);
+				page.setPageLabel(digiFile.determineLabel());
 				if (pack.ocrFile.isPresent()) {
 					METSFile ocrFile = pack.ocrFile.get();
 					page.setOcrFile(ocrFile.getLocalPath(this.checkRessources));
 				}
 				parent.getPages().add(page);
-				this.allPages.add(page); // also remember in derivate's list
-			}
-		} else {
-			for (var subContainer : container.getChildren()) {
-				this.traverseStruct(parent, subContainer, fileExt);
+				this.pageIndex.put(pageId, page); // also remember in self dictionary
 			}
 		}
 	}
@@ -142,22 +155,7 @@ public class DerivateMD implements IDerivate {
 				this.traverseStruct(currentStruct, subContainer, fileExt);
 			}
 		}
-		List<METSContainer> pages = this.mets.getPages(currentCnt);
-		for (METSContainer digiFile : pages) {
-			METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
-			var imgFile = pack.imageFile;
-			Path filePath = this.rootDir.resolve(imgFile.getLocalPath(this.checkRessources));
-			int currOrder = this.mdPageOrder.getAndIncrement();
-			DigitalPage page = new DigitalPage(imgFile.getFileId(), currOrder, filePath);
-			page.setPageLabel(digiFile.determineLabel());
-			digiFile.getAttribute("CONTENTIDS").ifPresent(page::setContentIds);
-			if (pack.ocrFile.isPresent()) {
-				METSFile ocrFile = pack.ocrFile.get();
-				page.setOcrFile(ocrFile.getLocalPath(this.checkRessources));
-			}
-			currentStruct.getPages().add(page);
-			this.allPages.add(page); // also remember in derivate's list
-		}
+		this.handlePages(currentStruct, currentCnt);
 	}
 
 	@Override
@@ -167,7 +165,7 @@ public class DerivateMD implements IDerivate {
 
 	@Override
 	public List<DigitalPage> getAllPages() {
-		return this.allPages;
+		return new ArrayList<>(this.pageIndex.values());
 	}
 
 	public Path getRootDir() {
@@ -185,7 +183,7 @@ public class DerivateMD implements IDerivate {
 
 	public DescriptiveMetadata getDescriptiveData() throws DigitalDerivansException {
 		DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
-		if(!this.mets.isInited()) { // for testing purposes; shall not happen in productive flows
+		if (!this.mets.isInited()) { // for testing purposes; shall not happen in productive flows
 			this.mets.init();
 		}
 		builder.setMetadataStore(this.mets);
