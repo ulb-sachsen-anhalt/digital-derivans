@@ -109,15 +109,15 @@ public class TestPDFulltextODEMLines {
 
 	/**
 	 * 
-	 * Test total length of result text including whitespaces
+	 * Test total length of result text including whitespaces from page No 320809
 	 * 
 	 * was: 3446
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	void testPage07HasCertainLength() throws Exception {
-		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 6);
+	void testPage08TextLength() throws Exception {
+		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
 		assertEquals(3382, textPage07.length());
 	}
 

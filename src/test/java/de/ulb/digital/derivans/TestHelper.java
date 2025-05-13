@@ -1,9 +1,13 @@
 package de.ulb.digital.derivans;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
@@ -47,9 +52,12 @@ import org.xml.sax.SAXException;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
 import de.ulb.digital.derivans.generate.pdf.ITextProcessor;
+import de.ulb.digital.derivans.model.ocr.OCRData;
 import de.ulb.digital.derivans.model.pdf.MetadataType;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
+import de.ulb.digital.derivans.model.text.Textline;
+import de.ulb.digital.derivans.model.text.Word;
 
 /**
  * 
@@ -63,6 +71,10 @@ public class TestHelper {
 	static String METS_SCHEMA = "http://www.loc.gov/METS/";
 
 	public static final Path ULB_MAX_PATH = Path.of("MAX");
+
+	public static int textMarginLeft = 50;
+
+	public static int textMarginTop = 200;
 
 	public static void generateImages(Path imageDir, int width, int height, int number, String labelFormat)
 			throws IOException {
@@ -161,7 +173,7 @@ public class TestHelper {
 	}
 
 	public static Path fixturePrint737429(Path tempDir, String imageSubDir) throws IOException {
-		return fixturePrint737429(tempDir, TestResource.VLS_HD_Aa_737429.get(),imageSubDir);
+		return fixturePrint737429(tempDir, TestResource.VLS_HD_Aa_737429.get(), imageSubDir);
 	}
 
 	public static String getText(Path writtenData, int pageNr) throws Exception {
@@ -227,8 +239,8 @@ public class TestHelper {
 		 * @throws DigitalDerivansException
 		 */
 		public String getPageText(int pageNr) throws DigitalDerivansException {
-			if(!Files.exists(this.pdfPath)) {
-				throw new DigitalDerivansException("Invalid PDF file path "+pdfPath);
+			if (!Files.exists(this.pdfPath)) {
+				throw new DigitalDerivansException("Invalid PDF file path " + pdfPath);
 			}
 			try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfPath))) {
 				var stripper = new PDFTextStripper();
@@ -243,7 +255,7 @@ public class TestHelper {
 
 		/**
 		 * 
-		 *  Retrive information concerning PDF Metadata
+		 * Retrive information concerning PDF Metadata
 		 * 
 		 * @return
 		 * @throws IOException
@@ -272,5 +284,66 @@ public class TestHelper {
 		public PDFOutlineEntry getOutline() throws IOException {
 			return ITextProcessor.readOutline(this.pdfPath);
 		}
+	}
+
+	/**
+	 * 
+	 * Create artificial OCR data
+	 * (Between word/token on-a-line +10 pixel gap)
+	 * 
+	 * @return
+	 */
+	public static OCRData italianOCR() {
+		List<Word> texts1 = new ArrayList<>();
+		texts1.add(new Word("BELLA", new Rectangle(textMarginLeft, textMarginTop, 70, 30)));
+		texts1.add(new Word("CHIAO", new Rectangle(130, textMarginTop, 70, 30)));
+		texts1.add(new Word("(DELLE", new Rectangle(210, textMarginTop, 80, 30)));
+		texts1.add(new Word("MODINE)", new Rectangle(300, textMarginTop, 100, 30)));
+		List<Word> texts2 = new ArrayList<>();
+		texts2.add(new Word("Alla", new Rectangle(textMarginLeft, 250, 40, 30)));
+		texts2.add(new Word("matina,", new Rectangle(100, 250, 75, 25)));
+		texts2.add(new Word("appena", new Rectangle(185, 250, 70, 25)));
+		texts2.add(new Word("alzata", new Rectangle(265, 250, 60, 25)));
+		List<Word> texts3 = new ArrayList<>();
+		texts3.add(new Word("o", new Rectangle(textMarginLeft, 300, 10, 25)));
+		texts3.add(new Word("bella", new Rectangle(70, 300, 50, 25)));
+		texts3.add(new Word("chiao,", new Rectangle(130, 300, 60, 25)));
+		texts3.add(new Word("bella", new Rectangle(200, 300, 50, 25)));
+		texts3.add(new Word("chiao,", new Rectangle(260, 300, 60, 25)));
+		texts3.add(new Word("bella", new Rectangle(330, 300, 50, 25)));
+		texts3.add(new Word("chiao", new Rectangle(390, 300, 50, 25)));
+		texts3.add(new Word("chiao", new Rectangle(450, 300, 50, 25)));
+		texts3.add(new Word("chiao!", new Rectangle(510, 300, 60, 25)));
+		List<Textline> lines = List.of(
+				new Textline(texts1),
+				new Textline(texts2),
+				new Textline(texts3));
+		return new OCRData(lines, new Dimension(575, 799));
+	}
+
+	/**
+	 * 
+	 * Assuming char width = 1/2 height
+	 * 
+	 * @return
+	 */
+	public static OCRData arabicOCR() {
+		var w1 = new Word("٨", new Rectangle(400, textMarginTop, 15, 30)); // ٨
+		assertEquals(1, w1.getText().length());
+		var w2 = new Word("ديبا", new Rectangle(200, textMarginTop, 60, 30));
+		assertEquals(4, w2.getText().length());
+		var w3 = new Word("جه", new Rectangle(160, textMarginTop, 30, 30));
+		assertEquals(2, w3.getText().length());
+		//
+		var w4 = new Word("\u0627\u0644\u0633\u0639\u0631",
+				new Rectangle(400, textMarginTop + 40, 75, 30)); // السعر
+		assertEquals(5, w4.getText().length());
+		var w5 = new Word("\u0627\u0644\u0627\u062c\u0645\u0627\u0644\u064a",
+				new Rectangle(250, textMarginTop + 40, 120, 30)); // الاجمالي
+		assertEquals(8, w5.getText().length());
+		List<Textline> lines = List.of(
+				new Textline(List.of(w1, w2, w3)),
+				new Textline(List.of(w4, w5)));
+		return new OCRData(lines, new Dimension(600, 800));
 	}
 }

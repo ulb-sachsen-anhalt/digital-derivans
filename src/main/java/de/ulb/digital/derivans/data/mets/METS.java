@@ -75,6 +75,8 @@ public class METS {
 
 	private Element primeLog;
 
+	private boolean isInited;
+
 	private HashMap<String, METSFile> imageFiles = new LinkedHashMap<>();
 
 	private HashMap<String, METSFile> ocrFiles = new LinkedHashMap<>();
@@ -117,6 +119,7 @@ public class METS {
 		}
 		var primeElement = modsSecs.get(0);
 		this.primeMods = new MODS(primeId, primeElement);
+		this.isInited = true;
 	}
 
 	private void buildInternalTree() throws DigitalDerivansException {
@@ -126,28 +129,28 @@ public class METS {
 		Filter<Element> fileGrpFilter = Filters.element(NS_METS).refine(Filters.element("fileGrp", NS_METS));
 		Iterator<Element> fileGrpIterator = this.document.getDescendants(fileGrpFilter);
 		// files
-		Element useImageGrp= null;
+		Element useImageGrp = null;
 		Optional<Element> optImageGrp = this.search(fileGrpIterator, "USE", this.imgFileGroup);
 		if (optImageGrp.isPresent()) {
 			useImageGrp = optImageGrp.get();
 		}
-		if(useImageGrp == null) {
-			throw new DigitalDerivansException("Invalid mets:fileGrp "+this.imgFileGroup+"!");
+		if (useImageGrp == null) {
+			throw new DigitalDerivansException("Invalid mets:fileGrp " + this.imgFileGroup + "!");
 		}
 		List<Element> files = useImageGrp.getChildren("file", NS_METS);
-		for(Element fileElement: files) {
+		for (Element fileElement : files) {
 			String fileId = fileElement.getAttributeValue("ID");
 			METSFile metsFile = new METSFile(fileElement, this.imgFileGroup);
 			this.imageFiles.put(fileId, metsFile);
 		}
-		Element groupUseFulltext= null;
+		Element groupUseFulltext = null;
 		Optional<Element> optOcrGrp = this.search(fileGrpIterator, "USE", this.ocrFileGroup);
 		if (optOcrGrp.isPresent()) {
 			groupUseFulltext = optOcrGrp.get();
 			List<Element> ocrFiles = groupUseFulltext.getChildren("file", NS_METS);
-			for(Element ocrFile: ocrFiles) {
+			for (Element ocrFile : ocrFiles) {
 				String fileId = ocrFile.getAttributeValue("ID");
-				METSFile metsFile = new METSFile(ocrFile, this.imgFileGroup);
+				METSFile metsFile = new METSFile(ocrFile, this.ocrFileGroup);
 				this.ocrFiles.put(fileId, metsFile);
 			}
 		}
@@ -157,7 +160,7 @@ public class METS {
 		if (optPhysStruct.isPresent()) {
 			Element physStruct = optPhysStruct.get();
 			Iterator<Element> metsPages = physStruct.getDescendants(Filters.element("div", NS_METS));
-			while(metsPages.hasNext()) {
+			while (metsPages.hasNext()) {
 				Element pageElement = metsPages.next();
 				String theId = pageElement.getAttributeValue("ID");
 				METSContainer div = new METSContainer(pageElement);
@@ -167,7 +170,7 @@ public class METS {
 		// links
 		Element structLink = this.document.getDescendants(structLinkFilter).next();
 		List<Element> smLinks = structLink.getChildren("smLink", NS_METS);
-		for(Element smLink : smLinks) {
+		for (Element smLink : smLinks) {
 			String fromLogical = smLink.getAttributeValue("from", NS_XLINK);
 			String toPhysical = smLink.getAttributeValue("to", NS_XLINK);
 			List<String> prevTos = this.smLinks.getOrDefault(fromLogical, new ArrayList<>());
@@ -179,7 +182,7 @@ public class METS {
 	private Optional<Element> search(Iterator<Element> elementIt, String attrLabel, String attrValue) {
 		while (elementIt.hasNext()) {
 			Element fgElement = elementIt.next();
-			if(fgElement.getAttributeValue(attrLabel).equals(attrValue))	{
+			if (fgElement.getAttributeValue(attrLabel).equals(attrValue)) {
 				return Optional.of(fgElement);
 			}
 		}
@@ -424,67 +427,63 @@ public class METS {
 	 * @return
 	 * @throws DigitalDerivansException
 	 */
-	// public List<METSFile> getFiles(METSContainer div, String fileGroup, String fileExt)
-	// 		throws DigitalDerivansException {
-	// 	String logID = div.getId();
-	// 	String q01 = String.format("//mets:structLink/mets:smLink[@xlink:from='%s']", logID);
-	// 	List<Element> smLinks = this.evaluate(q01);
-	// 	List<METSFile> metsFiles = new ArrayList<>();
-	// 	for (Element smLink : smLinks) {
-	// 		var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
-	// 		List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']", pageId));
-	// 		for (Element page : pages) {
-	// 			METSContainer pageContainer = new METSContainer(page);
-	// 			String pageLabel = pageContainer.determineLabel();
-	// 			var allFiles = page.getChildren("fptr", METS.NS_METS);
-	// 			for (var aFile : allFiles) {
-	// 				String ptrId = aFile.getAttributeValue("FILEID");
-	// 				String q02 = String.format("//mets:fileGrp[@USE='%s']/mets:file[@ID='%s']", fileGroup, ptrId);
-	// 				List<Element> filesFromGroup = this.evaluate(q02);
-	// 				if (filesFromGroup.isEmpty()) {
-	// 					continue;
-	// 				}
-	// 				Element fileFromGroup = filesFromGroup.get(0);
-	// 				String fileId = fileFromGroup.getAttributeValue("ID");
-	// 				var fstLocat = fileFromGroup.getChildren("FLocat", METS.NS_METS).get(0);
-	// 				String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
-	// 				if (!hRef.endsWith(fileExt)) {
-	// 					hRef += fileExt;
-	// 				}
-	// 				var thaFile = new METSFile(fileId, hRef, fileGroup);
-	// 				thaFile.setPageLabel(pageLabel);
-	// 				thaFile.setLocalRoot(this.getPath().getParent());
-	// 				pageContainer.getAttribute("CONTENTIDS").ifPresent(thaFile::setContentIds);
-	// 				metsFiles.add(thaFile);
-	// 			}
-	// 		}
-	// 	}
-	// 	if (metsFiles.isEmpty()) {
-	// 		String alert = String.format("No files link div %s/%s in @USE=%s!",
-	// 				logID, div.determineLabel(), fileGroup);
-	// 		throw new DigitalDerivansException(alert);
-	// 	}
-	// 	return metsFiles;
+	// public List<METSFile> getFiles(METSContainer div, String fileGroup, String
+	// fileExt)
+	// throws DigitalDerivansException {
+	// String logID = div.getId();
+	// String q01 = String.format("//mets:structLink/mets:smLink[@xlink:from='%s']",
+	// logID);
+	// List<Element> smLinks = this.evaluate(q01);
+	// List<METSFile> metsFiles = new ArrayList<>();
+	// for (Element smLink : smLinks) {
+	// var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
+	// List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']",
+	// pageId));
+	// for (Element page : pages) {
+	// METSContainer pageContainer = new METSContainer(page);
+	// String pageLabel = pageContainer.determineLabel();
+	// var allFiles = page.getChildren("fptr", METS.NS_METS);
+	// for (var aFile : allFiles) {
+	// String ptrId = aFile.getAttributeValue("FILEID");
+	// String q02 = String.format("//mets:fileGrp[@USE='%s']/mets:file[@ID='%s']",
+	// fileGroup, ptrId);
+	// List<Element> filesFromGroup = this.evaluate(q02);
+	// if (filesFromGroup.isEmpty()) {
+	// continue;
+	// }
+	// Element fileFromGroup = filesFromGroup.get(0);
+	// String fileId = fileFromGroup.getAttributeValue("ID");
+	// var fstLocat = fileFromGroup.getChildren("FLocat", METS.NS_METS).get(0);
+	// String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
+	// if (!hRef.endsWith(fileExt)) {
+	// hRef += fileExt;
+	// }
+	// var thaFile = new METSFile(fileId, hRef, fileGroup);
+	// thaFile.setPageLabel(pageLabel);
+	// thaFile.setLocalRoot(this.getPath().getParent());
+	// pageContainer.getAttribute("CONTENTIDS").ifPresent(thaFile::setContentIds);
+	// metsFiles.add(thaFile);
+	// }
+	// }
+	// }
+	// if (metsFiles.isEmpty()) {
+	// String alert = String.format("No files link div %s/%s in @USE=%s!",
+	// logID, div.determineLabel(), fileGroup);
+	// throw new DigitalDerivansException(alert);
+	// }
+	// return metsFiles;
 	// }
 
 	public List<METSContainer> getPages(METSContainer div)
 			throws DigitalDerivansException {
 		String logID = div.getId();
 		List<METSContainer> cntnrs = new ArrayList<>();
-		// String q01 = String.format("//mets:structLink/mets:smLink[@xlink:from='%s']", logID);
-		// List<Element> smLinks = this.evaluate(q01);
-		// for (Element smLink : smLinks) {
-		// 	var pageId = smLink.getAttributeValue("to", METS.NS_XLINK);
-		// 	List<Element> pages = this.evaluate(String.format("//mets:div[@ID='%s']", pageId));
-		// 	for (Element page : pages) {
-		// 		METSContainer pageContainer = new METSContainer(page);
-		// 		cntnrs.add(pageContainer);
-		// 	}
-		// }
-		List<String> linkedTo = this.smLinks.get(logID);
-		for(String linkedId : linkedTo) {
-			METSContainer page = this.physContainer.get(linkedId);
-			cntnrs.add(page);
+		List<String> linkedTo = this.smLinks.getOrDefault(logID, new ArrayList<>());
+		for (String linkedId : linkedTo) {
+			if (this.physContainer.containsKey(linkedId)) {
+				METSContainer page = this.physContainer.get(linkedId);
+				cntnrs.add(page);
+			}
 		}
 		if (cntnrs.isEmpty()) {
 			String alert = String.format("No files link div %s/%s in @USE=%s!",
@@ -499,10 +498,9 @@ public class METS {
 		List<Element> allFiles = container.get().getChildren("fptr", METS.NS_METS);
 		List<String> fileIds = allFiles.stream().map(aFile -> aFile.getAttributeValue("FILEID"))
 				.collect(Collectors.toList());
-		// METSFile imgFile = this.pickFromGroup(fileIds, this.imgFileGroup, true);
 		METSFile imgFile = null;
-		for(String fileId : fileIds) {
-			if(this.imageFiles.containsKey(fileId)) {
+		for (String fileId : fileIds) {
+			if (this.imageFiles.containsKey(fileId)) {
 				imgFile = this.imageFiles.get(fileId);
 				break;
 			}
@@ -510,74 +508,23 @@ public class METS {
 		imgFile.setLocalRoot(this.getPath().getParent());
 		METSFilePack pack = new METSFilePack();
 		pack.imageFile = imgFile;
-		//METSFile ocrFile = this.pickFromGroup(fileIds, this.ocrFileGroup, false);
 		METSFile ocrFile = null;
-		for(String fileId : fileIds) {
-			if(this.ocrFiles.containsKey(fileId)) {
-				ocrFile = this.imageFiles.get(fileId);
+		for (String fileId : fileIds) {
+			if (this.ocrFiles.containsKey(fileId)) {
+				ocrFile = this.ocrFiles.get(fileId);
 				break;
 			}
 		}
-		if(ocrFile != null) {
+		if (ocrFile != null) {
 			ocrFile.setLocalRoot(this.getPath().getParent());
 			pack.ocrFile = Optional.of(ocrFile);
 		}
 		return pack;
 	}
 
-	private METSFile pickFromGroup(List<String> fileIds, String fileGroupUse, boolean check) throws DigitalDerivansException {
-		// Element theElement = null;
-		// for (String theId : fileIds) {
-		// 	String queryFile = String.format("//mets:fileGrp[@USE='%s']/mets:file[@ID='%s']", fileGroupUse, theId);
-		// 	List<Element> filesFromGroup = this.evaluate(queryFile);
-		// 	this.metsFiles.get(theId);
-		// 	if (filesFromGroup.isEmpty()) {
-		// 		continue;
-		// 	}
-		// 	theElement = filesFromGroup.get(0);
-		// 	break;
-		// }
-		// if (theElement == null) {
-		// 	if (check) {
-		// 		throw new DigitalDerivansException("fileGroupUse");
-		// 	} else {
-		// 		return null;
-		// 	}
-		// }
-
-		// String mimeType = theElement.getAttributeValue("MIMETYPE");
-		// String fileId = theElement.getAttributeValue("ID");
-		// var fstLocat = theElement.getChildren("FLocat", METS.NS_METS).get(0);
-		// String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
-		// int offsetCtx = hRef.lastIndexOf('/');
-		// if (offsetCtx > 0) {
-		// 	hRef = hRef.substring(offsetCtx+1);
-		// }
-		// int offsetExt = hRef.lastIndexOf('.');
-		// if (offsetExt < 0) { // no extension detected, make a guess
-		// 	if (isTypeJPG(mimeType) && !hRef.endsWith(".jpg")) {
-		// 		hRef += ".jpg";
-		// 	}
-		// 	if (isTypeXML(mimeType) && !hRef.endsWith(".xml")) {
-		// 		hRef += ".xml";
-		// 	}
-		// }
-		// METSFile metsFile = new METSFile(theElement, fileGroupUse);
-		// return metsFile;
-
-		return this.imageFiles.get(fileIds.get(0));
+	public boolean isInited() {
+		return this.isInited;
 	}
-
-	// private boolean isTypeJPG(String mimeType) {
-	// 	if (mimeType != null && mimeType.contains("image")) {
-	// 		return mimeType.contains("jpeg") || mimeType.contains("jpg");
-	// 	}
-	// 	return false;
-	// }
-
-	// private boolean isTypeXML(String mimeType) {
-	// 	return mimeType != null && mimeType.contains("xml");
-	// }
 
 	public void setIdentifierExpression(String xpressiob) {
 		throw new UnsupportedOperationException("Unimplemented method 'setIdentifierExpression'");

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.IDerivans;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
@@ -33,7 +34,7 @@ class TestMetadataKitodo2MVW {
 	@Test
 	void testKitodo2MultivolumeMetadata() throws DigitalDerivansException {
 		// arrange
-		var devMD = new DerivateMD(TestResource.K2_Af_140257772.get());
+		var devMD = new DerivateMD(TestResource.K2_Af_140257772.get(), TestHelper.ULB_MAX_PATH.toString());
 		
 		// act
 		DescriptiveMetadata dd140257772 = devMD.getDescriptiveData();
@@ -47,11 +48,9 @@ class TestMetadataKitodo2MVW {
 		devMD.checkRessources(false);
 		devMD.init(Path.of(IDerivans.IMAGE_DIR_MAX));
 		var dst = devMD.getStructure();
-		// of old
-		// assertEquals("Materialien zur Geschichte des Bauernkriegs in Franken, Schwaben, Thüringen [et]c. im Jahre 1525.", dst.getLabel());
-		// as of 2025
-		assertEquals("Band", dst.getLabel());
-		assertEquals("Vorderdeckel", dst.getChildren().get(0).getLabel());
+		assertEquals("Materialien zur Geschichte des Bauernkriegs in Franken, Schwaben, Thüringen [et]c. im Jahre 1525.", dst.getLabel());
+		// of old before 2025: "Vorderdeckel"
+		assertEquals("Band", dst.getChildren().get(0).getLabel());
 	}
 	
 	/**
@@ -67,12 +66,12 @@ class TestMetadataKitodo2MVW {
 	@Test
 	void testKitodo2InvalidLegacyFStage030745780() throws DigitalDerivansException {
 		// arrange
-		var mds = new DerivateMD(TestResource.K2_Af_030745780.get());
-		mds.checkRessources(false);
+		var derivate = new DerivateMD(TestResource.K2_Af_030745780.get());
+		derivate.checkRessources(false);
 
 		// act
 		var actualExc = assertThrows(DigitalDerivansException.class, 
-			() -> mds.init(Path.of("MAX")));
+			() -> derivate.init(Path.of("MAX")));
 		
 		// assert - as of 2025
 		assertEquals("No files link div LOG_0216/207. [An Charlotte Pistorius.] in @USE=MAX!", actualExc.getMessage());

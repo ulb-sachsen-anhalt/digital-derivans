@@ -27,20 +27,12 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  */
 class TestMetadataVLSmedium {
 
-	static DerivateMD mds5175671;
-
-	static DescriptiveMetadata dd5175671;
-
-	@BeforeAll
-	static void setupClazz() throws DigitalDerivansException {
-		TestMetadataVLSmedium.mds5175671 = new DerivateMD(TestResource.VLS_HD_Aa_5175671.get());
-		TestMetadataVLSmedium.mds5175671.checkRessources(false);
-		TestMetadataVLSmedium.mds5175671.init(Path.of(IDerivans.IMAGE_DIR_MAX));
-		dd5175671 = mds5175671.getDescriptiveData();
-	}
-
 	@Test
-	void testStructureOf5175671() {
+	void testStructureOf5175671() throws DigitalDerivansException {
+		DerivateMD mds5175671 = new DerivateMD(TestResource.VLS_HD_Aa_5175671.get());
+		mds5175671.checkRessources(false);
+		mds5175671.init(Path.of(IDerivans.IMAGE_DIR_MAX));
+		DescriptiveMetadata dd5175671 = mds5175671.getDescriptiveData();
 		String title = dd5175671.getTitle();
 		assertEquals("n.a.", title);
 	}
@@ -59,12 +51,12 @@ class TestMetadataVLSmedium {
 	void testInvalidStructure226134857() throws Exception {
 
 		// arrange
-		var mds = new DerivateMD(TestResource.VLS_HD_Aa_226134857.get());
-		mds.checkRessources(false);
+		var derivate = new DerivateMD(TestResource.VLS_HD_Aa_226134857.get());
+		derivate.checkRessources(false);
 
 		// act
 		var actualExc = assertThrows(DigitalDerivansException.class,
-				() -> mds.init(TestHelper.ULB_MAX_PATH));
+				() -> derivate.init(TestHelper.ULB_MAX_PATH));
 
 		// was: LogId 'log2404939' : Invalid physical struct 'phys2404942'!
 		assertEquals("No files link div log2404930/Scene VIII. in @USE=MAX!", actualExc.getMessage());
@@ -74,7 +66,8 @@ class TestMetadataVLSmedium {
 	 * 
 	 * Ensure: invalid XML which confuses the Parser yields
 	 * proper Exception for Diagnostics
-	 * @throws DigitalDerivansException 
+	 * 
+	 * @throws DigitalDerivansException
 	 * 
 	 */
 	@Test

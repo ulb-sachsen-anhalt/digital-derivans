@@ -54,12 +54,15 @@ public class DerivateMD implements IDerivate {
 
 	private final List<DigitalPage> allPages = new ArrayList<>();
 
-	private DescriptiveMetadata descriptiveData;
-
 	private String identifierExpression;
 
 	public DerivateMD(Path pathInput) throws DigitalDerivansException {
 		this.mets = new METS(pathInput, this.imageGroup);
+		this.rootDir = pathInput.getParent();
+	}
+
+	public DerivateMD(Path pathInput, String imageGroup) throws DigitalDerivansException {
+		this.mets = new METS(pathInput, imageGroup);
 		this.rootDir = pathInput.getParent();
 	}
 	
@@ -182,12 +185,14 @@ public class DerivateMD implements IDerivate {
 
 	public DescriptiveMetadata getDescriptiveData() throws DigitalDerivansException {
 		DescriptiveMetadataBuilder builder = new DescriptiveMetadataBuilder();
+		if(!this.mets.isInited()) { // for testing purposes; shall not happen in productive flows
+			this.mets.init();
+		}
 		builder.setMetadataStore(this.mets);
 		if (this.identifierExpression != null) { // identifier might have changed for PDF labelling
 			builder.setIdentifierExpression(this.identifierExpression);
 		}
-		this.descriptiveData = builder.person().access().identifier().title().urn().year().build();
-		return this.descriptiveData;
+		return builder.person().access().identifier().title().urn().year().build();
 	}
 
 	@Override

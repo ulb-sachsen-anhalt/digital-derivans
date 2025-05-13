@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
+import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
@@ -192,6 +193,9 @@ public class DerivateStepPDF extends DerivateStep {
 	}
 
 	public Path getPathPDF() {
+		if (this.pdfFilePath == null) {
+			throw new DigitalDerivansRuntimeException("Invalid pdfFilePath: null");
+		}
 		return this.pdfFilePath.normalize();
 	}
 

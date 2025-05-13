@@ -45,17 +45,11 @@ class TestDerivansFulltextODEM {
 		TestHelper.copyTree(configSourceDir, configTargetDir);
 		workDir = tempDir.resolve("148811035");
 
-		// use existing images
-		Path pathImageMax = workDir.resolve("MAX");
+		// re-use images
+		Path pathImageMax = workDir.resolve(TestHelper.ULB_MAX_PATH);
 		Files.createDirectories(pathImageMax);
 		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
 		TestHelper.copyTree(sourceImageDir, pathImageMax);
-
-		// create artificial testimages
-		// List<String> ids = IntStream.range(1, 17).mapToObj(i -> String.format("%08d",
-		// i)).collect(Collectors.toList());
-		// generateJpgsFromList(pathImageMax, 2164, 2448, ids);
-
 		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
 		Path targetMets = workDir.resolve(Path.of("mets.xml"));
 		Files.copy(sourceMets, targetMets);
@@ -67,7 +61,6 @@ class TestDerivansFulltextODEM {
 		dp.setPathInput(targetMets);
 		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_odem.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
-
 		// apply some scaling, too
 		int maximal = 2339; // A4 200 DPI ok
 		// int maximal = 1754; // A4 150 DPI tw, print vanishes over top up to "Sero
@@ -115,16 +108,17 @@ class TestDerivansFulltextODEM {
 	/**
 	 * 
 	 * Test total length of result text including whitespaces
-	 * iText5:	1327
+	 * iText5 :	1327
 	 * PDFBox3: 1038
-	 * iText8:  3372
+	 * iText8 : 3372
+	 * 2025   : 3382
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testPage07HasCertainLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
-		assertEquals(3373, textPage07.length());
+		assertEquals(3382, textPage07.length());
 	}
 
 	@Test

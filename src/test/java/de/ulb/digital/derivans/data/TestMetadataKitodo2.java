@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -24,30 +25,13 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  */
 class TestMetadataKitodo2 {
 
-	static DescriptiveMetadata dd143074601;
-
-	static DescriptiveMetadata dd147573602;
-
-	@BeforeAll
-	static void setup() throws Exception {
-		DerivateMD d143074601 = new DerivateMD(TestResource.K2_Aa_143074601.get());
-		dd143074601 = d143074601.getDescriptiveData();
-		DerivateMD d147573602 = new DerivateMD(TestResource.K2_Aa_147573602.get());
-		dd147573602 = d147573602.getDescriptiveData();
-	}
-
 	@Test
-	void testUrn143074601() throws DigitalDerivansException {
+	void testMetadata143074601() throws DigitalDerivansException {
+		DerivateMD d143074601 = new DerivateMD(TestResource.K2_Aa_143074601.get(), TestHelper.ULB_MAX_PATH.toString());
+		assertTrue(d143074601.isMetadataPresent());
+		DescriptiveMetadata dd143074601 = d143074601.getDescriptiveData();
 		assertEquals("urn:nbn:de:gbv:3:1-1192015415-143074601-16", dd143074601.getUrn());
-	}
-	
-	@Test
-	void testPerson143074601() throws DigitalDerivansException {
 		assertEquals("Heister, Lorenz", dd143074601.getPerson());
-	}
-
-	@Test
-	void testIdentifier143074601() throws DigitalDerivansException {
 		assertEquals("143074601", dd143074601.getIdentifier());
 	}
 
@@ -72,6 +56,9 @@ class TestMetadataKitodo2 {
 	 */
 	@Test
 	void testDescriptiveDataFromKitodo2() throws DigitalDerivansException {
+
+		DerivateMD d147573602 = new DerivateMD(TestResource.K2_Aa_147573602.get(), TestHelper.ULB_MAX_PATH.toString());
+		DescriptiveMetadata dd147573602 = d147573602.getDescriptiveData();
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
 		assertEquals("147573602", dd147573602.getIdentifier());
 		// mods:titleInfo/mods:title
@@ -91,7 +78,7 @@ class TestMetadataKitodo2 {
 	 * 
 	 * BUGFIX
 	 * 
-	 * see: https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/35 
+	 * see: https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/35
 	 * 
 	 * @throws DigitalDerivansException
 	 */
@@ -99,7 +86,7 @@ class TestMetadataKitodo2 {
 	void testMetadataWithSingleSectionOnlyFromKitodo2() throws DigitalDerivansException {
 
 		// arrange
-		var mds = new DerivateMD(TestResource.K2_Hau_1748529021.get());
+		var mds = new DerivateMD(TestResource.K2_Hau_1748529021.get(), TestHelper.ULB_MAX_PATH.toString());
 
 		// act
 		var dd = mds.getDescriptiveData();
@@ -107,7 +94,6 @@ class TestMetadataKitodo2 {
 		// assert
 		assertEquals("1044", dd.getYearPublished());
 	}
-	
 
 	/**
 	 * 
@@ -117,11 +103,10 @@ class TestMetadataKitodo2 {
 	@Test
 	void testEnsureIdentifierPPNMatches() throws DigitalDerivansException {
 		// arrange
-		var mds1186819316 = new DerivateMD(TestResource.K2_Aa_1186819316.get());
+		var mds1186819316 = new DerivateMD(TestResource.K2_Aa_1186819316.get(), TestHelper.ULB_MAX_PATH.toString());
 
 		// act
 		var dd1186819316 = mds1186819316.getDescriptiveData();
-		assertNotNull(dd143074601);
 		assertEquals("1186819316", dd1186819316.getIdentifier());
 	}
 
@@ -133,7 +118,7 @@ class TestMetadataKitodo2 {
 	@Test
 	void testFindRecordIdentifierPeriodicalVolume() throws DigitalDerivansException {
 		// arrange
-		var mds = new DerivateMD(TestResource.K2_AB_16740608619039.get());
+		var mds = new DerivateMD(TestResource.K2_AB_16740608619039.get(), TestHelper.ULB_MAX_PATH.toString());
 
 		// act
 		var dd = mds.getDescriptiveData();

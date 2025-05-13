@@ -69,12 +69,12 @@ public class TestPDFRahbarOCRWords {
 		DerivateFS derivate = new DerivateFS(workDirWord);
 		derivate.init(TestHelper.ULB_MAX_PATH);
 		List<DigitalPage> pages = derivate.getAllPages();
-		GeneratorPDF generator = new GeneratorPDF(input, output, pages, pdfStep);
-		generator.setDerivate(derivate);
-		generator.setStructure(derivate.getStructure());
-		generator.setDigitalPages(pages);
-		generator.create();
-		wordLvlResult = generator.getPDFResult();
+		GeneratorPDF pdfGenerator = new GeneratorPDF(input, output, pages, pdfStep);
+		pdfGenerator.setDerivate(derivate);
+		pdfGenerator.setStructure(derivate.getStructure());
+		pdfGenerator.setDigitalPages(pages);
+		pdfGenerator.create();
+		wordLvlResult = pdfGenerator.getPDFResult();
 	}
 
 	@Test

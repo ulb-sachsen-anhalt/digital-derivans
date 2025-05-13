@@ -26,7 +26,7 @@ import de.ulb.digital.derivans.model.step.DerivateStep;
 
 /**
  * 
- * MWE for ULB Sachsen-Anhalt 
+ * MWE for ULB Sachsen-Anhalt
  * Setup contains JPG images + METS/MODS metadata
  * generate images, attach footnote, create PDF
  * (= 5 steps)
@@ -89,29 +89,13 @@ class TestDerivansLegacyULB {
 		assertEquals("DerivateStepImageFooter", steps.get(0).getClass().getSimpleName());
 		assertEquals("DerivateStepImage", steps.get(1).getClass().getSimpleName());
 		assertEquals("DerivateStepPDF", steps.get(2).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(3).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(4).getClass().getSimpleName());
 	}
 
 	@Test
 	void testNumberOfCreatedDerivateers() {
 		assertEquals(5, generators.size());
-	}
-
-	/**
-	 * 
-	 * Due Bug "Fail to render granular URN #51"
-	 * https://github.com/ulb-sachsen-anhalt/digital-derivans/issues/51
-	 * extended to check clazz names
-	 * 
-	 */
-	@Test
-	void testTypesOfDerivateers()  {
-		assertEquals(5, generators.size());
-		assertNotEquals("GeneratorImageJPGFooter", generators.get(0).getClass().getSimpleName());
-		assertEquals("GeneratorImageJPG", generators.get(0).getClass().getSimpleName());
-		assertEquals("GeneratorImageJPGFooter", generators.get(1).getClass().getSimpleName());
-		assertEquals("GeneratorPDF", generators.get(2).getClass().getSimpleName());
-		assertEquals("GeneratorImageJPG", generators.get(2).getClass().getSimpleName());
-		assertEquals("GeneratorImageJPG", generators.get(2).getClass().getSimpleName());
 	}
 
 	@Test
@@ -120,7 +104,7 @@ class TestDerivansLegacyULB {
 		assertTrue(d.getInput().getRootDir().toString().endsWith("737429"));
 		assertEquals("MAX", d.getInput().getSubDir());
 		assertTrue(d.getOutput().getRootDir().toString().endsWith("737429"));
-		assertEquals("IMAGE_FOOTER",d.getOutput().getSubDir());
+		assertEquals("IMAGE_FOOTER", d.getOutput().getSubDir());
 	}
 
 	@Test
@@ -135,7 +119,7 @@ class TestDerivansLegacyULB {
 	void testDerivateJPGsWithFooterWritten() {
 		Path footerDir = workDir.resolve("IMAGE_FOOTER");
 		assertTrue(Files.exists(footerDir));
-		for (int i=1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
+		for (int i = 1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
 			var imageLabel = String.format("%s.jpg", TestHelper.fixture737429ImageLabel.get(i));
 			assertTrue(footerDir.resolve(imageLabel).toFile().exists());
 		}
@@ -145,17 +129,17 @@ class TestDerivansLegacyULB {
 	void testPreviewImagesWritten() {
 		Path previewDir = workDir.resolve(prefixPreview);
 		assertTrue(Files.exists(previewDir));
-		for (int i=1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
+		for (int i = 1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
 			var imageLabel = String.format("%s%s.jpg", prefixPreview, TestHelper.fixture737429ImageLabel.get(i));
 			assertTrue(previewDir.resolve(imageLabel).toFile().exists());
 		}
 	}
 
 	@Test
-	void testThumbnailsWritten()  {
+	void testThumbnailsWritten() {
 		Path thumbsDir = workDir.resolve(prefixThumbs);
 		assertTrue(Files.exists(thumbsDir));
-		for (int i=1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
+		for (int i = 1; i < TestHelper.fixture737429ImageLabel.size(); i++) {
 			var imageLabel = String.format("%s%s.jpg", prefixThumbs, TestHelper.fixture737429ImageLabel.get(i));
 			assertTrue(thumbsDir.resolve(imageLabel).toFile().exists());
 		}
@@ -168,7 +152,7 @@ class TestDerivansLegacyULB {
 	}
 
 	@Test
-	void testPDFOutlineTree() throws Exception{
+	void testPDFOutlineTree() throws Exception {
 		Path pdfWritten = workDir.resolve("191092622.pdf");
 		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
 		assertNotNull(outline);

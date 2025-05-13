@@ -103,9 +103,7 @@ public class DerivateFS implements IDerivate {
 			String fileName = currPath.getFileName().toString().split(fileExt)[0];
 			Optional<Path> fulltextMatch = fulltextFiles.stream()
 					.filter(file -> { String pathName = file.getFileName().toString();
-									  int offSet = pathName.lastIndexOf('.');
-									  String stem = pathName.substring(0, offSet);
-									  return fileName.equals(stem);
+									  return pathName.startsWith(fileName) || fileName.startsWith(pathName);
 									})
 					.findFirst();
 			if(fulltextMatch.isPresent()){

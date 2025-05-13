@@ -88,7 +88,7 @@ class TestImageDerivateerJPGFooter {
 		int outcome = gen.create();
 
 		// assert
-		assertEquals(4, outcome);
+		assertEquals(2, outcome);
 		List<Path> resultPaths = Files.list(targetPath).collect(Collectors.toList());
 		for (Path p : resultPaths) {
 			assertTrue(p.toFile().exists());

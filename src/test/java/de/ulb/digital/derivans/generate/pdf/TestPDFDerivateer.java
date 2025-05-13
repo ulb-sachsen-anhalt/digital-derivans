@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.generate.pdf;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -8,6 +9,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.model.DerivansData;
@@ -27,11 +29,12 @@ class TestPDFDerivateer {
 	/**
 	 * 
 	 * Check: invalid pages provided => yield exception
+	 * @throws DigitalDerivansException 
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	void testInvalidPageArg() {
+	void testInvalidPageArg() throws DigitalDerivansException {
 
 		// arrange mwe
 		DerivansData input = new DerivansData(Path.of("."), IDerivans.IMAGE_DIR_DEFAULT, DerivateType.JPG);
@@ -41,11 +44,12 @@ class TestPDFDerivateer {
 		pdfMeta.mergeDescriptiveData(dd);
 
 		// act
-		var thrown = assertThrows(DigitalDerivansException.class, () -> {
-			new GeneratorPDF(input, output, null, pdfMeta);
+		GeneratorPDF generator = new GeneratorPDF(input, output, null, pdfMeta);
+		var thrown = assertThrows(DigitalDerivansRuntimeException.class, () -> {
+			generator.create();
 		});
 
 		// assert
-		assertTrue(thrown.getMessage().contains("Invalid pages"));
+		assertEquals("Invalid pdfFilePath: null", thrown.getMessage());
 	}
 }
