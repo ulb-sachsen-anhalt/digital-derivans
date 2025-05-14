@@ -14,10 +14,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.data.font.FontHandler;
 import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.step.DerivateStep;
+import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
 
 /**
  * 
@@ -48,26 +52,26 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 		super();
 	}
 
-	public GeneratorImageJPGFooter(GeneratorImageJPGFooter copy) {
-		super(copy.input, copy.output, copy.quality);
-		this.poolSize = copy.getPoolSize();
-		this.maximal = copy.getMaximal();
-	}
+	// public GeneratorImageJPGFooter(GeneratorImageJPGFooter copy) {
+	// 	super(copy.input, copy.output, copy.quality);
+	// 	this.poolSize = copy.getPoolSize();
+	// 	this.maximal = copy.getMaximal();
+	// }
 
-	public GeneratorImageJPGFooter(DerivansData input, DerivansData output, DigitalFooter footer,
-			List<DigitalPage> pages, Integer quality) {
-		super(input, output, quality);
-		this.footer = footer;
-		this.digitalPages = pages;
-		this.init();
-	}
+	// public GeneratorImageJPGFooter(DerivansData input, DerivansData output, DigitalFooter footer,
+	// 		List<DigitalPage> pages, Integer quality) {
+	// 	super(input, output, quality);
+	// 	this.footer = footer;
+	// 	this.digitalPages = pages;
+	// 	this.init();
+	// }
 
-	public GeneratorImageJPGFooter(GeneratorImageJPGFooter jpgFooter, int quality) {
-		super(jpgFooter.getInput(), jpgFooter.getOutput(), quality);
-		this.footer = jpgFooter.getDigitalFooter();
-		this.digitalPages = jpgFooter.getDigitalPages();
-		this.init();
-	}
+	// public GeneratorImageJPGFooter(GeneratorImageJPGFooter jpgFooter, int quality) {
+	// 	super(jpgFooter.getInput(), jpgFooter.getOutput(), quality);
+	// 	this.footer = jpgFooter.getDigitalFooter();
+	// 	this.digitalPages = jpgFooter.getDigitalPages();
+	// 	this.init();
+	// }
 
 	/**
 	 * 
@@ -79,8 +83,9 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 	 * @param pages
 	 */
 	public GeneratorImageJPGFooter(Generator base, Integer quality, DigitalFooter footer) {
-		super(base.getInput(), base.getOutput(), quality);
+		// super(base.getInput(), base.getOutput(), quality);
 		this.digitalPages = base.getDigitalPages();
+		this.quality = quality;
 		this.footer = footer;
 		this.init();
 	}
@@ -99,6 +104,28 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 		this.init();
 	}
 
+	@Override
+	public void setStep(DerivateStep step) {
+		super.setStep(step);
+		DerivateStepImageFooter stepFooter = (DerivateStepImageFooter) step;
+		String footerLabel = stepFooter.getFooterLabel();
+		int quality = stepFooter.getQuality();
+		this.setQuality(quality);
+		Path pathTemplate = stepFooter.getPathTemplate();
+		try {
+			DigitalFooter footerUnknown = new DigitalFooter(footerLabel, IDerivans.UNKNOWN, pathTemplate);
+			this.setFooter(footerUnknown);
+			if (this.derivate.isMetadataPresent()) {
+				var derivateMD = (DerivateMD) this.derivate;
+				String workIdentifier = derivateMD.getIdentifierURN();
+				DigitalFooter footerWithIdent = new DigitalFooter(footerLabel, workIdentifier, pathTemplate);
+				this.setFooter(footerWithIdent);
+			}
+		} catch (DigitalDerivansException exc) {
+			throw new DigitalDerivansRuntimeException(exc);
+		}
+	}
+
 	protected DigitalFooter getDigitalFooter() {
 		return this.footer;
 	}
@@ -110,7 +137,7 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 	}
 
 	private String renderFooter(DigitalPage page) {
-		Path pathIn = page.getFile().withDirname(this.input.getSubDir());
+		Path pathIn = page.getFile().withDirname(this.step.getInputDir());
 		if (!Files.exists(pathIn)) {
 			throw new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
 		}

@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.generate.image.ImageProcessor;
-import de.ulb.digital.derivans.model.DerivansData;
 
 /**
  * 
@@ -38,13 +37,13 @@ public abstract class GeneratorImage extends Generator {
 
 	protected ImageProcessor imageProcessor = new ImageProcessor();
 
-	protected GeneratorImage() {
-		super();
-	}
+	// protected GeneratorImage() {
+	// 	super();
+	// }
 
-	protected GeneratorImage(DerivansData input, DerivansData output) {
-		super(input, output);
-	}
+	// protected GeneratorImage(DerivansData input, DerivansData output) {
+	// 	super(input, output);
+	// }
 
 	public void setImageProcessor(ImageProcessor processor) {
 		this.imageProcessor = processor;
@@ -102,7 +101,7 @@ public abstract class GeneratorImage extends Generator {
 	public int create() throws DigitalDerivansException {
 
 		// basic precondition: output directory shall exist
-		Path targetDir = this.getOutput().getRootDir().resolve(this.getOutput().getSubDir());
+		Path targetDir = this.rootDir.resolve(this.step.getOutputDir());
 		if (!Files.exists(targetDir)) {
 			try {
 				Files.createDirectory(targetDir);
@@ -116,12 +115,12 @@ public abstract class GeneratorImage extends Generator {
 		}
 		if(this.digitalPages.isEmpty()) {
 			String msg = String.format("No digitalPages in %s/%s",
-				this.input.getRootDir(), this.input.getSubDir());
+				this.rootDir, this.step.getInputDir());
 			throw new DigitalDerivansException(msg);
 		}
 
 		String msg = String.format("process '%02d' images in %s/%s with quality %.2f in %02d threads",
-				this.digitalPages.size(), this.input.getRootDir(), this.input.getSubDir(),
+				this.digitalPages.size(), this.rootDir, this.step.getInputDir(),
 				this.imageProcessor.getQuality(), this.poolSize);
 		LOGGER.info(msg);
 
@@ -130,7 +129,7 @@ public abstract class GeneratorImage extends Generator {
 		try {
 			boolean isSuccess = forward();
 			if (isSuccess) {
-				String msg2 = String.format("created '%02d' images at '%s'", digitalPages.size(), this.input.getSubDir());
+				String msg2 = String.format("created '%02d' images at '%s'", digitalPages.size(), this.step.getInputDir());
 				LOGGER.info(msg2);
 			}
 		} catch (RuntimeException e) {

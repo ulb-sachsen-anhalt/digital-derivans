@@ -10,6 +10,7 @@ import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
+import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
@@ -21,9 +22,13 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  */
 public class Generator {
 
-	protected DerivansData input;
+	// protected DerivansData input;
 
-	protected DerivansData output;
+	// protected DerivansData output;
+
+	protected Path rootDir;
+
+	protected DerivateStep step;
 
 	protected DerivateType derivateType;
 
@@ -39,13 +44,13 @@ public class Generator {
 
 	public static final String EXT_TIF = ".tif";
 
-	public Generator() {}
+	// public Generator() {}
 
-	public Generator(DerivansData input, DerivansData output) {
-		this.input = input;
-		this.output = output;
-		this.derivateType = output.getType();
-	}
+	// public Generator(DerivansData input, DerivansData output) {
+	// 	this.input = input;
+	// 	this.output = output;
+	// 	this.derivateType = output.getType();
+	// }
 
 	public int create() throws DigitalDerivansException {
 		return 0;
@@ -85,6 +90,7 @@ public class Generator {
 
 	public void setDerivate(IDerivate derivate) {
 		this.derivate = derivate;
+		this.rootDir = this.derivate.getRootDir();
 		this.digitalPages = this.derivate.getAllPages();
 	}
 
@@ -92,38 +98,47 @@ public class Generator {
 		return this.derivate;
 	}
 
-	public void setInput(DerivansData input) {
-		this.input = input;
+	public void setStep(DerivateStep step) {
+		this.step = step;
+		this.derivateType = step.getOutputType();
 	}
 
-	public DerivansData getInput() {
-		return this.input;
+	public DerivateStep getStep() {
+		return this.step;
 	}
 
-	public void setOutput(DerivansData output) {
-		this.output = output;
-		this.derivateType = output.getType();
-	}
+	// public void setInput(DerivansData input) {
+	// 	this.input = input;
+	// }
 
-	public DerivansData getOutput() {
-		return this.output;
-	}
+	// public DerivansData getInput() {
+	// 	return this.input;
+	// }
+
+	// public void setOutput(DerivansData output) {
+	// 	this.output = output;
+	// 	this.derivateType = output.getType();
+	// }
+
+	// public DerivansData getOutput() {
+	// 	return this.output;
+	// }
 
 	protected Path setInpath(DigitalPage page) {
-		Path pathIn = page.getFile().withDirname(this.input.getSubDir());
+		Path pathIn = page.getFile().withDirname(this.step.getInputDir());
 		var pathFnm = pathIn.getFileName();
 		var pathDir = pathIn.getParent();
-		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm, this.input.getType()));
+		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm, this.step.getInputType()));
 		this.getInputPrefix().ifPresent(prefix -> fName.insert(0, prefix));
 		pathIn = pathDir.resolve(fName.toString());
 		return pathIn;
 	}
 
 	protected Path setOutpath(DigitalPage page) {
-		Path pathOut = page.getFile().withDirname(this.output.getSubDir());
+		Path pathOut = page.getFile().withDirname(this.step.getOutputDir());
 		var pathFnm = pathOut.getFileName();
 		var pathDir = pathOut.getParent();
-		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm, this.output.getType()));
+		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm, this.step.getOutputType()));
 		this.getOutputPrefix().ifPresent(prefix -> fName.insert(0, prefix));
 		pathOut = pathDir.resolve(fName.toString());
 		return pathOut;

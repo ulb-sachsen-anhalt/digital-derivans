@@ -21,6 +21,7 @@ import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.generate.GeneratorImageJPG;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
+import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
@@ -47,16 +48,22 @@ class TestImageDerivateerJPG {
 	@Test
 	void testRenderer80() throws DigitalDerivansException, IOException {
 		// arrange
-		Path sourcePath = sharedTempDir.resolve("IMAGE");
+		// Path sourcePath = sharedTempDir.resolve("IMAGE");
 		Path targetPath = sharedTempDir.resolve("IMAGE_80");
 		Files.createDirectory(targetPath); // mandatory, done in production by BaseDerivateer
-		DerivateFS dFs = new DerivateFS(targetPath);
-		dFs.init(sourcePath);
+		DerivateFS dFs = new DerivateFS(sharedTempDir);
+		dFs.init(Path.of("IMAGE"));
 
-		DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
-		DerivansData output = new DerivansData(sharedTempDir, "IMAGE_80", DerivateType.JPG);
-		GeneratorImageJPG jpgs = new GeneratorImageJPG(input, output, 80);
-		jpgs.setDigitalPages(dFs.getAllPages());
+		// DerivansData input = new DerivansData(sharedTempDir, "IMAGE", DerivateType.JPG);
+		// DerivansData output = new DerivansData(sharedTempDir, "IMAGE_80", DerivateType.JPG);
+		DerivateStepImage imageStep = new DerivateStepImage();
+		imageStep.setQuality(80);
+		imageStep.setInputDir("IMAGE");
+		imageStep.setOutputDir("IMAGE_80");
+		GeneratorImageJPG jpgs = new GeneratorImageJPG(); //input, output, 80);
+		jpgs.setDerivate(dFs);
+		jpgs.setStep(imageStep);
+		// jpgs.setDigitalPages(dFs.getAllPages());
 
 		// act
 		int outcome = jpgs.create();

@@ -8,14 +8,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
+import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.generate.pdf.ITextProcessor;
 import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
+import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
 /**
@@ -33,35 +37,51 @@ public class GeneratorPDF extends Generator {
 
 	private static final Logger LOGGER = LogManager.getLogger(GeneratorPDF.class);
 
-	private DerivateStepPDF derivateStep;
+	// private DerivateStepPDF derivateStep;
 
 	private METS mets;
 
 	private IPDFProcessor pdfProcessor;
 
+	private Path pathPDF;
+
 	private PDFResult pdfResult;
 
-
-	public GeneratorPDF(){
-		super();
+	public GeneratorPDF() {
+		// super();
 		this.pdfProcessor = new ITextProcessor();
 	}
 
-	/**
-	 * 
-	 * Create new instance on top of {@link Generator}
-	 * 
-	 * @param input
-	 * @param output
-	 * @param pages
-	 * @param derivateStep
-	 * @throws DigitalDerivansException
-	 */
-	public GeneratorPDF(DerivansData input, DerivansData output, List<DigitalPage> pages,
-			DerivateStepPDF derivateStep) throws DigitalDerivansException {
-		super(input, output);
-		this.derivateStep = derivateStep;
-		this.pdfProcessor = new ITextProcessor();
+	// /**
+	//  * 
+	//  * Create new instance on top of {@link Generator}
+	//  * 
+	//  * @param input
+	//  * @param output
+	//  * @param pages
+	//  * @param derivateStep
+	//  * @throws DigitalDerivansException
+	//  */
+	// public GeneratorPDF(/*DerivansData input, DerivansData output, List<DigitalPage> pages,
+	// 		DerivateStepPDF derivateStep*/) {
+	// 	// super(input, output);
+	// 	// this.derivateStep = derivateStep;
+	// 	this.pdfProcessor = new ITextProcessor();
+	// }
+
+	@Override
+	public void setStep(DerivateStep step) {
+		super.setStep(step);
+		DerivateStepPDF pdfStep = (DerivateStepPDF) step;
+		try {
+			this.pathPDF = this.setPDFPath(pdfStep);
+		} catch (DigitalDerivansException exc) {
+			throw new DigitalDerivansRuntimeException(exc);
+		}
+		if (this.derivate.isMetadataPresent()) {
+			this.mets = ((DerivateMD) this.derivate).getMets();
+		}
+		this.setStructure(this.derivate.getStructure());
 	}
 
 	public void setMETS(METS mets) {
@@ -72,16 +92,16 @@ public class GeneratorPDF extends Generator {
 		this.pdfProcessor.setStructure(structure);
 	}
 
-	public void setPDFStep(DerivateStepPDF step) {
-		this.derivateStep = step;
-	}
+	// public void setPDFStep(DerivateStepPDF step) {
+	// 	this.derivateStep = step;
+	// }
 
-	public DerivateStepPDF getConfig() {
-		return this.derivateStep;
-	}
+	// public DerivateStepPDF getConfig() {
+	// 	return this.step;
+	// }
 
 	public void setDescriptiveMD(DescriptiveMetadata dmd) {
-		this.derivateStep.mergeDescriptiveData(dmd);
+		((DerivateStepPDF)this.step).mergeDescriptiveData(dmd);
 	}
 
 	public void setPDFProcessor(IPDFProcessor processor) {
@@ -90,24 +110,24 @@ public class GeneratorPDF extends Generator {
 
 	@Override
 	public int create() throws DigitalDerivansException {
-		Path pathToPDF = this.derivateStep.getPathPDF();
+		// Path pathToPDF = this.derivateStep.getPathPDF();
 		// if output path points to a directory, use it's name for PDF-file
 		if (this.digitalPages.isEmpty()) {
-			var msg = "No pages for PDF " + pathToPDF;
+			var msg = "No pages for PDF " + this.pathPDF;
 			throw new DigitalDerivansException(msg);
 		}
 		// forward pdf generation
-		this.pdfProcessor.init(this.derivateStep, /* digitalPages, structure, */ this.derivate);
-		this.pdfResult = this.pdfProcessor.write(pathToPDF.toFile());
-		this.pdfResult.setPath(pathToPDF);
+		this.pdfProcessor.init((DerivateStepPDF)this.step, /* digitalPages, structure, */ this.derivate);
+		this.pdfResult = this.pdfProcessor.write(this.pathPDF.toFile());
+		this.pdfResult.setPath(this.pathPDF);
 		var nPagesAdded = this.pdfResult.getPdfPages().size();
-		LOGGER.info("created pdf '{}' with {} pages", pathToPDF, nPagesAdded);
+		LOGGER.info("created pdf '{}' with {} pages", this.pathPDF, nPagesAdded);
 
 		// post-action
-		if ((this.mets != null) && this.derivateStep.isEnrichMetadata()) {
-			this.enrichPDFInformation(pathToPDF);
+		if ((this.mets != null) && ((DerivateStepPDF) this.step).isEnrichMetadata()) {
+			this.enrichPDFInformation(this.pathPDF);
 		} else {
-			LOGGER.warn("pdf '{}' not enriched in METS", pathToPDF);
+			LOGGER.warn("pdf '{}' not enriched in METS", this.pathPDF);
 		}
 		return 1;
 	}
@@ -116,7 +136,7 @@ public class GeneratorPDF extends Generator {
 		if (Files.exists(pathtoPDF)) {
 			LOGGER.info("enrich created pdf '{}' in '{}'", pathtoPDF, this.mets.getPath());
 			String filename = pathtoPDF.getFileName().toString();
-			if(this.getOutputPrefix().isPresent()) {
+			if (this.getOutputPrefix().isPresent()) {
 				var optPrefix = this.getOutputPrefix().get();
 				filename = optPrefix + filename;
 			}
@@ -138,5 +158,25 @@ public class GeneratorPDF extends Generator {
 	 */
 	public PDFResult getPDFResult() {
 		return this.pdfResult;
+	}
+
+	private Path setPDFPath(DerivateStepPDF pdfStep) throws DigitalDerivansException {
+		Path rootDir = this.derivate.getRootDir();
+		String pdfName = rootDir.getFileName().toString() + ".pdf"; // default PDF name like workdir
+		if (this.derivate instanceof DerivateMD) {
+			var derivateMd = (DerivateMD) this.derivate;
+			pdfStep.getModsIdentifierXPath().ifPresent(derivateMd::setIdentifierExpression);
+			DescriptiveMetadata descriptiveData = derivateMd.getDescriptiveData();
+			pdfName = descriptiveData.getIdentifier() + ".pdf"; // if metadata present, use as PDF name
+		}
+		String finalPDFName = pdfStep.getNamePDF().orElse(pdfName); // if name arg passed, use as PDF name
+		if (!finalPDFName.endsWith(".pdf")) {
+			finalPDFName += ".pdf";
+		}
+		if (Path.of(finalPDFName).isAbsolute()) {
+			return Path.of(finalPDFName);
+		} else {
+			return rootDir.resolve(finalPDFName);
+		}
 	}
 }

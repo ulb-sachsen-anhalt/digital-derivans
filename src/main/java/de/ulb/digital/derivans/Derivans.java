@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
-// import de.ulb.digital.derivans.generate.IDerivateer;
 import de.ulb.digital.derivans.generate.Generator;
 import de.ulb.digital.derivans.generate.GeneratorImageJPG;
 import de.ulb.digital.derivans.generate.GeneratorImageJPGFooter;
@@ -106,61 +105,71 @@ public class Derivans {
         }
         this.generators = new ArrayList<>();
         for (DerivateStep step : this.steps) {
-            String pathInp = step.getInputDir();
-            String pathOut = step.getOutputDir();
-            DerivansData inputDerivansData = new DerivansData(this.derivate.getRootDir(), pathInp, step.getInputType());
-            DerivansData outputDerivansData = new DerivansData(this.derivate.getRootDir(), pathOut, step.getOutputType());
             if (!this.derivate.isInited()) {
                 if(step.getInputType() == DerivateType.TIF) {
                     this.derivate.setStartFileExtension(".tif");
                 }
                 this.derivate.init(Path.of(step.getInputDir()));
             }
+            // String pathInp = step.getInputDir();
+            // String pathOut = step.getOutputDir();
+            // DerivansData inputDerivansData = new DerivansData(this.derivate.getRootDir(), pathInp, step.getInputType());
+            // DerivansData outputDerivansData = new DerivansData(this.derivate.getRootDir(), pathOut, step.getOutputType());
             DerivateType type = step.getOutputType();
-            Generator theGenerator = this.getForType(type);
-            theGenerator.setInput(inputDerivansData);
-            theGenerator.setOutput(outputDerivansData);
-            theGenerator.setDerivate(derivate);
-            if (type == DerivateType.JPG) {
-                DerivateStepImage imgStep = (DerivateStepImage) step;
-                var genImage = (GeneratorImageJPG) theGenerator;
-                genImage.setQuality(imgStep.getQuality());
-                genImage.setPoolsize(imgStep.getPoolsize());
-                genImage.setMaximal(imgStep.getMaximal());
-                genImage.setOutputPrefix(imgStep.getOutputPrefix());
-                genImage.setInputPrefix(imgStep.getInputPrefix()); // check for chained derivates !!!!
-            } else if (type == DerivateType.JPG_FOOTER) {
-                DerivateStepImageFooter stepFooter = (DerivateStepImageFooter) step;
-                var footerDerivateer = (GeneratorImageJPGFooter) theGenerator;
-                String footerLabel = stepFooter.getFooterLabel();
-                int quality = stepFooter.getQuality();
-                footerDerivateer.setQuality(quality);
-                Path pathTemplate = stepFooter.getPathTemplate();
-                DigitalFooter footerUnknown = new DigitalFooter(footerLabel, IDerivans.UNKNOWN, pathTemplate);
-                footerDerivateer.setFooter(footerUnknown);
-                if (this.derivate.isMetadataPresent()) {
-                    var derivateMD = (DerivateMD) this.derivate;
-                    String workIdentifier = derivateMD.getIdentifierURN();
-                    DigitalFooter footerWithIdent = new DigitalFooter(footerLabel, workIdentifier, pathTemplate);
-                    if (derivateMD.isGranularIdentifierPresent()) {
-                        footerDerivateer = new GeneratorImageJPGFooter(footerDerivateer);
-                    }
-                    footerDerivateer.setFooter(footerWithIdent);
-                    theGenerator = footerDerivateer;
-                }
-                footerDerivateer.setDerivate(derivate);
-            } else if (type == DerivateType.PDF) {
+            Generator theGenerator = this.forType(type);
+            theGenerator.setDerivate(derivate); // first set derivate ...
+            if (type == DerivateType.PDF) {     // some peculiar PDF parameters
                 DerivateStepPDF pdfStep = (DerivateStepPDF) step;
-                String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
-                pdfStep.setConformanceLevel(pdfALevel);
-                pdfStep.setDebugRender(config.isDebugPdfRender());
-                this.setPDFPath(pdfStep);
-                GeneratorPDF genPDF = (GeneratorPDF) theGenerator;
-                genPDF.setPDFStep(pdfStep);
-                if(this.derivate.isMetadataPresent()) {
-                    genPDF.setMETS(((DerivateMD)this.derivate).getMets());
-                }
-                genPDF.setStructure(this.derivate.getStructure());
+		        pdfStep.setConformanceLevel(DefaultConfiguration.PDFA_CONFORMANCE_LEVEL);
+		        pdfStep.setDebugRender(config.isDebugPdfRender());
+            }
+            theGenerator.setStep(step);         // .. then set step object
+            // theGenerator.setInput(inputDerivansData);
+            // theGenerator.setOutput(outputDerivansData);
+            // theGenerator.setDerivate(derivate);
+            if (type == DerivateType.JPG) {
+                // DerivateStepImage imgStep = (DerivateStepImage) step;
+                // var genImage = (GeneratorImageJPG) theGenerator;
+                // genImage.setQuality(imgStep.getQuality());
+                // genImage.setPoolsize(imgStep.getPoolsize());
+                // genImage.setMaximal(imgStep.getMaximal());
+                // genImage.setOutputPrefix(imgStep.getOutputPrefix());
+                // genImage.setInputPrefix(imgStep.getInputPrefix()); // check for chained derivates !!!!
+            } else if (type == DerivateType.JPG_FOOTER) {
+                // DerivateStepImageFooter stepFooter = (DerivateStepImageFooter) step;
+                // var footerDerivateer = (GeneratorImageJPGFooter) theGenerator;
+                // String footerLabel = stepFooter.getFooterLabel();
+                // int quality = stepFooter.getQuality();
+                // footerDerivateer.setQuality(quality);
+                // Path pathTemplate = stepFooter.getPathTemplate();
+                // DigitalFooter footerUnknown = new DigitalFooter(footerLabel, IDerivans.UNKNOWN, pathTemplate);
+                // footerDerivateer.setFooter(footerUnknown);
+                // if (this.derivate.isMetadataPresent()) {
+                //     var derivateMD = (DerivateMD) this.derivate;
+                //     String workIdentifier = derivateMD.getIdentifierURN();
+                //     DigitalFooter footerWithIdent = new DigitalFooter(footerLabel, workIdentifier, pathTemplate);
+                //     if (derivateMD.isGranularIdentifierPresent()) {
+                //         footerDerivateer = new GeneratorImageJPGFooter(footerDerivateer);
+                //     }
+                //     footerDerivateer.setFooter(footerWithIdent);
+                //    theGenerator = footerDerivateer;
+                // }
+                // footerDerivateer.setDerivate(derivate);
+            } else if (type == DerivateType.PDF) {
+                // DerivateStepPDF pdfStep = (DerivateStepPDF) step;
+                // String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
+		        // pdfStep.setConformanceLevel(pdfALevel);
+		        // pdfStep.setDebugRender(config.isDebugPdfRender());
+                // String pdfALevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
+                // pdfStep.setConformanceLevel(pdfALevel);
+                // pdfStep.setDebugRender(config.isDebugPdfRender());
+                // this.setPDFPath(pdfStep);
+                // GeneratorPDF genPDF = (GeneratorPDF) theGenerator;
+                // genPDF.setPDFStep(pdfStep);
+                // if(this.derivate.isMetadataPresent()) {
+                //     genPDF.setMETS(((DerivateMD)this.derivate).getMets());
+                // }
+                // genPDF.setStructure(this.derivate.getStructure());
             }
             this.generators.add(theGenerator);
         }
@@ -187,7 +196,7 @@ public class Derivans {
         return this.generators;
     }
 
-    public Generator getForType(DerivateType dType) throws DigitalDerivansException {
+    public Generator forType(DerivateType dType) throws DigitalDerivansException {
         if (dType == DerivateType.JPG || dType == DerivateType.IMAGE) {
             return new GeneratorImageJPG();
         } else if( dType == DerivateType.JPG_FOOTER) {
@@ -198,23 +207,23 @@ public class Derivans {
         throw new DigitalDerivansException("Unknown type "+dType);
     }
 
-    private void setPDFPath(DerivateStepPDF pdfStep) throws DigitalDerivansException {
-        Path   rootDir = this.derivate.getRootDir();
-        String pdfName = rootDir.getFileName().toString() + ".pdf"; // default PDF name like workdir
-        if (this.derivate instanceof DerivateMD) {
-            var derivateMd = (DerivateMD) this.derivate;
-            pdfStep.getModsIdentifierXPath().ifPresent(derivateMd::setIdentifierExpression);
-            DescriptiveMetadata descriptiveData = derivateMd.getDescriptiveData();
-            pdfName = descriptiveData.getIdentifier()+ ".pdf"; // if metadata present, use as PDF name
-        }
-        String finalPDFName = pdfStep.getNamePDF().orElse(pdfName); // if name arg passed, use as PDF name
-        if(!finalPDFName.endsWith(".pdf")) {
-            finalPDFName += ".pdf";
-        }
-        if(Path.of(finalPDFName).isAbsolute()) {
-            pdfStep.setPathPDF(Path.of(finalPDFName));
-        } else {
-            pdfStep.setPathPDF(rootDir.resolve(finalPDFName));
-        }
-    }
+    // private void setPDFPath(DerivateStepPDF pdfStep) throws DigitalDerivansException {
+    //     Path   rootDir = this.derivate.getRootDir();
+    //     String pdfName = rootDir.getFileName().toString() + ".pdf"; // default PDF name like workdir
+    //     if (this.derivate instanceof DerivateMD) {
+    //         var derivateMd = (DerivateMD) this.derivate;
+    //         pdfStep.getModsIdentifierXPath().ifPresent(derivateMd::setIdentifierExpression);
+    //         DescriptiveMetadata descriptiveData = derivateMd.getDescriptiveData();
+    //         pdfName = descriptiveData.getIdentifier()+ ".pdf"; // if metadata present, use as PDF name
+    //     }
+    //     String finalPDFName = pdfStep.getNamePDF().orElse(pdfName); // if name arg passed, use as PDF name
+    //     if(!finalPDFName.endsWith(".pdf")) {
+    //         finalPDFName += ".pdf";
+    //     }
+    //     if(Path.of(finalPDFName).isAbsolute()) {
+    //         pdfStep.setPathPDF(Path.of(finalPDFName));
+    //     } else {
+    //         pdfStep.setPathPDF(rootDir.resolve(finalPDFName));
+    //     }
+    // }
 }
