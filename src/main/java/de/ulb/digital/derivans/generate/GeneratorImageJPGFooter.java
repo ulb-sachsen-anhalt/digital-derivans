@@ -116,31 +116,18 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 		}
 		Path pathOut = this.setOutpath(page);
 		try {
-			BufferedImage footerBuffer = this.imageProcessor.clone(this.footerBuffer);
+			BufferedImage thisBuffer = this.imageProcessor.clone(this.footerBuffer);
 			String urn = "";
 			var optUrn = page.optContentIds();
 			if (optUrn.isPresent()) {
 				urn = optUrn.get();
-				DigitalFooter footer = new DigitalFooter(this.footer.getText().get(0), urn, footerBuffer);
-				footerBuffer = footer.getBufferedImage();
+				DigitalFooter df = new DigitalFooter(this.footer.getText().get(0), urn, thisBuffer);
+				thisBuffer = df.getBufferedImage();
 				nGranulars.getAndIncrement();
 			}
-			BufferedImage textBuffer = this.addTextLayer2Footer(footerBuffer, this.footer);
+			BufferedImage textBuffer = this.addTextLayer2Footer(thisBuffer, this.footer);
 			int newHeight = this.imageProcessor.writeJPGwithFooter(pathIn, pathOut, textBuffer);
 			page.setFooterHeight(newHeight);
-			// String urn = "";
-			// var optUrn = page.optIdentifier();
-			// if (optUrn.isPresent()) {
-			// 	urn = optUrn.get();
-			// } else {
-			// 	throw new DigitalDerivansException("No granular URN: " + page.getImagePath()+ "!");
-			// }
-			// BufferedImage footerBuffer = this.imageProcessor.clone(this.footerBuffer);
-			// DigitalFooter footer = new DigitalFooter(this.footer.getText().get(0), urn, footerBuffer);
-			// BufferedImage footerBuffer = footer.getBufferedImage();
-			// BufferedImage textBuffer = this.addTextLayer2Footer(footerBuffer, this.footer);
-			// int newHeight = this.imageProcessor.writeJPGwithFooter(pathIn, pathOut, textBuffer);
-			// page.setFooterHeight(newHeight);
 		} catch (IOException | DigitalDerivansException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", pathOut, footer, e.getMessage());
 		}

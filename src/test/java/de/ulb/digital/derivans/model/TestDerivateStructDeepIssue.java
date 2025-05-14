@@ -34,7 +34,7 @@ class TestDerivateStructDeepIssue {
 	}
 
 	@Test
-	void testStructureLevelNewspaper() throws Exception {
+	void testStructureLevelNewspaper() {
 		assertEquals("Hallisches patriotisches Wochenblatt. 1799-1855",
 				TestDerivateStructDeepIssue.newspaper.getLabel());
 		assertEquals(1, newspaper.getOrder());
@@ -42,31 +42,31 @@ class TestDerivateStructDeepIssue {
 	}
 
 	@Test
-	void testStructureLevelIssue() throws Exception {
+	void testStructureLevelIssue() {
 		assertEquals("1.11.1800 (No. 5)", issue.getLabel());
 		assertEquals(1, issue.getOrder());
 	}
-	
+
 	@Test
 	void testIssueNumberSubstructs() {
 		assertEquals(6, issue.getChildren().size());
 	}
 
 	@Test
-	void testSubstructuresSection01() throws Exception {
+	void testSubstructuresSection01() {
 		var issueParts = issue.getChildren();
 		assertEquals("Bekanntmachungen.", issueParts.get(5).getLabel());
 	}
 
 	@Test
-	void testSubstructuresSection06() throws Exception {
+	void testSubstructuresSection06() {
 		var issueParts = issue.getChildren();
 		assertEquals(6, issueParts.size());
 		assertEquals("Bekanntmachungen.", issueParts.get(5).getLabel());
 	}
 
 	@Test
-	void testStructureLevelChronik() throws Exception {
+	void testStructureLevelChronik() {
 		var issueParts = issue.getChildren();
 		var chronikPieces = issueParts.get(4).getChildren();
 		assertEquals(2, chronikPieces.size());

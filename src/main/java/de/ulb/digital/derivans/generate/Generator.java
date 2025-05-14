@@ -14,10 +14,9 @@ import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
- * Basic {@link IDerivateer derivans type} to setting input and output.
- * Use only it's sub types, please
+ * Basic input and output => only use it's sub types
  * 
- * @author M3ssman
+ * @author u.hartwig
  *
  */
 public class Generator {
@@ -40,8 +39,7 @@ public class Generator {
 
 	public static final String EXT_TIF = ".tif";
 
-	public Generator() {
-	}
+	public Generator() {}
 
 	public Generator(DerivansData input, DerivansData output) {
 		this.input = input;

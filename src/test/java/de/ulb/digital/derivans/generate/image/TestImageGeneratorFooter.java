@@ -25,7 +25,6 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.generate.Generator;
 import de.ulb.digital.derivans.generate.GeneratorImageJPGFooter;
-import de.ulb.digital.derivans.generate.GeneratorImageJPGFooterGranular;
 import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -33,9 +32,9 @@ import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
- * Test Specification for {@link GeneratorImageJPGFooterGranular}
+ * Test Specification for {@link GeneratorImageJPGFooter}
  * 
- * @author hartwig
+ * @author u.hartwig
  *
  */
 class TestImageGeneratorFooter {
