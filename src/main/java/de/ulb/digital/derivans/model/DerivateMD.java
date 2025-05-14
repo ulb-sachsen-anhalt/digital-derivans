@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -130,6 +131,7 @@ public class DerivateMD implements IDerivate {
 				int currOrder = this.mdPageOrder.getAndIncrement();
 				DigitalPage page = new DigitalPage(imgFile.getFileId(), currOrder, filePath);
 				page.setPageLabel(digiFile.determineLabel());
+				digiFile.getAttribute("CONTENTIDS").ifPresent(page::setContentIds);
 				if (pack.ocrFile.isPresent()) {
 					METSFile ocrFile = pack.ocrFile.get();
 					page.setOcrFile(ocrFile.getLocalPath(this.checkRessources));
@@ -140,13 +142,16 @@ public class DerivateMD implements IDerivate {
 		}
 	}
 
+	/**
+	 * Traverse depth-first
+	 */
 	private void traverseStruct(DerivateStruct parentStruct, METSContainer currentCnt,
 			String fileExt) throws DigitalDerivansException {
 		String logicalLabel = currentCnt.determineLabel();
 		Integer structOrder = -1;
-		if (currentCnt.getAttribute("ORDER").isPresent()) {
-			String ord = currentCnt.getAttribute("ORDER").get();
-			structOrder = Integer.valueOf(ord);
+		Optional<String> optOrder = currentCnt.getAttribute("ORDER");
+		if (optOrder.isPresent()) {
+			structOrder = Integer.valueOf(optOrder.get());
 		}
 		DerivateStruct currentStruct = new DerivateStruct(structOrder, logicalLabel);
 		parentStruct.getChildren().add(currentStruct);
@@ -155,6 +160,8 @@ public class DerivateMD implements IDerivate {
 				this.traverseStruct(currentStruct, subContainer, fileExt);
 			}
 		}
+		// assume containers may link pages on *every* level
+		// even if these pages also linked by it's children
 		this.handlePages(currentStruct, currentCnt);
 	}
 

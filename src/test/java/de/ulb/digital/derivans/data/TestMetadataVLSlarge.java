@@ -88,6 +88,9 @@ class TestMetadataVLSlarge {
 	 * Due error in way of bulding the data, at first it yielded 6.561 pages
 	 * because pages were counted each time they were linked
 	 * 
+	 * If only structures where allowed, where a container either has children 
+	 * or pages, then only 1.990 pages appear (of total 2.306)
+	 * 
 	 */
 	@Test
 	void test201517NumberOfPages() {

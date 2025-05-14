@@ -25,7 +25,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
-public class TestMetadataVLSminimum {
+class TestMetadataVLSminimum {
 
 	static DerivateMD der737429;
 
@@ -84,6 +84,7 @@ public class TestMetadataVLSminimum {
 		assertEquals(urn1, pages.get(0).optContentIds().get());
 		assertEquals(urn2, pages.get(3).optContentIds().get());
 		assertTrue(pages.get(0).getFile().getPath().toString().endsWith("MAX/737434.jpg"));
+		assertTrue(pages.get(1).getFile().getPath().toString().endsWith("MAX/737436.jpg"));
 		assertTrue(pages.get(3).getFile().getPath().toString().endsWith("MAX/737438.jpg"));
 	}
 

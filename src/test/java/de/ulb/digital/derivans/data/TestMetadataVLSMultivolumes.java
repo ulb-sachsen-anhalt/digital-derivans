@@ -105,12 +105,13 @@ class TestMetadataVLSMultivolumes {
 	}
 
 	@Test
-	void testDigitalPagesOrderOf737429() throws DigitalDerivansException {
+	void testDigitalPagesContentIds19788() throws DigitalDerivansException {
 
 		// act
 		List<DigitalPage> pages = derivate19788.getAllPages();
 
 		// assert
+		assertEquals(22, pages.size());
 		for (DigitalPage page : pages) {
 			assertTrue(page.optContentIds().isPresent());
 		}

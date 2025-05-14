@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.file.Path;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -103,7 +102,11 @@ class TestMetadataVLSmedium {
 		assertEquals("Dissertatio Inavgvralis Ivridica De Avxiliatoribvs Fvrvm Oder: Von Diebs-Helffern",
 				tree.getLabel());
 		var lvlOneStructs = tree.getChildren();
-		// of old there was 69 which was false enough
+		// of old there was 69 which was false
+		// 42 pages are contained in total
+		// struct log16460310, "[Dissertatio Inauguralis ..." contains 30 linked pages
+		// of which are 27 are linked from it's children but 3 only from this container
+		// if we decide that a container has either children or pages these 3 pages are lost
 		assertEquals(42, devMD.getAllPages().size());
 		assertEquals(5, lvlOneStructs.size());
 		var lvlOneStructOne = lvlOneStructs.get(0);
@@ -156,14 +159,14 @@ class TestMetadataVLSmedium {
 		assertEquals("1765", lvlOneStructOne.getLabel());
 		assertEquals(38, mds.getAllPages().size());
 
-		// original problem as following
+		// original problem:
 		// section with LABEL=[Calender] and ORDER=4 is linked
 		// as log14163656 about 25x, but it's children are also linked
 		// therefore the linked pages appear several times
 		// in the structure tree, and finally in the PDF
 		var structCalendar = lvlOneStructOne.getChildren().get(3);
 		assertEquals("[Calender]", structCalendar.getLabel());
-		assertEquals(6, structCalendar.getPages().size());
+		assertEquals(25, structCalendar.getPages().size());
 		// here was wrong of old with 37 links
 		// 12 *real* children structure,
 		// plus 25 direct links to physical containers
