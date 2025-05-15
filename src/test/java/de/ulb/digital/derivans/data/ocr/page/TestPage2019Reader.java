@@ -26,7 +26,7 @@ class TestPage2019Reader {
 	@Test
 	void testPAGE2019fromOCRD() throws Exception {
 		// arrange
-		Path page2019 = Path.of("./src/test/resources/page/16258167.xml");
+		Path page2019 = Path.of("./src/test/resources/ocr/page/16258167.xml");
 		PAGEReader reader = new PAGEReader(Type.PAGE_2019);
 
 		// act
@@ -58,7 +58,7 @@ class TestPage2019Reader {
 	@Test
 	void testPAGEWithOnlyTextlines() throws Exception {
 		// arrange
-		Path pagewihoutWords = Path.of("./src/test/resources/page/16258167_no_words.xml");
+		Path pagewihoutWords = Path.of("./src/test/resources/ocr/page/16258167_no_words.xml");
 		PAGEReader reader = new PAGEReader(Type.PAGE_2019);
 
 		// act

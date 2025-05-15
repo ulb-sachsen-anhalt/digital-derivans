@@ -199,7 +199,7 @@ class TestDerivansFS {
 		dp.setPathConfig(testConfig);
 		Path pathTarget = tempDir.resolve("16359604");
 		dp.setPathInput(pathTarget);
-		Path sourceImageDir = Path.of("src/test/resources/16359604");
+		Path sourceImageDir = Path.of("src/test/resources/ocr/16359604");
 		TestHelper.copyTree(sourceImageDir, pathTarget);
 		// create artificial "ORIGINAL" testimages
 		Path imageOriginal = pathTarget.resolve("ORIGINAL");

@@ -29,7 +29,7 @@ public class TestOCRReaderFactory {
 	@Test
 	void testResolveALTOV4() throws Exception {
 		// arrange
-		Path vlInhouse737434 = Path.of("./src/test/resources/alto/737429/FULLTEXT/FULLTEXT_737434.xml");
+		Path vlInhouse737434 = Path.of("./src/test/resources/ocr/alto/737429/FULLTEXT/FULLTEXT_737434.xml");
 
 		// act
 		OCRReader reader = OCRReaderFactory.from(vlInhouse737434);
@@ -45,7 +45,7 @@ public class TestOCRReaderFactory {
 	void testResolveALTOfromZD1() throws Exception {
 
 		// arrange
-		Path input = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
+		Path input = Path.of("src/test/resources/ocr/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
 
 		// act
 		OCRReader reader = OCRReaderFactory.from(input);
@@ -57,7 +57,7 @@ public class TestOCRReaderFactory {
 	@Test
 	void testResolvePAGE2019FromODEM() throws Exception {
 		// arrange
-		Path input = Path.of("src/test/resources/page/16258167.xml");
+		Path input = Path.of("src/test/resources/ocr/page/16258167.xml");
 
 		// act
 		OCRReader reader = OCRReaderFactory.from(input);

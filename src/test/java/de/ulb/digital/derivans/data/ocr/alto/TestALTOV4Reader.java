@@ -32,7 +32,7 @@ class TestALTOV4Reader {
 	@Test
 	void testALTOV4fromOCRD() throws Exception {
 		// arrange
-		Path vlInhouse737434 = Path.of("./src/test/resources/alto/737429/FULLTEXT/FULLTEXT_737434.xml");
+		Path vlInhouse737434 = Path.of("./src/test/resources/ocr/alto/737429/FULLTEXT/FULLTEXT_737434.xml");
 		ALTOReader reader = new ALTOReader(Type.ALTO_V4);
 
 		// act
@@ -54,7 +54,7 @@ class TestALTOV4Reader {
 	void testALTOfromZD1() throws Exception {
 
 		// arrange
-		Path input = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
+		Path input = Path.of("src/test/resources/ocr/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
 		ALTOReader reader = new ALTOReader(Type.ALTO_V3);
 
 		// act
@@ -76,7 +76,7 @@ class TestALTOV4Reader {
 	void testALTOfromZD1Scale() throws Exception {
 
 		// arrange
-		Path input = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
+		Path input = Path.of("src/test/resources/ocr/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
 		ALTOReader reader = new ALTOReader(Type.ALTO_V3);
 		var actual = reader.get(input);
 		int originalPageHeigt = actual.getPageHeight();
@@ -104,7 +104,7 @@ class TestALTOV4Reader {
 	void testALTOV3fromZD1() throws Exception {
 
 		// arrange
-		Path input = Path.of("src/test/resources/alto/1667522809_J_0025_0001/1667522809_J_0025_0001.xml");
+		Path input = Path.of("src/test/resources/ocr/alto/1667522809_J_0025_0001/1667522809_J_0025_0001.xml");
 		ALTOReader reader = new ALTOReader(Type.ALTO_V3);
 		var actual = reader.get(input);
 		int originalPageHeigt = actual.getPageHeight();
@@ -156,7 +156,7 @@ class TestALTOV4Reader {
 	void testALTOfromVLS369765() throws Exception {
 
 		// arrange
-		Path input = Path.of("src/test/resources/alto/369765/316642.xml");
+		Path input = Path.of("src/test/resources/ocr/alto/369765/316642.xml");
 		ALTOReader reader = new ALTOReader(Type.ALTO_V4);
 		var predicate = new ValidTextPredicate();
 
@@ -199,7 +199,7 @@ class TestALTOV4Reader {
 	 * Ensure empty ALTO data can be handled
 	 * 
 	 * DigitalDerivansException:
-	 * No Page data: src/test/resources/alto/1981185920_94220/00000805.xml
+	 * No Page data: src/test/resources/ocr/alto/1981185920_94220/00000805.xml
 	 */
 	@Test
 	void testALTOV4EmptyFromRahbar() {
@@ -213,7 +213,7 @@ class TestALTOV4Reader {
 
 		// assert
 		assertNotNull(actual);
-		assertEquals("No Page data: src/test/resources/alto/1981185920_94220/00000805.xml",
+		assertEquals("No Page data: src/test/resources/ocr/alto/1981185920_94220/00000805.xml",
 				actual.getMessage());
 	}
 }

@@ -22,7 +22,7 @@ public enum TestResource {
 	 */
 	VLS_HD_Aa_737429(Path.of("src/test/resources/mets/vls/hd-Aa-737429.mets.xml")),
 	VLS_HD_Aa_737429_OCR(Path.of("src/test/resources/mets/vls/hd-Aa-737429-ocr.mets.xml")),
-	OCR_737429(Path.of("src/test/resources/alto/737429")),
+	OCR_737429(Path.of("src/test/resources/ocr/alto/737429")),
 
 	/**
 	 * medium digital object contains titleInfo but child node title missing
@@ -51,8 +51,8 @@ public enum TestResource {
 	/**
 	 * OCR formats
 	 */
-	VD_18_148811035_ALTO3(Path.of("src/test/resources/alto/148811035/FULLTEXT/320808.xml")),
-	VD_18_148811035_ALTO4(Path.of("src/test/resources/alto/148811035/FULLTEXT/320811.xml")),
+	VD_18_148811035_ALTO3(Path.of("src/test/resources/ocr/alto/148811035/FULLTEXT/320808.xml")),
+	VD_18_148811035_ALTO4(Path.of("src/test/resources/ocr/alto/148811035/FULLTEXT/320811.xml")),
 
 	/**
 	 * Kitodo 2
@@ -80,7 +80,7 @@ public enum TestResource {
 	/**
 	 * Image Processing
 	 */
-	IMG_JPG_148811035_MAX_1(Path.of("src/test/resources/alto/148811035/MAX/00000001.jpg")),
+	IMG_JPG_148811035_MAX_1(Path.of("src/test/resources/ocr/alto/148811035/MAX/00000001.jpg")),
 	IMG_TIF_MENA_1(Path.of("src/test/resources/images/3900_00000010x128.tif")),
 	IMG_TIF_ZD1_GREY(Path.of("src/test/resources/images/1681877805_J_0125_0001x128.tif")),
 	IMG_TIF_ZD1_RGB(Path.of("src/test/resources/images/1681875195_J_0001_0008x128.tif")),
@@ -96,9 +96,9 @@ public enum TestResource {
 	VLS_VD18_Aa_16372279(Path.of("src/test/resources/mets/vls/vd18-Aa-16372279.mets.xml")),
 
 	SHARE_IT_VD18_43053(Path.of("src/test/resources/mets/share_it/1981185920_43053.xml")),
-	SHARE_IT_RAHBAR_88120_LEGACY(Path.of("src/test/resources/alto/1981185920_88120/1981185920_88120_00000010_legacy.xml")),
-	SHARE_IT_RAHBAR_88120(Path.of("src/test/resources/alto/1981185920_88120/1981185920_88120_00000010.xml")),
-	SHARE_IT_RAHBAR_94220(Path.of("src/test/resources/alto/1981185920_94220/00000805.xml")),
+	SHARE_IT_RAHBAR_88120_LEGACY(Path.of("src/test/resources/ocr/alto/1981185920_88120/1981185920_88120_00000010_legacy.xml")),
+	SHARE_IT_RAHBAR_88120(Path.of("src/test/resources/ocr/alto/1981185920_88120/1981185920_88120_00000010.xml")),
+	SHARE_IT_RAHBAR_94220(Path.of("src/test/resources/ocr/alto/1981185920_94220/00000805.xml")),
 	SHARE_IT_VD18_38841(Path.of("src/test/resources/mets/share_it/1981185920_38841.xml")),
 
 	/**
@@ -113,7 +113,7 @@ public enum TestResource {
 	 * Contains Issue with deep logical structs
 	 * 
 	 */
-	VLS_ZD_ISSUE_182327845018001101(Path.of("src/test/resources/mets/zdp-182327845018001101.xml")),
+	VLS_ZD_ISSUE_182327845018001101(Path.of("src/test/resources/mets/vls/zdp-182327845018001101.xml")),
 
 	/**
 	 * 

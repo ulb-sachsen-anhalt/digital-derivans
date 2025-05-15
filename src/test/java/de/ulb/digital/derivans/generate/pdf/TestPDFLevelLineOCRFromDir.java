@@ -40,7 +40,7 @@ class TestPDFLevelLineOCRFromDir {
 		Path pathTarget = tempDir.resolve("zd1");
 
 		// arrange ocr data
-		Path sourceOcr = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
+		Path sourceOcr = Path.of("src/test/resources/ocr/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
 		assertTrue(Files.exists(sourceOcr, LinkOption.NOFOLLOW_LINKS));
 		Path sourceFile = sourceOcr.getFileName();
 		Path targetDir = pathTarget.resolve(IDerivans.FULLTEXT_DIR);

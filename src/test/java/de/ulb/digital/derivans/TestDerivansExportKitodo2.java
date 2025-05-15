@@ -49,7 +49,7 @@ class TestDerivansExportKitodo2 {
 	static void setupBeforeClass() throws Exception {
 
 		// arrange metadata and images
-		var pathRes = Path.of("src/test/resources/058141367/058141367.xml");
+		var pathRes = Path.of("src/test/resources/mets/kitodo2/058141367.xml");
 		TestDerivansExportKitodo2.workDir = fixtureMetadataTIFK2(tempDir, pathRes);
 
 		// arrange configuration
@@ -170,18 +170,11 @@ class TestDerivansExportKitodo2 {
 			Files.walk(pathTarget).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(pathTarget);
 		}
-		var maxImages = srcMets.getParent().resolve("MAX");
 		Path imagesDst = pathTarget.resolve("MAX");
 		Files.createDirectories(imagesDst);
-		Files.walk(maxImages, 1).forEach(src -> {
-			try {
-				var dst = imagesDst.resolve(src.getFileName());
-				if (Files.isRegularFile(src)) {
-					Files.copy(src, dst);
-				}
-			} catch (IOException e) {
-			}
-		});
+		// for (int i=1; i<18; i++) {
+			TestHelper.generateImages(imagesDst, 140, 200, 17, "%08d.tif");
+		// }
 		Path metsTarget = pathTarget.resolve("058141367.xml");
 		Files.copy(srcMets, metsTarget);
 		return pathTarget;

@@ -45,12 +45,12 @@ class TestPDFulltextODEMLinesPDFBox {
 		// use existing images
 		Path imageDir = workDir.resolve(IDerivans.IMAGE_DIR_MAX);
 		Files.createDirectories(imageDir);
-		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/IMAGE_80");
+		Path sourceImageDir = Path.of("src/test/resources/ocr/alto/148811035/IMAGE_80");
 		TestHelper.copyTree(sourceImageDir, imageDir);
-		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
+		Path sourceMets = Path.of("src/test/resources/ocr/alto/148811035/mets.xml");
 		Path targetMets = workDir.resolve(Path.of("mets.xml"));
 		Files.copy(sourceMets, targetMets);
-		Path sourceOcr = Path.of("src/test/resources/alto/148811035/FULLTEXT");
+		Path sourceOcr = Path.of("src/test/resources/ocr/alto/148811035/FULLTEXT");
 		Path targetOcr = workDir.resolve("FULLTEXT");
 		TestHelper.copyTree(sourceOcr, targetOcr);
 		DerivateStepPDF pdfStep = new DerivateStepPDF();

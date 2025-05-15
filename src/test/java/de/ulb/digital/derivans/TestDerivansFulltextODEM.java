@@ -48,12 +48,12 @@ class TestDerivansFulltextODEM {
 		// re-use images
 		Path pathImageMax = workDir.resolve(TestHelper.ULB_MAX_PATH);
 		Files.createDirectories(pathImageMax);
-		Path sourceImageDir = Path.of("src/test/resources/alto/148811035/MAX");
+		Path sourceImageDir = Path.of("src/test/resources/ocr/alto/148811035/MAX");
 		TestHelper.copyTree(sourceImageDir, pathImageMax);
-		Path sourceMets = Path.of("src/test/resources/alto/148811035/mets.xml");
+		Path sourceMets = Path.of("src/test/resources/ocr/alto/148811035/mets.xml");
 		Path targetMets = workDir.resolve(Path.of("mets.xml"));
 		Files.copy(sourceMets, targetMets);
-		Path sourceOcr = Path.of("src/test/resources/alto/148811035/FULLTEXT");
+		Path sourceOcr = Path.of("src/test/resources/ocr/alto/148811035/FULLTEXT");
 		Path targetOcr = workDir.resolve("FULLTEXT");
 		TestHelper.copyTree(sourceOcr, targetOcr);
 

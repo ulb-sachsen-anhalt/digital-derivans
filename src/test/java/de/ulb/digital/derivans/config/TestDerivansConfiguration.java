@@ -308,7 +308,7 @@ public class TestDerivansConfiguration {
 		dp.setImages(ORIGINAL_SUB_DIR);
 		Path pathTarget = tempDir.resolve("16359604");
 		dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
-		Path sourceImageDir = Path.of("src/test/resources/16359604");
+		Path sourceImageDir = Path.of("src/test/resources/ocr/16359604");
 		TestHelper.copyTree(sourceImageDir, pathTarget);
 		// create artificial "ORIGINAL" testimages
 		Path imageDirOriginal = pathTarget.resolve(ORIGINAL_SUB_DIR);
