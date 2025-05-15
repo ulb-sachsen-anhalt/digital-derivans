@@ -23,14 +23,13 @@ import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.IDerivans;
-import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 import de.ulb.digital.derivans.model.pdf.PDFTextElement;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 import de.ulb.digital.derivans.model.text.Textline;
 import de.ulb.digital.derivans.model.text.Word;
 
@@ -77,26 +76,23 @@ class TestPDFSyntheticArabicWords {
 		pages.add(dp);
 		DerivateStruct struct = new DerivateStruct(1, "00001");
 		struct.getPages().add(dp);
+		DerivateFS dummyDerivate = new DerivateFS(tempDir);
+		dummyDerivate.setStructure(struct);
 
 		// act
 		String pdfLineName = String.format("pdf-linelevel-%04d.pdf", N_PAGES);
 		Path outputLinePath = tempDir.resolve(pdfLineName);
-		DerivansData input = new DerivansData(pathImages, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
 		DerivateStepPDF pdfStep = new DerivateStepPDF();
 		pdfStep.setImageDpi(TEST_DPI);
 		pdfStep.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
 		pdfStep.setDebugRender(true);
 		pdfStep.setPathPDF(outputLinePath);
-
-		// act twice
-		var pdfWordName = String.format("pdf-wordlevel-%04d.pdf", N_PAGES);
-		var outputWord = new DerivansData(tempDir.resolve(pdfWordName), IDerivans.IMAGE_DIR_MAX, DerivateType.PDF);
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
-		var handlerTwo = new GeneratorPDF(input, outputWord, pages, pdfStep);
-		handlerTwo.setDigitalPages(pages); // only because of check
-		handlerTwo.setStructure(struct);
-		handlerTwo.create();
-		pdfWithWords = handlerTwo.getPDFResult();
+		var genPDF = new GeneratorPDF();
+		genPDF.setDerivate(dummyDerivate);
+		genPDF.setStep(pdfStep);
+		genPDF.create();
+		pdfWithWords = genPDF.getPDFResult();
 		pdfWordlvlFirstLine = pdfWithWords.getPdfPages().get(0).getTextcontent().get().get(0);
 	}
 

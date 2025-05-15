@@ -1,7 +1,6 @@
 package de.ulb.digital.derivans;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -100,19 +99,18 @@ class TestDerivansLegacyULB {
 
 	@Test
 	void ensurePathsDerivateer01() {
-		var d = generators.get(0);
-		assertTrue(d.getInput().getRootDir().toString().endsWith("737429"));
-		assertEquals("MAX", d.getInput().getSubDir());
-		assertTrue(d.getOutput().getRootDir().toString().endsWith("737429"));
-		assertEquals("IMAGE_FOOTER", d.getOutput().getSubDir());
+		var gen01 = generators.get(0);
+		assertTrue(gen01.getDerivate().getRootDir().endsWith("737429"));
+		assertEquals("MAX", gen01.getStep().getInputDir());
+		assertEquals("IMAGE_FOOTER", gen01.getStep().getOutputDir());
 	}
 
 	@Test
 	void ensurePathsDerivateer02() {
-		var d = generators.get(1);
-		assertTrue(d.getInput().getRootDir().toString().endsWith("737429"));
-		assertEquals("IMAGE_FOOTER", d.getInput().getSubDir());
-		assertEquals("IMAGE_80", d.getOutput().getSubDir());
+		var gen02 = generators.get(1);
+		assertTrue(gen02.getDerivate().getRootDir().endsWith("737429"));
+		assertEquals("IMAGE_FOOTER", gen02.getStep().getInputDir());
+		assertEquals("IMAGE_80", gen02.getStep().getOutputDir());
 	}
 
 	@Test

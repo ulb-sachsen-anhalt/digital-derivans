@@ -46,7 +46,7 @@ public class DigitalFooter {
 	 * @throws DigitalDerivansException
 	 */
 	public DigitalFooter(String lineName, String urn, Path template) throws DigitalDerivansException {
-		if (!lineName.isBlank()) {
+		if (!(lineName == null || lineName.isBlank())) {
 			this.text.add(lineName);
 		}
 		if (urn != null && !urn.isBlank()) {

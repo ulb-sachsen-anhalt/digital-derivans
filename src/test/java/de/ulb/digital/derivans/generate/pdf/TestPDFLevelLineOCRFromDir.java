@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,18 +19,14 @@ import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.IDerivans;
-import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
-import de.ulb.digital.derivans.model.DerivateMD;
-import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
  * MWE:
- *  PDF with 1 page, Textlayer, no METS/MODS-metadata
+ * PDF with 1 page, Textlayer, no METS/MODS-metadata
  * 
  * @author hartwig
  *
@@ -43,7 +38,7 @@ class TestPDFLevelLineOCRFromDir {
 	@BeforeAll
 	static void initAll(@TempDir Path tempDir) throws Exception {
 		Path pathTarget = tempDir.resolve("zd1");
-	
+
 		// arrange ocr data
 		Path sourceOcr = Path.of("src/test/resources/alto/1667524704_J_0150/1667524704_J_0150_0512.xml");
 		assertTrue(Files.exists(sourceOcr, LinkOption.NOFOLLOW_LINKS));
@@ -52,18 +47,14 @@ class TestPDFLevelLineOCRFromDir {
 		Files.createDirectories(targetDir);
 		Path targetOcr = targetDir.resolve(sourceFile);
 		Files.copy(sourceOcr, targetOcr);
-	
+
 		// arrange image data
 		Path pathImageMax = pathTarget.resolve(IDerivans.IMAGE_DIR_MAX);
 		Files.createDirectory(pathImageMax);
 		Path imagePath = pathImageMax.resolve("1667524704_J_0150_0512.jpg");
 		// original dimensions: 7544,10536
 		TestHelper.writeImage(imagePath, 754, 1053, BufferedImage.TYPE_BYTE_GRAY, "JPG");
-	
-		// arrange base derivateer
-		DerivansData input = new DerivansData(pathTarget, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
-		DerivansData output = new DerivansData(pathTarget, ".", DerivateType.PDF);
-	
+
 		// arrange pdf path and pages
 		DerivateStepPDF stepPdf = new DerivateStepPDF();
 		stepPdf.setOutputDir(".");
@@ -73,17 +64,13 @@ class TestPDFLevelLineOCRFromDir {
 		stepPdf.setPathPDF(pathTarget.resolve("zd1.pdf"));
 		DerivateFS derivate = new DerivateFS(pathTarget);
 		derivate.init(TestHelper.ULB_MAX_PATH);
-		List<DigitalPage> pages = derivate.getAllPages();
-		GeneratorPDF d = new GeneratorPDF(input, output, pages, stepPdf);
-		d.setDerivate(derivate);
-		d.setPDFStep(stepPdf);
-		GeneratorPDF generator = new GeneratorPDF(input, output, pages, stepPdf);
-		generator.setStructure(derivate.getStructure());
-		generator.setDigitalPages(pages);
+		GeneratorPDF generator = new GeneratorPDF(/* input, output, pages, stepPdf */);
+		generator.setDerivate(derivate);
+		generator.setStep(stepPdf);
 		generator.create();
 		resultDoc = generator.getPDFResult();
 	}
-	
+
 	@Test
 	void documentInstanceExists() {
 		assertNotNull(resultDoc);
@@ -158,9 +145,9 @@ class TestPDFLevelLineOCRFromDir {
 		assertTrue(optFirstLine.isPresent());
 		var firstLine = optFirstLine.get().get(1);
 		assertTrue(firstLine.isPrinted());
-		assertEquals("Nr. 296 Seite 2",firstLine.getText());
+		assertEquals("Nr. 296 Seite 2", firstLine.getText());
 		assertEquals(2, Math.round(firstLine.getFontSize()));
-		assertEquals(17, (int)firstLine.getBox().getX());
-		assertEquals(241, (int)firstLine.getBox().getY());
+		assertEquals(17, (int) firstLine.getBox().getX());
+		assertEquals(241, (int) firstLine.getBox().getY());
 	}
 }

@@ -2,16 +2,16 @@ package de.ulb.digital.derivans.generate.pdf;
 
 import java.awt.Dimension;
 import java.io.File;
-import java.io.FileOutputStream;
+// import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+// import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+// import java.util.Map;
+// import java.util.Optional;
 
-import org.apache.fontbox.ttf.TTFParser;
-import org.apache.fontbox.ttf.TrueTypeFont;
+// import org.apache.fontbox.ttf.TTFParser;
+// import org.apache.fontbox.ttf.TrueTypeFont;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,22 +32,22 @@ import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 // import de.ulb.digital.derivans.model.text.Textline;
 
-import org.apache.pdfbox.contentstream.PDContentStream;
-import org.apache.pdfbox.cos.COSName;
+// import org.apache.pdfbox.contentstream.PDContentStream;
+// import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.font.PDFont;
+// import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 // import org.apache.pdfbox.pdmodel.ResourceCache;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDFontFactory;
-import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
+// import org.apache.pdfbox.pdmodel.font.PDFontFactory;
+// import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.font.PDType1CFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
+// import org.apache.pdfbox.pdmodel.font.PDType1CFont;
+// import org.apache.pdfbox.pdmodel.font.PDType1Font;
+// import org.apache.pdfbox.pdmodel.font.encoding.Encoding;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.apache.pdfbox.pdmodel.graphics.image.PDInlineImage;
+// import org.apache.pdfbox.pdmodel.graphics.image.PDInlineImage;
 
 
 /**

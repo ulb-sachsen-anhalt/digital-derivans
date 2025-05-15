@@ -101,13 +101,7 @@ public class ITextProcessor implements IPDFProcessor {
 
 	private DerivateStepPDF pdfStep;
 
-	// private IDerivate derivate;
 	private DerivateStruct structure;
-
-	// private DigitalStructureTree structure = new DigitalStructureTree();
-	// private List<DigitalPage> pages;
-
-	// private int pageNumber = 1;
 
 	private PdfFont font;
 
@@ -125,19 +119,13 @@ public class ITextProcessor implements IPDFProcessor {
 	PDFResult reportDoc = new PDFResult();
 
 	@Override
-	public void init(DerivateStepPDF pdfStep, IDerivate derivate /*
-																	 * List<DigitalPage> pages, DigitalStructureTree
-																	 * structure
-																	 */)
+	public void init(DerivateStepPDF pdfStep, IDerivate derivate)
 			throws DigitalDerivansException {
 		this.pdfStep = pdfStep;
 		this.renderLevel = pdfStep.getRenderLevel();
 		this.renderModus = pdfStep.getRenderModus();
 		this.debugRender = pdfStep.getDebugRender();
 		this.setDpi(pdfStep.getImageDpi());
-		// this.structure = structure;
-		// this.pages = pages;
-		// this.derivate = derivate;
 		this.font = this.loadFont("ttf/DejaVuSans.ttf");
 		this.rtlStyle = this.rtlStyle.setFont(this.font);
 	}

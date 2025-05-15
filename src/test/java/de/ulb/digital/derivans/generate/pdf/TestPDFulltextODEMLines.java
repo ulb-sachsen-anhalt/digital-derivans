@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,24 +14,20 @@ import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
-import de.ulb.digital.derivans.model.DerivansData;
-import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateMD;
-import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.pdf.PDFPage;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
- * MWE: Artificial collection of 3 pages
+ * MWE: Artificial collection of 3 pages with METS/MODS
  * Used config: src/test/resources/config/derivans.ini
  * 
  * @author hartwig
  *
  */
-public class TestPDFulltextODEMLines {
+class TestPDFulltextODEMLines {
 
 	@TempDir
 	static Path tempDir;
@@ -44,7 +39,7 @@ public class TestPDFulltextODEMLines {
 	static Path pdfPath;
 
 	@BeforeAll
-	public static void setupBeforeClass() throws Exception {
+	static void setupBeforeClass() throws Exception {
 		workDir = tempDir.resolve("148811035");
 		// use existing images
 		Path imageDir = workDir.resolve(TestHelper.ULB_MAX_PATH);
@@ -57,8 +52,6 @@ public class TestPDFulltextODEMLines {
 		Path sourceOcr = Path.of("src/test/resources/alto/148811035/FULLTEXT");
 		Path targetOcr = workDir.resolve("FULLTEXT");
 		TestHelper.copyTree(sourceOcr, targetOcr);
-		DerivansData input = new DerivansData(workDir, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
-		DerivansData output = new DerivansData(workDir, ".", DerivateType.PDF);
 		DerivateStepPDF pdfStep = new DerivateStepPDF();
 		pdfStep.setImageDpi(300);
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
@@ -66,13 +59,11 @@ public class TestPDFulltextODEMLines {
 		pdfStep.setInputDir(IDerivans.IMAGE_DIR_MAX);
 		pdfStep.setOutputDir(".");
 		pdfStep.setPathPDF(workDir.resolve("148811035.pdf"));
-		DerivateMD derivate = new DerivateMD(targetMets);
-		derivate.init(TestHelper.ULB_MAX_PATH);
-		List<DigitalPage> pages = derivate.getAllPages();
-		GeneratorPDF generator = new GeneratorPDF(input, output, pages, pdfStep);
-		generator.setMETS(derivate.getMets());
-		generator.setStructure(derivate.getStructure());
-		generator.setDigitalPages(pages);
+		DerivateMD testDerivate = new DerivateMD(targetMets);
+		testDerivate.init(TestHelper.ULB_MAX_PATH);
+		GeneratorPDF generator = new GeneratorPDF();
+		generator.setDerivate(testDerivate);
+		generator.setStep(pdfStep);
 		generator.create();
 		resultDoc = generator.getPDFResult();
 		pdfPath = resultDoc.getPath();

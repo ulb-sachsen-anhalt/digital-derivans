@@ -4,9 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,20 +18,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.IDerivans;
-import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
-import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.ocr.OCRData;
 import de.ulb.digital.derivans.model.pdf.PDFTextElement;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
-import de.ulb.digital.derivans.model.text.Textline;
-import de.ulb.digital.derivans.model.text.Word;
 
 /**
  * 
@@ -77,20 +69,20 @@ class TestPDFSyntheticWesteuropeWords {
 		pages.add(digiPage);
 		DerivateStruct testStruct = new DerivateStruct(1, "0001");
 		testStruct.getPages().add(digiPage);
+		DerivateFS testDerivate = new DerivateFS(tempDir);
+		testDerivate.setStructure(testStruct);
 
 		// act
-		DerivansData input = new DerivansData(tempDir, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
 		DerivateStepPDF pdfStep1 = new DerivateStepPDF();
 		pdfStep1.setImageDpi(TEST_DPI);
 		pdfStep1.setDebugRender(true);
 		var pdfWordName = String.format("pdf-word-%04d.pdf", N_PAGES);
 		Path outputWordPath = tempDir.resolve(pdfWordName);
-		var outputWord = new DerivansData(tempDir, ".", DerivateType.PDF);
 		pdfStep1.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		pdfStep1.setPathPDF(outputWordPath);
-		var generatorWords = new GeneratorPDF(input, outputWord, pages, pdfStep1);
-		generatorWords.setDigitalPages(pages); // because of check
-		generatorWords.setStructure(testStruct);
+		var generatorWords = new GeneratorPDF();
+		generatorWords.setDerivate(testDerivate);
+		generatorWords.setStep(pdfStep1);
 		generatorWords.create();
 		pdfWords = generatorWords.getPDFResult();
 		pdfWordlvlFirstLine = pdfWords.getPdfPages().get(0).getTextcontent().get().get(0);

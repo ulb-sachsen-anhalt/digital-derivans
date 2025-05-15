@@ -317,7 +317,6 @@ public class TestDerivansConfiguration {
 		// these are the least dimensions a newspaper page
 		// shall shrink to which was originally 7000x10000
 		TestHelper.generateJpgsFromList(imageDirOriginal, 700, 1000, ids);
-		// Derivans derivans = new Derivans(dc);
 
 		// act
 		DerivansConfiguration dc = new DerivansConfiguration(dp);

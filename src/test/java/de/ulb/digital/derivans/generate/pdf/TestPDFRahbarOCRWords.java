@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,12 +15,9 @@ import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
-import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateFS;
-import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -30,7 +26,7 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  * @author hartwig
  *
  */
-public class TestPDFRahbarOCRWords {
+class TestPDFRahbarOCRWords {
 
 	static PDFResult wordLvlResult;
 
@@ -42,7 +38,7 @@ public class TestPDFRahbarOCRWords {
 	static String rahbar88120Page10 = "1981185920_88120_00000010";
 
 	@BeforeAll
-	public static void setupBeforeClass() throws Exception {
+	static void setupBeforeClass() throws Exception {
 		// arrange
 		String word = "1981185920_88120_word";
 		Path workDirWord = tempDir.resolve(word);
@@ -57,8 +53,6 @@ public class TestPDFRahbarOCRWords {
 		Path sourceImg = Path.of("src/test/resources/images/1981185920_88120_00000010.jpg");
 		assertTrue(Files.exists(sourceImg));
 		Files.copy(sourceImg, pathImageMax.resolve(sourceImg.getFileName()));
-		DerivansData input = new DerivansData(workDirWord, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
-		DerivansData output = new DerivansData(workDirWord, ".", DerivateType.PDF);
 		DerivateStepPDF pdfStep = new DerivateStepPDF();
 		pdfStep.setImageDpi(300); // prevent re-scaling for testing
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
@@ -68,11 +62,9 @@ public class TestPDFRahbarOCRWords {
 		pdfStep.setPathPDF(workDirWord.resolve("1981185920_88120_word.pdf"));
 		DerivateFS derivate = new DerivateFS(workDirWord);
 		derivate.init(TestHelper.ULB_MAX_PATH);
-		List<DigitalPage> pages = derivate.getAllPages();
-		GeneratorPDF pdfGenerator = new GeneratorPDF(input, output, pages, pdfStep);
+		GeneratorPDF pdfGenerator = new GeneratorPDF();
 		pdfGenerator.setDerivate(derivate);
-		pdfGenerator.setStructure(derivate.getStructure());
-		pdfGenerator.setDigitalPages(pages);
+		pdfGenerator.setStep(pdfStep);
 		pdfGenerator.create();
 		wordLvlResult = pdfGenerator.getPDFResult();
 	}

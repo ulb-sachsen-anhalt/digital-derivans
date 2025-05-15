@@ -429,8 +429,7 @@ public class METS {
 		return cntnrs;
 	}
 
-	public METSFilePack getPageFiles(METSContainer container)
-			throws DigitalDerivansException {
+	public METSFilePack getPageFiles(METSContainer container) {
 		List<Element> allFiles = container.get().getChildren("fptr", METS.NS_METS);
 		List<String> fileIds = allFiles.stream().map(aFile -> aFile.getAttributeValue("FILEID"))
 				.collect(Collectors.toList());

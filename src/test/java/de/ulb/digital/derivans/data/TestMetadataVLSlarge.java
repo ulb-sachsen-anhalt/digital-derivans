@@ -7,14 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
@@ -39,29 +33,6 @@ class TestMetadataVLSlarge {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-
-		// try {
-		// SAXParserFactory factory = SAXParserFactory.newInstance();
-		// SAXParser saxParser = factory.newSAXParser();
-		// DefaultHandler handler = new DefaultHandler() {
-		// public void startElement(String uri, String localName, String qName,
-		// Attributes attributes) throws SAXException {
-		// System.out.println("Start Element: " + qName);
-		// }
-		// public void endElement(String uri, String localName, String qName) throws
-		// SAXException {
-		// System.out.println("End Element: " + qName);
-		// }
-		// public void characters(char[] ch, int start, int length) throws SAXException
-		// {
-		// System.out.println("Content: " + new String(ch, start, length));
-		// }
-		// };
-		// saxParser.parse(TestResource.VLS_HD_Aa_201517.get().toFile(), handler);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-
 		TestMetadataVLSlarge.derivate201517 = new DerivateMD(TestResource.VLS_HD_Aa_201517.get());
 		TestMetadataVLSlarge.derivate201517.checkRessources(false);
 		TestMetadataVLSlarge.derivate201517.init(TestHelper.ULB_MAX_PATH);

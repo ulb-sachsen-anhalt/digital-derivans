@@ -10,11 +10,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.generate.image.ImageProcessor;
 
 /**
  * 
- * Basic Abstract Image Derivate Creation
+ * Basic Image Generation
  * 
  * @author hartwig
  *
@@ -36,14 +37,6 @@ public abstract class GeneratorImage extends Generator {
 	protected int quality;
 
 	protected ImageProcessor imageProcessor = new ImageProcessor();
-
-	// protected GeneratorImage() {
-	// 	super();
-	// }
-
-	// protected GeneratorImage(DerivansData input, DerivansData output) {
-	// 	super(input, output);
-	// }
 
 	public void setImageProcessor(ImageProcessor processor) {
 		this.imageProcessor = processor;
@@ -101,22 +94,28 @@ public abstract class GeneratorImage extends Generator {
 	public int create() throws DigitalDerivansException {
 
 		// basic precondition: output directory shall exist
+		if (this.step.getOutputDir() == null) {
+			throw new DigitalDerivansRuntimeException("No outputDir: null!");
+		}
 		Path targetDir = this.rootDir.resolve(this.step.getOutputDir());
 		if (!Files.exists(targetDir)) {
 			try {
 				Files.createDirectory(targetDir);
 			} catch (IOException e) {
 				LOGGER.error(e);
-				throw new DigitalDerivansException(e);
+				throw new DigitalDerivansRuntimeException(e);
 			}
 		}
+		if (this.step.getInputDir() == null) {
+			throw new DigitalDerivansRuntimeException("No inputDir: null!");
+		}
 		if (this.digitalPages == null) {
-			throw new DigitalDerivansException("Invalid digitalPage input: null!");
+			throw new DigitalDerivansRuntimeException("Invalid digitalPage: null!");
 		}
 		if(this.digitalPages.isEmpty()) {
-			String msg = String.format("No digitalPages in %s/%s",
+			String msg = String.format("No digitalPages in %s/%s!",
 				this.rootDir, this.step.getInputDir());
-			throw new DigitalDerivansException(msg);
+			throw new DigitalDerivansRuntimeException(msg);
 		}
 
 		String msg = String.format("process '%02d' images in %s/%s with quality %.2f in %02d threads",

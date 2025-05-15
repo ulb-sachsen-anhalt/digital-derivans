@@ -18,17 +18,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
-import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.ITextElement;
 import de.ulb.digital.derivans.model.pdf.PDFTextElement;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -77,18 +75,19 @@ class TestPDFSyntheticWesteuropeLines {
 		pages.add(digiPage);
 		DerivateStruct testStruct = new DerivateStruct(1, "0001");
 		testStruct.getPages().add(digiPage);
+		DerivateFS testDerivate = new DerivateFS(tempDir);
+		testDerivate.setStructure(testStruct);
+
 		String pdfLineName = String.format("pdf-line-%04d.pdf", N_PAGES);
 		Path outputLinePath = tempDir.resolve(pdfLineName);
-		DerivansData input = new DerivansData(tempDir, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
-		DerivansData outputLine = new DerivansData(tempDir, ".", DerivateType.PDF);
 		DerivateStepPDF pdfStep1 = new DerivateStepPDF();
 		pdfStep1.setImageDpi(TEST_DPI);
 		pdfStep1.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
 		pdfStep1.setDebugRender(true);
 		pdfStep1.setPathPDF(outputLinePath);
-		GeneratorPDF generatorLine = new GeneratorPDF(input, outputLine, pages, pdfStep1);
-		generatorLine.setStructure(testStruct);
-		generatorLine.setDigitalPages(pages); // because of check
+		GeneratorPDF generatorLine = new GeneratorPDF();
+		generatorLine.setDerivate(testDerivate);
+		generatorLine.setStep(pdfStep1);
 		generatorLine.create();
 		pdfLines = generatorLine.getPDFResult();
 		pdfLinelvlFirstLine = pdfLines.getPdfPages().get(0).getTextcontent().get().get(0);

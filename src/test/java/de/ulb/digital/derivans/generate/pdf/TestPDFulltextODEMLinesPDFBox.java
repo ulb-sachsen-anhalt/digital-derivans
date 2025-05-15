@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -16,12 +15,9 @@ import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
-import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateMD;
-import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -32,7 +28,7 @@ import de.ulb.digital.derivans.model.step.DerivateType;
  *
  */
 @Disabled
-public class TestPDFulltextODEMLinesPDFBox {
+class TestPDFulltextODEMLinesPDFBox {
 
 	@TempDir
 	static Path tempDir;
@@ -44,7 +40,7 @@ public class TestPDFulltextODEMLinesPDFBox {
 	static Path pdfPath;
 
 	@BeforeAll
-	public static void setupBeforeClass() throws Exception {
+	static void setupBeforeClass() throws Exception {
 		workDir = tempDir.resolve("148811035");
 		// use existing images
 		Path imageDir = workDir.resolve(IDerivans.IMAGE_DIR_MAX);
@@ -57,23 +53,19 @@ public class TestPDFulltextODEMLinesPDFBox {
 		Path sourceOcr = Path.of("src/test/resources/alto/148811035/FULLTEXT");
 		Path targetOcr = workDir.resolve("FULLTEXT");
 		TestHelper.copyTree(sourceOcr, targetOcr);
-		DerivansData input = new DerivansData(workDir, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
-		DerivansData output = new DerivansData(workDir, ".", DerivateType.PDF);
 		DerivateStepPDF pdfStep = new DerivateStepPDF();
 		pdfStep.setImageDpi(300);
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		pdfStep.setDebugRender(true);
 		pdfStep.setInputDir(IDerivans.IMAGE_DIR_MAX);
 		pdfStep.setOutputDir(".");
-		// DerivansPathResolver resolver = new DerivansPathResolver(workDir);
-		// List<DigitalPage> pages = resolver.resolveFromStep(pdfStep);
-		// resolver.enrichOCRFromFilesystem(pages, targetOcr);
 		DerivateMD derivate = new DerivateMD(targetMets);
 		derivate.init(imageDir);
-		List<DigitalPage> pages = derivate.getAllPages();
-		var handler = new GeneratorPDF(input, output, pages, pdfStep);
+		var handler = new GeneratorPDF();
 		var processor = new PDFBoxProcessor();
 		handler.setPDFProcessor(processor);
+		handler.setDerivate(derivate);
+		handler.setStep(pdfStep);
 
 		// act
 		handler.create();

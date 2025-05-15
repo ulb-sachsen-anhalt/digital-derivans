@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.data.ocr.OCRReader;
 import de.ulb.digital.derivans.data.ocr.OCRReaderFactory;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 

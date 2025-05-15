@@ -1,13 +1,10 @@
 package de.ulb.digital.derivans.model.step;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
 
@@ -20,11 +17,6 @@ import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.generate.Generator;
-import de.ulb.digital.derivans.IDerivans;
-import de.ulb.digital.derivans.model.step.DerivateStep;
-import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
-import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -87,7 +79,6 @@ class TestStepsMigration {
 		steps = derivans.getSteps();
 	}
 
-
 	@Test
 	void testStepFooter() {
 		DerivateStep theStep = TestStepsMigration.steps.stream()
@@ -109,6 +100,5 @@ class TestStepsMigration {
 		var footerStep = (DerivateStepPDF) theStep;
 		assertEquals(NAME_PDF, footerStep.getNamePDF().get());
 	}
-
 
 }

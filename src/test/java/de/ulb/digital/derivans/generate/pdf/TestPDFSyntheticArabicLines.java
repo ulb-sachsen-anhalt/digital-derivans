@@ -21,13 +21,12 @@ import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.model.DerivansData;
+import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.pdf.PDFTextElement;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -72,12 +71,12 @@ class TestPDFSyntheticArabicLines {
 		pages.add(dp);
 		DerivateStruct struct = new DerivateStruct(1, "00001");
 		struct.getPages().add(dp);
+		DerivateFS theDerivate = new DerivateFS(tempDir);
+		theDerivate.setStructure(struct);
 
 		// act
 		String pdfLineName = String.format("pdf-linelevel-%04d.pdf", N_PAGES);
 		Path outputLinePath = tempDir.resolve(pdfLineName);
-		DerivansData input = new DerivansData(pathImages, IDerivans.IMAGE_DIR_MAX, DerivateType.JPG);
-		DerivansData outputLine = new DerivansData(outputLinePath, ".", DerivateType.PDF);
 		DerivateStepPDF pdfStep = new DerivateStepPDF();
 		pdfStep.setImageDpi(TEST_DPI);
 		pdfStep.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
@@ -85,9 +84,9 @@ class TestPDFSyntheticArabicLines {
 		pdfStep.setPathPDF(outputLinePath);
 
 		// act once
-		var handlerOne = new GeneratorPDF(input, outputLine, pages, pdfStep);
-		handlerOne.setDigitalPages(pages); // only because of check
-		handlerOne.setStructure(struct);
+		var handlerOne = new GeneratorPDF();
+		handlerOne.setDerivate(theDerivate);
+		handlerOne.setStep(pdfStep);
 		handlerOne.create();
 		pdfWithLines = handlerOne.getPDFResult();
 		pdfLinelvlFirstLine = pdfWithLines.getPdfPages().get(0).getTextcontent().get().get(0);

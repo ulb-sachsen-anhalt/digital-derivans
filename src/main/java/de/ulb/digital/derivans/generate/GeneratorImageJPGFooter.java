@@ -16,7 +16,6 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.data.font.FontHandler;
-import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DerivateMD;
 import de.ulb.digital.derivans.model.DigitalFooter;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -48,31 +47,6 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 
 	private AtomicInteger nGranulars = new AtomicInteger();
 
-	public GeneratorImageJPGFooter() {
-		super();
-	}
-
-	// public GeneratorImageJPGFooter(GeneratorImageJPGFooter copy) {
-	// 	super(copy.input, copy.output, copy.quality);
-	// 	this.poolSize = copy.getPoolSize();
-	// 	this.maximal = copy.getMaximal();
-	// }
-
-	// public GeneratorImageJPGFooter(DerivansData input, DerivansData output, DigitalFooter footer,
-	// 		List<DigitalPage> pages, Integer quality) {
-	// 	super(input, output, quality);
-	// 	this.footer = footer;
-	// 	this.digitalPages = pages;
-	// 	this.init();
-	// }
-
-	// public GeneratorImageJPGFooter(GeneratorImageJPGFooter jpgFooter, int quality) {
-	// 	super(jpgFooter.getInput(), jpgFooter.getOutput(), quality);
-	// 	this.footer = jpgFooter.getDigitalFooter();
-	// 	this.digitalPages = jpgFooter.getDigitalPages();
-	// 	this.init();
-	// }
-
 	/**
 	 * 
 	 * Super type constructor
@@ -82,13 +56,13 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 	 * @param footer
 	 * @param pages
 	 */
-	public GeneratorImageJPGFooter(Generator base, Integer quality, DigitalFooter footer) {
-		// super(base.getInput(), base.getOutput(), quality);
-		this.digitalPages = base.getDigitalPages();
-		this.quality = quality;
-		this.footer = footer;
-		this.init();
-	}
+	// public GeneratorImageJPGFooter(Generator base, Integer quality, DigitalFooter footer) {
+	// 	// super(base.getInput(), base.getOutput(), quality);
+	// 	this.digitalPages = base.getDigitalPages();
+	// 	this.quality = quality;
+	// 	this.footer = footer;
+	// 	this.init();
+	// }
 
 	protected void init() {
 		this.setFooterBuffer();

@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
-import de.ulb.digital.derivans.model.DerivansData;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.step.DerivateStep;
@@ -15,16 +14,12 @@ import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
- * Basic input and output => only use it's sub types
+ * Basic Generator
  * 
  * @author u.hartwig
  *
  */
-public class Generator {
-
-	// protected DerivansData input;
-
-	// protected DerivansData output;
+public abstract class Generator {
 
 	protected Path rootDir;
 
@@ -43,14 +38,6 @@ public class Generator {
 	public static final String EXT_JPG = ".jpg";
 
 	public static final String EXT_TIF = ".tif";
-
-	// public Generator() {}
-
-	// public Generator(DerivansData input, DerivansData output) {
-	// 	this.input = input;
-	// 	this.output = output;
-	// 	this.derivateType = output.getType();
-	// }
 
 	public int create() throws DigitalDerivansException {
 		return 0;
@@ -106,23 +93,6 @@ public class Generator {
 	public DerivateStep getStep() {
 		return this.step;
 	}
-
-	// public void setInput(DerivansData input) {
-	// 	this.input = input;
-	// }
-
-	// public DerivansData getInput() {
-	// 	return this.input;
-	// }
-
-	// public void setOutput(DerivansData output) {
-	// 	this.output = output;
-	// 	this.derivateType = output.getType();
-	// }
-
-	// public DerivansData getOutput() {
-	// 	return this.output;
-	// }
 
 	protected Path setInpath(DigitalPage page) {
 		Path pathIn = page.getFile().withDirname(this.step.getInputDir());

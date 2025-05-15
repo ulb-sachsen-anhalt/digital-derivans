@@ -72,6 +72,8 @@ public class TestHelper {
 
 	public static final Path ULB_MAX_PATH = Path.of("MAX");
 
+	public static final String IMAGE = "IMAGE";
+
 	public static int textMarginLeft = 50;
 
 	public static int textMarginTop = 200;
