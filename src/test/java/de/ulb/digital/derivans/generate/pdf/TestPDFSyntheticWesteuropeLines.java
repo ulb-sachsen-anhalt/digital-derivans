@@ -62,8 +62,7 @@ class TestPDFSyntheticWesteuropeLines {
 	static void initAll(@TempDir Path tempDir) throws Exception {
 		Path pathImages = tempDir.resolve("MAX");
 		Files.createDirectory(pathImages);
-		String imageName = String.format("%04d.jpg", 1);
-		Path jpgFile = pathImages.resolve(imageName);
+		Path jpgFile = pathImages.resolve("00001.jpg");
 		BufferedImage bi2 = new BufferedImage(orgwidth, orgHeight, BufferedImage.TYPE_3BYTE_BGR);
 		Graphics2D g2d = bi2.createGraphics();
 		g2d.setColor(Color.ORANGE);
@@ -83,7 +82,8 @@ class TestPDFSyntheticWesteuropeLines {
 		DerivateStepPDF pdfStep1 = new DerivateStepPDF();
 		pdfStep1.setImageDpi(TEST_DPI);
 		pdfStep1.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
-		pdfStep1.setDebugRender(true);
+		pdfStep1.setConformanceLevel("PDF/A-1b");
+		pdfStep1.setDebugRender(false);
 		pdfStep1.setPathPDF(outputLinePath);
 		GeneratorPDF generatorLine = new GeneratorPDF();
 		generatorLine.setDerivate(testDerivate);
@@ -91,7 +91,6 @@ class TestPDFSyntheticWesteuropeLines {
 		generatorLine.create();
 		pdfLines = generatorLine.getPDFResult();
 		pdfLinelvlFirstLine = pdfLines.getPdfPages().get(0).getTextcontent().get().get(0);
-
 	}
 
 	@Test

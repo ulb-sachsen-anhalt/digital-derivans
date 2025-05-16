@@ -63,5 +63,5 @@ public interface IPDFProcessor {
 	 * @param maxPages
 	 * @return
 	 */
-	boolean addOutline(int maxPages);
+	// boolean addOutline(int maxPages);
 }
