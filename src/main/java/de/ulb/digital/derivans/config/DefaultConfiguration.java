@@ -31,17 +31,16 @@ public class DefaultConfiguration {
 	/**
 	 * 
 	 * Different PDF_A conformance levels
-	 * PDF_A_1A, PDF_A_1B, PDF_A_2A, PDF_A_2B 
-	 * PDF_A_2U, PDF_A_3A, PDF_A_3B, PDF_A_3U
+	 * PDF/A-1A, PDF/A-1B, 
+	 * PDF/A-2A, PDF/A-2B, PDF/A-2U,
+	 * PDF/A-3A, PDF/A-3B, PDF/A-3U
 	 * 
 	 * cf. https://en.wikipedia.org/wiki/PDF/A
 	 * 
 	 */
-	public static final String PDFA_CONFORMANCE_LEVEL = "PDF_A_1B";
+	public static final String PDFA_CONFORMANCE_LEVEL = "PDF/A-1B";
 	
 	public static final int DEFAULT_IMAGE_DPI = 300;
-
-	// public static final String DEFAULT_OUTPUT_TYPE = DerivateType.JPG.toString().toLowerCase();
 
 	public static final Integer DEFAULT_FONT_SIZE = 8;
 	
