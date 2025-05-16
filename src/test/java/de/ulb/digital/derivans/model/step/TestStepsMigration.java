@@ -14,6 +14,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.TestHelper;
+import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.generate.Generator;
@@ -59,13 +60,12 @@ class TestStepsMigration {
 
 		// arrange configuration
 		// migration configuration with extended derivates
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = TestStepsMigration.tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
-		TestHelper.copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_migration.ini"));
 		dp.setNamePDF(NAME_PDF);

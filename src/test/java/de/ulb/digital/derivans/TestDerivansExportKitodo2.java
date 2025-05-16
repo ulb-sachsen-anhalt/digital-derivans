@@ -53,15 +53,14 @@ class TestDerivansExportKitodo2 {
 		TestDerivansExportKitodo2.workDir = fixtureMetadataTIFK2(tempDir, pathRes);
 
 		// arrange configuration
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
-		TestHelper.copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_export.ini"));
+		dp.setPathConfig(TestResource.CONFIG_RES_DIR.get().resolve(TestResource.CONFIG_ULB_EXPORT.get()));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);
 
@@ -172,9 +171,7 @@ class TestDerivansExportKitodo2 {
 		}
 		Path imagesDst = pathTarget.resolve("MAX");
 		Files.createDirectories(imagesDst);
-		// for (int i=1; i<18; i++) {
-			TestHelper.generateImages(imagesDst, 140, 200, 17, "%08d.tif");
-		// }
+		TestHelper.generateImages(imagesDst, 140, 200, 17, "%08d.tif");
 		Path metsTarget = pathTarget.resolve("058141367.xml");
 		Files.copy(srcMets, metsTarget);
 		return pathTarget;

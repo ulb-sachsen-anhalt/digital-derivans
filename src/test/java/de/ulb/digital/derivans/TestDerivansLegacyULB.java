@@ -58,13 +58,12 @@ class TestDerivansLegacyULB {
 
 		// arrange configuration
 		// migration configuration with extended derivates
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
-		TestHelper.copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_migration.ini"));
 		Path input = workDir.resolve("737429.xml");

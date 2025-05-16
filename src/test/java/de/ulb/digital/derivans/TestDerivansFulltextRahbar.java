@@ -46,13 +46,12 @@ class TestDerivansFulltextRahbar {
 	 */
 	@BeforeAll
 	static void setupBeforeClass() throws Exception {
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
-		TestHelper.copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTargetDir);
 
 		// arange 01
 		String line = "1981185920_88120_line";

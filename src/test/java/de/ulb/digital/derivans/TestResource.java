@@ -13,15 +13,38 @@ import java.nio.file.Path;
 public enum TestResource {
 
 	/**
+	 * Config main directory with different derivans configurations + logging + footer templates
+	 */
+	CONFIG_RES_DIR(Path.of("src/test/resources/config")),
+
+	/**
+	 * Corresponding default / fallback configuration
+	 */
+	CONFIG_DEFAULT(Path.of("")),
+
+	/** 
+	 * Config for ODEM workflows to create PDF with text layer
+	 */
+	CONFIG_ULB_ODEM(CONFIG_RES_DIR.get().resolve("derivans_ulb_odem.ini")),
+
+	/** 
+	 * Config to create export assets when exporting from Kitodo (PDF + image derivates)
+	 */
+	CONFIG_ULB_EXPORT(Path.of("derivans_ulb_export.ini")),
+
+	/*
 	 * large digital object (+2.300 pages, complex structure)
 	 */
 	VLS_HD_Aa_201517(Path.of("src/test/resources/mets/vls/hd-Aa-201517.xml")),
 
 	/**
-	 * small digital object (4 pages only)
+	 * small digital object (4 pages only) as MWE from Visual Library Server V12
 	 */
 	VLS_HD_Aa_737429(Path.of("src/test/resources/mets/vls/hd-Aa-737429.mets.xml")),
-	VLS_HD_Aa_737429_OCR(Path.of("src/test/resources/mets/vls/hd-Aa-737429-ocr.mets.xml")),
+
+	/**
+	 * Fulltext data for small MWE
+	 */
 	OCR_737429(Path.of("src/test/resources/ocr/alto/737429")),
 
 	/**

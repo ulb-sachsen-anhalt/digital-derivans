@@ -106,10 +106,9 @@ class TestDerivansFS {
 	void testDerivatesResolveTIFInput(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		Files.createDirectories(configTargetDir);
-		Path srcConfig = configSourceDir.resolve("derivans_ulb_export.ini");
+		Path srcConfig = TestResource.CONFIG_RES_DIR.get().resolve("derivans_ulb_export.ini");
 		Path trgConfig = configTargetDir.resolve("derivans_ulb_export.ini");
 		Files.copy(srcConfig, trgConfig);
 		DerivansParameter dp = new DerivansParameter();
@@ -185,14 +184,13 @@ class TestDerivansFS {
 	void testConfigCustomWithImagesAndPartialOCR(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
 		Files.createDirectories(configTargetDir);
-		Path testConfig = configSourceDir.resolve("derivans-custom.ini");
+		Path testConfig = TestResource.CONFIG_RES_DIR.get().resolve("derivans-custom.ini");
 		Files.copy(testConfig, configTargetDir.resolve("derivans-custom.ini"));
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(testConfig);

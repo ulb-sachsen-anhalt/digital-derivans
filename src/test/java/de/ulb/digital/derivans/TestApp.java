@@ -64,10 +64,9 @@ class TestApp {
 		// arrange
 		Path pathTarget = TestHelper.fixturePrint737429(tempDir, IDerivans.IMAGE_DIR_MAX);
 		
-		Path configDir = Path.of("src/test/resources/config");
 		Path configTempDir = tempDir.resolve("config");
-		Path configTemp = configTempDir.resolve("derivans_ulb_odem.ini");
-		TestHelper.copyTree(configDir, configTempDir);
+		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTempDir);
+		Path configTemp = configTempDir.resolve(TestResource.CONFIG_ULB_ODEM.get().getFileName());
 
 		// act
 		String[] args = { pathTarget.resolve("737429.xml").toString(), "-c", configTemp.toString() };

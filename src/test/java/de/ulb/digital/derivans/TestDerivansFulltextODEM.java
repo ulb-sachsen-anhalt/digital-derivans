@@ -36,13 +36,12 @@ class TestDerivansFulltextODEM {
 	@BeforeAll
 	static void setupBeforeClass() throws Exception {
 		// arrange migration configuration with extended derivates
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
-		TestHelper.copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTargetDir);
 		workDir = tempDir.resolve("148811035");
 
 		// re-use images

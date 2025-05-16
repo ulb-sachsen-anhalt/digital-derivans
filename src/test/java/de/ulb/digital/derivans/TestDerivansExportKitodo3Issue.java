@@ -24,7 +24,7 @@ import de.ulb.digital.derivans.config.DerivansParameter;
  * with TIF images and METS/MODS metadata
  * Ensure resulting METS conforms to METS XSD
  * 
- * used config: src/test/resources/config/derivans.ini
+ * used config: src/test/resources/config/derivans_ulb_export.ini
  * 
  * @author hartwig
  *
@@ -53,13 +53,12 @@ class TestDerivansExportKitodo3Issue {
 		Files.copy(pathRes, pathTargetMets);
 		TestHelper.generateImages(pathImageDir, 120, 200, 7, "%08d.tif");
 
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
-		TestHelper.copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_export.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);

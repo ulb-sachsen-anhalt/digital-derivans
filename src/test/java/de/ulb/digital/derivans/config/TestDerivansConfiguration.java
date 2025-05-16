@@ -251,14 +251,13 @@ public class TestDerivansConfiguration {
 	void testConfigULBOverwriteImageGroup(@TempDir Path tempDir) throws Exception {
 
 		// arrange
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(configTargetDir);
 		}
 		Files.createDirectories(configTargetDir);
-		Path testConfig = configSourceDir.resolve("derivans_ulb_odem.ini");
+		Path testConfig = TestResource.CONFIG_RES_DIR.get().resolve("derivans_ulb_odem.ini");
 		Files.copy(testConfig, configTargetDir.resolve("derivans.ini"));
 		DerivansParameter dp = new DerivansParameter();
 		dp.setPathConfig(testConfig);

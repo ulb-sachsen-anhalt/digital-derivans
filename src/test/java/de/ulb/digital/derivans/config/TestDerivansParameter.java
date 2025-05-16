@@ -12,6 +12,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.TestHelper;
+import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
 
@@ -49,9 +50,8 @@ class TestDerivansParameter {
 
 		// arrange configuration
 		// migration configuration with extended derivates
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = thisDir.resolve("config");
-		TestHelper.copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTargetDir);
 
 		// alter config
 		String xPath = "//mods:mods/mods:titleInfo/mods:title";
@@ -94,9 +94,8 @@ class TestDerivansParameter {
 
 		// arrange configuration
 		// migration configuration with extended derivates
-		Path configSourceDir = Path.of("src/test/resources/config");
 		Path configTargetDir = thisDir.resolve("config");
-		TestHelper.copyTree(configSourceDir, configTargetDir);
+		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTargetDir);
 
 		// alter config
 		var pathConfig = configTargetDir.resolve("derivans_ulb_odem.ini");
