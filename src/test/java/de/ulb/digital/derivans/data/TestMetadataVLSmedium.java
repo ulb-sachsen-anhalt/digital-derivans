@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.file.Path;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -59,32 +58,6 @@ class TestMetadataVLSmedium {
 
 		// was: LogId 'log2404939' : Invalid physical struct 'phys2404942'!
 		assertEquals("No files link div log2404930/Scene VIII. in @USE=MAX!", actualExc.getMessage());
-	}
-
-	/**
-	 * 
-	 * Ensure: invalid XML which confuses the Parser yields
-	 * proper Exception for Diagnostics
-	 * 
-	 * @throws DigitalDerivansException
-	 * 
-	 */
-	@Test
-	@Disabled
-	void testInvalidXMLFromMigration() throws DigitalDerivansException {
-
-		// arrange
-		DerivateMD derivate = new DerivateMD(TestResource.VLS_VD18_Aa_9989442.get());
-		derivate.checkRessources(false);
-
-		// act
-		Exception exc = assertThrows(DigitalDerivansException.class, () -> {
-			derivate.init(TestHelper.ULB_MAX_PATH);
-		});
-
-		// assert
-		assertEquals("java.lang.IllegalArgumentException: The given document is not a valid mets document",
-				exc.getMessage());
 	}
 
 	@Test

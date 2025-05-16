@@ -2,9 +2,7 @@ package de.ulb.digital.derivans.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -61,21 +59,6 @@ class TestMetadataShareIt {
 
 		// assert
 		assertEquals("No files link div log1646693/Abschnitt in @USE=MAX!", actualExc.getMessage());
-    }
-
-	/**
-	 * Catch rather tricky case with SAXException due
-	 * for 1981185920_38841
-	 */
-	@Test
-	@Disabled
-	void testStructureODEM_01() throws DigitalDerivansException {
-        // actsert
-		var actualExc = assertThrows(DigitalDerivansException.class, 
-			() -> new DerivateMD(TestResource.SHARE_IT_VD18_38841.get()));
-
-		// assert
-		assertTrue(actualExc.getMessage().contains("not a valid mets document"));
     }
 
 }

@@ -135,14 +135,13 @@ class TestDerivansFS {
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
 		assertTrue(Files.exists(pdfWritten));
 
-		// PDFOutlineEntry outline = new
-		// TestHelper.PDFInspector(pdfWritten).getOutline();
-		// assertNotNull(outline);
-		// assertEquals("Outlines", outline.getLabel());
-		// assertEquals(1, outline.getOutlineEntries().size());
-		// PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
-		// assertEquals("only_images", logRoot.getLabel());
-		// assertEquals(4, logRoot.getOutlineEntries().size());
+		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
+		assertNotNull(outline);
+		assertEquals("Outlines", outline.getLabel());
+		assertEquals(1, outline.getOutlineEntries().size());
+		PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
+		assertEquals("only_images", logRoot.getLabel());
+		assertEquals(2, logRoot.getOutlineEntries().size());
 	}
 
 	/**
@@ -220,58 +219,5 @@ class TestDerivansFS {
 		Path pdfWritten = pathTarget.resolve(pdfName);
 		assertTrue(Files.exists(pdfWritten));
 	}
-
-	/**
-	 * 
-	 * Behavior if ULB config, but images are in group 'ORIGINAL' (rather
-	 * kitodo.presentation like) for VL ID 16359604
-	 * 
-	 * => Ensure, overwriting config via CLI works!
-	 * 
-	 * @param tempDir
-	 * @throws Exception
-	 */
-	// @Test
-	// void testConfigULBOverwriteImageGroup(@TempDir Path tempDir) throws Exception
-	// {
-
-	// // arrange
-	// Path configSourceDir = Path.of("src/test/resources/config");
-	// Path configTargetDir = tempDir.resolve("config");
-	// if (Files.exists(configTargetDir)) {
-	// Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-	// Files.delete(configTargetDir);
-	// }
-	// Files.createDirectories(configTargetDir);
-	// Path testConfig = configSourceDir.resolve("derivans.ini");
-	// Files.copy(testConfig, configTargetDir.resolve("derivans.ini"));
-	// DerivansParameter dp = new DerivansParameter();
-	// dp.setPathConfig(testConfig);
-	// // this is the mandatory point
-	// dp.setImages("ORIGINAL");
-	// Path pathTarget = tempDir.resolve("16359604");
-	// dp.setPathInput(pathTarget.resolve("16359604.mets.xml"));
-	// Path sourceImageDir = Path.of("src/test/resources/16359604");
-	// TestHelper.copyTree(sourceImageDir, pathTarget);
-	// // create artificial "ORIGINAL" testimages
-	// Path imageOriginal = pathTarget.resolve("ORIGINAL");
-	// List<String> ids = IntStream.range(5, 13)
-	// .mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
-	// // these are the least dimensions a newspaper page
-	// // shall shrink to which was originally 7000x10000
-	// TestHelper.generateJpgsFromList(imageOriginal, 700, 1000, ids);
-	// DerivansConfiguration dc = new DerivansConfiguration(dp);
-	// ((DerivateStepPDF)
-	// dc.getDerivateSteps().get(2)).setModsIdentifierXPath("//mods:title");
-	// Derivans derivans = new Derivans(dc);
-
-	// // act
-	// derivans.create();
-
-	// // assert
-	// String pdfName = "General-Anzeiger_f\u00FCr_Halle_und_den_Saalkreis.pdf";
-	// Path pdfWritten = pathTarget.resolve(pdfName);
-	// assertTrue(Files.exists(pdfWritten));
-	// }
 
 }

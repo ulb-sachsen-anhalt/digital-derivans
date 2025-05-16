@@ -40,7 +40,6 @@ public enum TestResource {
 	VLS_VD17_AF_11250807(Path.of("src/test/resources/mets/vls/vd17-AF-11250807.ulb.xml")),
 
 	VLS_VD18_Af_9427337(Path.of("src/test/resources/mets/vls/vd18-Af-9427337.ulb.xml")),
-	VLS_VD18_Aa_9989442(Path.of("src/test/resources/mets/vls/vd18-9989442.ulb.xml")),
 
 	/**
 	 * contains duplicated logical structure
@@ -99,7 +98,6 @@ public enum TestResource {
 	SHARE_IT_RAHBAR_88120_LEGACY(Path.of("src/test/resources/ocr/alto/1981185920_88120/1981185920_88120_00000010_legacy.xml")),
 	SHARE_IT_RAHBAR_88120(Path.of("src/test/resources/ocr/alto/1981185920_88120/1981185920_88120_00000010.xml")),
 	SHARE_IT_RAHBAR_94220(Path.of("src/test/resources/ocr/alto/1981185920_94220/00000805.xml")),
-	SHARE_IT_VD18_38841(Path.of("src/test/resources/mets/share_it/1981185920_38841.xml")),
 
 	/**
 	 * 

@@ -151,7 +151,7 @@ class TestMetadataVLSMultivolumes {
 	}
 
 	@Test
-	void testDescriptiveData11250807() throws DigitalDerivansException {
+	void testDescriptiveData11250807() {
 		assertEquals("urn:nbn:de:gbv:3:1-699854", dmd11250807.getUrn());
 		assertEquals("005836395", dmd11250807.getIdentifier());
 		assertEquals("Martini, Jakob", dmd11250807.getPerson());

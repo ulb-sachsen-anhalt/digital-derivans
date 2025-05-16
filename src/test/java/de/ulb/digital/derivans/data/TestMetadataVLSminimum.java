@@ -20,7 +20,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * 
- * Specification of {@link MetadataStore}
+ * MWE for VL METS
  * 
  * @author u.hartwig
  *
@@ -39,13 +39,7 @@ class TestMetadataVLSminimum {
 		dmd737429 = der737429.getDescriptiveData();
 	}
 
-	/**
-	 * 
-	 * Check expected information is extracted from OAI-record in old VLS 12 format
-	 * 
-	 * http://digital.bibliothek.uni-halle.de/hd/oai/?verb=GetRecord&metadataPrefix=mets&mode=xml&identifier=737429
-	 * 
-	 */
+
 	@Test
 	void testDescriptiveDataHDmonography() {
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
