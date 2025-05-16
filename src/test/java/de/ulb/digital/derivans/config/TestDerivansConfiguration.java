@@ -99,9 +99,8 @@ public class TestDerivansConfiguration {
 		Files.createDirectory(targetMetsDir);
 		Path metsModsTarget = targetMetsDir.resolve("226134857.xml");
 		Files.copy(TestResource.VLS_HD_Aa_226134857.get(), metsModsTarget);
-		Path conf = Path.of("src/test/resources/config/derivans-pdf.ini");
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(conf);
+		dp.setPathConfig(TestResource.CONFIG_ODEM_CUSTOM.get());
 		dp.setPathInput(metsModsTarget);
 
 		// act
@@ -109,11 +108,11 @@ public class TestDerivansConfiguration {
 
 		// assert
 		assertEquals(80, dc.getQuality());
-		assertEquals(4, dc.getPoolsize());
+		assertEquals(3, dc.getPoolsize());
 		List<DerivateStep> steps = dc.getDerivateSteps();
-		assertEquals(3, steps.size());
-		assertTrue(steps.get(2) instanceof DerivateStepPDF);
-		var stepPDF = (DerivateStepPDF) steps.get(2);
+		assertEquals(2, steps.size());
+		assertTrue(steps.get(1) instanceof DerivateStepPDF);
+		var stepPDF = (DerivateStepPDF) steps.get(1);
 		assertEquals(DerivateType.PDF, stepPDF.getOutputType());
 		assertFalse(stepPDF.isEnrichMetadata());
 	}

@@ -190,10 +190,8 @@ class TestDerivansFS {
 			Files.delete(configTargetDir);
 		}
 		Files.createDirectories(configTargetDir);
-		Path testConfig = TestResource.CONFIG_RES_DIR.get().resolve("derivans-custom.ini");
-		Files.copy(testConfig, configTargetDir.resolve("derivans-custom.ini"));
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(testConfig);
+		dp.setPathConfig(TestResource.CONFIG_ODEM_CUSTOM.get());
 		Path pathTarget = tempDir.resolve("16359604");
 		dp.setPathInput(pathTarget);
 		Path sourceImageDir = Path.of("src/test/resources/ocr/16359604");

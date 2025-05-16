@@ -65,7 +65,7 @@ class TestDerivansLegacyULB {
 		}
 		TestHelper.copyTree(TestResource.CONFIG_RES_DIR.get(), configTargetDir);
 		DerivansParameter dp = new DerivansParameter();
-		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_migration.ini"));
+		dp.setPathConfig(TestResource.CONFIG_ULB_MIGRATION.get());
 		Path input = workDir.resolve("737429.xml");
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		Derivans derivans = new Derivans(dc);

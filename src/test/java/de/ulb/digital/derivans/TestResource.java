@@ -20,17 +20,27 @@ public enum TestResource {
 	/**
 	 * Corresponding default / fallback configuration
 	 */
-	CONFIG_DEFAULT(Path.of("")),
+	CONFIG_DEFAULT(CONFIG_RES_DIR.get().resolve("derivans.ini")),
 
 	/** 
 	 * Config for ODEM workflows to create PDF with text layer
 	 */
 	CONFIG_ULB_ODEM(CONFIG_RES_DIR.get().resolve("derivans_ulb_odem.ini")),
 
+	/**
+	 * Custom configuration with disabled PDF enrichment
+	 */
+	CONFIG_ODEM_CUSTOM(CONFIG_RES_DIR.get().resolve("derivans_custom.ini")),
+
 	/** 
 	 * Config to create export assets when exporting from Kitodo (PDF + image derivates)
 	 */
 	CONFIG_ULB_EXPORT(Path.of("derivans_ulb_export.ini")),
+
+	/**
+	 * Config used of old for the first great VLS migration starting 2022
+	 */
+	CONFIG_ULB_MIGRATION(CONFIG_RES_DIR.get().resolve("derivans_ulb_migration.ini")),
 
 	/*
 	 * large digital object (+2.300 pages, complex structure)
