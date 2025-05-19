@@ -189,10 +189,11 @@ class TestImageGenerator {
 	 * 
 	 * Check behavor if no output dir parameter provided
 	 * Actually the output check preceedes reading of input
+	 * @throws DigitalDerivansException 
 	 * 
 	 */
 	@Test
-	void testBehavorMissingOutput() {
+	void testBehavorMissingOutput() throws DigitalDerivansException {
 		DerivateStepImage incompleteStep01 = new DerivateStepImage();
 		GeneratorImageJPG invalidGen = new GeneratorImageJPG();
 		invalidGen.setDerivate(TestImageGenerator.testDerivate);
@@ -210,9 +211,10 @@ class TestImageGenerator {
 	 * Check behavor if no input dir parameter present
 	 * 
 	 * @throws IOException
+	 * @throws DigitalDerivansException 
 	 */
 	@Test
-	void testBehavorMissingInput() throws IOException {
+	void testBehavorMissingInput() throws IOException, DigitalDerivansException {
 		Path path = sharedTempDir.resolve("MISSING_INPUT");
 		Files.createDirectory(path);
 		DerivateStepImage incompleteStep01 = new DerivateStepImage();

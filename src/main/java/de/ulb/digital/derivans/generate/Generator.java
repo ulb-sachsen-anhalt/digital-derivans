@@ -85,7 +85,10 @@ public abstract class Generator {
 		return this.derivate;
 	}
 
-	public void setStep(DerivateStep step) {
+	public void setStep(DerivateStep step) throws DigitalDerivansException {
+		if (step == null) {
+			throw new DigitalDerivansException("Refuse invalid step = null!");
+		}
 		this.step = step;
 		this.derivateType = step.getOutputType();
 	}

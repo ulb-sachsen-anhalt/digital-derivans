@@ -12,6 +12,7 @@ enum MODSRelator {
 	AUTHOR("aut"),
 	ASSIGNED_NAME("asn"),
 	CONTRIBUTOR("ctb"),
+	EDITOR("edt"),
 	OTHER("oth"),
 	PUBLISHER("pbl"),
 	PRINTER("prt"),

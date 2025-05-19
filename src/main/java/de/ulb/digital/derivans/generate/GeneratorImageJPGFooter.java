@@ -47,23 +47,6 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 
 	private AtomicInteger nGranulars = new AtomicInteger();
 
-	/**
-	 * 
-	 * Super type constructor
-	 * 
-	 * @param base
-	 * @param quality
-	 * @param footer
-	 * @param pages
-	 */
-	// public GeneratorImageJPGFooter(Generator base, Integer quality, DigitalFooter footer) {
-	// 	// super(base.getInput(), base.getOutput(), quality);
-	// 	this.digitalPages = base.getDigitalPages();
-	// 	this.quality = quality;
-	// 	this.footer = footer;
-	// 	this.init();
-	// }
-
 	protected void init() {
 		this.setFooterBuffer();
 		try {
@@ -79,7 +62,7 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 	}
 
 	@Override
-	public void setStep(DerivateStep step) {
+	public void setStep(DerivateStep step) throws DigitalDerivansException {
 		super.setStep(step);
 		DerivateStepImageFooter stepFooter = (DerivateStepImageFooter) step;
 		String footerLabel = stepFooter.getFooterLabel();

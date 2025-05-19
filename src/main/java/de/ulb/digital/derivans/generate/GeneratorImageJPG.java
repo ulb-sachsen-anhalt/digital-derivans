@@ -20,7 +20,7 @@ import de.ulb.digital.derivans.model.step.DerivateStepImage;
 public class GeneratorImageJPG extends GeneratorImage {
 
 	@Override
-	public void setStep(DerivateStep step) {
+	public void setStep(DerivateStep step) throws DigitalDerivansException {
 		super.setStep(step);
 		DerivateStepImage imgStep = (DerivateStepImage) step;
 		this.setQuality(imgStep.getQuality());

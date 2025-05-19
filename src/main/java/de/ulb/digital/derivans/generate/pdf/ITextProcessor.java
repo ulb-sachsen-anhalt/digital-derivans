@@ -161,7 +161,9 @@ public class ITextProcessor implements IPDFProcessor {
 	public void addMetadata() {
 		EnumMap<MetadataType, String> mdMap = new EnumMap<>(MetadataType.class);
 		var docInfo = this.iTextPDFDocument.getDocumentInfo();
-		docInfo.setMoreInfo(PdfName.Title.getValue(), this.pdfStep.getTitle());
+		String title = this.pdfStep.getTitle();
+		String year = this.pdfStep.getPublicationYear();
+		docInfo.setMoreInfo(PdfName.Title.getValue(), String.format("(%s) %s", year, title));
 		mdMap.put(MetadataType.TITLE, this.pdfStep.getTitle());
 		docInfo.setMoreInfo(PdfName.Author.getValue(), this.pdfStep.getAuthor());
 		mdMap.put(MetadataType.AUTHOR, this.pdfStep.getAuthor());

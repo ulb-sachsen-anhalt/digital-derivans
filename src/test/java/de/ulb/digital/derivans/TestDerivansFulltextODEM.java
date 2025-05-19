@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 
 /**
@@ -30,6 +32,8 @@ class TestDerivansFulltextODEM {
 	static Path workDir;
 
 	static Path pdfPath;
+
+	static TestHelper.PDFInspector inspector;
 
 	static int nImages = 17;
 
@@ -72,6 +76,7 @@ class TestDerivansFulltextODEM {
 		derivans.init(targetMets);
 		derivans.forward();
 		pdfPath = workDir.resolve("148811035.pdf");
+		TestDerivansFulltextODEM.inspector = new TestHelper.PDFInspector(pdfPath);
 	}
 
 	@Test
@@ -107,10 +112,10 @@ class TestDerivansFulltextODEM {
 	/**
 	 * 
 	 * Test total length of result text including whitespaces
-	 * iText5 :	1327
+	 * iText5 : 1327
 	 * PDFBox3: 1038
 	 * iText8 : 3372
-	 * 2025   : 3382
+	 * 2025 : 3382
 	 * 
 	 * @throws Exception
 	 */
@@ -118,6 +123,7 @@ class TestDerivansFulltextODEM {
 	void testPage07HasCertainLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
 		assertEquals(3382, textPage07.length());
+
 	}
 
 	@Test
@@ -125,5 +131,17 @@ class TestDerivansFulltextODEM {
 		var resultXML = workDir.resolve("mets.xml");
 		var pathMETSXSD = TestResource.METS_1_12_XSD.get();
 		assertTrue(TestHelper.validateXML(resultXML, pathMETSXSD));
+	}
+
+	@Test
+	void testPDFMetadataAuthor() throws IOException, DigitalDerivansException {
+		PDFMetadata pdfMD = inspector.getPDFMetaInformation();
+		assertEquals("n.a.", pdfMD.getAuthor());
+	}
+
+	@Test
+	void testPDFMetadataTitle() throws IOException, DigitalDerivansException {
+		PDFMetadata pdfMD = inspector.getPDFMetaInformation();
+		assertTrue(pdfMD.getTitle().startsWith("(1712) Neue Friedens-Vorschläge"));
 	}
 }

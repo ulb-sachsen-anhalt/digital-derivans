@@ -52,6 +52,8 @@ public class MODS {
 			return MODS.getSomeName(properRelations.get(MODSRelator.AUTHOR));
 		} else if (properRelations.containsKey(MODSRelator.PUBLISHER)) {
 			return MODS.getSomeName(properRelations.get(MODSRelator.PUBLISHER));
+		} else if (properRelations.containsKey(MODSRelator.EDITOR)) {
+			return MODS.getSomeName(properRelations.get(MODSRelator.EDITOR));
 		}
 		return IDerivans.UNKNOWN;
 	}
@@ -94,6 +96,7 @@ public class MODS {
 						MODSRelator rel = MODSRelator.forCode(code);
 						switch (rel) {
 							case AUTHOR:
+							case EDITOR:
 							case PUBLISHER:
 								LOGGER.debug("map '{}' as person", rel);
 								List<Element> currList = new ArrayList<>();

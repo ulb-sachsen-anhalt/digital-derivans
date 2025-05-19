@@ -273,12 +273,16 @@ public class TestHelper {
 				mdMap.put(MetadataType.AUTHOR, author);
 				mdMap.put(MetadataType.TITLE, title);
 				mdMap.put(MetadataType.CREATOR, creator);
-				PDDocumentCatalog catalog = document.getDocumentCatalog();
-				PDMetadata meta = catalog.getMetadata();
-				InputStream xmpStream = meta.exportXMPMetadata();
-				var handler = new XMLHandler(xmpStream);
 				var pdfMeta = new PDFMetadata(mdMap);
-				pdfMeta.setXmpMetadata(handler.getDocument());
+				PDDocumentCatalog catalog = document.getDocumentCatalog();
+				try {
+					PDMetadata meta = catalog.getMetadata();
+					InputStream xmpStream = meta.exportXMPMetadata();
+					var handler = new XMLHandler(xmpStream);
+					pdfMeta.setXmpMetadata(handler.getDocument());
+				} catch (IOException | NullPointerException e) {
+					// pass
+				}
 				return pdfMeta;
 			}
 		}

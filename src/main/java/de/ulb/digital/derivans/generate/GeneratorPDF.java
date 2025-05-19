@@ -47,7 +47,7 @@ public class GeneratorPDF extends Generator {
 	}
 
 	@Override
-	public void setStep(DerivateStep step) {
+	public void setStep(DerivateStep step) throws DigitalDerivansException {
 		super.setStep(step);
 		if(this.derivate == null) {
 			throw new DigitalDerivansRuntimeException("No derivate set: null!");
@@ -59,7 +59,10 @@ public class GeneratorPDF extends Generator {
 			throw new DigitalDerivansRuntimeException(exc);
 		}
 		if (this.derivate.isMetadataPresent()) {
-			this.mets = ((DerivateMD) this.derivate).getMets();
+			DerivateMD derivateMD = (DerivateMD) this.derivate;
+			this.mets = derivateMD.getMets();
+			DescriptiveMetadata dmd = derivateMD.getDescriptiveData();
+			((DerivateStepPDF)this.step).mergeDescriptiveData(dmd);
 		}
 		this.setStructure(this.derivate.getStructure());
 	}
@@ -70,10 +73,6 @@ public class GeneratorPDF extends Generator {
 
 	public void setStructure(DerivateStruct structure) {
 		this.pdfProcessor.setStructure(structure);
-	}
-
-	public void setDescriptiveMD(DescriptiveMetadata dmd) {
-		((DerivateStepPDF)this.step).mergeDescriptiveData(dmd);
 	}
 
 	public void setPDFProcessor(IPDFProcessor processor) {
