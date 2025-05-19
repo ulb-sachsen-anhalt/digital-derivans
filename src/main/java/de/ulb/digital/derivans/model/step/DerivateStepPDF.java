@@ -18,7 +18,6 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 public class DerivateStepPDF extends DerivateStep {
 
 	protected boolean enrichMetadata = true;
-	// protected String paramOCR = IDerivans.FULLTEXT_DIR;
 	private int imageDpi = DefaultConfiguration.DEFAULT_IMAGE_DPI;
 	private Boolean debugRender = Boolean.FALSE;
 	private TypeConfiguration renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
@@ -142,14 +141,6 @@ public class DerivateStepPDF extends DerivateStep {
 	public void setPublicationYear(String publicationYear) {
 		this.publicationYear = publicationYear;
 	}
-
-	// public String getParamOCR() {
-	// 	return paramOCR;
-	// }
-
-	// public void setParamOCR(String fileGroupOCR) {
-	// 	this.paramOCR = fileGroupOCR;
-	// }
 
 	public Optional<String> getNamePDF() {
 		return this.optNamePDF;
