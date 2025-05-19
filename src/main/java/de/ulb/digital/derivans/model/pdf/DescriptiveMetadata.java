@@ -115,7 +115,7 @@ public class DescriptiveMetadata {
 		if (yearPublished != null)
 			builder.append(" (").append(yearPublished).append(") ");
 		if (title != null)
-			builder.append(" ").append(title);
+			builder.append(title);
 		return builder.toString();
 	}
 
