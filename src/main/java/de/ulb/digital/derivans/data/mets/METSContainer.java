@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.jdom2.Element;
 
+import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.IDerivans;
 
@@ -35,16 +36,16 @@ public class METSContainer {
 
 	private Element element;
 
-	public METSContainer(String id, Element element) {
+	public METSContainer(String id, Element element) throws DigitalDerivansException {
 		this.id = id;
 		this.element = element;
-		this.type = METSContainerType.valueOf(this.element.getAttributeValue("TYPE").toUpperCase());
+		this.type = METSContainerType.forLabel(this.element.getAttributeValue("TYPE"));
 		this.determineAttributes();
 		this.determineLabel();
 		this.determineHierarchy();
 	}
 
-	public METSContainer(Element element) {
+	public METSContainer(Element element) throws DigitalDerivansException {
 		this(element.getAttributeValue("ID"), element);
 	}
 
@@ -101,15 +102,16 @@ public class METSContainer {
 
 	/**
 	 * Form nested logical structures for mets:structMap@TYPE="LOGICAL"/mets:div
+	 * @throws DigitalDerivansException 
 	 */
-	private void determineHierarchy() {
+	private void determineHierarchy() throws DigitalDerivansException {
 		List<Element> kids = this.element.getChildren("div", METS.NS_METS);
 		if (!kids.isEmpty()) {
 			traverse(this);
 		}
 	}
 
-	private void traverse(METSContainer parent) {
+	private void traverse(METSContainer parent) throws DigitalDerivansException {
 		List<Element> kids = parent.get().getChildren("div", METS.NS_METS);
 		if (!kids.isEmpty()) {
 			for (var kid : kids) {

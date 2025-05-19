@@ -117,6 +117,8 @@ public enum METSContainerType {
 	// *but* DFG METS heavy relies on it for it's physical line out
 	PAGE("page", "Seite"),
 	PHYSSEQUENCE("physSequence","Seiten"),
+	// OCR-D related container type
+	OTHER("other", "Weitere")
 	;
 
 	private METSContainerType(String label, String translation) {
@@ -148,7 +150,7 @@ public enum METSContainerType {
 		if (optValue.isPresent()) {
 			return optValue.get();
 		}
-		throw new DigitalDerivansException("No METS container type: " + label);
+		throw new DigitalDerivansException("No known METS container type: " + label);
 	}
 
 	static List<METSContainerType> digitalObjects = List.of(MONOGRAPH, MANUSCRIPT, VOLUME, ISSUE, ADDITIONAL);

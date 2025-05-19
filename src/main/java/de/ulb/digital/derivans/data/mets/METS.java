@@ -167,8 +167,8 @@ public class METS {
 		}
 		// links
 		Element structLink = this.document.getDescendants(structLinkFilter).next();
-		List<Element> smLinks = structLink.getChildren("smLink", NS_METS);
-		for (Element smLink : smLinks) {
+		List<Element> mapLinks = structLink.getChildren("smLink", NS_METS);
+		for (Element smLink : mapLinks) {
 			String fromLogical = smLink.getAttributeValue("from", NS_XLINK);
 			String toPhysical = smLink.getAttributeValue("to", NS_XLINK);
 			List<String> prevTos = this.smLinks.getOrDefault(fromLogical, new ArrayList<>());
@@ -366,7 +366,7 @@ public class METS {
 		return Optional.empty();
 	}
 
-	public METSContainer getLogicalRoot() {
+	public METSContainer getLogicalRoot() throws DigitalDerivansException {
 		return new METSContainer(this.primeLog);
 	}
 
