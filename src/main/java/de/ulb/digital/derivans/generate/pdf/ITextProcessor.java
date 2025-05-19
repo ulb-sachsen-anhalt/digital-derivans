@@ -196,10 +196,9 @@ public class ITextProcessor implements IPDFProcessor {
 				String iccPath = "icc/sRGB_CS_profile.icm";
 				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPath);
 				PdfOutputIntent outputIntent = new PdfOutputIntent("Custom", "",
-						null, "sRGB IEC61966-2.1", is);
+						"http://www.color.org", "sRGB IEC61966-2.1", is);
 				this.iTextPDFDocument = new PdfADocument(writer, conformanceLevel, outputIntent);
 				this.iTextPDFDocument.setTagged();
-				this.iTextPDFDocument.getCatalog().setLang(new PdfString("de"));
 			} else {
 				this.iTextPDFDocument = new PdfDocument(writer);
 			}
@@ -341,7 +340,7 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @return
 	 * @throws IOException
 	 */
-	private PDFPage append(Image image, /* PdfFont font, */ PDFPage page) {
+	private PDFPage append(Image image, PDFPage page) {
 		PageSize pageSize = new PageSize(image.getImageScaledWidth(), image.getImageScaledHeight());
 		var nextPage = this.iTextPDFDocument.addNewPage(pageSize);
 		nextPage.getPdfObject().get(PdfName.PageNum);
@@ -399,7 +398,7 @@ public class ITextProcessor implements IPDFProcessor {
 		if ((!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
 			pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
 		}
-		float hScale = calculateHorizontalScaling(font, token);
+		float hScale = calculateHorizontalScaling(token);
 		if (this.debugRender) {
 			LOGGER.trace("put '{}' at baseline {}x{} size:{}, scale:{})",
 					text, leftMargin, baselineY, fontSize, hScale);
@@ -408,7 +407,7 @@ public class ITextProcessor implements IPDFProcessor {
 					.moveTo(leftMargin, baselineY)
 					.lineTo(rightMargin, baselineY).closePathStroke();
 		}
-		Text txt = new Text(text).setFont(font).setFontSize(fontSize).setHorizontalScaling(hScale);
+		Text txt = new Text(text).setFont(this.font).setFontSize(fontSize).setHorizontalScaling(hScale);
 		if (token.isRTL()) {
 			txt.addStyle(rtlStyle);
 		}
@@ -434,9 +433,9 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @return
 	 * @throws IOException
 	 */
-	float calculateHorizontalScaling(PdfFont font, PDFTextElement token) {
+	float calculateHorizontalScaling(PDFTextElement token) {
 		String text = token.getText();
-		float glyphWidth = font.getWidth(text) * .001f * token.getFontSize();
+		float glyphWidth = this.font.getWidth(text) * .001f * token.getFontSize();
 		float totalGlyphWidth = glyphWidth;
 		float tokenLenght = token.getBaseline().length();
 		return tokenLenght / totalGlyphWidth;
@@ -472,7 +471,7 @@ public class ITextProcessor implements IPDFProcessor {
 		try {
 			JarResource tmpResHandler = new JarResource(path);
 			String resPath = tmpResHandler.extract("derivans-tmp-font-", ".ttf");
-			return PdfFontFactory.createFont(resPath, PdfEncodings.IDENTITY_H, EmbeddingStrategy.PREFER_EMBEDDED);
+			return PdfFontFactory.createFont(resPath, PdfEncodings.IDENTITY_H, EmbeddingStrategy.FORCE_EMBEDDED);
 		} catch (IOException e) {
 			throw new DigitalDerivansException(e);
 		}

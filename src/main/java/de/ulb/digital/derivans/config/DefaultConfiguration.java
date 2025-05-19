@@ -46,7 +46,7 @@ public class DefaultConfiguration {
 	 * cf. https://en.wikipedia.org/wiki/PDF/A
 	 * 
 	 */
-	public static final String PDFA_CONFORMANCE_LEVEL = "PDF/A-1B";
+	public static final String PDFA_CONFORMANCE_LEVEL = "PDF/A-2A";
 	
 	public static final int DEFAULT_IMAGE_DPI = 300;
 
