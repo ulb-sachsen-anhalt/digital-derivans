@@ -2,10 +2,11 @@
 
 ![JDK11 Maven3](https://github.com/ulb-sachsen-anhalt/digital-derivans/workflows/Java%20CI%20with%20Maven/badge.svg)
 
-Java command line tool to create PDF files from image derivates with configurable scales and qualities.  
-Optional appends image footer or structured OCR formats (ALTO, PAGE) to produce text layers and metadata (METS/MODS) to reflect logical order.
+Java command line tool to create PDF files from image derivates with configurable scales, qualities and additional assets files like preview images or thumbnails.  
+Appends image footer or structured OCR formats (ALTO, PAGE) to produce text layers and metadata (METS/MODS).
 
-Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handling, [iText-java](https://github.com/itext/itext-java) to create PDF, [Apache log4j2](https://github.com/apache/logging-log4j2) for logging and a workflow inspired by [OCR-D/Core](https://github.com/OCR-D/core) Workflows.
+Please note: Derivans does no metadata validation or sanitizing.  
+If provided METS/MODS, it fails for empty logical sections, i.e. chapters not linked to any image or page because it can't create a consistent outline in this case. To ensure XML conformance before/after using Derivans, one needs to use a different tool.
 
 * [Features](#features)
 * [Local Installation](#installation)
@@ -16,17 +17,15 @@ Uses [mets-model](https://github.com/MyCoRe-Org/mets-model) for METS/MODS-handli
 
 ## Features
 
-Create PDF from scaled image data (optional: footer) and constraints on compression rate and max
-sizes.  
+Create PDF from scaled image data (optional: footer) and constraints on compression rate and max sizes.  
 For details see [configuration section](#configuration).
 
-If metadata (METS/MODS) is available, the following will be taken into account:
+If metadata (METS/MODS) available, the following will be taken into account:
 
 * Value `mods:recordIdentifier[@source]` to name PDF artefact
+  Can be replaced in PDF-step configuration with option `mods_identifier_xpath` or at execution time via CLI-parameter `-n` / `--name-pdf`
 * Value `mods:titleInfo/mods:title` for internal naming
-* Attribute `mets:div[@ORDER]` for file containers as defined in the METS physical structMap to create a PDF outline
-* Attribute `mets:div[@CONTENTIDS]` (granular URN) will be rendered for each page if footer shall be appended to each
-  page image
+* Attribute `mets:div[@CONTENTIDS]` (granular URN) will be rendered for each page if footer shall be appended to each page image
 
 ## Docker Image
 
@@ -75,13 +74,13 @@ cd digital-derivans
 mvn clean package
 ```
 
-This will finally create a shaded JAR ("FAT-JAR") inside the build directory (`./target/digital-derivans-<version>.jar`)
+This will create a shaded JAR ("FAT-JAR") inside the build directory (`./target/digital-derivans-<version>.jar`)
 
 ## Usage
 
 In local mode, a recent OpenJRE is required.
 
-The tool expects a project folder containing an image directory (default: `MAX`) and optional OCR-data directory (
+The tool expects a project folder containing an image directory (default: `DEFAULT`) and optional OCR-data directory (
 default: `FULLTEXT`').
 
 The *default name* of the generated PDF inside is derived from the object's folder name or can be set with `-n`-arg.
@@ -94,7 +93,7 @@ my_print/
 │   ├── 0002.xml
 │   ├── 0021.xml
 │   ├── 0332.xml
-├── MAX
+├── DEFAULT
 │   ├── 0002.tif
 │   ├── 0021.tif
 │   ├── 0332.tif
@@ -123,12 +122,11 @@ Some params can be set on global level, like quality and poolsize.
 Each section in a `*.ini`- file matching `[derivate_<n>]` represents a single derivate section for intermediate or final
 derivates.
 
-Order of execution is determined by pairs of input-output paths, whereas numbering of derivate sections determines order
-at parse-time.
+Order of execution is determined by numbering of derivate sections at parse-time.
 
 ### Default Values
 
-On top of the INI-file are configuration values listed, which will be used as defaults for actual steps, if they can be
+On top of the INI-file are global configuration options listed, which will be used as defaults for actual steps, if they can be
 applied.
 
 * `default_quality`  : image data compression rate (can be specified with `quality` for image derivate sections)
@@ -189,7 +187,7 @@ input_dir = IMAGE_75
 output_dir = .
 output_type = pdf
 metadata_creator = "<your organization label>"
-metadata_license = "Public Domain Mark 1.0"
+metadata_license = "<your licence>"
 ```
 
 ### CLI Parameter

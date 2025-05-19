@@ -45,6 +45,6 @@ class TestDFGMETS {
 		METS mets737429 = new METS(TestResource.VLS_HD_Aa_737429.get());
 		mets737429.setImgFileGroup("FOO");
 		var result = assertThrows(DigitalDerivansException.class, () -> mets737429.init());
-		assertEquals("Invalid mets:fileGrp FOO!", result.getMessage());
+		assertEquals("Invalid input mets:fileGrp FOO!", result.getMessage());
 	}
 }

@@ -133,7 +133,7 @@ public class METS {
 			useImageGrp = optImageGrp.get();
 		}
 		if (useImageGrp == null) {
-			throw new DigitalDerivansException("Invalid mets:fileGrp " + this.imgFileGroup + "!");
+			throw new DigitalDerivansException("Invalid input mets:fileGrp " + this.imgFileGroup + "!");
 		}
 		List<Element> files = useImageGrp.getChildren("file", NS_METS);
 		for (Element fileElement : files) {
