@@ -86,7 +86,7 @@ class TestDerivansFulltextODEM {
 
 	@Test
 	void testDerivatesForPDFWritten() {
-		Path image80Dir = workDir.resolve("IMAGE_80");
+		Path image80Dir = workDir.resolve(IDerivans.IMAGE_Q80);
 		assertTrue(Files.exists(image80Dir));
 		for (int i = 1; i < nImages; i++) {
 			var imageLabel = String.format("%08d.jpg", i);

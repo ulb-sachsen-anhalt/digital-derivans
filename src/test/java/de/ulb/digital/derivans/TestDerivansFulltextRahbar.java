@@ -104,7 +104,7 @@ class TestDerivansFulltextRahbar {
 
 	@Test
 	void testDerivatesForPDFWritten() {
-		Path image80Dir = workDirWord.resolve("IMAGE_80");
+		Path image80Dir = workDirWord.resolve(IDerivans.IMAGE_Q80);
 		assertTrue(Files.exists(image80Dir));
 		assertTrue(image80Dir.resolve(rahbar88120Page10 + ".jpg").toFile().exists());
 	}

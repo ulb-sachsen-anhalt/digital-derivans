@@ -19,6 +19,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
+import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.generate.GeneratorImageJPG;
 import de.ulb.digital.derivans.model.DerivateFS;
@@ -53,11 +54,11 @@ class TestImageGenerator {
 	@Test
 	void testRenderer80() throws DigitalDerivansException, IOException {
 		// arrange
-		Path targetPath = TestImageGenerator.sharedTempDir.resolve("IMAGE_80");
+		Path targetPath = TestImageGenerator.sharedTempDir.resolve(IDerivans.IMAGE_Q80);
 		DerivateStepImage imageStep = new DerivateStepImage();
 		imageStep.setQuality(80);
 		imageStep.setInputDir(TestHelper.IMAGE);
-		imageStep.setOutputDir("IMAGE_80");
+		imageStep.setOutputDir(IDerivans.IMAGE_Q80);
 		GeneratorImageJPG imgGen = new GeneratorImageJPG();
 		imgGen.setDerivate(TestImageGenerator.testDerivate);
 		imgGen.setStep(imageStep);

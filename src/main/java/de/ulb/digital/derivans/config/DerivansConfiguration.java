@@ -3,23 +3,23 @@ package de.ulb.digital.derivans.config;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import org.apache.commons.configuration2.HierarchicalConfiguration;
 import org.apache.commons.configuration2.INIConfiguration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.apache.commons.configuration2.tree.ImmutableNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
-import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
@@ -28,59 +28,49 @@ import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
- * Application Configuration
+ * Derivans Application Configuration
  * 
- * Start directory for image data
+ * Beside the main configuration file, for example "derivans.ini", it may include
+ * further ressources referenced in this file, like logging configuration or
+ * path to an optional footer logo image. If for the latter two relative paths
+ * are provided, then it is assumed that they reside in the same directory
+ * than the main configuration file.
  * 
- * Defaults to {@link DefaultConfiguration#IMAGE_DIR_DEFAULT}
- * 
- * @author hartwig
+ * @author u.hartwig
  *
  */
 public class DerivansConfiguration {
 
 	public static final Logger LOGGER = LogManager.getLogger(DerivansConfiguration.class);
 
-	private Optional<Path> metadataFile;
+	private DerivansParameter parameter;
 
 	private Path pathConfigFile;
 
-	private boolean debugPdfRender;
-
-	private Optional<String> paramImages = Optional.empty();
-
-	private Optional<String> paramOCR = Optional.empty();
-
 	private Integer quality = DefaultConfiguration.DEFAULT_QUALITY;
 
-	private Integer poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
+	private Integer defaultPoolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 
 	private List<DerivateStep> derivateSteps = new ArrayList<>();
 
-	private List<String> derivatePrefixes = new ArrayList<>();
-
 	/**
 	 * 
-	 * Default Constructor
+	 * Default constructor from given parameters.
+	 * 
+	 * 1) Determine configuration provided and if so, parse it.
+	 * If not file present, use fallback configuration
+	 * contained in Derivans Jar "derivans.ini" or if
+	 * this file is missing, use programmed fallback cfg.
+	 * 
+	 * 2) If optional CLI-parameters present, use
+	 * these of overwrite settings from configuration file
+	 * of set special information
 	 * 
 	 * @param params
 	 * @throws DigitalDerivansException
 	 */
 	public DerivansConfiguration(DerivansParameter params) throws DigitalDerivansException {
-		// determine if debug render for PDF required
-		if (Boolean.TRUE.equals(params.isDebugPdfRender())) {
-			this.debugPdfRender = Boolean.TRUE;
-		}
-
-		// take care of args for input images/ocr
-		if (params.getImages() != null) {
-			this.paramImages = Optional.of(params.getImages());
-		}
-		if (params.getOcr() != null) {
-			this.paramOCR = Optional.of(params.getOcr());
-		}
-
-		// set configuration file
+		this.parameter = params;
 		if (params.getPathConfig() != null) {
 			LOGGER.debug("inspect cli config file {}", params.getPathConfig());
 			this.pathConfigFile = params.getPathConfig();
@@ -97,43 +87,19 @@ public class DerivansConfiguration {
 				this.initConfigurationFromFile();
 			}
 		}
-
-		// take care if no configuration file provided
+		// take care if no configuration file present
 		if (derivateSteps.isEmpty()) {
-			provideDefaultSteps();
+			List<DerivateStep> defaultSteps = DefaultConfiguration.provideDefaultSteps();
+			if (this.parameter.getImages() != null) {
+				defaultSteps.get(0).setInputDir(this.parameter.getImages());
+			}
+			this.derivateSteps = new ArrayList<>(defaultSteps);
 			LOGGER.warn("no config read, use fallback with {} steps", this.derivateSteps.size());
 		}
-		LOGGER.info("use config with {} steps", this.derivateSteps.size());
-		LOGGER.debug("first step inputs from '{}'", this.derivateSteps.get(0).getInputDir());
-
-		// inspect parameters which *might* override
-		// any previously configured settings
-		if (params.getNamePDF() != null) {
-			var pdfStep = this.pickByClazz("DerivateStepPDF");
-			var pdfName = params.getNamePDF();
-			if (pdfStep.isPresent()) {
-				((DerivateStepPDF) pdfStep.get()).setNamePDF(pdfName);
-				LOGGER.info("force PDF name {}", pdfName);
-			} else {
-				LOGGER.warn("refuse to set {} - no PDF step present", pdfName);
-			}
-		}
-		if (params.getPathFooter() != null) {
-			var newTemplate = params.getPathFooter();
-			var theStep = this.pickByClazz("DerivateStepImageFooter");
-			if (theStep.isPresent()) {
-				if (!newTemplate.isAbsolute()) {
-					newTemplate = this.pathConfigFile.getParent().resolve(newTemplate);
-				}
-				DerivateStepImageFooter footerStep = (DerivateStepImageFooter) theStep.get();
-				var footerPrev = footerStep.getPathTemplate();
-				LOGGER.info("set footer template {} to {}",
-						footerPrev, newTemplate);
-				footerStep.setPathTemplate(newTemplate);
-			} else {
-				LOGGER.warn("refuse to set {} - no footer step present", newTemplate);
-			}
-		}
+		LOGGER.info("use configuration with {} steps", this.derivateSteps.size());
+		LOGGER.debug("first inputs from '{}'", this.derivateSteps.get(0).getInputDir());
+		// inspect further (optional) parameters
+		this.processOptParameters(params);
 	}
 
 	private void initConfigurationFromFile() throws DigitalDerivansException {
@@ -146,50 +112,92 @@ public class DerivansConfiguration {
 		evaluate(conf);
 	}
 
-	public Optional<Path> getMetadataFile() {
-		return this.metadataFile;
-	}
-
 	/**
 	 * 
-	 * Only set Path for METS/MODS-File if it is a regular File
+	 * (Optional) CLI Parameters which *might* override
+	 * previously configured settings
 	 * 
-	 * @param metsFile
-	 * @throws DigitalDerivansException
+	 * @param params
 	 */
-	public void setPathFile(Path metsFile) throws DigitalDerivansException {
-		if (!Files.exists(metsFile) && !(Files.isRegularFile(metsFile, LinkOption.NOFOLLOW_LINKS))) {
-			String msg = String.format("Invalid METS/MODS: '{%s}'", metsFile);
-			LOGGER.error(msg);
-			throw new DigitalDerivansException(msg);
+	private void processOptParameters(DerivansParameter params) {
+		// determine if debug render for PDF desired
+		var pdfStep = this.firstStepByClazz("DerivateStepPDF");
+		if (Boolean.TRUE.equals(params.isDebugPdfRender())) {
+			pdfStep.ifPresent(step -> ((DerivateStepPDF) step).setDebugRender(Boolean.TRUE));
 		}
-		this.metadataFile = Optional.of(metsFile);
+		// take care of different initial image directory/group
+		var firstStep = this.derivateSteps.get(0);
+		if (params.getImages() != null && firstStep instanceof DerivateStepImage) {
+			DerivateStepImage imgStep = (DerivateStepImage) firstStep;
+			String prevImg = imgStep.getInputDir();
+			LOGGER.info("set image input from {} to {}",
+					prevImg, params.getImages());
+			imgStep.setInputDir(params.getImages());
+		}
+		if (params.getNamePDF() != null) {
+			var pdfName = params.getNamePDF();
+			if (pdfStep.isPresent()) {
+				((DerivateStepPDF) pdfStep.get()).setNamePDF(pdfName);
+				LOGGER.info("force PDF name {}", pdfName);
+			} else {
+				LOGGER.warn("refuse to set {} - no PDF step present", pdfName);
+			}
+		}
+		var theStep = this.firstStepByClazz("DerivateStepImageFooter");
+		if (params.getPathFooter() != null) {
+			var newTemplate = params.getPathFooter();
+			if (theStep.isPresent()) {
+				if (!newTemplate.isAbsolute()) {
+					newTemplate = this.pathConfigFile.getParent().resolve(newTemplate);
+				}
+				DerivateStepImageFooter footerStep = (DerivateStepImageFooter) theStep.get();
+				var footerPrev = footerStep.getPathTemplate();
+				LOGGER.info("set footer from {} to {}",
+						footerPrev, newTemplate);
+				footerStep.setPathTemplate(newTemplate);
+			} else {
+				LOGGER.warn("refuse to set {} - no footer step present", newTemplate);
+			}
+		}
 	}
 
 	public Integer getQuality() {
 		return this.quality;
 	}
 
-	public Integer getPoolsize() {
-		return poolsize;
+	public Integer getDefaultPoolsize() {
+		return defaultPoolsize;
 	}
 
-	public void setPoolsize(Integer poolsize) {
-		this.poolsize = poolsize;
+	public void setDefaultPoolsize(Integer poolsize) {
+		this.defaultPoolsize = poolsize;
 	}
 
 	public List<DerivateStep> getDerivateSteps() {
 		return derivateSteps;
 	}
 
+	/**
+	 * 
+	 * Configuration is expect to follow common *.ini-Style
+	 * with starting global section for logging and defaults
+	 * and following sections prefixed with "derivate_"
+	 * combined with an 2-digit numerical mark like
+	 * "derivate_01", "derivate_02" and so on.
+	 * 
+	 * If a step requires the output of an previous step, then
+	 * this previous step section is expected to occour *forehand*.
+	 * 
+	 * @param conf
+	 * @throws DigitalDerivansException
+	 */
 	private void evaluate(INIConfiguration conf) throws DigitalDerivansException {
-
 		// read global configuration
 		if (conf.containsKey("default_quality")) {
 			this.quality = conf.getInt("default_quality");
 		}
 		if (conf.containsKey("default_poolsize")) {
-			this.poolsize = conf.getInt("default_poolsize");
+			this.defaultPoolsize = conf.getInt("default_poolsize");
 		}
 		if (conf.containsKey("logger_configuration_file")) {
 			String logFile = conf.getString("logger_configuration_file");
@@ -207,30 +215,22 @@ public class DerivansConfiguration {
 			}
 		}
 
-		// read derivate sections
-		int nSection = 1;
-		String derivateSection = String.format("derivate_%02d", nSection);
-		List<HierarchicalConfiguration<ImmutableNode>> section = conf.childConfigurationsAt(derivateSection);
-		while (!section.isEmpty()) {
-			DerivateStep step = getDerivateStepCommons(conf, derivateSection);
+		// read specific derivate sections
+		List<String> sectionLabels = conf.getSections().stream().filter(Objects::nonNull).collect(Collectors.toList());
+		LOGGER.info("process {} dedicated derivate step sections", sectionLabels.size());
+		Collections.sort(sectionLabels, Comparator.comparing(String::toLowerCase));
+		for(var sectionLabel : sectionLabels) {
+			DerivateStep step = getDerivateStepIO(conf, sectionLabel);
 			if (step instanceof DerivateStepImage) {
-				this.enrichImageDerivateInformation((DerivateStepImage) step, conf, derivateSection);
-				// propably some more information required
+				this.enrichImageDerivateInformation((DerivateStepImage) step, conf, sectionLabel);
+				// propably additional information required
 				if (step instanceof DerivateStepImageFooter) {
-					this.enrichImageFooterInformation((DerivateStepImageFooter) step, conf, derivateSection);
-				}
-				// if very first step and param image set, exchange
-				if (nSection == 1 && this.paramImages.isPresent()) {
-					var images = paramImages.get();
-					step.setInputDir(images);
+					this.enrichImageFooterInformation((DerivateStepImageFooter) step, conf, sectionLabel);
 				}
 			} else if (step instanceof DerivateStepPDF) {
-				enrichPDFDerivateInformation((DerivateStepPDF) step, conf, derivateSection);
+				enrichPDFDerivateInformation((DerivateStepPDF) step, conf, sectionLabel);
 			}
 			this.derivateSteps.add(step);
-			nSection++;
-			derivateSection = String.format("derivate_%02d", nSection);
-			section = conf.childConfigurationsAt(derivateSection);
 		}
 	}
 
@@ -249,35 +249,6 @@ public class DerivansConfiguration {
 			LOGGER.error(e);
 			throw new DigitalDerivansException(e);
 		}
-	}
-
-	/**
-	 * Default Steps supposed to work out-of-the-box,
-	 * without any METS-data to be respected.
-	 * 
-	 * Take care of optional provided CLI params.
-	 * 
-	 */
-	private void provideDefaultSteps() {
-		DerivateStepImage create80sJpgs = new DerivateStepImage();
-		create80sJpgs.setOutputType(DerivateType.JPG);
-		var output = DefaultConfiguration.DEFAULT_MIN_OUTPUT_LABEL;
-		var imgDir = this.paramImages.orElse(IDerivans.IMAGE_DIR_DEFAULT);
-		create80sJpgs.setInputDir(imgDir);
-		create80sJpgs.setOutputDir(output);
-		create80sJpgs.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
-		create80sJpgs.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
-		this.derivateSteps.add(create80sJpgs);
-		DerivateStepPDF createPdf = new DerivateStepPDF();
-		createPdf.setInputDir(output);
-		createPdf.setOutputType(DerivateType.PDF);
-		createPdf.setOutputDir(".");
-		// handle optional image group too
-		this.paramImages.ifPresent(createPdf::setParamImages);
-		// handle optional OCR data
-		var ocr = this.paramOCR.orElse(IDerivans.FULLTEXT_DIR);
-		createPdf.setParamOCR(ocr);
-		this.derivateSteps.add(createPdf);
 	}
 
 	/**
@@ -321,7 +292,7 @@ public class DerivansConfiguration {
 	 * @return
 	 * @throws DigitalDerivansException
 	 */
-	public DerivateStep getDerivateStepCommons(INIConfiguration conf, String stepSection)
+	public DerivateStep getDerivateStepIO(INIConfiguration conf, String stepSection)
 			throws DigitalDerivansException {
 		DerivateStep step = getStepFor(conf, stepSection);
 		// input
@@ -332,22 +303,16 @@ public class DerivansConfiguration {
 		String keyOutputDir = stepSection + ".output_dir";
 		extractValue(conf, keyOutputDir, String.class).ifPresent(step::setOutputDir);
 		extractValue(conf, stepSection + ".output_type", String.class).ifPresent(step::setOutputTypeFromLabel);
-		// optional prefixes (used for additional derivates)
-		extractValue(conf, stepSection + ".input_prefix", String.class).ifPresent(inPrefix -> {
-			step.setInputPrefix(inPrefix);
-			this.derivatePrefixes.add(inPrefix);
-		});
-		extractValue(conf, stepSection + ".output_prefix", String.class).ifPresent(outPrefix -> {
-			step.setOutputPrefix(outPrefix);
-			this.derivatePrefixes.add(outPrefix);
-		});
+		// optional prefixes for additional derivates
+		extractValue(conf, stepSection + ".input_prefix", String.class).ifPresent(step::setInputPrefix);
+		extractValue(conf, stepSection + ".output_prefix", String.class).ifPresent(step::setOutputPrefix);
 		return step;
 	}
 
 	protected void enrichImageDerivateInformation(DerivateStepImage step, INIConfiguration conf, String stepSection)
 			throws DigitalDerivansException {
 		// poolsize
-		step.setPoolsize(this.getPoolsize());
+		step.setPoolsize(this.getDefaultPoolsize());
 		String keyPoolsize = stepSection + ".poolsize";
 		extractValue(conf, keyPoolsize, Integer.class).ifPresent(step::setPoolsize);
 		// quality
@@ -393,28 +358,24 @@ public class DerivansConfiguration {
 		if (optCreator.isPresent()) {
 			step.setCreator(optCreator);
 		}
-
 		// metadata keyword pdf
 		String keyMetadataKeyword = section + ".metadata_keywords";
 		Optional<String> optKeywords = extractValue(conf, keyMetadataKeyword, String.class);
 		if (optKeywords.isPresent()) {
 			step.setKeywords(optKeywords);
 		}
-
 		// metadata licence
 		String keyMetadataLicense = section + ".metadata_license";
 		Optional<String> optLicense = extractValue(conf, keyMetadataLicense, String.class);
 		if (optLicense.isPresent()) {
 			step.setLicense(optLicense);
 		}
-
 		// pdf image dpi for scaling image data
 		String keyPdfImageDPI = section + ".image_dpi";
 		Optional<String> optImageDpi = extractValue(conf, keyPdfImageDPI, String.class);
 		if (optImageDpi.isPresent()) {
 			step.setImageDpi(Integer.valueOf(optImageDpi.get()));
 		}
-
 		// on which level optional text to render: per word, per line ... ?
 		String keyPdfRenderLvl = section + ".render_text_level";
 		Optional<String> optRenderLvl = extractValue(conf, keyPdfRenderLvl, String.class);
@@ -422,7 +383,6 @@ public class DerivansConfiguration {
 			LOGGER.debug("set render text level '{}'", optRenderLvl.get());
 			step.setRenderLevel(TypeConfiguration.get(optRenderLvl.get()));
 		}
-
 		// on which level optional text to render: per word, per line ... ?
 		String keyPdfRenderVis = section + ".render_text_visibility";
 		Optional<String> optRenderVis = extractValue(conf, keyPdfRenderVis, String.class);
@@ -430,7 +390,6 @@ public class DerivansConfiguration {
 			LOGGER.debug("set render text visibility '{}'", optRenderVis.get());
 			step.setRenderModus(TypeConfiguration.get(optRenderVis.get()));
 		}
-
 		// disable automated enrichment of created PDF file into metadata file
 		String keyPdfEnrichMeta = section + "." + DefaultConfiguration.Key.PDF_ENRICH_METADATA;
 		Optional<String> optEnrichMeta = extractValue(conf, keyPdfEnrichMeta, String.class);
@@ -441,7 +400,6 @@ public class DerivansConfiguration {
 			step.setEnrichMetadata(mustEnrich);
 			step.setEnrichMetadata(mustEnrich);
 		}
-
 		// search optional xpath to get pdf label
 		String optionPdfIdentifier = section + "." + DefaultConfiguration.Key.PDF_MODS_IDENTIFIER_XPATH;
 		Optional<String> optPdfIdentifier = extractValue(conf, optionPdfIdentifier, String.class);
@@ -450,28 +408,22 @@ public class DerivansConfiguration {
 			LOGGER.debug("set pdf identifier xpath '{}'", pdfIdentXPath);
 			step.setModsIdentifierXPath(pdfIdentXPath);
 		}
-
 		// change pdf fulltext input filegroup/path
 		String optionPdfFulltext = section + "." + DefaultConfiguration.Key.PDF_METS_FILEGROUP_FULLTEXT;
 		Optional<String> optPdfFulltext = extractValue(conf, optionPdfFulltext, String.class);
 		if (optPdfFulltext.isPresent()) {
 			String pdfFulltext = optPdfFulltext.get();
-			LOGGER.debug("set fulltext input for pdf '{}'", pdfFulltext);
-			step.setParamOCR(pdfFulltext);
+			LOGGER.debug("set fulltext input dir '{}'", pdfFulltext);
 		}
-		// probably set via CLI flag, even if nothing configured
-		this.paramOCR.ifPresent(step::setParamOCR);
-
 		// images and filegroup param
 		String optionPdfImageGroup = section + "." + DefaultConfiguration.Key.PDF_METS_FILEGROUP_IMAGES;
 		Optional<String> optPdfImageGroup = extractValue(conf, optionPdfImageGroup, String.class);
-		if (optPdfImageGroup.isPresent()) {
+		// only set image dir/group when PDF is the only step to go
+		if (optPdfImageGroup.isPresent() && this.derivateSteps.size() == 1) {
 			String pdfImageGroup = optPdfImageGroup.get();
 			LOGGER.debug("set fulltext input for pdf '{}'", pdfImageGroup);
-			step.setParamImages(pdfImageGroup);
+			step.setInputDir(pdfImageGroup);
 		}
-		// probably set via CLI flag, even if nothing configured
-		this.paramImages.ifPresent(step::setParamImages);
 	}
 
 	private static boolean isFooterDerivateSection(INIConfiguration conf, String section) {
@@ -484,64 +436,20 @@ public class DerivansConfiguration {
 		return false;
 	}
 
-	/**
-	 * For testing purposes only
-	 * 
-	 * @return
-	 */
-	public String getParamImages() {
-		return paramImages.get();
-	}
-
-	public void setParamImages(String paramImage) {
-		this.paramImages = Optional.of(paramImage);
+	public Optional<String> getParamOCR() {
+		if (this.parameter != null && this.parameter.getOcr() != null) {
+			return Optional.of(this.parameter.getOcr());
+		}
+		return Optional.empty();
 	}
 
 	/**
-	 * For testing purposes only
-	 * 
-	 * @return
-	 */
-	public String getParamOCR() {
-		return paramOCR.get();
-	}
-
-	public void setParamOCR(String paramOCR) {
-		this.paramOCR = Optional.of(paramOCR);
-	}
-
-	/**
-	 * 
-	 * Remember all encountered prefixes for
-	 * derivates. Used in later stages for
-	 * name resolving to clear each name from
-	 * probably before enriched prefixes.
-	 * 
-	 * @return optional Prefixes
-	 */
-	public List<String> getDerivatePrefixes() {
-		return this.derivatePrefixes;
-	}
-
-	/**
-	 * 
-	 * Render more information concerning
-	 * PDF Textlayer
-	 * 
-	 * @return
-	 */
-	public boolean isDebugPdfRender() {
-		return this.debugPdfRender;
-	}
-
-	/**
-	 * 
-	 * Pick first step with matching {@link DerivateType}
+	 * Pick *very first* step matching {@link DerivateType}
 	 * 
 	 * @param type
 	 * @return
 	 */
-	private Optional<DerivateStep> pickByClazz(String clazzLabel) {
+	private Optional<DerivateStep> firstStepByClazz(String clazzLabel) {
 		return this.derivateSteps.stream()
 				.filter(s -> s.getClass().getSimpleName().equals(clazzLabel)).findFirst();
 	}

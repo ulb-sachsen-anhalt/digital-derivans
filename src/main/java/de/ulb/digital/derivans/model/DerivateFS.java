@@ -187,4 +187,11 @@ public class DerivateFS implements IDerivate {
 		return this.inited;
 	}
 
+	public void setFulltextdir(Path ftDir) {
+		this.fulltextDir = ftDir;
+	}
+
+	public Path getFulltextDir() {
+		return this.getFulltextDir();
+	}
 }

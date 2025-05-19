@@ -75,7 +75,7 @@ class TestStepsMigration {
 
 		// act
 		derivans.init(workDir.resolve("737429.xml"));
-		generators = derivans.getDerivateers();
+		generators = derivans.getGenerators();
 		steps = derivans.getSteps();
 	}
 

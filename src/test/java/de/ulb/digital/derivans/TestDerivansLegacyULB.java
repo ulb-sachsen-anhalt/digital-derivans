@@ -73,7 +73,7 @@ class TestDerivansLegacyULB {
 		// act
 		derivans.init(input);
 		derivans.forward();
-		generators = derivans.getDerivateers();
+		generators = derivans.getGenerators();
 		steps = derivans.getSteps();
 	}
 
@@ -109,7 +109,7 @@ class TestDerivansLegacyULB {
 		var gen02 = generators.get(1);
 		assertTrue(gen02.getDerivate().getRootDir().endsWith("737429"));
 		assertEquals("IMAGE_FOOTER", gen02.getStep().getInputDir());
-		assertEquals("IMAGE_80", gen02.getStep().getOutputDir());
+		assertEquals(IDerivans.IMAGE_Q80, gen02.getStep().getOutputDir());
 	}
 
 	@Test

@@ -65,6 +65,54 @@ public class Derivans {
         this.steps = new ArrayList<>(this.config.getDerivateSteps());
     }
 
+    /**
+     * Transform given steps into sequence of {@link Generator generators}
+     *
+     * @param steps
+     * @return
+     * @throws DigitalDerivansException
+     */
+    public List<Generator> init(Path theInput) throws DigitalDerivansException {
+        LOGGER.info("set derivate in %s", theInput);
+        if (Files.isDirectory(theInput)) {
+            this.derivate = new DerivateFS(theInput);
+            String ocrDir = this.config.getParamOCR().orElse(IDerivans.FULLTEXT_DIR);
+            Path ocrDirPath = Path.of(ocrDir);
+            if (Files.exists(theInput.resolve(ocrDirPath))) {
+                LOGGER.info("set fulltext dir {} for {}", ocrDir, this.derivate);
+                ((DerivateFS) this.derivate).setFulltextdir(Path.of(ocrDir));
+            } else {
+                LOGGER.error("param fulltext dir {} not present in {}!", ocrDir, theInput);
+            }
+        } else if (Files.isRegularFile(theInput, LinkOption.NOFOLLOW_LINKS)) {
+            this.derivate = new DerivateMD(theInput);
+            var optOCRParam = this.config.getParamOCR();
+            if (optOCRParam.isPresent()) {
+                String ocrParam = optOCRParam.get();
+                LOGGER.warn("param fulltext dir {} set but ignored because METS/MODS present!", ocrParam);
+            }
+        }
+        this.generators = new ArrayList<>();
+        for (DerivateStep step : this.steps) {
+            if (!this.derivate.isInited()) {
+                if (step.getInputType() == DerivateType.TIF) {
+                    this.derivate.setStartFileExtension(".tif");
+                }
+                this.derivate.init(Path.of(step.getInputDir()));
+            }
+            DerivateType type = step.getOutputType();
+            Generator theGenerator = Derivans.forType(type);
+            theGenerator.setDerivate(derivate); // first set derivate ...
+            if (type == DerivateType.PDF) { // some peculiar PDF parameters
+                DerivateStepPDF pdfStep = (DerivateStepPDF) step;
+                pdfStep.setConformanceLevel(DefaultConfiguration.PDFA_CONFORMANCE_LEVEL);
+            }
+            theGenerator.setStep(step); // .. then set step object
+            this.generators.add(theGenerator);
+        }
+        return this.generators;
+    }
+
     public void forward() throws DigitalDerivansException {
         for (Generator generator : this.generators) {
             Instant start = Instant.now();
@@ -84,40 +132,15 @@ public class Derivans {
                 this.derivate.getRootDir());
     }
 
-    /**
-     * Transform given steps into corresponding derivateers
-     *
-     * @param steps
-     * @return
-     * @throws DigitalDerivansException
-     */
-    public List<Generator> init(Path theInput) throws DigitalDerivansException {
-        LOGGER.info("set derivate in %s", theInput);
-        if (Files.isDirectory(theInput)) {
-            this.derivate = new DerivateFS(theInput);
-        } else if (Files.isRegularFile(theInput, LinkOption.NOFOLLOW_LINKS)) {
-            this.derivate = new DerivateMD(theInput);
+    public static Generator forType(DerivateType dType) throws DigitalDerivansException {
+        if (dType == DerivateType.JPG || dType == DerivateType.IMAGE) {
+            return new GeneratorImageJPG();
+        } else if (dType == DerivateType.JPG_FOOTER) {
+            return new GeneratorImageJPGFooter();
+        } else if (dType == DerivateType.PDF) {
+            return new GeneratorPDF();
         }
-        this.generators = new ArrayList<>();
-        for (DerivateStep step : this.steps) {
-            if (!this.derivate.isInited()) {
-                if (step.getInputType() == DerivateType.TIF) {
-                    this.derivate.setStartFileExtension(".tif");
-                }
-                this.derivate.init(Path.of(step.getInputDir()));
-            }
-            DerivateType type = step.getOutputType();
-            Generator theGenerator = Derivans.forType(type);
-            theGenerator.setDerivate(derivate); // first set derivate ...
-            if (type == DerivateType.PDF) { // some peculiar PDF parameters
-                DerivateStepPDF pdfStep = (DerivateStepPDF) step;
-                pdfStep.setConformanceLevel(DefaultConfiguration.PDFA_CONFORMANCE_LEVEL);
-                pdfStep.setDebugRender(config.isDebugPdfRender());
-            }
-            theGenerator.setStep(step); // .. then set step object
-            this.generators.add(theGenerator);
-        }
-        return this.generators;
+        throw new DigitalDerivansException("Unknown type " + dType);
     }
 
     /**
@@ -136,19 +159,7 @@ public class Derivans {
      * 
      * @return
      */
-    public List<Generator> getDerivateers() {
+    public List<Generator> getGenerators() {
         return this.generators;
     }
-
-    public static Generator forType(DerivateType dType) throws DigitalDerivansException {
-        if (dType == DerivateType.JPG || dType == DerivateType.IMAGE) {
-            return new GeneratorImageJPG();
-        } else if (dType == DerivateType.JPG_FOOTER) {
-            return new GeneratorImageJPGFooter();
-        } else if (dType == DerivateType.PDF) {
-            return new GeneratorPDF();
-        }
-        throw new DigitalDerivansException("Unknown type " + dType);
-    }
-
 }

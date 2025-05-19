@@ -62,7 +62,7 @@ public class TestDerivansConfiguration {
 
 		// assert
 		assertEquals(80, dc.getQuality());
-		assertEquals(4, dc.getPoolsize());
+		assertEquals(4, dc.getDefaultPoolsize());
 
 		List<DerivateStep> steps = dc.getDerivateSteps();
 		assertEquals(2, steps.size());
@@ -72,7 +72,7 @@ public class TestDerivansConfiguration {
 		DerivateStepImage stepMinImage = (DerivateStepImage) steps.get(0);
 		assertEquals(80, stepMinImage.getQuality());
 		assertEquals("DEFAULT", stepMinImage.getInputDir());
-		assertEquals("IMAGE_80", stepMinImage.getOutputDir());
+		assertEquals(IDerivans.IMAGE_Q80, stepMinImage.getOutputDir());
 		assertEquals(DerivateType.JPG, stepMinImage.getOutputType());
 
 		// pdf
@@ -108,7 +108,7 @@ public class TestDerivansConfiguration {
 
 		// assert
 		assertEquals(80, dc.getQuality());
-		assertEquals(3, dc.getPoolsize());
+		assertEquals(3, dc.getDefaultPoolsize());
 		List<DerivateStep> steps = dc.getDerivateSteps();
 		assertEquals(2, steps.size());
 		assertTrue(steps.get(1) instanceof DerivateStepPDF);
@@ -143,7 +143,7 @@ public class TestDerivansConfiguration {
 
 		// assert
 		assertEquals(80, dc.getQuality());
-		assertEquals(2, dc.getPoolsize());
+		assertEquals(2, dc.getDefaultPoolsize());
 
 		List<DerivateStep> steps = dc.getDerivateSteps();
 		assertEquals(2, steps.size());
@@ -151,7 +151,7 @@ public class TestDerivansConfiguration {
 		// minimal derivate from images
 		// assertEquals(80, steps.get(0).getQuality());
 		assertEquals(IDerivans.IMAGE_DIR_DEFAULT, steps.get(0).getInputDir());
-		assertEquals("IMAGE_80", steps.get(0).getOutputDir());
+		assertEquals(IDerivans.IMAGE_Q80, steps.get(0).getOutputDir());
 		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
 
 		// pdf
@@ -189,7 +189,7 @@ public class TestDerivansConfiguration {
 		// minimal derivate from images
 		// assertEquals(80, steps.get(0).getQuality());
 		assertEquals(customImageSubDir, steps.get(0).getInputDir());
-		assertEquals("IMAGE_80", steps.get(0).getOutputDir());
+		assertEquals(IDerivans.IMAGE_Q80, steps.get(0).getOutputDir());
 		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
 
 		// pdf
@@ -228,7 +228,7 @@ public class TestDerivansConfiguration {
 		// minimal derivate from images
 		assertEquals(80, ((DerivateStepImage)steps.get(0)).getQuality());
 		assertEquals(pathImageMax.toString(), steps.get(0).getInputDir());
-		assertEquals("IMAGE_80", steps.get(0).getOutputDir());
+		assertEquals(IDerivans.IMAGE_Q80, steps.get(0).getOutputDir());
 		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
 
 		// pdf
@@ -282,8 +282,8 @@ public class TestDerivansConfiguration {
 		assertEquals(3, dSteps.size());
 		assertSame(DerivateType.PDF, dSteps.get(2).getOutputType());
 		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(2);
-		assertEquals(ORIGINAL_SUB_DIR, pdfStep.getParamImages());
 		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputDir());
+		assertEquals(IDerivans.IMAGE_Q80, pdfStep.getInputDir());
 	}
 
 	/**
@@ -314,7 +314,7 @@ public class TestDerivansConfiguration {
 				.mapToObj(i -> String.format("163310%02d", i)).collect(Collectors.toList());
 		// these are the least dimensions a newspaper page
 		// shall shrink to which was originally 7000x10000
-		TestHelper.generateJpgsFromList(imageDirOriginal, 700, 1000, ids);
+		TestHelper.generateJpgsFromList(imageDirOriginal, 350, 500, ids);
 
 		// act
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
@@ -325,8 +325,7 @@ public class TestDerivansConfiguration {
 		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputDir());
 		assertSame(DerivateType.PDF, dSteps.get(1).getOutputType());
 		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(1);
-		assertEquals("IMAGE_80", pdfStep.getInputDir());
-		assertEquals(ORIGINAL_SUB_DIR, pdfStep.getParamImages());
+		assertEquals(IDerivans.IMAGE_Q80, pdfStep.getInputDir());
 		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputDir());
 	}
 }
