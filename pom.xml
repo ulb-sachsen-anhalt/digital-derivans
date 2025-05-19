@@ -40,7 +40,7 @@
 		<jdom2.version>2.0.6.1</jdom2.version>
 		<itext.version>8.0.5</itext.version>
 		<pdfbox.version>3.0.3</pdfbox.version>
-		<jaxen.version>1.2.0</jaxen.version>
+		<jaxen.version>2.0.0</jaxen.version>
 		<log4j2.version>2.17.1</log4j2.version>
 		<args4j.version>2.37</args4j.version>
 		<configuration2.version>2.11.0</configuration2.version>
