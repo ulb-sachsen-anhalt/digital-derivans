@@ -156,8 +156,6 @@ PDF:
 * `metadata_keywords`: enrich keywords
 * `enrich_pdf_metadata` : if PDF shall be enriched into METS/MODS (default: `True`)
 * `mods_identifier_xpath` : if not set, use `mods:recordIdentifier` from primary MODS
-* `mets_filegroup_fulltext`: METS-filegroup for OCR-Data (default: `FULLTEXT`)
-* `mets_filegroup_images` : METS-filegroup for image data (default: `MAX`)
 
 ### Minimal working Example
 
