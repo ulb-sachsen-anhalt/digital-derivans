@@ -408,12 +408,13 @@ public class DerivansConfiguration {
 			LOGGER.debug("set pdf identifier xpath '{}'", pdfIdentXPath);
 			step.setModsIdentifierXPath(pdfIdentXPath);
 		}
-		// change pdf fulltext input filegroup/path
-		String optionPdfFulltext = section + "." + DefaultConfiguration.Key.PDF_METS_FILEGROUP_FULLTEXT;
-		Optional<String> optPdfFulltext = extractValue(conf, optionPdfFulltext, String.class);
-		if (optPdfFulltext.isPresent()) {
-			String pdfFulltext = optPdfFulltext.get();
-			LOGGER.debug("set fulltext input dir '{}'", pdfFulltext);
+		// optional try to set certain pdf archive conformance degree
+		String optionConformace = section + "." + DefaultConfiguration.Key.PDF_CONFORMANCE;
+		Optional<String> optConformance = extractValue(conf, optionConformace, String.class);
+		if (optConformance.isPresent()) {
+			String pdfConf = optConformance.get();
+			LOGGER.debug("set pdf/a conformance '{}'", pdfConf);
+			step.setConformanceLevel(pdfConf);
 		}
 		// images and filegroup param
 		String optionPdfImageGroup = section + "." + DefaultConfiguration.Key.PDF_METS_FILEGROUP_IMAGES;

@@ -29,6 +29,8 @@ public class DefaultConfiguration {
 
 		public static final String PDF_METS_FILEGROUP_IMAGES = "mets_filegroup_images";
 
+		public static final String PDF_CONFORMANCE = "pdf_conformance";
+
 		private Key() {}
 	}
 
@@ -38,15 +40,12 @@ public class DefaultConfiguration {
 
 	/**
 	 * 
-	 * Different PDF_A conformance levels
-	 * PDF/A-1A, PDF/A-1B, 
-	 * PDF/A-2A, PDF/A-2B, PDF/A-2U,
-	 * PDF/A-3A, PDF/A-3B, PDF/A-3U
-	 * 
-	 * cf. https://en.wikipedia.org/wiki/PDF/A
+	 * Please note, that PDF/A conformance level 
+	 * (cf. https://en.wikipedia.org/wiki/PDF/A) depends
+	 * on the specific PDF backend library version
 	 * 
 	 */
-	public static final String PDFA_CONFORMANCE_LEVEL = "PDF/A-2A";
+	public static final String DEFAULT_CONFORMANCE_LEVEL = "PDF/A-1B";
 	
 	public static final int DEFAULT_IMAGE_DPI = 300;
 

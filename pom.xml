@@ -38,7 +38,7 @@
 		<junit.jupiter.version>5.6.2</junit.jupiter.version>
 		<mockito.version>5.3.1</mockito.version>
 		<jdom2.version>2.0.6.1</jdom2.version>
-		<itext.version>8.0.5</itext.version>
+		 <itext.version>9.2.0</itext.version>
 		<pdfbox.version>3.0.3</pdfbox.version>
 		<jaxen.version>2.0.0</jaxen.version>
 		<log4j2.version>2.17.1</log4j2.version>

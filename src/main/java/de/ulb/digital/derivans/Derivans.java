@@ -103,10 +103,6 @@ public class Derivans {
             DerivateType type = step.getOutputType();
             Generator theGenerator = Derivans.forType(type);
             theGenerator.setDerivate(derivate); // first set derivate ...
-            if (type == DerivateType.PDF) { // some peculiar PDF parameters
-                DerivateStepPDF pdfStep = (DerivateStepPDF) step;
-                pdfStep.setConformanceLevel(DefaultConfiguration.PDFA_CONFORMANCE_LEVEL);
-            }
             theGenerator.setStep(step); // .. then set step object
             this.generators.add(theGenerator);
         }

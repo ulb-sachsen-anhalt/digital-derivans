@@ -23,7 +23,7 @@ public class DerivateStepPDF extends DerivateStep {
 	private TypeConfiguration renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
 	private TypeConfiguration renderModus = DefaultConfiguration.DEFAULT_RENDER_VISIBILTY;
 	private Optional<String> modsIdentifierXPath = Optional.empty();
-	private String conformanceLevel = DefaultConfiguration.PDFA_CONFORMANCE_LEVEL;
+	private String conformanceLevel = DefaultConfiguration.DEFAULT_CONFORMANCE_LEVEL;
 	private String author = IDerivans.UNKNOWN;
 	private String title = IDerivans.UNKNOWN;
 	private String publicationYear = IDerivans.UNKNOWN;
