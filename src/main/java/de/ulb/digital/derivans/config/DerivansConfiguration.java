@@ -414,7 +414,7 @@ public class DerivansConfiguration {
 		if (optConformance.isPresent()) {
 			String pdfConf = optConformance.get();
 			LOGGER.debug("set pdf/a conformance '{}'", pdfConf);
-			step.setConformanceLevel(pdfConf);
+			step.setConformance(pdfConf);
 		}
 		// images and filegroup param
 		String optionPdfImageGroup = section + "." + DefaultConfiguration.Key.PDF_METS_FILEGROUP_IMAGES;

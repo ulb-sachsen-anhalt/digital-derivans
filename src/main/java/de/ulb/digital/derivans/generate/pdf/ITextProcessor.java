@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -48,6 +49,7 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.BaseDirection;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.pdfa.PdfADocument;
+import com.itextpdf.pdfa.exceptions.PdfAConformanceException;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.TypeConfiguration;
@@ -195,20 +197,23 @@ public class ITextProcessor implements IPDFProcessor {
 		try (FileOutputStream fos = new FileOutputStream(fileDescriptor)) {
 			PdfWriter writer = new PdfWriter(fos, new WriterProperties()
 					.addXmpMetadata().setPdfVersion(PdfVersion.PDF_1_7));
-			if (this.pdfStep.getConformanceLevel() != null && !this.debugRender) {
+			var optConformance = this.pdfStep.getOptConformance();
+			if (optConformance.isPresent() && !this.debugRender) {
+				String conformance = optConformance.get();
+				LOGGER.info("Attempt to set conformance {}", conformance);
 				PdfAConformance conformanceLevel = ITextProcessor
-						.determineLevel(this.pdfStep.getConformanceLevel());
-				String iccPath = "icc/sRGB_CS_profile.icm";
+						.determineLevel(conformance);
+				String iccLabel = "sRGB Color Space Profile" ;
+				String iccPath = String.format("icc/%s.icm", iccLabel);
 				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPath);
 				PdfOutputIntent outputIntent = new PdfOutputIntent("Custom",
 						"",
 						"http://www.color.org",
-						"sRGB IEC61966-2.1", is);
+						iccLabel, is);
 				this.pdfDoc = new PdfADocument(writer, conformanceLevel, outputIntent);
 			} else {
 				this.pdfDoc = new PdfDocument(writer);
 			}
-			this.pdfDoc = new PdfDocument(writer);
 			this.document = new Document(pdfDoc);
 			this.addMetadata();
 			var result = this.addContents();
@@ -354,35 +359,44 @@ public class ITextProcessor implements IPDFProcessor {
 	 * formats like inlay maps, illustrations, etc.
 	 * 
 	 * @param image
-	 * @param font
 	 * @param page
 	 * @return
+	 * @throws DigitalDerivansException 
 	 * @throws IOException
 	 */
-	private PDFPage append(Image image, PDFPage page) {
+	private PDFPage append(Image image, PDFPage page) throws DigitalDerivansException {
 		PageSize pageSize = new PageSize(image.getImageScaledWidth(), image.getImageScaledHeight());
 		var nextPage = this.pdfDoc.addNewPage(pageSize);
 		nextPage.getPdfObject().get(PdfName.PageNum);
 		image.setFixedPosition(page.getNumber(), 0, 0);
 		this.document.add(image);
 		if (page.getTextcontent().isPresent()) {
+			PdfPage itextPage = this.pdfDoc.getLastPage();
+			PdfCanvas pdfCanvas = new PdfCanvas(itextPage);
+			if ((!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
+				pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
+			}
+			var rootArea = new com.itextpdf.kernel.geom.Rectangle(0, 0, image.getImageWidth(), image.getImageHeight());
+			Canvas canvas = new Canvas(pdfCanvas, rootArea);
 			List<PDFTextElement> txtContents = page.getTextcontent().get();
 			for (var line : txtContents) {
 				if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
-					render(line);
+					render(pdfCanvas, canvas, line);
 					if (this.debugRender) {
 						this.drawBoundingBox(line.getBox(), this.dbgColorLine, DBG_LINEWIDTH_ROW);
 					}
 				} else if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_WORD) {
 					var tokens = line.getChildren();
 					for (var word : tokens) {
-						render(word);
+						render(pdfCanvas, canvas, word);
 						if (this.debugRender) {
 							this.drawBoundingBox(word.getBox(), this.dbgColorWord, DBG_LINEWIDTH_WORD);
 						}
 					}
 				}
 			}
+			canvas.close();
+			pdfCanvas.release();
 		} else {
 			LOGGER.info("no ocr data present for '{}'", page.getImagePath());
 		}
@@ -398,8 +412,9 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @param pageHeight
 	 * @param cb
 	 * @param line
+	 * @throws DigitalDerivansException 
 	 */
-	private PDFTextElement render(PDFTextElement token) {
+	private PDFTextElement render(PdfCanvas pdfCanvas, Canvas canvas, PDFTextElement token) throws DigitalDerivansException {
 		String text = token.forPrint();
 		float fontSize = token.getFontSize();
 		if (fontSize < IPDFProcessor.MIN_CHAR_SIZE) {
@@ -410,13 +425,6 @@ public class ITextProcessor implements IPDFProcessor {
 		Rectangle2D box = token.getBox();
 		float leftMargin = (float) box.getMinX();
 		float baselineY = token.getBaseline().getY1();
-		var page = this.pdfDoc.getLastPage();
-		PdfCanvas pdfCanvas = new PdfCanvas(page);
-		var iTextRect = new com.itextpdf.kernel.geom.Rectangle(
-				leftMargin, baselineY, (float) box.getWidth(), (float) box.getHeight());
-		if ((!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
-			pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
-		}
 		float hScale = calculateHorizontalScaling(token);
 		if (this.debugRender) {
 			LOGGER.trace("put '{}' at baseline {}x{} size:{}, scale:{})",
@@ -426,14 +434,30 @@ public class ITextProcessor implements IPDFProcessor {
 					.moveTo(leftMargin, baselineY)
 					.lineTo(rightMargin, baselineY).closePathStroke();
 		}
+		Normalizer.isNormalized(text, Normalizer.Form.NFKD);
 		Text txt = new Text(text).setFont(this.font).setFontSize(fontSize).setHorizontalScaling(hScale);
 		if (token.isRTL()) {
 			txt.addStyle(rtlStyle);
 		}
-		Canvas canvas = new Canvas(pdfCanvas, iTextRect);
-		canvas.add(new Paragraph(txt));
-		canvas.close();
-		pdfCanvas.release();
+		try {
+			Paragraph p = new Paragraph(txt);
+			p.setFixedPosition(leftMargin, baselineY,  (float) box.getWidth());
+			canvas.add(p);
+		} catch (PdfAConformanceException pdfAexc) {
+			LOGGER.warn("While rendering {} : {}", text, pdfAexc.getMessage());
+			if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
+				String normed = Normalizer.normalize(text, Normalizer.Form.NFKD);
+				Paragraph p = new Paragraph(normed);
+				p.setFixedPosition(leftMargin, baselineY,  (float) box.getWidth());
+				try {
+					canvas.add(p);
+				} catch (PdfAConformanceException finalExc) {
+					String mark2 = String.format("Fail render %s: %s", text,
+					finalExc.getMessage());
+					throw new DigitalDerivansException(mark2);
+				}
+			}
+		}
 		token.setPrinted(true);
 		return token;
 	}

@@ -115,14 +115,14 @@ class TestDerivansFulltextODEM {
 	 * iText5 : 1327
 	 * PDFBox3: 1038
 	 * iText8 : 3372
-	 * 2025 : 3382
+	 * 2025 : 3382 / 3474
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testPage07HasCertainLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
-		assertEquals(3382, textPage07.length());
+		assertEquals(3474, textPage07.length());
 
 	}
 

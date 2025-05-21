@@ -69,7 +69,7 @@ class TestDerivansParameter {
 		DerivateStep step = derivans.getSteps().get(2);
 		assertTrue(step instanceof DerivateStepPDF);
 		DerivateStepPDF stepPdf = (DerivateStepPDF) step;
-		assertEquals(xPath, stepPdf.getModsIdentifierXPath().get());
+		assertEquals(xPath, stepPdf.getOptIdentifierXPath().get());
 		derivans.forward();
 
 		// assert

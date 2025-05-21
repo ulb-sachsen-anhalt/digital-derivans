@@ -82,7 +82,7 @@ class TestPDFSyntheticWesteuropeLines {
 		DerivateStepPDF pdfStep1 = new DerivateStepPDF();
 		pdfStep1.setImageDpi(TEST_DPI);
 		pdfStep1.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
-		pdfStep1.setConformanceLevel("PDF/A-2B");
+		pdfStep1.setConformance("PDF/A-1B");
 		pdfStep1.setDebugRender(false);
 		pdfStep1.setPathPDF(outputLinePath);
 		GeneratorPDF generatorLine = new GeneratorPDF();

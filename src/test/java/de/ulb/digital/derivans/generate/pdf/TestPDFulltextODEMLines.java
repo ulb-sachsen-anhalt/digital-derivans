@@ -109,7 +109,7 @@ class TestPDFulltextODEMLines {
 	@Test
 	void testPage08TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
-		assertEquals(3382, textPage07.length());
+		assertEquals(3381, textPage07.length());
 	}
 
 }

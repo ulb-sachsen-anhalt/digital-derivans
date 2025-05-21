@@ -22,8 +22,6 @@ public class DerivateStepPDF extends DerivateStep {
 	private Boolean debugRender = Boolean.FALSE;
 	private TypeConfiguration renderLevel = DefaultConfiguration.DEFAULT_RENDER_LEVEL;
 	private TypeConfiguration renderModus = DefaultConfiguration.DEFAULT_RENDER_VISIBILTY;
-	private Optional<String> modsIdentifierXPath = Optional.empty();
-	private String conformanceLevel = DefaultConfiguration.DEFAULT_CONFORMANCE_LEVEL;
 	private String author = IDerivans.UNKNOWN;
 	private String title = IDerivans.UNKNOWN;
 	private String publicationYear = IDerivans.UNKNOWN;
@@ -31,6 +29,8 @@ public class DerivateStepPDF extends DerivateStep {
 	private Optional<String> optLicense = Optional.empty();
 	private Optional<String> optKeywords = Optional.empty();
 	private Optional<String> optNamePDF = Optional.empty();
+	private Optional<String> optIdentifierXPath = Optional.empty();
+	private Optional<String> optConformance = Optional.empty();
 	private Path pdfFilePath;
 
 	public DerivateStepPDF() {
@@ -78,20 +78,22 @@ public class DerivateStepPDF extends DerivateStep {
 		this.renderModus = modus;
 	}
 
-	public Optional<String> getModsIdentifierXPath() {
-		return modsIdentifierXPath;
+	public Optional<String> getOptIdentifierXPath() {
+		return optIdentifierXPath;
 	}
 
 	public void setModsIdentifierXPath(String modsIdentifierXPath) {
-		this.modsIdentifierXPath = Optional.of(modsIdentifierXPath);
+		this.optIdentifierXPath = Optional.of(modsIdentifierXPath);
 	}
 
-	public String getConformanceLevel() {
-		return conformanceLevel;
+	public Optional<String> getOptConformance() {
+		return optConformance;
 	}
 
-	public void setConformanceLevel(String conformanceLevel) {
-		this.conformanceLevel = conformanceLevel;
+	public void setConformance(String conformance) {
+		if(conformance != null) {
+			this.optConformance = Optional.of(conformance);
+		}
 	}
 
 	public String getAuthor() {

@@ -36,9 +36,9 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	private PDFTextElementType type = PDFTextElementType.TOKEN;
 
 	private Rectangle2D box;
-	
+
 	private PDFTextElement.Baseline baseline;
-	
+
 	private String text;
 
 	private PDFTextElement parent;
@@ -46,7 +46,7 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	private List<PDFTextElement> children = new ArrayList<>();
 
 	private boolean isPrinted;
-	
+
 	public PDFTextElement(PDFTextElementType type) {
 		this.type = type;
 	}
@@ -79,7 +79,7 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	}
 
 	private float descent() {
-		return (float)this.box.getHeight() * DESCENT_RATIO;
+		return (float) this.box.getHeight() * DESCENT_RATIO;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	 * @return
 	 */
 	public float getFontSize() {
-		return (float)this.box.getHeight() - descent();
+		return (float) this.box.getHeight() - descent();
 	}
 
 	/**
@@ -100,9 +100,9 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	 */
 	public PDFTextElement.Baseline getBaseline() {
 		if (this.baseline == null) {
-			var baselineY = (float)this.box.getMinY() + descent();
-			var toTheLeft = (float)(this.box.getX() + this.box.getWidth());
-			this.baseline = new PDFTextElement.Baseline((float)this.box.getX(), baselineY, toTheLeft, baselineY);
+			var baselineY = (float) this.box.getMinY() + descent();
+			var toTheLeft = (float) (this.box.getX() + this.box.getWidth());
+			this.baseline = new PDFTextElement.Baseline((float) this.box.getX(), baselineY, toTheLeft, baselineY);
 		}
 		return this.baseline;
 	}
@@ -118,8 +118,8 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	public void invert(float actualPageHeight) {
 		var oldBox = this.getBox();
 		var newY = actualPageHeight - oldBox.getY() - oldBox.getHeight();
-		this.setBox(new Rectangle2D.Float((float)oldBox.getX(), (float)newY,
-					(float)oldBox.getWidth(), (float)oldBox.getHeight()));
+		this.setBox(new Rectangle2D.Float((float) oldBox.getX(), (float) newY,
+				(float) oldBox.getWidth(), (float) oldBox.getHeight()));
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	 * @return
 	 */
 	public boolean isPrinted() {
-		if(!this.children.isEmpty()) {
+		if (!this.children.isEmpty()) {
 			return this.children.stream().anyMatch(PDFTextElement::isPrinted);
 		}
 		return this.isPrinted;
@@ -181,17 +181,17 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	 * to prevent each word from jumpin' around tha line.
 	 * 
 	 * Eache kid keeps it's individual width but inherits the
-	 * horizontal 
+	 * horizontal
 	 * 
 	 * @param parent
 	 */
 	public void setParent(PDFTextElement parent) {
 		this.parent = parent;
-		var newBottom = (float)this.parent.box.getMaxY();
-		var newTop = (float)this.parent.box.getMinY();
+		var newBottom = (float) this.parent.box.getMaxY();
+		var newTop = (float) this.parent.box.getMinY();
 		var alignedHeight = newBottom - newTop;
-		this.box = new Rectangle2D.Float((float)this.box.getMinX(), (float)this.parent.box.getMinY(),
-			(float)this.box.getWidth(), alignedHeight);
+		this.box = new Rectangle2D.Float((float) this.box.getMinX(), (float) this.parent.box.getMinY(),
+				(float) this.box.getWidth(), alignedHeight);
 	}
 
 	public List<PDFTextElement> getChildren() {
@@ -225,28 +225,28 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 		}
 
 		public float getX1() {
-			return (float)this.line.getX1();
+			return (float) this.line.getX1();
 		}
 
 		public float getY1() {
-			return (float)this.line.getY1();
+			return (float) this.line.getY1();
 		}
 
 		public float getX2() {
-			return (float)this.line.getX2();
+			return (float) this.line.getX2();
 		}
 
 		public float getY2() {
-			return (float)this.line.getY2();
+			return (float) this.line.getY2();
 		}
 
 		public float length() {
-			return (float)this.line.getP1().distance(this.line.getP2());
+			return (float) this.line.getP1().distance(this.line.getP2());
 		}
 
 		@Override
 		public boolean equals(Object other) {
-			if (! (other instanceof Baseline)) {
+			if (!(other instanceof Baseline)) {
 				return false;
 			}
 			var otherBaseline = (Baseline) other;
@@ -271,7 +271,7 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 
 		@Override
 		public int hashCode() {
-			return (int)(line.getX1() + line.getY1() + line.getX2() + line.getY2());
+			return (int) (line.getX1() + line.getY1() + line.getX2() + line.getY2());
 		}
 	}
 }

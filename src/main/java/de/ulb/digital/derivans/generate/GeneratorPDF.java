@@ -135,7 +135,7 @@ public class GeneratorPDF extends Generator {
 		String pdfName = rootDir.getFileName().toString() + ".pdf"; // default PDF name like workdir
 		if (this.derivate instanceof DerivateMD) {
 			var derivateMd = (DerivateMD) this.derivate;
-			pdfStep.getModsIdentifierXPath().ifPresent(derivateMd::setIdentifierExpression);
+			pdfStep.getOptIdentifierXPath().ifPresent(derivateMd::setIdentifierExpression);
 			DescriptiveMetadata descriptiveData = derivateMd.getDescriptiveData();
 			pdfName = descriptiveData.getIdentifier() + ".pdf"; // if metadata present, use as PDF name
 		}
