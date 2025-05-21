@@ -434,7 +434,6 @@ public class ITextProcessor implements IPDFProcessor {
 					.moveTo(leftMargin, baselineY)
 					.lineTo(rightMargin, baselineY).closePathStroke();
 		}
-		Normalizer.isNormalized(text, Normalizer.Form.NFKD);
 		Text txt = new Text(text).setFont(this.font).setFontSize(fontSize).setHorizontalScaling(hScale);
 		if (token.isRTL()) {
 			txt.addStyle(rtlStyle);
