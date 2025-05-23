@@ -3,13 +3,21 @@ package de.ulb.digital.derivans.generate.pdf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
+import org.verapdf.pdfa.Foundries;
+import org.verapdf.pdfa.PDFAParser;
+import org.verapdf.pdfa.PDFAValidator;
+import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.results.ValidationResult;
 
+import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.TypeConfiguration;
@@ -54,8 +62,9 @@ class TestPDFulltextODEMLines {
 		TestHelper.copyTree(sourceOcr, targetOcr);
 		DerivateStepPDF pdfStep = new DerivateStepPDF();
 		pdfStep.setImageDpi(300);
-		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
+		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_LINE);
 		pdfStep.setDebugRender(true);
+		pdfStep.setConformance("PDF/A-1B");
 		pdfStep.setInputDir(IDerivans.IMAGE_DIR_MAX);
 		pdfStep.setOutputDir(".");
 		pdfStep.setPathPDF(workDir.resolve("148811035.pdf"));
@@ -73,7 +82,6 @@ class TestPDFulltextODEMLines {
 	void testPDFWritten() {
 		assertTrue(Files.exists(pdfPath));
 	}
-
 
 	@Test
 	void testPDFResultDocPage5() {
@@ -95,7 +103,7 @@ class TestPDFulltextODEMLines {
 	@Test
 	void testPage07ContainsText() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 6);
-		assertTrue(textPage07.contains("Chriſtliche Majeſt")); // PDFBox
+		assertTrue(textPage07.contains("Christliche Majest")); // PDFBox
 	}
 
 	/**
@@ -112,4 +120,19 @@ class TestPDFulltextODEMLines {
 		assertEquals(3381, textPage07.length());
 	}
 
+	@Test
+	void testValidity() throws Exception {
+		VeraGreenfieldFoundryProvider.initialise();
+		PDFAFlavour flavour = PDFAFlavour.fromString("1b");
+		try (PDFAParser parser = Foundries.defaultInstance().createParser(new FileInputStream(pdfPath.toString()), flavour)) {
+			PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false);
+			ValidationResult result = validator.validate(parser);
+			if (result.isCompliant()) {
+				// File is a valid PDF/A 1b
+			} else {
+				throw new DigitalDerivansException("invalid");
+			}
+		}
+
+	}
 }

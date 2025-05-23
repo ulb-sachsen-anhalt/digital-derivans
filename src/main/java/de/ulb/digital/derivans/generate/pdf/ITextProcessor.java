@@ -373,29 +373,31 @@ public class ITextProcessor implements IPDFProcessor {
 		if (page.getTextcontent().isPresent()) {
 			PdfPage itextPage = this.pdfDoc.getLastPage();
 			PdfCanvas pdfCanvas = new PdfCanvas(itextPage);
-			if ((!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
+			var rootArea = new com.itextpdf.kernel.geom.Rectangle(0, 0, image.getImageWidth(), image.getImageHeight());
+			// Canvas canvas = new Canvas(pdfCanvas, rootArea);
+			List<PDFTextElement> txtContents = page.getTextcontent().get();
+			if (!txtContents.isEmpty() && (!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
 				pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
 			}
-			var rootArea = new com.itextpdf.kernel.geom.Rectangle(0, 0, image.getImageWidth(), image.getImageHeight());
-			Canvas canvas = new Canvas(pdfCanvas, rootArea);
-			List<PDFTextElement> txtContents = page.getTextcontent().get();
+			// pdfCanvas.saveState();
 			for (var line : txtContents) {
 				if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
-					render(pdfCanvas, canvas, line);
+					render(pdfCanvas, /*canvas,*/ line);
 					if (this.debugRender) {
 						this.drawBoundingBox(line.getBox(), this.dbgColorLine, DBG_LINEWIDTH_ROW);
 					}
 				} else if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_WORD) {
 					var tokens = line.getChildren();
 					for (var word : tokens) {
-						render(pdfCanvas, canvas, word);
+						render(pdfCanvas, /*canvas,*/ word);
 						if (this.debugRender) {
 							this.drawBoundingBox(word.getBox(), this.dbgColorWord, DBG_LINEWIDTH_WORD);
 						}
 					}
 				}
 			}
-			canvas.close();
+			// pdfCanvas.restoreState();
+			// canvas.close();
 			pdfCanvas.release();
 		} else {
 			LOGGER.info("no ocr data present for '{}'", page.getImagePath());
@@ -414,7 +416,7 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @param line
 	 * @throws DigitalDerivansException 
 	 */
-	private PDFTextElement render(PdfCanvas pdfCanvas, Canvas canvas, PDFTextElement token) throws DigitalDerivansException {
+	private PDFTextElement render(PdfCanvas pdfCanvas, /*Canvas canvas,*/ PDFTextElement token) throws DigitalDerivansException {
 		String text = token.forPrint();
 		float fontSize = token.getFontSize();
 		if (fontSize < IPDFProcessor.MIN_CHAR_SIZE) {
@@ -438,26 +440,35 @@ public class ITextProcessor implements IPDFProcessor {
 		if (token.isRTL()) {
 			txt.addStyle(rtlStyle);
 		}
+		if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
+			text = Normalizer.normalize(text, Normalizer.Form.NFKD);;
+		}
 		try {
-			Paragraph p = new Paragraph(txt);
-			p.setFixedPosition(leftMargin, baselineY,  (float) box.getWidth());
-			canvas.add(p);
+			// Paragraph p = new Paragraph(txt);
+			// p.setFixedPosition(leftMargin, baselineY,  (float) box.getWidth());
+			// canvas.add(p);
+			// pdfCanvas.beginText();
+			// pdfCanvas.setFontAndSize(font, fontSize);
+			// pdfCanvas.moveText(leftMargin, baselineY);
+			// pdfCanvas.showText(text);
+			// pdfCanvas.endText();
+			this.document.showTextAligned(text, leftMargin, baselineY, TextAlignment.CENTER);
+			token.setPrinted(true);
 		} catch (PdfAConformanceException pdfAexc) {
 			LOGGER.warn("While rendering {} : {}", text, pdfAexc.getMessage());
-			if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
-				String normed = Normalizer.normalize(text, Normalizer.Form.NFKD);
-				Paragraph p = new Paragraph(normed);
-				p.setFixedPosition(leftMargin, baselineY,  (float) box.getWidth());
-				try {
-					canvas.add(p);
-				} catch (PdfAConformanceException finalExc) {
-					String mark2 = String.format("Fail render %s: %s", text,
-					finalExc.getMessage());
-					throw new DigitalDerivansException(mark2);
-				}
-			}
+			// if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
+			// 	String normed = Normalizer.normalize(text, Normalizer.Form.NFKD);
+			// 	Paragraph p = new Paragraph(normed);
+			// 	p.setFixedPosition(leftMargin, baselineY,  (float) box.getWidth());
+			// 	try {
+			// 		// canvas.add(p);
+			// 	} catch (PdfAConformanceException finalExc) {
+			// 		String mark2 = String.format("Fail render %s: %s", text,
+			// 		finalExc.getMessage());
+			// 		throw new DigitalDerivansException(mark2);
+			// 	}
+			// }
 		}
-		token.setPrinted(true);
 		return token;
 	}
 
