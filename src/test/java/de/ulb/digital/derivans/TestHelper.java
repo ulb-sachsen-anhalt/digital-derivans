@@ -49,6 +49,10 @@ import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfOutline;
+import com.itextpdf.kernel.pdf.PdfReader;
+
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
 import de.ulb.digital.derivans.generate.pdf.ITextProcessor;
@@ -288,7 +292,37 @@ public class TestHelper {
 		}
 
 		public PDFOutlineEntry getOutline() throws IOException {
-			return ITextProcessor.readOutline(this.pdfPath);
+			PdfReader reader = new PdfReader(this.pdfPath.toFile());
+			PdfOutline pdfOutline = null;
+			try (PdfDocument pdfDocument = new PdfDocument(reader)) {
+				pdfOutline = pdfDocument.getOutlines(true);
+			}
+			String label = pdfOutline.getTitle();
+			String dest = METS.UNSET;
+			if (pdfOutline.getDestination() != null) {
+				dest = pdfOutline.getDestination().getPdfObject().toString();
+			}
+			PDFOutlineEntry root = new PDFOutlineEntry(label, dest);
+			if (!pdfOutline.getAllChildren().isEmpty()) {
+				for (var child : pdfOutline.getAllChildren()) {
+					traverseOutline(root, child);
+				}
+			}
+			return root;
+		}
+
+		public static void traverseOutline(PDFOutlineEntry currParent, PdfOutline currChild) {
+			String label = currChild.getTitle();
+			String dest = METS.UNSET;
+			if (currChild.getDestination() != null) {
+				dest = currChild.getDestination().getPdfObject().toString();
+			}
+			PDFOutlineEntry nextChild = new PDFOutlineEntry(label, dest);
+			currParent.getOutlineEntries().add(nextChild);
+			List<PdfOutline> nextChildren = currChild.getAllChildren();
+			for (var nextOutlineChild : nextChildren) {
+				traverseOutline(nextChild, nextOutlineChild);
+			}
 		}
 	}
 

@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -32,7 +31,6 @@ import com.itextpdf.kernel.pdf.PdfName;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfOutputIntent;
 import com.itextpdf.kernel.pdf.PdfPage;
-import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfVersion;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.WriterProperties;
@@ -40,11 +38,9 @@ import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvasConstants;
 import com.itextpdf.kernel.pdf.navigation.PdfExplicitDestination;
-import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.BaseDirection;
 import com.itextpdf.layout.properties.TextAlignment;
@@ -54,13 +50,11 @@ import com.itextpdf.pdfa.exceptions.PdfAConformanceException;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.data.io.JarResource;
-import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.MetadataType;
-import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 import de.ulb.digital.derivans.model.pdf.PDFPage;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
@@ -203,7 +197,7 @@ public class ITextProcessor implements IPDFProcessor {
 				LOGGER.info("Attempt to set conformance {}", conformance);
 				PdfAConformance conformanceLevel = ITextProcessor
 						.determineLevel(conformance);
-				String iccLabel = "sRGB Color Space Profile" ;
+				String iccLabel = "sRGB Color Space Profile";
 				String iccPath = String.format("icc/%s.icm", iccLabel);
 				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPath);
 				PdfOutputIntent outputIntent = new PdfOutputIntent("Custom",
@@ -361,7 +355,7 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @param image
 	 * @param page
 	 * @return
-	 * @throws DigitalDerivansException 
+	 * @throws DigitalDerivansException
 	 * @throws IOException
 	 */
 	private PDFPage append(Image image, PDFPage page) throws DigitalDerivansException {
@@ -373,23 +367,24 @@ public class ITextProcessor implements IPDFProcessor {
 		if (page.getTextcontent().isPresent()) {
 			PdfPage itextPage = this.pdfDoc.getLastPage();
 			PdfCanvas pdfCanvas = new PdfCanvas(itextPage);
-			var rootArea = new com.itextpdf.kernel.geom.Rectangle(0, 0, image.getImageWidth(), image.getImageHeight());
+			// var rootArea = new com.itextpdf.kernel.geom.Rectangle(0, 0, image.getImageWidth(), image.getImageHeight());
 			// Canvas canvas = new Canvas(pdfCanvas, rootArea);
 			List<PDFTextElement> txtContents = page.getTextcontent().get();
-			if (!txtContents.isEmpty() && (!this.debugRender) && this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
+			if (!txtContents.isEmpty() && (!this.debugRender)
+					&& this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
 				pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
 			}
 			// pdfCanvas.saveState();
 			for (var line : txtContents) {
 				if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
-					render(pdfCanvas, /*canvas,*/ line);
+					render(pdfCanvas, /* canvas, */ line);
 					if (this.debugRender) {
 						this.drawBoundingBox(line.getBox(), this.dbgColorLine, DBG_LINEWIDTH_ROW);
 					}
 				} else if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_WORD) {
 					var tokens = line.getChildren();
 					for (var word : tokens) {
-						render(pdfCanvas, /*canvas,*/ word);
+						render(pdfCanvas, /* canvas, */ word);
 						if (this.debugRender) {
 							this.drawBoundingBox(word.getBox(), this.dbgColorWord, DBG_LINEWIDTH_WORD);
 						}
@@ -414,9 +409,10 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @param pageHeight
 	 * @param cb
 	 * @param line
-	 * @throws DigitalDerivansException 
+	 * @throws DigitalDerivansException
 	 */
-	private PDFTextElement render(PdfCanvas pdfCanvas, /*Canvas canvas,*/ PDFTextElement token) throws DigitalDerivansException {
+	private PDFTextElement render(PdfCanvas pdfCanvas, /* Canvas canvas, */ PDFTextElement token)
+			throws DigitalDerivansException {
 		String text = token.forPrint();
 		float fontSize = token.getFontSize();
 		if (fontSize < IPDFProcessor.MIN_CHAR_SIZE) {
@@ -441,32 +437,34 @@ public class ITextProcessor implements IPDFProcessor {
 			txt.addStyle(rtlStyle);
 		}
 		if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
-			text = Normalizer.normalize(text, Normalizer.Form.NFKD);;
+			text = Normalizer.normalize(text, Normalizer.Form.NFKD);
+			;
 		}
 		try {
 			// Paragraph p = new Paragraph(txt);
-			// p.setFixedPosition(leftMargin, baselineY,  (float) box.getWidth());
+			// p.setFixedPosition(leftMargin, baselineY, (float) box.getWidth());
 			// canvas.add(p);
 			// pdfCanvas.beginText();
 			// pdfCanvas.setFontAndSize(font, fontSize);
 			// pdfCanvas.moveText(leftMargin, baselineY);
 			// pdfCanvas.showText(text);
 			// pdfCanvas.endText();
+			this.document.setFont(this.font);
 			this.document.showTextAligned(text, leftMargin, baselineY, TextAlignment.CENTER);
 			token.setPrinted(true);
 		} catch (PdfAConformanceException pdfAexc) {
 			LOGGER.warn("While rendering {} : {}", text, pdfAexc.getMessage());
 			// if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
-			// 	String normed = Normalizer.normalize(text, Normalizer.Form.NFKD);
-			// 	Paragraph p = new Paragraph(normed);
-			// 	p.setFixedPosition(leftMargin, baselineY,  (float) box.getWidth());
-			// 	try {
-			// 		// canvas.add(p);
-			// 	} catch (PdfAConformanceException finalExc) {
-			// 		String mark2 = String.format("Fail render %s: %s", text,
-			// 		finalExc.getMessage());
-			// 		throw new DigitalDerivansException(mark2);
-			// 	}
+			// String normed = Normalizer.normalize(text, Normalizer.Form.NFKD);
+			// Paragraph p = new Paragraph(normed);
+			// p.setFixedPosition(leftMargin, baselineY, (float) box.getWidth());
+			// try {
+			// // canvas.add(p);
+			// } catch (PdfAConformanceException finalExc) {
+			// String mark2 = String.format("Fail render %s: %s", text,
+			// finalExc.getMessage());
+			// throw new DigitalDerivansException(mark2);
+			// }
 			// }
 		}
 		return token;
@@ -530,37 +528,4 @@ public class ITextProcessor implements IPDFProcessor {
 		}
 	}
 
-	public static PDFOutlineEntry readOutline(Path pathPdf) throws IOException {
-		PdfReader reader = new PdfReader(pathPdf.toFile());
-		PdfOutline pdfOutline = null;
-		try (PdfDocument pdfDocument = new PdfDocument(reader)) {
-			pdfOutline = pdfDocument.getOutlines(true);
-		}
-		String label = pdfOutline.getTitle();
-		String dest = METS.UNSET;
-		if (pdfOutline.getDestination() != null) {
-			dest = pdfOutline.getDestination().getPdfObject().toString();
-		}
-		PDFOutlineEntry root = new PDFOutlineEntry(label, dest);
-		if (!pdfOutline.getAllChildren().isEmpty()) {
-			for (var child : pdfOutline.getAllChildren()) {
-				traverseOutline(root, child);
-			}
-		}
-		return root;
-	}
-
-	public static void traverseOutline(PDFOutlineEntry currParent, PdfOutline currChild) {
-		String label = currChild.getTitle();
-		String dest = METS.UNSET;
-		if (currChild.getDestination() != null) {
-			dest = currChild.getDestination().getPdfObject().toString();
-		}
-		PDFOutlineEntry nextChild = new PDFOutlineEntry(label, dest);
-		currParent.getOutlineEntries().add(nextChild);
-		List<PdfOutline> nextChildren = currChild.getAllChildren();
-		for (var nextOutlineChild : nextChildren) {
-			traverseOutline(nextChild, nextOutlineChild);
-		}
-	}
 }

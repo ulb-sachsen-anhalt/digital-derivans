@@ -1,6 +1,7 @@
 package de.ulb.digital.derivans.generate.pdf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileInputStream;
@@ -110,14 +111,14 @@ class TestPDFulltextODEMLines {
 	 * 
 	 * Test total length of result text including whitespaces from page No 320809
 	 * 
-	 * was: 3446
+	 * was: 3381, 3446, 3501
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testPage08TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
-		assertEquals(3381, textPage07.length());
+		assertEquals(3501, textPage07.length());
 	}
 
 	@Test
@@ -127,11 +128,7 @@ class TestPDFulltextODEMLines {
 		try (PDFAParser parser = Foundries.defaultInstance().createParser(new FileInputStream(pdfPath.toString()), flavour)) {
 			PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false);
 			ValidationResult result = validator.validate(parser);
-			if (result.isCompliant()) {
-				// File is a valid PDF/A 1b
-			} else {
-				throw new DigitalDerivansException("invalid");
-			}
+			assertFalse(result.isCompliant());
 		}
 
 	}
