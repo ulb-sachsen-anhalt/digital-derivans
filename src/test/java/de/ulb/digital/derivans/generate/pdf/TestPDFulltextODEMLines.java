@@ -103,7 +103,7 @@ class TestPDFulltextODEMLines {
 	 */
 	@Test
 	void testPage07ContainsText() throws Exception {
-		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 6);
+		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
 		assertTrue(textPage07.contains("Christliche Majest")); // PDFBox
 	}
 

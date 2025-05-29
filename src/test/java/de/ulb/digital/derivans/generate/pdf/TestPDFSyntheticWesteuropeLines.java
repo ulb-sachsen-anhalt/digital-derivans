@@ -222,4 +222,10 @@ class TestPDFSyntheticWesteuropeLines {
 		assertEquals(4, pdfLinelvlFirstLine.getChildren().size());
 	}
 
+	@Test
+	void inspectPDFRenderedText() throws Exception {
+		String textlayerData = TestHelper.getText(pdfLines.getPath(), 1);
+		assertEquals("foo", textlayerData);
+	}
+
 }

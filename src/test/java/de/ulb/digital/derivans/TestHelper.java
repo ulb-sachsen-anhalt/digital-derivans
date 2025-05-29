@@ -37,8 +37,10 @@ import org.apache.pdfbox.io.RandomAccessReadBufferedFile;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDMetadata;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.text.TextPosition;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -249,10 +251,10 @@ public class TestHelper {
 				throw new DigitalDerivansException("Invalid PDF file path " + pdfPath);
 			}
 			try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfPath))) {
-				var stripper = new PDFTextStripper();
-				stripper.setStartPage(pageNr);
-				stripper.setEndPage(pageNr + 1);
-				return stripper.getText(document);
+				var ts = new DerivansPDFStripper();
+				ts.setStartPage(pageNr);
+				ts.setEndPage(pageNr);
+				return ts.getText(document);
 			} catch (IOException e) {
 				var msg = this.pdfPath + ": " + e.getMessage();
 				throw new DigitalDerivansException(msg);
@@ -386,4 +388,36 @@ public class TestHelper {
 				new Textline(List.of(w4, w5)));
 		return new OCRData(lines, new Dimension(600, 800));
 	}
+}
+
+/**
+ * cf.
+ * https://stackoverflow.com/questions/32978179/using-pdfbox-to-get-location-of-line-of-text
+ */
+class DerivansPDFStripper extends PDFTextStripper {
+	
+	boolean startOfLine = true;
+
+	@Override
+	protected void startPage(PDPage page) throws IOException {
+		this.startOfLine = true;
+		super.startPage(page);
+	}
+
+	@Override
+	protected void writeLineSeparator() throws IOException {
+		this.startOfLine = true;
+		super.writeLineSeparator();
+	}
+
+	@Override
+	protected void writeString(String text, List<TextPosition> textPositions) throws IOException {
+		if (this.startOfLine) {
+			TextPosition tPos = textPositions.get(0);
+			writeString(String.format("[x:%.2f y:%.2f %spt]", tPos.getXDirAdj(), tPos.getYDirAdj(), tPos.getFontSize()));
+			this.startOfLine = false;
+		}
+		super.writeString(text, textPositions);
+	}
+
 }
