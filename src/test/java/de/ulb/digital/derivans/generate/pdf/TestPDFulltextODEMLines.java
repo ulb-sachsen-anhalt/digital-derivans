@@ -96,15 +96,15 @@ class TestPDFulltextODEMLines {
 	 * Usefullness of output depends on actual PDF processing library
 	 * for example, iText5 delivered good results, PDFBox3 not
 	 * 
-	 * prev: "an den Grantzen des Hertzogthums Florentz"
-	 * curr: "ChriſtlicheMa"
+	 * prev: "an den Grantzen des Hertzogthums Florentz" - problem with "Grantzen" because a^e ligature
+	 * curr: "AllerChriſtliche[nl]"
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testPage07ContainsText() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
-		assertTrue(textPage07.contains("Christliche Majest")); // PDFBox
+		assertTrue(textPage07.contains("des Hertzogthums Florentz gelegen")); // PDFBox
 	}
 
 	/**

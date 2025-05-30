@@ -58,6 +58,8 @@ class TestPDFSyntheticWesteuropeLines {
 
 	private static int textMarginTop = 200;
 
+	private static String[] textlayerData;
+
 	@BeforeAll
 	static void initAll(@TempDir Path tempDir) throws Exception {
 		Path pathImages = tempDir.resolve("MAX");
@@ -83,7 +85,7 @@ class TestPDFSyntheticWesteuropeLines {
 		pdfStep1.setImageDpi(TEST_DPI);
 		pdfStep1.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
 		pdfStep1.setConformance("PDF/A-1B");
-		pdfStep1.setDebugRender(false);
+		pdfStep1.setDebugRender(true);
 		pdfStep1.setPathPDF(outputLinePath);
 		GeneratorPDF generatorLine = new GeneratorPDF();
 		generatorLine.setDerivate(testDerivate);
@@ -91,6 +93,7 @@ class TestPDFSyntheticWesteuropeLines {
 		generatorLine.create();
 		pdfLines = generatorLine.getPDFResult();
 		pdfLinelvlFirstLine = pdfLines.getPdfPages().get(0).getTextcontent().get().get(0);
+		textlayerData = TestHelper.getText(pdfLines.getPath(), 1).split("\\n");
 	}
 
 	@Test
@@ -223,9 +226,18 @@ class TestPDFSyntheticWesteuropeLines {
 	}
 
 	@Test
-	void inspectPDFRenderedText() throws Exception {
-		String textlayerData = TestHelper.getText(pdfLines.getPath(), 1);
-		assertEquals("foo", textlayerData);
+	void inspectPDFTextlayerLine01() throws Exception {
+		assertEquals("[x:25,00 y:108,43 12.0pt]BELLA CHIAO (DELLE MODINE)", textlayerData[0]);
 	}
 
+	@Test
+	void inspectPDFTextlayerLine02() throws Exception {
+		assertEquals("[x:25,00 y:133,43 12.0pt]Alla matina, appena alzata", textlayerData[1]);
+	}
+
+	@Test
+	void inspectPDFTextlayerLine03() throws Exception {
+		assertEquals("[x:25,00 y:156,93 12.0pt]o bella chiao, bella chiao, bella chiao chiao chiao!",
+				textlayerData[2]);
+	}
 }

@@ -367,8 +367,6 @@ public class ITextProcessor implements IPDFProcessor {
 		if (page.getTextcontent().isPresent()) {
 			PdfPage itextPage = this.pdfDoc.getLastPage();
 			PdfCanvas pdfCanvas = new PdfCanvas(itextPage);
-			// var rootArea = new com.itextpdf.kernel.geom.Rectangle(0, 0, image.getImageWidth(), image.getImageHeight());
-			// Canvas canvas = new Canvas(pdfCanvas, rootArea);
 			List<PDFTextElement> txtContents = page.getTextcontent().get();
 			if (!txtContents.isEmpty() && (!this.debugRender)
 					&& this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
@@ -377,14 +375,14 @@ public class ITextProcessor implements IPDFProcessor {
 			// pdfCanvas.saveState();
 			for (var line : txtContents) {
 				if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
-					render(pdfCanvas, /* canvas, */ line);
+					render(pdfCanvas, line);
 					if (this.debugRender) {
 						this.drawBoundingBox(line.getBox(), this.dbgColorLine, DBG_LINEWIDTH_ROW);
 					}
 				} else if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_WORD) {
 					var tokens = line.getChildren();
 					for (var word : tokens) {
-						render(pdfCanvas, /* canvas, */ word);
+						render(pdfCanvas, word);
 						if (this.debugRender) {
 							this.drawBoundingBox(word.getBox(), this.dbgColorWord, DBG_LINEWIDTH_WORD);
 						}
@@ -411,7 +409,7 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @param line
 	 * @throws DigitalDerivansException
 	 */
-	private PDFTextElement render(PdfCanvas pdfCanvas, /* Canvas canvas, */ PDFTextElement token)
+	private PDFTextElement render(PdfCanvas pdfCanvas, PDFTextElement token)
 			throws DigitalDerivansException {
 		String text = token.forPrint();
 		float fontSize = token.getFontSize();
@@ -441,16 +439,9 @@ public class ITextProcessor implements IPDFProcessor {
 			;
 		}
 		try {
-			// Paragraph p = new Paragraph(txt);
-			// p.setFixedPosition(leftMargin, baselineY, (float) box.getWidth());
-			// canvas.add(p);
-			// pdfCanvas.beginText();
-			// pdfCanvas.setFontAndSize(font, fontSize);
-			// pdfCanvas.moveText(leftMargin, baselineY);
-			// pdfCanvas.showText(text);
-			// pdfCanvas.endText();
 			this.document.setFont(this.font);
-			this.document.showTextAligned(text, leftMargin, baselineY, TextAlignment.CENTER);
+			TextAlignment align = token.isRTL() ? TextAlignment.RIGHT : TextAlignment.LEFT;
+			this.document.showTextAligned(text, leftMargin, baselineY, align);
 			token.setPrinted(true);
 		} catch (PdfAConformanceException pdfAexc) {
 			LOGGER.warn("While rendering {} : {}", text, pdfAexc.getMessage());
