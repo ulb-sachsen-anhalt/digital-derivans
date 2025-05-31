@@ -41,6 +41,7 @@ import com.itextpdf.kernel.pdf.navigation.PdfExplicitDestination;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.BaseDirection;
 import com.itextpdf.layout.properties.TextAlignment;
@@ -441,7 +442,8 @@ public class ITextProcessor implements IPDFProcessor {
 		try {
 			this.document.setFont(this.font);
 			TextAlignment align = token.isRTL() ? TextAlignment.RIGHT : TextAlignment.LEFT;
-			this.document.showTextAligned(text, leftMargin, baselineY, align);
+			Paragraph p = new Paragraph(txt);
+			this.document.showTextAligned(p, leftMargin, baselineY, align);
 			token.setPrinted(true);
 		} catch (PdfAConformanceException pdfAexc) {
 			LOGGER.warn("While rendering {} : {}", text, pdfAexc.getMessage());
