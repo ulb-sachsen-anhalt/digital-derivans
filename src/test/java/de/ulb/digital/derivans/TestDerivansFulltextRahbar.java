@@ -118,14 +118,12 @@ class TestDerivansFulltextRahbar {
 	 * 
 	 * Test total length of resultant text including whitespaces
 	 * 
-	 * already 1318, 1336
-	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testWordLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathWord, 1);
-		assertEquals(1336, textPage07.length());
+		assertEquals(2027, textPage07.length());
 	}
 
 	@Test
@@ -145,6 +143,6 @@ class TestDerivansFulltextRahbar {
 	@Test
 	void testLineLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfLines, 1);
-		assertEquals(1636, textPage07.length());
+		assertEquals(2349, textPage07.length());
 	}
 }

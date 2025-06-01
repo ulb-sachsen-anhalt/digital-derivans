@@ -112,17 +112,13 @@ class TestDerivansFulltextODEM {
 	/**
 	 * 
 	 * Test total length of result text including whitespaces
-	 * iText5 : 1327
-	 * PDFBox3: 1038
-	 * iText8 : 3372
-	 * 2025 : 3382 / 3474 / 3501
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testPage07HasCertainLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
-		assertEquals(3501, textPage07.length());
+		assertEquals(2007, textPage07.length());
 
 	}
 

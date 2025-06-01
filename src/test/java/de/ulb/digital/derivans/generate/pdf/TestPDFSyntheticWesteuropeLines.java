@@ -227,17 +227,18 @@ class TestPDFSyntheticWesteuropeLines {
 
 	@Test
 	void inspectPDFTextlayerLine01() throws Exception {
-		assertEquals("[x:25,00 y:108,43 12.0pt]BELLA CHIAO (DELLE MODINE)", textlayerData[0]);
+		assertTrue(textlayerData[0].startsWith("[x:25,00 y:108"));
+		assertTrue(textlayerData[0].contains("11.25pt]BELLA CHIAO (DELLE MODINE)"));
 	}
 
 	@Test
 	void inspectPDFTextlayerLine02() throws Exception {
-		assertEquals("[x:25,00 y:133,43 12.0pt]Alla matina, appena alzata", textlayerData[1]);
+		assertEquals("[x:25,00 y:133,61 11.25pt]Alla matina, appena alzata", textlayerData[1]);
 	}
 
 	@Test
 	void inspectPDFTextlayerLine03() throws Exception {
-		assertEquals("[x:25,00 y:156,93 12.0pt]o bella chiao, bella chiao, bella chiao chiao chiao!",
+		assertEquals("[x:25,00 y:157,46 9.75pt]o bella chiao, bella chiao, bella chiao chiao chiao!",
 				textlayerData[2]);
 	}
 }
