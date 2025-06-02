@@ -18,7 +18,6 @@ import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.results.ValidationResult;
 
-import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.config.TypeConfiguration;

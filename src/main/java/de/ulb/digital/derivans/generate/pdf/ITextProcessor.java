@@ -373,7 +373,6 @@ public class ITextProcessor implements IPDFProcessor {
 					&& this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
 				pdfCanvas.setTextRenderingMode(PdfCanvasConstants.TextRenderingMode.INVISIBLE);
 			}
-			// pdfCanvas.saveState();
 			for (var line : txtContents) {
 				if (this.renderLevel == TypeConfiguration.RENDER_LEVEL_LINE) {
 					render(pdfCanvas, line);
@@ -390,8 +389,6 @@ public class ITextProcessor implements IPDFProcessor {
 					}
 				}
 			}
-			// pdfCanvas.restoreState();
-			// canvas.close();
 			pdfCanvas.release();
 		} else {
 			LOGGER.info("no ocr data present for '{}'", page.getImagePath());
@@ -437,7 +434,6 @@ public class ITextProcessor implements IPDFProcessor {
 		}
 		if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
 			text = Normalizer.normalize(text, Normalizer.Form.NFKD);
-			;
 		}
 		try {
 			this.document.setFont(this.font);
@@ -447,18 +443,6 @@ public class ITextProcessor implements IPDFProcessor {
 			token.setPrinted(true);
 		} catch (PdfAConformanceException pdfAexc) {
 			LOGGER.warn("While rendering {} : {}", text, pdfAexc.getMessage());
-			// if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
-			// String normed = Normalizer.normalize(text, Normalizer.Form.NFKD);
-			// Paragraph p = new Paragraph(normed);
-			// p.setFixedPosition(leftMargin, baselineY, (float) box.getWidth());
-			// try {
-			// // canvas.add(p);
-			// } catch (PdfAConformanceException finalExc) {
-			// String mark2 = String.format("Fail render %s: %s", text,
-			// finalExc.getMessage());
-			// throw new DigitalDerivansException(mark2);
-			// }
-			// }
 		}
 		return token;
 	}
