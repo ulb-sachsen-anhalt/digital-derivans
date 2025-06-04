@@ -33,12 +33,12 @@ import de.ulb.digital.derivans.model.ocr.OCRData;
  */
 public class PDFPage implements IVisualElement {
 
-	private int number = -1;	// unset marked "-1"
+	private int number = -1; // unset marked "-1"
 
 	private float scale;
 
 	private DigitalPage digitalPage;
-	
+
 	private Optional<List<PDFTextElement>> txtElements = Optional.empty();
 
 	private Dimension imageDimension = new Dimension();
@@ -54,7 +54,7 @@ public class PDFPage implements IVisualElement {
 	 */
 	public PDFPage() {
 	}
-	
+
 	/**
 	 * Construct instance from foreground image
 	 * 
@@ -80,15 +80,15 @@ public class PDFPage implements IVisualElement {
 	 * given image page.
 	 * 
 	 * Encapsulates:
-	 *  * scaling of shapes
-	 *  * transformation of coordinates / translate Y-origin
-	 *  * pre-calculation of fontsize
+	 * - scaling of shapes
+	 * - transformation of coordinates / translate Y-origin
+	 * - pre-calculation of fontsize
 	 * 
 	 * @param ocrData
 	 */
-	public void passOCR(DigitalPage digitalPage) {
+	public void passOCRFrom(DigitalPage digitalPage) {
 		this.digitalPage = digitalPage;
-		if(!digitalPage.getOcrData().isPresent()) {
+		if (!digitalPage.getOcrData().isPresent()) {
 			return;
 		}
 		OCRData ocrData = digitalPage.getOcrData().get();
@@ -186,10 +186,10 @@ public class PDFPage implements IVisualElement {
 	 */
 	@Override
 	public Rectangle2D getBox() {
-		return new Rectangle2D.Float(0, 0 , (float)this.imageDimension.getWidth(), 
-			(float)this.imageDimension.getHeight());
+		return new Rectangle2D.Float(0, 0, (float) this.imageDimension.getWidth(),
+				(float) this.imageDimension.getHeight());
 	}
-	
+
 	@Override
 	public void setBox(Rectangle2D rectangle) {
 		throw new UnsupportedOperationException("Unimplemented method 'setBox'");
