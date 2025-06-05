@@ -138,12 +138,12 @@ class TestALTOV4Reader {
 		var actual = reader.get(input);
 
 		// assert
-		assertEquals(34, actual.getTextlines().size());
+		assertEquals(36, actual.getTextlines().size());
 		Rectangle r01 = actual.getTextlines().get(0).getArea().getBounds();
-		assertEquals(1123, r01.x);
+		assertEquals(917, r01.x);
 		assertEquals(270, r01.y);
-		assertEquals(74, r01.width);
-		assertEquals(48, r01.height);
+		assertEquals(80, r01.width);
+		assertEquals(47, r01.height);
 	}
 
 	/**

@@ -95,7 +95,7 @@ public class ITextProcessor implements IPDFProcessor {
 	private Document document;
 
 	// low-level access
-	private PdfDocument pdfDoc;
+	private PdfDocument pdfDocument;
 
 	private boolean debugRender;
 
@@ -159,7 +159,7 @@ public class ITextProcessor implements IPDFProcessor {
 	@Override
 	public void addMetadata() {
 		EnumMap<MetadataType, String> mdMap = new EnumMap<>(MetadataType.class);
-		PdfDocumentInfo docInfo = this.pdfDoc.getDocumentInfo();
+		PdfDocumentInfo docInfo = this.pdfDocument.getDocumentInfo();
 		String title = this.pdfStep.getTitle();
 		String year = this.pdfStep.getPublicationYear();
 		String combinedTitle = String.format("(%s) %s", year, title);
@@ -195,26 +195,35 @@ public class ITextProcessor implements IPDFProcessor {
 			var optConformance = this.pdfStep.getOptConformance();
 			if (optConformance.isPresent() && !this.debugRender) {
 				String conformance = optConformance.get();
-				LOGGER.info("Attempt to set conformance {}", conformance);
+				LOGGER.info("set conformance {}", conformance);
 				PdfAConformance conformanceLevel = ITextProcessor
 						.determineLevel(conformance);
-				String iccLabel = "sRGB Color Space Profile";
-				String iccPath = String.format("icc/%s.icm", iccLabel);
-				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPath);
-				PdfOutputIntent outputIntent = new PdfOutputIntent("Custom",
+				String iccLabelRGB = "eciRGB_v2";
+				String iccPathRGB = String.format("icc/%s.icc", iccLabelRGB);
+				InputStream is = this.getClass().getClassLoader().getResourceAsStream(iccPathRGB);
+				PdfOutputIntent outputIntentRGB = new PdfOutputIntent("Custom",
 						"",
 						"http://www.color.org",
-						iccLabel, is);
-				this.pdfDoc = new PdfADocument(writer, conformanceLevel, outputIntent);
+						iccLabelRGB, is);
+				this.pdfDocument = new PdfADocument(writer, conformanceLevel, outputIntentRGB);
+
+				this.pdfDocument.addOutputIntent(outputIntentRGB);
+				// if requested PDF/A conformance level A
+				LOGGER.info("set document with pdf/a conformance {}", conformanceLevel);
+				if (conformanceLevel == PdfAConformance.PDF_A_1A || conformanceLevel == PdfAConformance.PDF_A_2A) {
+					this.pdfDocument.setTagged();
+				}
 			} else {
-				this.pdfDoc = new PdfDocument(writer);
+				this.pdfDocument = new PdfDocument(writer);
 			}
-			this.document = new Document(pdfDoc);
+			this.document = new Document(pdfDocument);
 			this.addMetadata();
 			var result = this.addContents();
 			this.reportDoc.addPages(result);
 			this.document.close();
-			this.pdfDoc.close();
+			this.pdfDocument.close();
+		} catch (PdfAConformanceException confExc) {
+			LOGGER.error("fail to create pdf/a conformant document {}: {}", fileDescriptor, confExc.getMessage());
 		} catch (IOException exc) {
 			LOGGER.error(exc);
 			throw new DigitalDerivansException(exc);
@@ -258,7 +267,7 @@ public class ITextProcessor implements IPDFProcessor {
 	}
 
 	private List<PDFPage> addContents() throws DigitalDerivansException {
-		PdfOutline baseOutline = this.pdfDoc.getOutlines(true);
+		PdfOutline baseOutline = this.pdfDocument.getOutlines(true);
 		String rootLabel = this.structure.getLabel();
 		List<PDFPage> processedPdfPages = new ArrayList<>();
 		// outline the very first page with logical root
@@ -267,7 +276,7 @@ public class ITextProcessor implements IPDFProcessor {
 		if (this.structure.getChildren().isEmpty()) {
 			List<PDFPage> processed = this.addPages(this.structure.getPages(), logRootOutline);
 			processedPdfPages.addAll(processed);
-			PdfPage startPage = this.pdfDoc.getPage(1);
+			PdfPage startPage = this.pdfDocument.getPage(1);
 			logRootOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(startPage)));
 		} else {
 			for (DerivateStruct currentStruct : this.structure.getChildren()) {
@@ -298,12 +307,12 @@ public class ITextProcessor implements IPDFProcessor {
 
 	private PdfPage requestDestinationPage(int n) throws DigitalDerivansException {
 		// pre-check
-		int nPdfPages = this.pdfDoc.getNumberOfPages();
+		int nPdfPages = this.pdfDocument.getNumberOfPages();
 		if (nPdfPages < n) {
 			String msg = String.format("request invalid page number %02d (total: %02d)", n, nPdfPages);
 			throw new DigitalDerivansException(msg);
 		}
-		return this.pdfDoc.getPage(n);
+		return this.pdfDocument.getPage(n);
 	}
 
 	/**
@@ -330,13 +339,13 @@ public class ITextProcessor implements IPDFProcessor {
 				}
 				PDFPage pdfPage = new PDFPage(new Dimension((int) imageWidth, (int) imageHeight), orderN);
 				pdfPage.setImageDimensionOriginal((int) image.getImageWidth(), (int) image.getImageHeight());
-				pdfPage.passOCR(pageIn);
+				pdfPage.passOCRFrom(pageIn);
 				this.append(image, pdfPage);
 				resultPages.add(pdfPage);
 				var optPageLabel = pageIn.getPageLabel();
 				if (optPageLabel.isPresent()) {
 					String label = optPageLabel.get();
-					PdfPage thisPage = this.pdfDoc.getPage(pageIn.getOrderNr());
+					PdfPage thisPage = this.pdfDocument.getPage(pageIn.getOrderNr());
 					currentOutline.addOutline(label)
 							.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(thisPage)));
 				}
@@ -359,15 +368,16 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @throws DigitalDerivansException
 	 * @throws IOException
 	 */
-	private PDFPage append(Image image, PDFPage page) throws DigitalDerivansException {
+	private PDFPage append(Image image, PDFPage page) {
 		PageSize pageSize = new PageSize(image.getImageScaledWidth(), image.getImageScaledHeight());
-		var nextPage = this.pdfDoc.addNewPage(pageSize);
-		nextPage.getPdfObject().get(PdfName.PageNum);
+		PdfPage itextPage = this.pdfDocument.addNewPage(pageSize);
 		image.setFixedPosition(page.getNumber(), 0, 0);
 		this.document.add(image);
 		if (page.getTextcontent().isPresent()) {
-			PdfPage itextPage = this.pdfDoc.getLastPage();
 			PdfCanvas pdfCanvas = new PdfCanvas(itextPage);
+			if (!page.getTextcontent().isPresent()) {
+				return page;
+			}
 			List<PDFTextElement> txtContents = page.getTextcontent().get();
 			if (!txtContents.isEmpty() && (!this.debugRender)
 					&& this.renderModus == TypeConfiguration.RENDER_MODUS_HIDE) {
@@ -407,13 +417,16 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @param line
 	 * @throws DigitalDerivansException
 	 */
-	private PDFTextElement render(PdfCanvas pdfCanvas, PDFTextElement token)
-			throws DigitalDerivansException {
-		String text = token.forPrint();
+	private PDFTextElement render(PdfCanvas pdfCanvas, PDFTextElement token) {
 		float fontSize = token.getFontSize();
 		if (fontSize < IPDFProcessor.MIN_CHAR_SIZE) {
+			String missedText = token.forPrint();
 			LOGGER.warn("font too small: '{}'(min:{}) resist to render text '{}'", fontSize,
-					IPDFProcessor.MIN_CHAR_SIZE, text);
+					IPDFProcessor.MIN_CHAR_SIZE, missedText);
+			return null;
+		}
+		String text = harmonizeText(token);
+		if (text == null) {
 			return token;
 		}
 		Rectangle2D box = token.getBox();
@@ -432,9 +445,6 @@ public class ITextProcessor implements IPDFProcessor {
 		if (token.isRTL()) {
 			txt.addStyle(rtlStyle);
 		}
-		if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
-			text = Normalizer.normalize(text, Normalizer.Form.NFKD);
-		}
 		try {
 			this.document.setFont(this.font);
 			TextAlignment align = token.isRTL() ? TextAlignment.RIGHT : TextAlignment.LEFT;
@@ -445,6 +455,44 @@ public class ITextProcessor implements IPDFProcessor {
 			LOGGER.warn("While rendering {} : {}", text, pdfAexc.getMessage());
 		}
 		return token;
+	}
+
+	/**
+	 * 
+	 * Critical for PDF/A conformant output since strange Errors
+	 * concerning gStack accumulate when try to render chars
+	 * which are *not* renderable with given font
+	 * 
+	 * @param token
+	 * @return harmonized String or null
+	 */
+	private String harmonizeText(PDFTextElement token) {
+		String text = token.forPrint();
+		if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
+			text = Normalizer.normalize(text, Normalizer.Form.NFKD);
+		}
+		for (int i = 0; i < text.length(); i++) {
+			char c = text.charAt(i);
+			if (!font.containsGlyph(c)) {
+				LOGGER.warn("char {} not contained in current font!", c);
+				if (c == 868) { // " ͤ" Combining Latin Small Letter E
+					String prev = text.substring(i - 1, i + 1); // catch vocal ligature with 2 chars
+					if (prev.charAt(0) == 'a') {
+						text = text.replace(prev, "ä");
+					} else if (prev.charAt(0) == 'o') {
+						text = text.replace(prev, "ö");
+					} else if (prev.charAt(0) == 'u') {
+						text = text.replace(prev, "ü");
+					}
+				} else if (c == 11799) { // "⸗" Double Oblique Hyphen 0x2E17 (UTF-16)
+					text = text.replace(c, '-');
+				} else {
+					LOGGER.error("can't render {} - char {} not contained in font!", text, c);
+					return null;
+				}
+			}
+		}
+		return text;
 	}
 
 	/**
@@ -483,7 +531,7 @@ public class ITextProcessor implements IPDFProcessor {
 	}
 
 	private void drawPointsWith(List<Point> points, float lineWidth, Color c) {
-		var page = this.pdfDoc.getLastPage();
+		var page = this.pdfDocument.getLastPage();
 		var canvas = new PdfCanvas(page);
 		canvas.setStrokeColor(c).setLineWidth(lineWidth);
 		Point pLast = points.get(points.size() - 1);

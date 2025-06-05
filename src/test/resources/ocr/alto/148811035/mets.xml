@@ -155,32 +155,29 @@
       </mets:file>
     </mets:fileGrp>
     <mets:fileGrp USE="FULLTEXT">
+      <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320805">
+        <mets:FLocat LOCTYPE="URL" xlink:href="320805.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320807">
+        <mets:FLocat LOCTYPE="URL" xlink:href="320807.xml"/>
+      </mets:file>
+      <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320808">
+        <mets:FLocat LOCTYPE="URL" xlink:href="320808.xml"/>
+      </mets:file>
       <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320809">
         <mets:FLocat LOCTYPE="URL" xlink:href="320809.xml"/>
       </mets:file>
       <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320810">
         <mets:FLocat LOCTYPE="URL" xlink:href="320810.xml"/>
       </mets:file>
-      <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320806">
-        <mets:FLocat LOCTYPE="URL" xlink:href="320806.xml"/>
+      <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320811">
+        <mets:FLocat LOCTYPE="URL" xlink:href="320811.xml"/>
       </mets:file>
       <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320812">
         <mets:FLocat LOCTYPE="URL" xlink:href="320812.xml"/>
       </mets:file>
-      <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320814">
-        <mets:FLocat LOCTYPE="URL" xlink:href="320814.xml"/>
-      </mets:file>
-      <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320805">
-        <mets:FLocat LOCTYPE="URL" xlink:href="320805.xml"/>
-      </mets:file>
-      <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320808">
-        <mets:FLocat LOCTYPE="URL" xlink:href="320808.xml"/>
-      </mets:file>
       <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320813">
         <mets:FLocat LOCTYPE="URL" xlink:href="320813.xml"/>
-      </mets:file>
-      <mets:file MIMETYPE="application/alto+xml" ID="FULLTEXT_320811">
-        <mets:FLocat LOCTYPE="URL" xlink:href="320811.xml"/>
       </mets:file>
     </mets:fileGrp>
   </mets:fileSec>
@@ -204,11 +201,10 @@
       </mets:div>
       <mets:div ID="phys320806" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:3-10504-p0006-6" ORDER="6" ORDERLABEL="[Seite 7]">
         <mets:fptr FILEID="IMG_MAX_320806"/>
-        <mets:fptr FILEID="FULLTEXT_320806"/>
       </mets:div>
       <mets:div ID="phys320808" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:3-10504-p0007-1" ORDER="7" ORDERLABEL="[Seite 8]">
         <mets:fptr FILEID="IMG_MAX_320808"/>
-        <mets:fptr FILEID="FULLTEXT_320808"/>
+        <mets:fptr FILEID="FULLTEXT_320807"/>
       </mets:div>
       <mets:div ID="phys320809" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:3-10504-p0008-7" ORDER="8" ORDERLABEL="[Seite 9]">
         <mets:fptr FILEID="IMG_MAX_320809"/>
@@ -232,7 +228,6 @@
       </mets:div>
       <mets:div ID="phys320814" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:3-10504-p0013-5" ORDER="13" ORDERLABEL="[Seite 14]">
         <mets:fptr FILEID="IMG_MAX_320814"/>
-        <mets:fptr FILEID="FULLTEXT_320814"/>
       </mets:div>
       <mets:div ID="phys320816" TYPE="page" CONTENTIDS="urn:nbn:de:gbv:3:3-10504-p0014-0" ORDER="14" ORDERLABEL="[Seite 15]">
         <mets:fptr FILEID="IMG_MAX_320816"/>

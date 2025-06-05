@@ -63,8 +63,8 @@ class TestPDFulltextODEMLines {
 		DerivateStepPDF pdfStep = new DerivateStepPDF();
 		pdfStep.setImageDpi(300);
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_LINE);
-		pdfStep.setDebugRender(true);
-		pdfStep.setConformance("PDF/A-1B");
+		// pdfStep.setDebugRender(true);
+		pdfStep.setConformance("PDF/A-2A");
 		pdfStep.setInputDir(IDerivans.IMAGE_DIR_MAX);
 		pdfStep.setOutputDir(".");
 		pdfStep.setPathPDF(workDir.resolve("148811035.pdf"));
@@ -110,12 +110,15 @@ class TestPDFulltextODEMLines {
 	 * 
 	 * Test total length of result text including whitespaces from page No 320809
 	 * 
+	 * 2007 if not trying to harmonize text, i.e. only use renderable tokens
+	 * 1893 for PDF/A 2A
+	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testPage08TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
-		assertEquals(2007, textPage07.length());
+		assertEquals(1893, textPage07.length());
 	}
 
 	@Test
