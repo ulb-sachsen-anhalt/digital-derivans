@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -432,13 +431,17 @@ public class ITextProcessor implements IPDFProcessor {
 					.lineTo(rightMargin, baselineY).closePathStroke();
 		}
 		Text txt = new Text(text).setFont(this.font).setFontSize(fontSize).setHorizontalScaling(hScale);
-		if (token.isRTL()) {
-			txt.addStyle(rtlStyle);
-		}
 		try {
 			this.document.setFont(this.font);
-			TextAlignment align = token.isRTL() ? TextAlignment.RIGHT : TextAlignment.LEFT;
+			TextAlignment align = TextAlignment.LEFT;
 			Paragraph p = new Paragraph(txt);
+			if (token.isRTL()) { // for rtl text token ...
+				leftMargin = (float) box.getMaxX(); // ... start render from right
+				align = TextAlignment.RIGHT; // align text from right margin
+				p.setBaseDirection(BaseDirection.RIGHT_TO_LEFT);
+				p.setTextAlignment(align);
+				txt.addStyle(rtlStyle);
+			}
 			this.document.showTextAligned(p, leftMargin, baselineY, align);
 			token.setPrinted(true);
 		} catch (PdfAConformanceException pdfAexc) {
@@ -458,13 +461,14 @@ public class ITextProcessor implements IPDFProcessor {
 	 */
 	private String harmonizeText(PDFTextElement token) {
 		String text = token.forPrint();
+		String fontLabel = this.font.getFontProgram().getFontNames().toString();
 		if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
 			text = Normalizer.normalize(text, Normalizer.Form.NFKD);
 		}
 		for (int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
 			if (!font.containsGlyph(c)) {
-				LOGGER.warn("char {} not contained in current font!", c);
+				LOGGER.warn("char {} not contained in font {}", c, fontLabel);
 				if (c == 868) { // " ͤ" Combining Latin Small Letter E
 					String prev = text.substring(i - 1, i + 1); // catch vocal ligature with 2 chars
 					if (prev.charAt(0) == 'a') {
@@ -477,7 +481,7 @@ public class ITextProcessor implements IPDFProcessor {
 				} else if (c == 11799) { // "⸗" Double Oblique Hyphen 0x2E17 (UTF-16)
 					text = text.replace(c, '-');
 				} else {
-					LOGGER.error("can't render {} - char {} not contained in font!", text, c);
+					LOGGER.error("still can't render {} - char {} not contained in font {}", text, c, fontLabel);
 					return null;
 				}
 			}
