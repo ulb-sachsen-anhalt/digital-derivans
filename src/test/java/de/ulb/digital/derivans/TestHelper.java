@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.xml.XMLConstants;
@@ -395,6 +396,8 @@ public class TestHelper {
  * https://stackoverflow.com/questions/32978179/using-pdfbox-to-get-location-of-line-of-text
  */
 class DerivansPDFStripper extends PDFTextStripper {
+
+	static final Locale loc = Locale.forLanguageTag("de-De");
 	
 	boolean startOfLine = true;
 
@@ -414,7 +417,7 @@ class DerivansPDFStripper extends PDFTextStripper {
 	protected void writeString(String text, List<TextPosition> textPositions) throws IOException {
 		if (this.startOfLine) {
 			TextPosition tPos = textPositions.get(0);
-			writeString(String.format("[x:%.2f y:%.2f %spt]", tPos.getXDirAdj(), tPos.getYDirAdj(), tPos.getFontSize()));
+			writeString(String.format(DerivansPDFStripper.loc, "[x:%.2f y:%.2f %spt]", tPos.getXDirAdj(), tPos.getYDirAdj(), tPos.getFontSize()));
 			this.startOfLine = false;
 		}
 		super.writeString(text, textPositions);

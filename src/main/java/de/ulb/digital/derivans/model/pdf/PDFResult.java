@@ -20,16 +20,6 @@ public class PDFResult {
 
 	private Path pathDocument;
 	
-	private PDFMetadata metadata;
-	
-	public PDFMetadata getMetadata() {
-		return metadata;
-	}
-
-	public void setMetadata(PDFMetadata metadata){
-		this.metadata = metadata;
-	}
-
 	public List<PDFPage> getPdfPages() {
 		return pdfPages;
 	}

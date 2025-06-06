@@ -8,10 +8,10 @@ import org.jdom2.Element;
 import org.jdom2.filter.ElementFilter;
 
 /**
- * 
+ *
  * Carry PDF-related Metadata for
  * introspection of created PDF-derivates
- * 
+ *
  * @author hartwig
  *
  */
@@ -19,8 +19,9 @@ public class PDFMetadata {
 
 	private Map<MetadataType, String> metadata;
 	private Document xmpMetadata;
-	
-	public PDFMetadata() {}
+
+	public PDFMetadata() {
+	}
 
 	public PDFMetadata(Map<MetadataType, String> metadata) {
 		this.metadata = metadata;

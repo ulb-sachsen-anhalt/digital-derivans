@@ -55,8 +55,6 @@ import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
-import de.ulb.digital.derivans.model.pdf.MetadataType;
-import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 import de.ulb.digital.derivans.model.pdf.PDFPage;
 import de.ulb.digital.derivans.model.pdf.PDFResult;
 import de.ulb.digital.derivans.model.pdf.PDFTextElement;
@@ -158,24 +156,19 @@ public class ITextProcessor implements IPDFProcessor {
 	 */
 	@Override
 	public void addMetadata() {
-		EnumMap<MetadataType, String> mdMap = new EnumMap<>(MetadataType.class);
 		PdfDocumentInfo docInfo = this.pdfDocument.getDocumentInfo();
 		String title = this.pdfStep.getTitle();
 		String year = this.pdfStep.getPublicationYear();
 		String combinedTitle = String.format("(%s) %s", year, title);
 		docInfo.setMoreInfo(PdfName.Title.getValue(), combinedTitle);
-		mdMap.put(MetadataType.TITLE, this.pdfStep.getTitle());
 		docInfo.setMoreInfo(PdfName.Author.getValue(), this.pdfStep.getAuthor());
-		mdMap.put(MetadataType.AUTHOR, this.pdfStep.getAuthor());
 		Optional<String> optCreator = this.pdfStep.getCreator();
 		if (optCreator.isPresent()) {
 			docInfo.setMoreInfo(PdfName.Creator.getValue(), optCreator.get());
-			mdMap.put(MetadataType.CREATOR, optCreator.get());
 		}
 		Optional<String> optKeywords = this.pdfStep.getKeywords();
 		if (optKeywords.isPresent()) {
 			docInfo.setMoreInfo(PdfName.Keywords.getValue(), optKeywords.get());
-			mdMap.put(MetadataType.KEYWORDS, optKeywords.get());
 		}
 		Optional<String> optLicense = this.pdfStep.getLicense();
 		if (optLicense.isPresent()) {
@@ -183,8 +176,6 @@ public class ITextProcessor implements IPDFProcessor {
 			docInfo.setMoreInfo(PDF_METADATA_LABEL_PUBLISHED, this.pdfStep.getPublicationYear());
 		}
 		docInfo.setMoreInfo("year", combinedTitle);
-		PDFMetadata metadata = new PDFMetadata(mdMap);
-		this.reportDoc.setMetadata(metadata);
 	}
 
 	@Override
@@ -338,7 +329,6 @@ public class ITextProcessor implements IPDFProcessor {
 					LOGGER.trace("rescale image: {}x{}", imageWidth, imageHeight);
 				}
 				PDFPage pdfPage = new PDFPage(new Dimension((int) imageWidth, (int) imageHeight), orderN);
-				pdfPage.setImageDimensionOriginal((int) image.getImageWidth(), (int) image.getImageHeight());
 				pdfPage.passOCRFrom(pageIn);
 				this.append(image, pdfPage);
 				resultPages.add(pdfPage);

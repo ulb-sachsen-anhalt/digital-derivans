@@ -43,12 +43,6 @@ public class PDFPage implements IVisualElement {
 
 	private Dimension imageDimension = new Dimension();
 
-	private Dimension imageDimensionOriginal;
-
-	private Dimension ocrDimensionOriginal;
-
-	private Dimension ocrDimensionScaled;
-
 	/**
 	 * Default empty constructor
 	 */
@@ -70,10 +64,6 @@ public class PDFPage implements IVisualElement {
 		return this.txtElements.isPresent() && !this.txtElements.get().isEmpty();
 	}
 
-	public void setImageDimensionOriginal(int orgWidth, int orgHeight) {
-		this.imageDimensionOriginal = new Dimension(orgWidth, orgHeight);
-	}
-
 	/**
 	 * 
 	 * Pass/forward optional OCR-data for
@@ -92,17 +82,12 @@ public class PDFPage implements IVisualElement {
 			return;
 		}
 		OCRData ocrData = digitalPage.getOcrData().get();
-		this.ocrDimensionOriginal = new Dimension(ocrData.getPageWidth(), ocrData.getPageHeight());
 		int ocrPageHeight = ocrData.getPageHeight();
 		int footerHeight = 0;
 		Optional<Integer> optFooterHeight = this.digitalPage.getFooterHeight();
 		if (optFooterHeight.isPresent()) {
 			footerHeight = optFooterHeight.get();
 			ocrPageHeight += footerHeight;
-		} else {
-			if (this.imageDimensionOriginal.height != this.ocrDimensionOriginal.height) {
-				var delta = this.imageDimensionOriginal.height - this.ocrDimensionOriginal.height;
-			}
 		}
 		// need to scale
 		// page height corresponds to original image height
@@ -111,17 +96,16 @@ public class PDFPage implements IVisualElement {
 		if (Math.abs(1.0 - ratio) > 0.01) {
 			ocrData.scale(ratio);
 			ocrPageHeight = ocrData.getPageHeight(); // respect new height
-			this.ocrDimensionScaled = new Dimension(ocrData.getPageWidth(), ocrData.getPageHeight());
-			this.setScale(ratio);
+			this.scale = ratio;
 		}
 		var txtElems = new ArrayList<PDFTextElement>();
 		for (var line : ocrData.getTextlines()) {
 			var theText = line.getText();
 			Rectangle2D rect = line.getBox();
-			PDFTextElement lineElement = new PDFTextElement(theText, rect, "line");
+			PDFTextElement lineElement = new PDFTextElement(theText, rect);
 			lineElement.invert(ocrPageHeight);
 			for (var token : line.getWords()) {
-				PDFTextElement wordToken = new PDFTextElement(token.getText(), token.getBox(), "word");
+				PDFTextElement wordToken = new PDFTextElement(token.getText(), token.getBox());
 				wordToken.invert(ocrPageHeight);
 				lineElement.add(wordToken);
 				wordToken.setParent(lineElement);
@@ -158,20 +142,8 @@ public class PDFPage implements IVisualElement {
 		return this.txtElements;
 	}
 
-	public void setScale(float scale) {
-		this.scale = scale;
-	}
-
 	public float getScale() {
 		return this.scale;
-	}
-
-	public Dimension getOcrPageOriginalDimension() {
-		return this.ocrDimensionOriginal;
-	}
-
-	public Dimension getOcrPageScaledDimension() {
-		return this.ocrDimensionScaled;
 	}
 
 	@Override

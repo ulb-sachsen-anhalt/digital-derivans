@@ -5,7 +5,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.IVisualElement;
 import de.ulb.digital.derivans.model.ITextElement;
 
@@ -33,8 +32,6 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	// cf. https://en.wikipedia.org/wiki/Zero-width_space
 	public static final char ZERO_WIDTH = '\u200b';
 
-	private PDFTextElementType type = PDFTextElementType.TOKEN;
-
 	private Rectangle2D box;
 
 	private PDFTextElement.Baseline baseline;
@@ -47,8 +44,7 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 
 	private boolean isPrinted;
 
-	public PDFTextElement(PDFTextElementType type) {
-		this.type = type;
+	public PDFTextElement() {
 	}
 
 	public PDFTextElement(List<PDFTextElement> children) {
@@ -62,20 +58,6 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	public PDFTextElement(String actualText, Rectangle2D box) {
 		this.text = actualText;
 		this.box = box;
-	}
-
-	public PDFTextElement(String actualText, Rectangle2D box, String type) {
-		this(actualText, box);
-		try {
-			this.type = PDFTextElementType.label(type);
-		} catch (DigitalDerivansException e) {
-			this.type = PDFTextElementType.TOKEN;
-		}
-	}
-
-	public PDFTextElement(String actualText, Rectangle2D box, PDFTextElementType type) {
-		this(actualText, box);
-		this.type = type;
 	}
 
 	private float descent() {
@@ -210,10 +192,6 @@ public class PDFTextElement implements ITextElement, IVisualElement {
 	@Override
 	public void setBox(Rectangle2D rectangle) {
 		this.box = rectangle;
-	}
-
-	public PDFTextElementType getType() {
-		return this.type;
 	}
 
 	public static class Baseline {

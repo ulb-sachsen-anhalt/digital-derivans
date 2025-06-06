@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import de.ulb.digital.derivans.model.IVisualElement;
-import de.ulb.digital.derivans.model.pdf.PDFTextElementType;
 
 /**
  * 
@@ -16,8 +15,6 @@ import de.ulb.digital.derivans.model.pdf.PDFTextElementType;
  */
 public class Word implements IVisualElement {
 
-	protected PDFTextElementType type = PDFTextElementType.TOKEN;
-	
 	protected IVisualElement parent;
 
 	protected List<IVisualElement> children;

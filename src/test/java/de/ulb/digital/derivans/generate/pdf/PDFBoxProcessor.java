@@ -103,8 +103,6 @@ public class PDFBoxProcessor implements IPDFProcessor {
 
 	@Override
 	public void addMetadata() {
-		PDFMetadata metadata = new PDFMetadata();
-		this.reportDoc.setMetadata(metadata);
 	}
 
 	@Override

@@ -35,7 +35,7 @@ class TestTextElement {
 		var w2 = new PDFTextElement("Pascal", new Rectangle2D.Float(384f, 1513f, 107f, 44f));
 		var w3 = new PDFTextElement("کرد", new Rectangle2D.Float(312f, 1514f, 60f, 43f));
 
-		var l1 = new PDFTextElement(PDFTextElementType.LINE);
+		var l1 = new PDFTextElement();
 		l1.add(w1);
 		l1.add(w2);
 		l1.add(w3);
@@ -54,8 +54,7 @@ class TestTextElement {
 	@Test
 	void testTextOrientationTextLine() {
 		// arrange
-		var w1 = new PDFTextElement("hello", new Rectangle2D.Double(0, 0, 100, 20),
-			PDFTextElementType.TOKEN);
+		var w1 = new PDFTextElement("hello", new Rectangle2D.Double(0, 0, 100, 20));
 		List<PDFTextElement> words = Arrays.asList(w1);
 		PDFTextElement line = new PDFTextElement(words);
 
