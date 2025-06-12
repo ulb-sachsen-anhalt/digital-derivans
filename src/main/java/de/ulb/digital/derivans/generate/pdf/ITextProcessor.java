@@ -456,37 +456,44 @@ public class ITextProcessor implements IPDFProcessor {
 	 * concerning gStack accumulate when try to render chars
 	 * which are *not* renderable with given font
 	 * 
+	 * Prepend UTF normalization for regular historical ger/fre/lat prints
+	 *
 	 * @param token
 	 * @return harmonized String or null
 	 */
-	private String harmonizeText(PDFTextElement token) {
-		String text = token.forPrint();
-		String fontLabel = this.font.getFontProgram().getFontNames().toString();
-		if (!Normalizer.isNormalized(text, Normalizer.Form.NFKD)) {
-			text = Normalizer.normalize(text, Normalizer.Form.NFKD);
+	public String harmonizeText(PDFTextElement token) {
+		String originalText = token.forPrint();
+		if (!token.isRTL() && !Normalizer.isNormalized(originalText, Normalizer.Form.NFKD)) {
+			originalText = Normalizer.normalize(originalText, Normalizer.Form.NFKD);
 		}
-		for (int i = 0; i < text.length(); i++) {
-			char c = text.charAt(i);
+		String fontLabel = this.font.getFontProgram().getFontNames().toString();
+		StringBuilder harmonized = new StringBuilder();
+		for (int i = 0; i < originalText.length(); i++) {
+			char c = originalText.charAt(i);
 			if (!font.containsGlyph(c)) {
-				LOGGER.warn("char {} not contained in font {}", c, fontLabel);
-				if (c == 868) { // " ͤ" Combining Latin Small Letter E
-					String prev = text.substring(i - 1, i + 1); // catch vocal ligature with 2 chars
+				LOGGER.warn("char '{}' of '{}'' not contained in font {}", c, originalText, fontLabel);
+				if (c == 11799) { // "⸗" Double Oblique Hyphen 0x2E17 (UTF-16)
+					harmonized.append('-');
+				} else if (c == 868) { // " ͤ" Combining Latin Small Letter E
+					String prev = originalText.substring(i - 1, i + 1); // replace preceeding base vocal
 					if (prev.charAt(0) == 'a') {
-						text = text.replace(prev, "ä");
+						harmonized.setCharAt(harmonized.length() - 1, 'ä');
 					} else if (prev.charAt(0) == 'o') {
-						text = text.replace(prev, "ö");
+						harmonized.setCharAt(harmonized.length() - 1, 'ö');
 					} else if (prev.charAt(0) == 'u') {
-						text = text.replace(prev, "ü");
+						harmonized.setCharAt(harmonized.length() - 1, 'ü');
 					}
-				} else if (c == 11799) { // "⸗" Double Oblique Hyphen 0x2E17 (UTF-16)
-					text = text.replace(c, '-');
 				} else {
-					LOGGER.error("still can't render {} - char {} not contained in font {}", text, c, fontLabel);
+					LOGGER.error("still can't render '{}' - char '{}' not contained in font {}", originalText, c,
+							fontLabel);
 					return null;
 				}
+			} else {
+				harmonized.append(c);
 			}
+
 		}
-		return text;
+		return harmonized.toString();
 	}
 
 	/**
@@ -541,10 +548,11 @@ public class ITextProcessor implements IPDFProcessor {
 		try {
 			JarResource tmpResHandler = new JarResource(path);
 			String resPath = tmpResHandler.extract("derivans-tmp-font-", ".ttf");
-			return PdfFontFactory.createFont(resPath, PdfEncodings.IDENTITY_H, EmbeddingStrategy.FORCE_EMBEDDED);
+			this.font = PdfFontFactory.createFont(resPath, PdfEncodings.IDENTITY_H, EmbeddingStrategy.FORCE_EMBEDDED);
 		} catch (IOException e) {
 			throw new DigitalDerivansException(e);
 		}
+		return this.font;
 	}
 
 }

@@ -104,15 +104,15 @@ class TestPDFRahbarOCRWords {
 	/**
 	 * 
 	 * Test total length of resultant text including whitespaces
-	 * 
-	 * sometimes was: 1484, 1489
+	 * Differed through times depending on PDF/A or not
+	 * sometimes 1484, 1489, 2306
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void testWordLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathWord, 1);
-		assertEquals(2306, textPage07.length());
+		assertEquals(2295, textPage07.length());
 	}
 
 }
