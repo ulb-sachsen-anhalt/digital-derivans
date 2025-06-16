@@ -1,5 +1,7 @@
 package de.ulb.digital.derivans.generate;
 
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -91,6 +93,19 @@ public class GeneratorPDF extends Generator {
 		this.pdfResult.setPath(this.pathPDF);
 		var nPagesAdded = this.pdfResult.getPdfPages().size();
 		LOGGER.info("created pdf '{}' with {} pages", this.pathPDF, nPagesAdded);
+
+		// ensure output exists and non-empty
+		if (! Files.exists(this.pathPDF)) {
+			throw new DigitalDerivansException("PDF file missing: "+this.pathPDF.toString());
+		}
+		try(var channel = FileChannel.open(this.pathPDF)) {
+			long fileSize = channel.size();
+			if (fileSize == 0L) {
+				throw new DigitalDerivansException("File empty: "+ this.pathPDF);
+			}
+		} catch (IOException exc) {
+			throw new DigitalDerivansException(exc);
+		}
 
 		// post-action
 		if ((this.mets != null) && ((DerivateStepPDF) this.step).isEnrichMetadata()) {
