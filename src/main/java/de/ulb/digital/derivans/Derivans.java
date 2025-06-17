@@ -77,7 +77,7 @@ public class Derivans {
             String ocrDir = this.config.getParamOCR().orElse(IDerivans.FULLTEXT_DIR);
             Path ocrDirPath = Path.of(ocrDir);
             if (Files.exists(theInput.resolve(ocrDirPath))) {
-                LOGGER.info("set fulltext dir {} for {}", ocrDir, this.derivate);
+                LOGGER.info("set fulltext dir '{}' for '{}'", ocrDir, this.derivate);
                 ((DerivateFS) this.derivate).setFulltextdir(Path.of(ocrDir));
             } else {
                 LOGGER.error("param fulltext dir {} not present in {}!", ocrDir, theInput);

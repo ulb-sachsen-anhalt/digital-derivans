@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.generate;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
@@ -8,6 +9,11 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
+import org.verapdf.pdfa.Foundries;
+import org.verapdf.pdfa.PDFAParser;
+import org.verapdf.pdfa.PDFAValidator;
+import org.verapdf.pdfa.results.ValidationResult;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
@@ -51,7 +57,7 @@ public class GeneratorPDF extends Generator {
 	@Override
 	public void setStep(DerivateStep step) throws DigitalDerivansException {
 		super.setStep(step);
-		if(this.derivate == null) {
+		if (this.derivate == null) {
 			throw new DigitalDerivansRuntimeException("No derivate set: null!");
 		}
 		DerivateStepPDF pdfStep = (DerivateStepPDF) step;
@@ -64,7 +70,7 @@ public class GeneratorPDF extends Generator {
 			DerivateMD derivateMD = (DerivateMD) this.derivate;
 			this.mets = derivateMD.getMets();
 			DescriptiveMetadata dmd = derivateMD.getDescriptiveData();
-			((DerivateStepPDF)this.step).mergeDescriptiveData(dmd);
+			((DerivateStepPDF) this.step).mergeDescriptiveData(dmd);
 		}
 		this.setStructure(this.derivate.getStructure());
 	}
@@ -88,24 +94,14 @@ public class GeneratorPDF extends Generator {
 			throw new DigitalDerivansException(msg);
 		}
 		// forward pdf generation
-		this.pdfProcessor.init((DerivateStepPDF)this.step, this.derivate);
+		this.pdfProcessor.init((DerivateStepPDF) this.step, this.derivate);
 		this.pdfResult = this.pdfProcessor.write(this.pathPDF.toFile());
 		this.pdfResult.setPath(this.pathPDF);
 		var nPagesAdded = this.pdfResult.getPdfPages().size();
 		LOGGER.info("created pdf '{}' with {} pages", this.pathPDF, nPagesAdded);
 
 		// ensure output exists and non-empty
-		if (! Files.exists(this.pathPDF)) {
-			throw new DigitalDerivansException("PDF file missing: "+this.pathPDF.toString());
-		}
-		try(var channel = FileChannel.open(this.pathPDF)) {
-			long fileSize = channel.size();
-			if (fileSize == 0L) {
-				throw new DigitalDerivansException("File empty: "+ this.pathPDF);
-			}
-		} catch (IOException exc) {
-			throw new DigitalDerivansException(exc);
-		}
+		this.validatePdf();
 
 		// post-action
 		if ((this.mets != null) && ((DerivateStepPDF) this.step).isEnrichMetadata()) {
@@ -162,6 +158,34 @@ public class GeneratorPDF extends Generator {
 			return Path.of(finalPDFName);
 		} else {
 			return rootDir.resolve(finalPDFName);
+		}
+	}
+
+	private void validatePdf() throws DigitalDerivansException {
+		String pdfPath = this.pathPDF.toString();
+		if (!Files.exists(this.pathPDF)) {
+			throw new DigitalDerivansException("PDF file missing: " + pdfPath);
+		}
+		try (var channel = FileChannel.open(this.pathPDF)) {
+			long fileSize = channel.size();
+			if (fileSize == 0L) {
+				throw new DigitalDerivansException("File empty: " + pdfPath);
+			}
+		} catch (IOException exc) {
+			throw new DigitalDerivansException(exc);
+		}
+		VeraGreenfieldFoundryProvider.initialise(); // critical
+		try (PDFAParser parser = Foundries.defaultInstance().createParser(new FileInputStream(this.pathPDF.toFile()));
+				PDFAValidator validator = Foundries.defaultInstance().createValidator(parser.getFlavour(), false)) {
+			ValidationResult result = validator.validate(parser);
+			if (result.isCompliant()) {
+				LOGGER.info("file {} is pdf-x-compliant", pdfPath);
+			} else {
+				LOGGER.warn("file {} is *not* pdf-x-compliant", pdfPath);
+			}
+		} catch (Exception exc) {
+			LOGGER.error("fail validatePdf: {}", exc.getMessage());
+			throw new DigitalDerivansException(exc);
 		}
 	}
 }
