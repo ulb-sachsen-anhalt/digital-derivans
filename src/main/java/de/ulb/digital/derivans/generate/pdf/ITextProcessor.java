@@ -30,6 +30,7 @@ import com.itextpdf.kernel.pdf.PdfName;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfOutputIntent;
 import com.itextpdf.kernel.pdf.PdfPage;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfVersion;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.WriterProperties;
@@ -212,12 +213,15 @@ public class ITextProcessor implements IPDFProcessor {
 			this.reportDoc.addPages(result);
 			this.document.close();
 			this.pdfDocument.close();
+			LOGGER.info("done creating pdf {}, checking readability", fileDescriptor);
+			ITextProcessor.checkReadability(fileDescriptor);
 		} catch (PdfAConformanceException confExc) {
 			LOGGER.error("fail to create pdf/a conformant document {}: {}", fileDescriptor, confExc.getMessage());
 		} catch (IOException exc) {
 			LOGGER.error(exc);
 			throw new DigitalDerivansException(exc);
 		}
+		LOGGER.info("create report object with {} pages", this.reportDoc.getPdfPages().size());
 		return this.reportDoc;
 	}
 
@@ -555,4 +559,13 @@ public class ITextProcessor implements IPDFProcessor {
 		return this.font;
 	}
 
+	private static void checkReadability(File fileDescriptor) throws DigitalDerivansException {
+		try (PdfDocument pdfOut = new PdfDocument(new PdfReader(fileDescriptor))) {
+			int nPages = pdfOut.getNumberOfPages();
+			LOGGER.info("pdf {} contains {} pages", fileDescriptor, nPages);
+		} catch (Exception e) {
+			LOGGER.error("fail read {}: {}", fileDescriptor, e.getMessage());
+			throw new DigitalDerivansException(e);
+		}
+	}
 }
