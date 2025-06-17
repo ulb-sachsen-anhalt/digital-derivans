@@ -37,8 +37,8 @@ public class GeneratorImageJPG extends GeneratorImage {
 		}
 		Path pathOut = this.setOutpath(page);
 		try {
-			LOGGER.trace("start to write JPEG {} ({})", pathOut, imageProcessor.getQuality());
-			imageProcessor.writeJPG(pathIn, pathOut);
+			LOGGER.trace("start to write JPEG {} ({})", pathOut, this.imageProcessor.getQuality());
+			this.imageProcessor.writeJPG(pathIn, pathOut);
 		} catch (DigitalDerivansException e1) {
 			String msg = String.format("%s:%s", pathIn, e1.getMessage());
 			LOGGER.error("processing error {}", msg);

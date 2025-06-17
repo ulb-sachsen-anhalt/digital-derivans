@@ -32,10 +32,6 @@ public abstract class GeneratorImage extends Generator {
 
 	protected int poolSize = DEFAULT_POOLSIZE;
 
-	protected int maximal;
-
-	protected int quality;
-
 	protected ImageProcessor imageProcessor = new ImageProcessor();
 
 	public void setImageProcessor(ImageProcessor processor) {
@@ -62,16 +58,11 @@ public abstract class GeneratorImage extends Generator {
 	}
 
 	public void setMaximal(Integer maximal) {
-		this.maximal = maximal;
 		this.imageProcessor.setMaximal(maximal);
 	}
 
-	public int getMaximal() {
-		return this.maximal;
-	}
-
 	public void setQuality(int quality) {
-		this.quality = quality;
+		this.imageProcessor.setQuality(quality);
 	}
 
 	protected boolean runWithPool(Runnable runnable) throws DigitalDerivansException {
@@ -118,9 +109,10 @@ public abstract class GeneratorImage extends Generator {
 			throw new DigitalDerivansRuntimeException(msg);
 		}
 
-		String msg = String.format("process '%02d' images in %s/%s with quality %.2f in %02d threads",
+		String msg = String.format("process '%02d' images in %s/%s with quality %.2f and max %03d in %02d threads",
 				this.digitalPages.size(), this.rootDir, this.step.getInputDir(),
-				this.imageProcessor.getQuality(), this.poolSize);
+				this.imageProcessor.getQuality(),
+				this.imageProcessor.getMaximal(), this.poolSize);
 		LOGGER.info(msg);
 
 		// forward to actual image creation implementation

@@ -54,9 +54,13 @@ public class ImageProcessor {
 	}
 
 	public void setMaximal(int maximal) {
-		if (maximal > 0) {
+		if (maximal > 0 && maximal <= DefaultConfiguration.DEFAULT_MAXIMAL) {
 			this.maximal = maximal;
 		}
+	}
+
+	public int getMaximal() {
+		return this.maximal;
 	}
 
 	public void setQuality(int quality) {
