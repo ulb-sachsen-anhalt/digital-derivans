@@ -316,12 +316,13 @@ public class ITextProcessor implements IPDFProcessor {
 	 */
 	public List<PDFPage> addPages(List<DigitalPage> pages, PdfOutline currentOutline) throws DigitalDerivansException {
 		List<PDFPage> resultPages = new ArrayList<>();
-		LOGGER.debug("render pages at {}", this.renderLevel);
+		LOGGER.debug("render {}  pages at {}", pages.size(), this.renderLevel);
 		try {
 			for (int i = 0; i < pages.size(); i++) {
 				DigitalPage pageIn = pages.get(i);
 				int orderN = pageIn.getOrderNr();
 				String imagePath = pageIn.getFile().getPath().toString();
+				LOGGER.debug("render page {} image {}", i+1, imagePath);
 				Image image = new Image(ImageDataFactory.create(imagePath));
 				float imageWidth = image.getImageWidth();
 				float imageHeight = image.getImageHeight();
@@ -475,7 +476,7 @@ public class ITextProcessor implements IPDFProcessor {
 		for (int i = 0; i < originalText.length(); i++) {
 			char c = originalText.charAt(i);
 			if (!font.containsGlyph(c)) {
-				LOGGER.warn("char '{}' of '{}'' not contained in font {}", c, originalText, fontLabel);
+				LOGGER.trace("char '{}' of '{}'' not contained in font {}", c, originalText, fontLabel);
 				if (c == 11799) { // "⸗" Double Oblique Hyphen 0x2E17 (UTF-16)
 					harmonized.append('-');
 				} else if (c == 868) { // " ͤ" Combining Latin Small Letter E
@@ -488,7 +489,7 @@ public class ITextProcessor implements IPDFProcessor {
 						harmonized.setCharAt(harmonized.length() - 1, 'ü');
 					}
 				} else {
-					LOGGER.error("still can't render '{}' - char '{}' not contained in font {}", originalText, c,
+					LOGGER.debug("still can't render '{}' - char '{}' not contained in font {}", originalText, c,
 							fontLabel);
 					return null;
 				}
