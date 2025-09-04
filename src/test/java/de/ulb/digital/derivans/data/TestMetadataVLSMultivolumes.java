@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.jdom2.Document;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -256,7 +257,7 @@ class TestMetadataVLSMultivolumes {
 	 * @throws IOException
 	 */
 	@Test
-	void testIntermediateVD17PDFInsertion(@TempDir Path tempDir) throws DigitalDerivansException, IOException {
+	void testIntermediateVD17PDFInsertion(@TempDir Path tempDir) throws Exception {
 		// arrange
 		Path sourceMETS = TestResource.VLS_VD17_AF_11250807.get();
 		Path targetMETS = tempDir.resolve("11250807.xml");
@@ -268,7 +269,24 @@ class TestMetadataVLSMultivolumes {
 		deriv.init(TestHelper.ULB_MAX_PATH);
 
 		// act + assert
-		var result = deriv.getMets().enrichPDF("PDF_11250807");
-		assertTrue(result.contains("PDF FileGroup for PDF_PDF_11250807 created"));
+		var result = deriv.getMets().enrichPDF("005836050");
+		assertTrue(result.contains("mets:file@ID=PDF_005836050 created"));
+		Document doc =TestHelper.readXMLDocument(targetMETS);
+		var mets = doc.getRootElement();
+		var fileSec = mets.getChild("fileSec", mets.getNamespace());
+		assertNotNull(fileSec);
+		var fileGrps = fileSec.getChildren("fileGrp", mets.getNamespace());
+		assertEquals(2, fileGrps.size());
+		var pdfGrp = fileGrps.stream().filter(g -> g.getAttributeValue("USE").equals("DOWNLOAD")).findFirst();
+		assertTrue(pdfGrp.isPresent());
+		var pdfFiles = pdfGrp.get().getChildren("file", mets.getNamespace());
+		assertEquals(1, pdfFiles.size());
+		var pdfFile = pdfFiles.get(0);
+		assertEquals("PDF_005836050", pdfFile.getAttributeValue("ID"));
+		var pdfLocs = pdfFile.getChildren("FLocat", mets.getNamespace());
+		assertEquals(1, pdfLocs.size());
+		var pdfLoc = pdfLocs.get(0);
+		assertEquals("005836050.pdf",
+			pdfLoc.getAttributeValue("href", mets.getNamespace("xlink")));
 	}
 }

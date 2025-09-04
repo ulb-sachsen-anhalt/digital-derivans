@@ -265,7 +265,9 @@ public class METS {
 	 * @throws DigitalDerivansException
 	 */
 	public String addDownloadFile(String useGroup, String identifier, String mimeType) throws DigitalDerivansException {
-		Element fileElement = new METSFile(identifier, identifier + ".pdf", useGroup, mimeType).asElement();
+		String pdfFileID = "PDF_" + identifier;
+		METSFile metsFile = new METSFile(pdfFileID, identifier + ".pdf", useGroup, mimeType);
+		Element fileElement = metsFile.asElement();
 		// attach or re-use existing group
 		Element fileGrp = null;
 		var existingGroups = this.evaluate(String.format("//mets:fileGrp[@USE='%s']", useGroup));
@@ -279,11 +281,11 @@ public class METS {
 		fileGrp.addContent(fileElement);
 		// add agent mark
 		String ts = LocalDateTime.now().format(MD_DT_FORMAT);
-		String agentNoteText = "PDF FileGroup for " + identifier + " created at " + ts;
+		String agentNoteText = "mets:file@ID=" + pdfFileID + " created at " + ts;
 		this.enrichAgent(agentNoteText);
 		// link as fptr to logical section
 		var pdfFPtr = new Element("fptr", NS_METS);
-		pdfFPtr.setAttribute("FILEID", identifier);
+		pdfFPtr.setAttribute("FILEID", pdfFileID);
 		var parent = this.evaluate(String.format("//mets:div[@DMDID='%s']", this.primeMods.getId())).get(0);
 		parent.addContent(0, pdfFPtr);
 		// store changes
@@ -475,9 +477,9 @@ public class METS {
 		String mimeType = "application/pdf";
 		String fileGroup = "DOWNLOAD";
 		LOGGER.info("enrich pdf '{}' as '{}' in '{}'", identifier, mimeType, fileGroup);
-		String fileId = "PDF_" + identifier;
-		var resultText = this.addDownloadFile("DOWNLOAD", fileId, "application/pdf");
-		LOGGER.info("integrated pdf fileId '{}' in '{}'", fileId, this.file);
+		// String fileId = "PDF_" + identifier;
+		var resultText = this.addDownloadFile("DOWNLOAD", identifier, "application/pdf");
+		// LOGGER.info("integrated pdf fileId '{}' in '{}'", fileId, this.file);
 		LOGGER.info("integrated mets:agent {}", resultText);
 		return resultText;
 	}

@@ -22,7 +22,7 @@ class TestMETSFile {
 
 		assertEquals(identifier, file.getFileId());
 		assertEquals("DOWNLOAD", file.getFileGroup());
-		assertEquals(identifier + ".pdf", file.getLocation());
+		assertEquals(identifier + ".pdf", file.getLocationReference());
 
 		var el = file.asElement().getAttribute("MIMETYPE");
 		assertEquals(mimeType, el.getValue());

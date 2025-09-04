@@ -37,7 +37,7 @@ public class METSFile {
 
 	private Path localRootPath;
 
-	private String location;
+	private String locationReference;
 
 	private String locationType;
 
@@ -64,8 +64,8 @@ public class METSFile {
 		this.fileGroup = fileGroup;
 		this.mimeType = element.getAttributeValue("MIMETYPE");
 		this.fileId = element.getAttributeValue("ID");
-		var fstLocat = element.getChildren("FLocat", METS.NS_METS).get(0);
-		String hRef = fstLocat.getAttributeValue("href", METS.NS_XLINK);
+		var fileLocation = element.getChildren("FLocat", METS.NS_METS).get(0);
+		String hRef = fileLocation.getAttributeValue("href", METS.NS_XLINK);
 		int offsetCtx = hRef.lastIndexOf('/');
 		if (offsetCtx > 0) {
 			hRef = hRef.substring(offsetCtx + 1);
@@ -79,24 +79,24 @@ public class METSFile {
 				hRef += ".xml";
 			}
 		}
-		this.location = hRef;
+		this.locationReference = hRef;
 	}
 
-	public METSFile(String id, String location) {
-		this(id, location, "MAX", "image/jpeg", "URL");
+	public METSFile(String fileId, String locationReference) {
+		this(fileId, locationReference, "MAX", "image/jpeg", "URL");
 	}
 
-	public METSFile(String id, String location, String fGroup) {
-		this(id, location, fGroup, "image/jpeg", "URL");
+	public METSFile(String fileId, String locationReference, String fGroup) {
+		this(fileId, locationReference, fGroup, "image/jpeg", "URL");
 	}
 
-	public METSFile(String id, String location, String fileGroup, String mimeType) {
-		this(id, location, fileGroup, mimeType, "URL");
+	public METSFile(String fileId, String locationReference, String fileGroup, String mimeType) {
+		this(fileId, locationReference, fileGroup, mimeType, "URL");
 	}
 
-	public METSFile(String id, String location, String fileGroup, String mimeType, String locationType) {
-		this.fileId = id;
-		this.location = location;
+	public METSFile(String fileId, String locationReference, String fileGroup, String mimeType, String locationType) {
+		this.fileId = fileId;
+		this.locationReference = locationReference;
 		this.fileGroup = fileGroup;
 		this.mimeType = mimeType;
 		this.locationType = locationType;
@@ -126,8 +126,8 @@ public class METSFile {
 		return this.fileId;
 	}
 
-	public String getLocation() {
-		return this.location;
+	public String getLocationReference() {
+		return this.locationReference;
 	}
 
 	public void setLocalRoot(Path root) {
@@ -167,10 +167,10 @@ public class METSFile {
 	}
 
 	public Path getLocalPath(boolean testExists) throws DigitalDerivansException {
-		String lastPart = this.location;
-		int lastSlashIndex = this.location.lastIndexOf('/');
+		String lastPart = this.locationReference;
+		int lastSlashIndex = this.locationReference.lastIndexOf('/');
 		if (lastSlashIndex > -1) { // even if it starts with leading slash
-			String[] tokens = this.location.split("/");
+			String[] tokens = this.locationReference.split("/");
 			lastPart = tokens[tokens.length - 1];
 		}
 		var theName = String.format("%s/%s", this.fileGroup, lastPart);
@@ -195,7 +195,7 @@ public class METSFile {
 		fileEl.setAttribute("MIMETYPE", mimeType);
 		var fLocat = new Element("FLocat", METS.NS_METS);
 		fLocat.setAttribute("LOCTYPE", this.locationType);
-		fLocat.setAttribute("href", this.location, METS.NS_XLINK);
+		fLocat.setAttribute("href", this.locationReference, METS.NS_XLINK);
 		fileEl.addContent(fLocat);
 		return fileEl;
 	}
