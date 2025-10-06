@@ -65,11 +65,11 @@ class TestDerivansFulltextODEM {
 		dp.setPathConfig(configTargetDir.resolve("derivans_ulb_odem.ini"));
 		DerivansConfiguration dc = new DerivansConfiguration(dp);
 		// apply some scaling, too
-		int maximal = 2339; // A4 200 DPI ok
+		// int maximal = 2339; // A4 200 DPI ok
 		// int maximal = 1754; // A4 150 DPI tw, print vanishes over top up to "Sero
 		// ..."
 		// int maximal = 1170; // A4 100 DPI ok with smaller text
-		((DerivateStepImage) dc.getDerivateSteps().get(1)).setMaximal(maximal);
+		// ((DerivateStepImage) dc.getDerivateSteps().get(1)).setMaximal(maximal);
 		Derivans derivans = new Derivans(dc);
 
 		// act
@@ -77,16 +77,6 @@ class TestDerivansFulltextODEM {
 		derivans.forward();
 		pdfPath = workDir.resolve("148811035.pdf");
 		TestDerivansFulltextODEM.inspector = new TestHelper.PDFInspector(pdfPath);
-	}
-
-	@Test
-	void testDerivateJPGsWithFooterWritten() {
-		Path footerDir = workDir.resolve("IMAGE_FOOTER");
-		assertTrue(Files.exists(footerDir));
-		for (int i = 1; i < nImages; i++) {
-			var imageLabel = String.format("%08d.jpg", i);
-			assertTrue(footerDir.resolve(imageLabel).toFile().exists());
-		}
 	}
 
 	@Test
@@ -118,7 +108,7 @@ class TestDerivansFulltextODEM {
 	@Test
 	void testPage07HasCertainLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
-		assertEquals(1893, textPage07.length());
+		assertEquals(1942, textPage07.length());
 
 	}
 

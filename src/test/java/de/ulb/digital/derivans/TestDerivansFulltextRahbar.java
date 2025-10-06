@@ -95,10 +95,10 @@ class TestDerivansFulltextRahbar {
 		dParams.setDebugPdfRender(true);
 		DerivansConfiguration dConf = new DerivansConfiguration(dParams);
 		int maximal = 2339; // scale A4 with 200 DPI
-		((DerivateStepImage) dConf.getDerivateSteps().get(1)).setMaximal(maximal);
-		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setRenderModus(TypeConfiguration.RENDER_MODUS_DBUG);
-		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setRenderLevel(renderLevel);
-		((DerivateStepPDF) dConf.getDerivateSteps().get(2)).setDebugRender(true);
+		((DerivateStepImage) dConf.getDerivateSteps().get(0)).setMaximal(maximal);
+		((DerivateStepPDF) dConf.getDerivateSteps().get(1)).setRenderModus(TypeConfiguration.RENDER_MODUS_DBUG);
+		((DerivateStepPDF) dConf.getDerivateSteps().get(1)).setRenderLevel(renderLevel);
+		((DerivateStepPDF) dConf.getDerivateSteps().get(1)).setDebugRender(true);
 		return dConf;
 	}
 

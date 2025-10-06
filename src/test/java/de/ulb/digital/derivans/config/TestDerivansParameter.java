@@ -66,7 +66,7 @@ class TestDerivansParameter {
 
 		// act
 		derivans.init(thisDir.resolve("737429.xml"));
-		DerivateStep step = derivans.getSteps().get(2);
+		DerivateStep step = derivans.getSteps().get(1); // PDF is step 2
 		assertTrue(step instanceof DerivateStepPDF);
 		DerivateStepPDF stepPdf = (DerivateStepPDF) step;
 		assertEquals(xPath, stepPdf.getOptIdentifierXPath().get());

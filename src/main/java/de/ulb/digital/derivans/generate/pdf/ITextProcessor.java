@@ -480,6 +480,11 @@ public class ITextProcessor implements IPDFProcessor {
 				if (c == 11799) { // "⸗" Double Oblique Hyphen 0x2E17 (UTF-16)
 					harmonized.append('-');
 				} else if (c == 868) { // " ͤ" Combining Latin Small Letter E
+					if (i == 0) { // believe me, I've seen tokens *starting* with diacriticals
+						LOGGER.error("can't render '{}': starts with '{}' not in font '{}'",
+								originalText, c, fontLabel);
+						return null;
+					}
 					String prev = originalText.substring(i - 1, i + 1); // replace preceeding base vocal
 					if (prev.charAt(0) == 'a') {
 						harmonized.setCharAt(harmonized.length() - 1, 'ä');
@@ -489,7 +494,7 @@ public class ITextProcessor implements IPDFProcessor {
 						harmonized.setCharAt(harmonized.length() - 1, 'ü');
 					}
 				} else {
-					LOGGER.debug("still can't render '{}' - char '{}' not contained in font {}", originalText, c,
+					LOGGER.debug("can't render '{}': char '{}' not in font '{}'", originalText, c,
 							fontLabel);
 					return null;
 				}
