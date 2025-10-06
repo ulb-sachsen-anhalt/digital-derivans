@@ -279,9 +279,9 @@ public class TestDerivansConfiguration {
 
 		// assert
 		var dSteps = dc.getDerivateSteps();
-		assertEquals(3, dSteps.size());
-		assertSame(DerivateType.PDF, dSteps.get(2).getOutputType());
-		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(2);
+		assertEquals(2, dSteps.size());
+		assertSame(DerivateType.PDF, dSteps.get(1).getOutputType());
+		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(1);
 		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputDir());
 		assertEquals(IDerivans.IMAGE_Q80, pdfStep.getInputDir());
 	}
