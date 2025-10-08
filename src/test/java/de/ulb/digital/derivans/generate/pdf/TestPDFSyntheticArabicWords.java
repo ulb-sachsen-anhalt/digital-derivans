@@ -82,7 +82,7 @@ class TestPDFSyntheticArabicWords {
 		// act
 		String pdfLineName = String.format("pdf-linelevel-%04d.pdf", N_PAGES);
 		Path outputLinePath = tempDir.resolve(pdfLineName);
-		DerivateStepPDF pdfStep = new DerivateStepPDF();
+		DerivateStepPDF pdfStep = new DerivateStepPDF(IDerivans.IMAGE_DIR_MAX, ".");
 		pdfStep.setImageDpi(TEST_DPI);
 		pdfStep.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
 		pdfStep.setDebugRender(true);

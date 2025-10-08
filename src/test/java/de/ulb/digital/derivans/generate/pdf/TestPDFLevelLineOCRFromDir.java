@@ -56,9 +56,7 @@ class TestPDFLevelLineOCRFromDir {
 		TestHelper.writeImage(imagePath, 754, 1053, BufferedImage.TYPE_BYTE_GRAY, "JPG");
 
 		// arrange pdf path and pages
-		DerivateStepPDF stepPdf = new DerivateStepPDF();
-		stepPdf.setOutputDir(".");
-		stepPdf.setInputDir(IDerivans.IMAGE_DIR_MAX);
+		DerivateStepPDF stepPdf = new DerivateStepPDF(IDerivans.IMAGE_DIR_MAX, ".");
 		stepPdf.setDebugRender(true);
 		stepPdf.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		stepPdf.setPathPDF(pathTarget.resolve("zd1.pdf"));

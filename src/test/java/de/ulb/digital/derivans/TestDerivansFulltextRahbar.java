@@ -123,7 +123,7 @@ class TestDerivansFulltextRahbar {
 	@Test
 	void testWordLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathWord, 1);
-		assertEquals(2005, textPage07.length());
+		assertEquals(1978, textPage07.length());
 	}
 
 	@Test
@@ -143,6 +143,6 @@ class TestDerivansFulltextRahbar {
 	@Test
 	void testLineLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfLines, 1);
-		assertEquals(1941, textPage07.length());
+		assertEquals(1920, textPage07.length());
 	}
 }

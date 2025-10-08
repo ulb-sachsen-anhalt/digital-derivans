@@ -20,8 +20,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.step.DerivateStep;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -77,8 +77,8 @@ class TestDerivansExportKitodo2 {
 		var step01 = TestDerivansExportKitodo2.steps.get(0);
 		assertEquals(IDerivans.IMAGE_DIR_MAX, step01.getInputDir());
 		assertEquals(IDerivans.IMAGE_FOOTER, step01.getOutputDir());
-		assertEquals(DerivateType.TIF, step01.getInputType());
-		assertEquals(DerivateType.JPG, step01.getOutputType());
+		assertEquals(DigitalType.TIF, step01.getInputType());
+		assertEquals(DigitalType.JPG, step01.getOutputType());
 	}
 
 	@Test
@@ -86,8 +86,8 @@ class TestDerivansExportKitodo2 {
 		var theStep = TestDerivansExportKitodo2.steps.get(3);
 		assertEquals(IDerivans.IMAGE_FOOTER, theStep.getInputDir());
 		assertEquals(IDerivans.IMAGE_PREVIEW, theStep.getOutputDir());
-		assertEquals(DerivateType.JPG, theStep.getInputType());
-		assertEquals(DerivateType.JPG, theStep.getOutputType());
+		assertEquals(DigitalType.JPG, theStep.getInputType());
+		assertEquals(DigitalType.JPG, theStep.getOutputType());
 		assertEquals(IDerivans.IMAGE_PREVIEW, theStep.getOutputPrefix());
 	}
 
@@ -96,7 +96,7 @@ class TestDerivansExportKitodo2 {
 		var theStep = TestDerivansExportKitodo2.steps.get(4);
 		assertEquals(IDerivans.IMAGE_PREVIEW, theStep.getInputDir());
 		assertEquals(IDerivans.IMAGE_THUMBNAIL, theStep.getOutputDir());
-		assertEquals(DerivateType.JPG, theStep.getInputType());
+		assertEquals(DigitalType.JPG, theStep.getInputType());
 		assertEquals(IDerivans.IMAGE_PREVIEW, theStep.getInputPrefix());
 	}
 
@@ -169,7 +169,7 @@ class TestDerivansExportKitodo2 {
 			Files.walk(pathTarget).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.delete(pathTarget);
 		}
-		Path imagesDst = pathTarget.resolve("MAX");
+		Path imagesDst = pathTarget.resolve(IDerivans.IMAGE_DIR_MAX);
 		Files.createDirectories(imagesDst);
 		TestHelper.generateImages(imagesDst, 140, 200, 17, "%08d.tif");
 		Path metsTarget = pathTarget.resolve("058141367.xml");

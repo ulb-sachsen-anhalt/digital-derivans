@@ -7,6 +7,7 @@ import de.ulb.digital.derivans.config.DefaultConfiguration;
 import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.IDerivans;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -33,9 +34,10 @@ public class DerivateStepPDF extends DerivateStep {
 	private Optional<String> optConformance = Optional.empty();
 	private Path pdfFilePath;
 
-	public DerivateStepPDF() {
-		super();
-		this.setOutputType(DerivateType.PDF);
+	public DerivateStepPDF(String inputDir, String outputDir) {
+		super(inputDir, outputDir);
+		this.setInputType(DigitalType.JPG);
+		this.setOutputType(DigitalType.PDF);
 	}
 
 	public boolean isEnrichMetadata() {

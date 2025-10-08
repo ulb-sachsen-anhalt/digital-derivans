@@ -20,11 +20,11 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -262,16 +262,29 @@ public class DerivansConfiguration {
 	 */
 	public DerivateStep getStepFor(INIConfiguration conf, String stepSection) throws DigitalDerivansException {
 		String keyOutType = stepSection + ".output_type";
-		DerivateType outPutType = DerivateType.JPG;
+		DigitalType outPutType = DigitalType.JPG;
 		Optional<String> optOutType = extractValue(conf, keyOutType, String.class);
 		if (optOutType.isPresent()) {
-			outPutType = DerivateType.forLabel(optOutType.get());
+			outPutType = DigitalType.forLabel(optOutType.get());
 		}
 		DerivateStep step = null;
-		if (outPutType == DerivateType.PDF) {
-			step = new DerivateStepPDF();
-		} else if (outPutType == DerivateType.JPG) {
-			step = new DerivateStepImage();
+		String inputDir = this.checkBasicIO(conf, stepSection + ".input_dir");
+		String outputDir = this.checkBasicIO(conf, stepSection + ".output_dir");
+		// if(!conf.containsKey(keyInputDir)) {
+		// 	throw new DigitalDerivansException("missing input_dir for " + stepSection + "!");
+		// } else {
+		// 	inputDir = conf.getString(keyInputDir);
+		// }
+		// String keyOutputDir = stepSection + ".output_dir";
+		// if(!conf.containsKey(keyOutputDir)) {
+		// 	throw new DigitalDerivansException("missing output_dir for " + stepSection + "!");
+		// } else {
+		// 	outputDir = conf.getString(keyOutputDir);
+		// }
+		if (outPutType == DigitalType.PDF) {
+			step = new DerivateStepPDF(inputDir, outputDir);
+		} else if (outPutType == DigitalType.JPG) {
+			step = new DerivateStepImage(inputDir, outputDir);
 			if (isFooterDerivateSection(conf, stepSection)) {
 				step = new DerivateStepImageFooter((DerivateStepImage) step);
 			}
@@ -280,6 +293,17 @@ public class DerivansConfiguration {
 		}
 		step.setOutputType(outPutType);
 		return step;
+	}
+
+	private String checkBasicIO(INIConfiguration conf, String sectionKey) throws DigitalDerivansException {
+		if (!conf.containsKey(sectionKey)) {
+			throw new DigitalDerivansException("missing " + sectionKey + "!");
+		}
+		String sectionValue = conf.getString(sectionKey);
+		if (sectionValue == null || sectionValue.isBlank()) {
+			throw new DigitalDerivansException(sectionKey + " invalid: <empty>");
+		}
+		return sectionValue;
 	}
 
 	/**
@@ -296,12 +320,12 @@ public class DerivansConfiguration {
 			throws DigitalDerivansException {
 		DerivateStep step = getStepFor(conf, stepSection);
 		// input
-		String keyInputDir = stepSection + ".input_dir";
-		extractValue(conf, keyInputDir, String.class).ifPresent(step::setInputDir);
+		// String keyInputDir = stepSection + ".input_dir";
+		// extractValue(conf, keyInputDir, String.class).ifPresent(step::setInputDir);
 		extractValue(conf, stepSection + ".input_type", String.class).ifPresent(step::setInputTypeFromLabel);
 		// output
-		String keyOutputDir = stepSection + ".output_dir";
-		extractValue(conf, keyOutputDir, String.class).ifPresent(step::setOutputDir);
+		// String keyOutputDir = stepSection + ".output_dir";
+		// extractValue(conf, keyOutputDir, String.class).ifPresent(step::setOutputDir);
 		extractValue(conf, stepSection + ".output_type", String.class).ifPresent(step::setOutputTypeFromLabel);
 		// optional prefixes for additional derivates
 		extractValue(conf, stepSection + ".input_prefix", String.class).ifPresent(step::setInputPrefix);
@@ -445,7 +469,7 @@ public class DerivansConfiguration {
 	}
 
 	/**
-	 * Pick *very first* step matching {@link DerivateType}
+	 * Pick *very first* step matching {@link DigitalType}
 	 * 
 	 * @param type
 	 * @return

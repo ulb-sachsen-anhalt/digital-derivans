@@ -54,6 +54,7 @@ import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.PDFPage;
@@ -320,8 +321,9 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @return the path to the input image file
 	 */
 	private Path getInputImagePath(DigitalPage page) {
-		Path pathIn = page.getFile().withDirname(this.pdfStep.getInputDir());
-		return pathIn;
+		String dirName = this.pdfStep.getInputDir();
+		DigitalPage.File currentFile = page.getFile();
+		return currentFile.using(dirName);
 	}
 
 	/**

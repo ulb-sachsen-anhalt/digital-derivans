@@ -8,9 +8,9 @@ import java.util.Optional;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.step.DerivateStep;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -25,7 +25,7 @@ public abstract class Generator {
 
 	protected DerivateStep step;
 
-	protected DerivateType derivateType;
+	protected DigitalType derivateType;
 
 	protected List<DigitalPage> digitalPages;
 
@@ -71,7 +71,7 @@ public abstract class Generator {
 		}
 	}
 
-	public DerivateType getType() {
+	public DigitalType getType() {
 		return this.derivateType;
 	}
 
@@ -98,7 +98,7 @@ public abstract class Generator {
 	}
 
 	protected Path setInpath(DigitalPage page) {
-		Path pathIn = page.getFile().withDirname(this.step.getInputDir());
+		Path pathIn = page.getFile().using(this.step.getInputDir());
 		var pathFnm = pathIn.getFileName();
 		var pathDir = pathIn.getParent();
 		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm, this.step.getInputType()));
@@ -108,7 +108,7 @@ public abstract class Generator {
 	}
 
 	protected Path setOutpath(DigitalPage page) {
-		Path pathOut = page.getFile().withDirname(this.step.getOutputDir());
+		Path pathOut = page.getFile().using(this.step.getOutputType(), this.step.getOutputDir());
 		var pathFnm = pathOut.getFileName();
 		var pathDir = pathOut.getParent();
 		StringBuilder fName = new StringBuilder(this.setFileExtension(pathFnm, this.step.getOutputType()));
@@ -117,20 +117,20 @@ public abstract class Generator {
 		return pathOut;
 	}
 
-	private String setFileExtension(Path fileName, DerivateType dType) {
+	private String setFileExtension(Path fileName, DigitalType dType) {
 		String fnstr = fileName.toString();
 		if (fnstr.contains(".")) { // common local file
 			int rightOffset = fnstr.lastIndexOf(".");
 			String fileNamePrt = fnstr.substring(0, rightOffset);
 			String fileNameExt = fnstr.substring(rightOffset);
-			if ((dType == DerivateType.JPG || dType == DerivateType.JPG_FOOTER)
+			if ((dType == DigitalType.JPG || dType == DigitalType.JPG_FOOTER)
 					&& !EXT_JPG.equals(fileNameExt)) {
 				return fileNamePrt + EXT_JPG;
-			} else if (dType == DerivateType.TIF) {
+			} else if (dType == DigitalType.TIF) {
 				return fileNamePrt + EXT_TIF;
 			}
 			return fnstr;
-		} else if (dType == DerivateType.JPG || dType == DerivateType.JPG_FOOTER) { // loaded via OAI
+		} else if (dType == DigitalType.JPG || dType == DigitalType.JPG_FOOTER) { // loaded via OAI
 			return fnstr + EXT_JPG;
 		}
 		String msg = String.format("Fail to set any ext for %s, type %s", fileName, this.derivateType);

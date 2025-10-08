@@ -18,6 +18,7 @@ import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.generate.Generator;
+import de.ulb.digital.derivans.model.DigitalType;
 
 /**
  * 
@@ -85,7 +86,7 @@ class TestStepsMigration {
 				.filter(DerivateStepImageFooter.class::isInstance)
 				.findFirst()
 				.get();
-		assertEquals(DerivateType.JPG, theStep.getOutputType());
+		assertEquals(DigitalType.JPG, theStep.getOutputType());
 		var footerStep = (DerivateStepImageFooter) theStep;
 		assertEquals(NAME_TEMPLATE, footerStep.getPathTemplate().getFileName().toString());
 	}
@@ -93,10 +94,10 @@ class TestStepsMigration {
 	@Test
 	void testStepPDFLabel() {
 		DerivateStep theStep = TestStepsMigration.steps.stream()
-				.filter(s -> s.getOutputType() == DerivateType.PDF)
+				.filter(s -> s.getOutputType() == DigitalType.PDF)
 				.findFirst()
 				.get();
-		assertEquals(DerivateType.PDF, theStep.getOutputType());
+		assertEquals(DigitalType.PDF, theStep.getOutputType());
 		var footerStep = (DerivateStepPDF) theStep;
 		assertEquals(NAME_PDF, footerStep.getNamePDF().get());
 	}

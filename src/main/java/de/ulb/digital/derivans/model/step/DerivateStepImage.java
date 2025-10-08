@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.model.step;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.config.DefaultConfiguration;
+import de.ulb.digital.derivans.model.DigitalType;
 
 /**
  * Specific Image Derivate Generation Step
@@ -16,10 +17,17 @@ public class DerivateStepImage extends DerivateStep {
 	protected Integer poolsize = DefaultConfiguration.DEFAULT_POOLSIZE;
 	protected int imageDpi;
 
-	public DerivateStepImage() {
+	public DerivateStepImage(String inputDir, String outputDir) {
+		super(inputDir, outputDir);
+		this.setOutputType(DigitalType.JPG);
+		this.imageDpi = DefaultConfiguration.DEFAULT_IMAGE_DPI;
 	}
 
 	public DerivateStepImage(DerivateStepImage anotherImg) {
+		super(anotherImg.inputDir, anotherImg.outputDir);
+		this.inputType = anotherImg.inputType;
+		this.outputType = anotherImg.outputType;
+		this.imageDpi = anotherImg.imageDpi;
 		this.quality = anotherImg.quality;
 		this.maximal = anotherImg.maximal;
 		this.poolsize = anotherImg.poolsize;
