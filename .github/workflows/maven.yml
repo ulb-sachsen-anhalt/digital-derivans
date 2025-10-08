@@ -15,7 +15,7 @@ on:
 
 jobs:
   verify:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v2
@@ -26,7 +26,4 @@ jobs:
         java-version: 11
 
     - name: Test and verify package creation
-      run: | 
-        git clone --branch ulb/master https://github.com/ulb-sachsen-anhalt/mets-model.git
-        cd mets-model && mvn clean install -DskipTests
-        cd ${{github.workspace}} && mvn clean verify
+      run: mvn clean verify
