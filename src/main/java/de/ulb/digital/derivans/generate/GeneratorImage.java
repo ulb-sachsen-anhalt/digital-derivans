@@ -120,7 +120,8 @@ public abstract class GeneratorImage extends Generator {
 		try {
 			boolean isSuccess = forward();
 			if (isSuccess) {
-				String msg2 = String.format("created '%02d' images at '%s'", digitalPages.size(), this.step.getInputDir());
+				String msg2 = String.format("created '%02d' %s images at '%s'",
+					digitalPages.size(), this.step.getOutputType(), this.step.getOutputDir());
 				LOGGER.info(msg2);
 			}
 		} catch (RuntimeException e) {

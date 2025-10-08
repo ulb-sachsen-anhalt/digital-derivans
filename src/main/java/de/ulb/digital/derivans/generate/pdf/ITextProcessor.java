@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.PDFPage;
@@ -310,6 +312,21 @@ public class ITextProcessor implements IPDFProcessor {
 	}
 
 	/**
+	 * Construct the proper input image path for a given digital page,
+	 * taking into account the inputDir from the PDF step configuration.
+	 * This ensures that in chained derivate scenarios, the correct
+	 * intermediate image directory is used.
+	 * 
+	 * @param page the digital page
+	 * @return the path to the input image file
+	 */
+	private Path getInputImagePath(DigitalPage page) {
+		String dirName = this.pdfStep.getInputDir();
+		DigitalPage.File currentFile = page.getFile();
+		return currentFile.using(dirName);
+	}
+
+	/**
 	 * @param pages
 	 * @return
 	 * @throws DigitalDerivansException
@@ -321,7 +338,7 @@ public class ITextProcessor implements IPDFProcessor {
 			for (int i = 0; i < pages.size(); i++) {
 				DigitalPage pageIn = pages.get(i);
 				int orderN = pageIn.getOrderNr();
-				String imagePath = pageIn.getFile().getPath().toString();
+				String imagePath = this.getInputImagePath(pageIn).toString();
 				LOGGER.debug("render page {} image {}", i+1, imagePath);
 				Image image = new Image(ImageDataFactory.create(imagePath));
 				float imageWidth = image.getImageWidth();

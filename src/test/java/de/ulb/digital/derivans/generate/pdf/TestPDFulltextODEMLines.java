@@ -60,7 +60,7 @@ class TestPDFulltextODEMLines {
 		Path sourceOcr = Path.of("src/test/resources/ocr/alto/148811035/FULLTEXT");
 		Path targetOcr = workDir.resolve("FULLTEXT");
 		TestHelper.copyTree(sourceOcr, targetOcr);
-		DerivateStepPDF pdfStep = new DerivateStepPDF();
+		DerivateStepPDF pdfStep = new DerivateStepPDF(TestHelper.ULB_MAX_PATH.toString(), workDir.toString());
 		pdfStep.setImageDpi(300);
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_LINE);
 		// pdfStep.setDebugRender(true);

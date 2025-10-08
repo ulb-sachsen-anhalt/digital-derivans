@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -30,11 +30,9 @@ class TestPDFGenerator {
 	void testInvalidPageArg() {
 
 		DescriptiveMetadata dd = new DescriptiveMetadata();
-		DerivateStepPDF pdfStep = new DerivateStepPDF();
-		pdfStep.setInputDir(".");
-		pdfStep.setOutputDir(".");
-		pdfStep.setInputType(DerivateType.JPG);
-		pdfStep.setOutputType(DerivateType.PDF);
+		DerivateStepPDF pdfStep = new DerivateStepPDF(".", ".");
+		pdfStep.setInputType(DigitalType.JPG);
+		pdfStep.setOutputType(DigitalType.PDF);
 		pdfStep.mergeDescriptiveData(dd);
 
 		// act

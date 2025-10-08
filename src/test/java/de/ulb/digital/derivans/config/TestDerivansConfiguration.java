@@ -19,10 +19,10 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.IDerivans;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -73,12 +73,12 @@ public class TestDerivansConfiguration {
 		assertEquals(80, stepMinImage.getQuality());
 		assertEquals("DEFAULT", stepMinImage.getInputDir());
 		assertEquals(IDerivans.IMAGE_Q80, stepMinImage.getOutputDir());
-		assertEquals(DerivateType.JPG, stepMinImage.getOutputType());
+		assertEquals(DigitalType.JPG, stepMinImage.getOutputType());
 
 		// pdf
 		assertTrue(steps.get(1) instanceof DerivateStepPDF);
 		DerivateStepPDF stepPdf = (DerivateStepPDF) steps.get(1);
-		assertEquals(DerivateType.PDF, stepPdf.getOutputType());
+		assertEquals(DigitalType.PDF, stepPdf.getOutputType());
 		assertTrue(stepPdf.isEnrichMetadata());
 	}
 
@@ -113,7 +113,7 @@ public class TestDerivansConfiguration {
 		assertEquals(2, steps.size());
 		assertTrue(steps.get(1) instanceof DerivateStepPDF);
 		var stepPDF = (DerivateStepPDF) steps.get(1);
-		assertEquals(DerivateType.PDF, stepPDF.getOutputType());
+		assertEquals(DigitalType.PDF, stepPDF.getOutputType());
 		assertFalse(stepPDF.isEnrichMetadata());
 	}
 
@@ -152,10 +152,10 @@ public class TestDerivansConfiguration {
 		// assertEquals(80, steps.get(0).getQuality());
 		assertEquals(IDerivans.IMAGE_DIR_DEFAULT, steps.get(0).getInputDir());
 		assertEquals(IDerivans.IMAGE_Q80, steps.get(0).getOutputDir());
-		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
+		assertEquals(DigitalType.JPG, steps.get(0).getOutputType());
 
 		// pdf
-		assertEquals(DerivateType.PDF, steps.get(1).getOutputType());
+		assertEquals(DigitalType.PDF, steps.get(1).getOutputType());
 		assertTrue(((DerivateStepPDF) steps.get(1)).isEnrichMetadata());
 	}
 
@@ -190,10 +190,10 @@ public class TestDerivansConfiguration {
 		// assertEquals(80, steps.get(0).getQuality());
 		assertEquals(customImageSubDir, steps.get(0).getInputDir());
 		assertEquals(IDerivans.IMAGE_Q80, steps.get(0).getOutputDir());
-		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
+		assertEquals(DigitalType.JPG, steps.get(0).getOutputType());
 
 		// pdf
-		assertEquals(DerivateType.PDF, steps.get(1).getOutputType());
+		assertEquals(DigitalType.PDF, steps.get(1).getOutputType());
 	}
 
 	/**
@@ -229,10 +229,10 @@ public class TestDerivansConfiguration {
 		assertEquals(80, ((DerivateStepImage)steps.get(0)).getQuality());
 		assertEquals(pathImageMax.toString(), steps.get(0).getInputDir());
 		assertEquals(IDerivans.IMAGE_Q80, steps.get(0).getOutputDir());
-		assertEquals(DerivateType.JPG, steps.get(0).getOutputType());
+		assertEquals(DigitalType.JPG, steps.get(0).getOutputType());
 
 		// pdf
-		assertEquals(DerivateType.PDF, steps.get(1).getOutputType());
+		assertEquals(DigitalType.PDF, steps.get(1).getOutputType());
 	}
 
 	/**
@@ -280,7 +280,7 @@ public class TestDerivansConfiguration {
 		// assert
 		var dSteps = dc.getDerivateSteps();
 		assertEquals(2, dSteps.size());
-		assertSame(DerivateType.PDF, dSteps.get(1).getOutputType());
+		assertSame(DigitalType.PDF, dSteps.get(1).getOutputType());
 		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(1);
 		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputDir());
 		assertEquals(IDerivans.IMAGE_Q80, pdfStep.getInputDir());
@@ -323,7 +323,7 @@ public class TestDerivansConfiguration {
 		var dSteps = dc.getDerivateSteps();
 		assertEquals(2, dSteps.size());
 		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputDir());
-		assertSame(DerivateType.PDF, dSteps.get(1).getOutputType());
+		assertSame(DigitalType.PDF, dSteps.get(1).getOutputType());
 		DerivateStepPDF pdfStep = (DerivateStepPDF) dSteps.get(1);
 		assertEquals(IDerivans.IMAGE_Q80, pdfStep.getInputDir());
 		assertEquals(ORIGINAL_SUB_DIR, dSteps.get(0).getInputDir());

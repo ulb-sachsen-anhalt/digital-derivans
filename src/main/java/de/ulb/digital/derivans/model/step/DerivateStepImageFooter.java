@@ -2,6 +2,8 @@ package de.ulb.digital.derivans.model.step;
 
 import java.nio.file.Path;
 
+import de.ulb.digital.derivans.model.DigitalType;
+
 /**
  * 
  * Specific derivates which extend common 
@@ -16,9 +18,9 @@ public class DerivateStepImageFooter extends DerivateStepImage {
 	protected Path pathTemplate;
 	protected String footerLabel;
 
-	public DerivateStepImageFooter() {
-		super();
-		this.setOutputType(DerivateType.JPG_FOOTER);
+	public DerivateStepImageFooter(String inputDir, String outputDir) {
+		super(inputDir, outputDir);
+		this.setOutputType(DigitalType.JPG_FOOTER);
 	}
 
 	/**
@@ -29,7 +31,7 @@ public class DerivateStepImageFooter extends DerivateStepImage {
 	 */
 	public DerivateStepImageFooter(DerivateStepImage baseImageStep) {
 		super(baseImageStep);
-		this.setOutputType(DerivateType.JPG_FOOTER);
+		this.setOutputType(DigitalType.JPG_FOOTER);
 	}
 
 	public Path getPathTemplate() {

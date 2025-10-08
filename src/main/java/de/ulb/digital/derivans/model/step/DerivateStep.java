@@ -1,5 +1,7 @@
 package de.ulb.digital.derivans.model.step;
 
+import de.ulb.digital.derivans.model.DigitalType;
+
 /**
  * 
  * Basic Information for creating derivates
@@ -14,7 +16,7 @@ public abstract class DerivateStep {
 	/**
 	 * Kind of Data this step expects as input
 	 */
-	protected DerivateType inputType;
+	protected DigitalType inputType;
 
 	protected String inputPrefix;
 
@@ -23,37 +25,39 @@ public abstract class DerivateStep {
 	/**
 	 * Kind of Derivate this step will produce
 	 */
-	protected DerivateType outputType;
+	protected DigitalType outputType;
 
 	protected String outputPrefix;
 
-	DerivateStep() {
-		this.outputType = DerivateType.JPG;
-		this.inputType = DerivateType.IMAGE;
+	DerivateStep(String inputDir, String outputDir) {
+		this.outputType = DigitalType.JPG;
+		this.inputType = DigitalType.IMAGE;
+		this.inputDir = inputDir;
+		this.outputDir = outputDir;
 	}
 
-	public DerivateType getInputType() {
+	public DigitalType getInputType() {
 		return inputType;
 	}
 
-	public void setInputType(DerivateType inputType) {
+	public void setInputType(DigitalType inputType) {
 		this.inputType = inputType;
 	}
 
 	public void setInputTypeFromLabel(String inputTypeLabel) {
-		this.inputType = DerivateType.forLabel(inputTypeLabel);
+		this.inputType = DigitalType.forLabel(inputTypeLabel);
 	}
 
-	public DerivateType getOutputType() {
+	public DigitalType getOutputType() {
 		return outputType;
 	}
 
-	public void setOutputType(DerivateType outputType) {
+	public void setOutputType(DigitalType outputType) {
 		this.outputType = outputType;
 	}
 
 	public void setOutputTypeFromLabel(String outputTypeLabel) {
-		this.outputType = DerivateType.forLabel(outputTypeLabel);
+		this.outputType = DigitalType.forLabel(outputTypeLabel);
 	}
 
 	public String getInputDir() {

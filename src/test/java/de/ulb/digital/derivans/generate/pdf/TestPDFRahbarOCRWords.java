@@ -53,12 +53,10 @@ class TestPDFRahbarOCRWords {
 		Path sourceImg = Path.of("src/test/resources/images/1981185920_88120_00000010.jpg");
 		assertTrue(Files.exists(sourceImg));
 		Files.copy(sourceImg, pathImageMax.resolve(sourceImg.getFileName()));
-		DerivateStepPDF pdfStep = new DerivateStepPDF();
+		DerivateStepPDF pdfStep = new DerivateStepPDF(IDerivans.IMAGE_DIR_MAX, ".");
 		pdfStep.setImageDpi(300); // prevent re-scaling for testing
 		pdfStep.setRenderLevel(TypeConfiguration.RENDER_LEVEL_WORD);
 		pdfStep.setDebugRender(true);
-		pdfStep.setInputDir(IDerivans.IMAGE_DIR_MAX);
-		pdfStep.setOutputDir(".");
 		pdfStep.setPathPDF(workDirWord.resolve("1981185920_88120_word.pdf"));
 		DerivateFS derivate = new DerivateFS(workDirWord);
 		derivate.init(TestHelper.ULB_MAX_PATH);

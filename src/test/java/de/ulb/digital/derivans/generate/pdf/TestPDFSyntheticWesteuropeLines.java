@@ -81,7 +81,7 @@ class TestPDFSyntheticWesteuropeLines {
 
 		String pdfLineName = String.format("pdf-line-%04d.pdf", N_PAGES);
 		Path outputLinePath = tempDir.resolve(pdfLineName);
-		DerivateStepPDF pdfStep1 = new DerivateStepPDF();
+		DerivateStepPDF pdfStep1 = new DerivateStepPDF("MAX", ".");
 		pdfStep1.setImageDpi(TEST_DPI);
 		pdfStep1.setRenderLevel(DefaultConfiguration.DEFAULT_RENDER_LEVEL);
 		pdfStep1.setConformance("PDF/A-1B");

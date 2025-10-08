@@ -58,7 +58,6 @@ import com.itextpdf.kernel.pdf.PdfReader;
 
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
-import de.ulb.digital.derivans.generate.pdf.ITextProcessor;
 import de.ulb.digital.derivans.model.ocr.OCRData;
 import de.ulb.digital.derivans.model.pdf.MetadataType;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
@@ -262,6 +261,35 @@ public class TestHelper {
 			}
 		}
 
+		public String getImageInfo(int pageNr) throws DigitalDerivansException {
+			try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfPath))) {
+				PDPage page = document.getPage(pageNr - 1); // PDFBox uses 0-based indexing
+				var resources = page.getResources();
+				var xObjects = resources.getXObjectNames();
+				for (var xObjName : xObjects) {
+					var xObj = resources.getXObject(xObjName);
+					if (xObj instanceof org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject) {
+						var img = (org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject) xObj;
+						long imageSize = 0;
+						var imageStream = img.getStream();
+						if (imageStream != null) {
+							imageSize = imageStream.getLength();
+						}
+						return String.format("Image %s: %s, %d x %d px, %d bytes",
+								xObjName.getName(),
+								img.getSuffix(),
+								img.getWidth(),
+								img.getHeight(),
+								imageSize);
+					}
+				}
+			} catch (IOException e) {
+				var msg = this.pdfPath + ": " + e.getMessage();
+				throw new DigitalDerivansException(msg);
+			}
+			return "No image found";
+		}
+
 		/**
 		 * 
 		 * Retrive information concerning PDF Metadata
@@ -398,7 +426,7 @@ public class TestHelper {
 class DerivansPDFStripper extends PDFTextStripper {
 
 	static final Locale loc = Locale.forLanguageTag("de-De");
-	
+
 	boolean startOfLine = true;
 
 	@Override
@@ -417,7 +445,8 @@ class DerivansPDFStripper extends PDFTextStripper {
 	protected void writeString(String text, List<TextPosition> textPositions) throws IOException {
 		if (this.startOfLine) {
 			TextPosition tPos = textPositions.get(0);
-			writeString(String.format(DerivansPDFStripper.loc, "[x:%.2f y:%.2f %spt]", tPos.getXDirAdj(), tPos.getYDirAdj(), tPos.getFontSize()));
+			writeString(String.format(DerivansPDFStripper.loc, "[x:%.2f y:%.2f %spt]", tPos.getXDirAdj(),
+					tPos.getYDirAdj(), tPos.getFontSize()));
 			this.startOfLine = false;
 		}
 		super.writeString(text, textPositions);

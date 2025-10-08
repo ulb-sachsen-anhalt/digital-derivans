@@ -18,9 +18,9 @@ import de.ulb.digital.derivans.generate.GeneratorImageJPGFooter;
 import de.ulb.digital.derivans.generate.GeneratorPDF;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateMD;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.step.DerivateStep;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * Derive digital entities like pages with footer information and PDF from given
@@ -93,12 +93,12 @@ public class Derivans {
         this.generators = new ArrayList<>();
         for (DerivateStep step : this.steps) {
             if (!this.derivate.isInited()) {
-                if (step.getInputType() == DerivateType.TIF) {
+                if (step.getInputType() == DigitalType.TIF) {
                     this.derivate.setStartFileExtension(".tif");
                 }
                 this.derivate.init(Path.of(step.getInputDir()));
             }
-            DerivateType type = step.getOutputType();
+            DigitalType type = step.getOutputType();
             Generator theGenerator = Derivans.forType(type);
             theGenerator.setDerivate(derivate); // first set derivate ...
             theGenerator.setStep(step); // .. then set step object
@@ -126,12 +126,12 @@ public class Derivans {
                 this.derivate.getRootDir());
     }
 
-    public static Generator forType(DerivateType dType) throws DigitalDerivansException {
-        if (dType == DerivateType.JPG || dType == DerivateType.IMAGE) {
+    public static Generator forType(DigitalType dType) throws DigitalDerivansException {
+        if (dType == DigitalType.JPG || dType == DigitalType.IMAGE) {
             return new GeneratorImageJPG();
-        } else if (dType == DerivateType.JPG_FOOTER) {
+        } else if (dType == DigitalType.JPG_FOOTER) {
             return new GeneratorImageJPGFooter();
-        } else if (dType == DerivateType.PDF) {
+        } else if (dType == DigitalType.PDF) {
             return new GeneratorPDF();
         }
         throw new DigitalDerivansException("Unknown type " + dType);

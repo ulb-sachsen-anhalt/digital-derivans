@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.ulb.digital.derivans.IDerivans;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 import de.ulb.digital.derivans.model.step.DerivateStepPDF;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -88,19 +88,19 @@ public class DefaultConfiguration {
 	 */
 	public static List<DerivateStep> provideDefaultSteps() {
 		List<DerivateStep> steps = new ArrayList<>();
-		DerivateStepImage create80sJpgs = new DerivateStepImage();
-		create80sJpgs.setOutputType(DerivateType.JPG);
 		var output = DefaultConfiguration.DEFAULT_IMG_REDUCED;
 		var imgDir = IDerivans.IMAGE_DIR_DEFAULT;
-		create80sJpgs.setInputDir(imgDir);
-		create80sJpgs.setOutputDir(output);
+		DerivateStepImage create80sJpgs = new DerivateStepImage(imgDir, output);
+		// create80sJpgs.setInputDir(imgDir);
+		// create80sJpgs.setOutputDir(output);
+		create80sJpgs.setOutputType(DigitalType.JPG);
 		create80sJpgs.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
 		create80sJpgs.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
 		steps.add(create80sJpgs);
-		DerivateStepPDF createPdf = new DerivateStepPDF();
-		createPdf.setInputDir(output);
-		createPdf.setOutputType(DerivateType.PDF);
-		createPdf.setOutputDir(".");
+		// createPdf.setInputDir(output);
+		// createPdf.setOutputDir(".");
+		DerivateStepPDF createPdf = new DerivateStepPDF(output, ".");
+		// createPdf.setOutputType(DerivateType.PDF);
 		steps.add(createPdf);
 		return steps;
 	}

@@ -73,7 +73,7 @@ class TestPDFSyntheticWesteuropeWords {
 		testDerivate.setStructure(testStruct);
 
 		// act
-		DerivateStepPDF pdfStep1 = new DerivateStepPDF();
+		DerivateStepPDF pdfStep1 = new DerivateStepPDF("MAX", ".");
 		pdfStep1.setImageDpi(TEST_DPI);
 		pdfStep1.setDebugRender(true);
 		var pdfWordName = String.format("pdf-word-%04d.pdf", N_PAGES);

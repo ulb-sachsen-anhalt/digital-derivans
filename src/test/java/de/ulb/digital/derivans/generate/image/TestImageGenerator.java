@@ -55,10 +55,8 @@ class TestImageGenerator {
 	void testRenderer80() throws DigitalDerivansException, IOException {
 		// arrange
 		Path targetPath = TestImageGenerator.sharedTempDir.resolve(IDerivans.IMAGE_Q80);
-		DerivateStepImage imageStep = new DerivateStepImage();
+		DerivateStepImage imageStep = new DerivateStepImage(TestHelper.IMAGE, IDerivans.IMAGE_Q80);
 		imageStep.setQuality(80);
-		imageStep.setInputDir(TestHelper.IMAGE);
-		imageStep.setOutputDir(IDerivans.IMAGE_Q80);
 		GeneratorImageJPG imgGen = new GeneratorImageJPG();
 		imgGen.setDerivate(TestImageGenerator.testDerivate);
 		imgGen.setStep(imageStep);
@@ -76,10 +74,8 @@ class TestImageGenerator {
 		// arrange
 		Path targetPath = TestImageGenerator.sharedTempDir.resolve("image_70");
 		Files.createDirectory(targetPath); // mandatory, done in production by Basetype
-	
-		DerivateStepImage imageStep = new DerivateStepImage();
-		imageStep.setInputDir(TestHelper.IMAGE);
-		imageStep.setOutputDir("image_70");
+
+		DerivateStepImage imageStep = new DerivateStepImage(TestHelper.IMAGE, "image_70");
 		imageStep.setQuality(70);
 		GeneratorImageJPG imgGen = new GeneratorImageJPG();
 		imgGen.setDerivate(TestImageGenerator.testDerivate);
@@ -104,11 +100,9 @@ class TestImageGenerator {
 		Path targetPath = sharedTempDir.resolve("DEFAULT");
 		Files.createDirectory(targetPath); // mandatory, done in production by BaseDerivateer
 
-		DerivateStepImage imageStep = new DerivateStepImage();
+		DerivateStepImage imageStep = new DerivateStepImage(TestHelper.IMAGE, "DEFAULT");
 		imageStep.setMaximal(256);
-		imageStep.setInputDir(TestHelper.IMAGE); // critical if missing
 		imageStep.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
-		imageStep.setOutputDir("DEFAULT");
 		GeneratorImageJPG derivateer = new GeneratorImageJPG();
 		derivateer.setDerivate(TestImageGenerator.testDerivate);
 		derivateer.setStep(imageStep);
@@ -145,9 +139,7 @@ class TestImageGenerator {
 		Files.createDirectory(targetPath);
 		Files.createDirectory(finalPath);
 
-		DerivateStepImage previewStep = new DerivateStepImage();
-		previewStep.setInputDir(TestHelper.IMAGE);
-		previewStep.setOutputDir("PREVIEW");
+		DerivateStepImage previewStep = new DerivateStepImage(TestHelper.IMAGE, "PREVIEW");
 		previewStep.setQuality(50);
 		previewStep.setMaximal(256);
 		previewStep.setOutputPrefix("BUNDLE_BRANDED_PREVIEW__");
@@ -155,11 +147,9 @@ class TestImageGenerator {
 		previewGen.setDerivate(TestImageGenerator.testDerivate);
 		previewGen.setStep(previewStep);
 
-		DerivateStepImage humbleStep = new DerivateStepImage();
+		DerivateStepImage humbleStep = new DerivateStepImage("PREVIEW", "FINAL");
 		humbleStep.setInputPrefix("BUNDLE_BRANDED_PREVIEW__");
 		humbleStep.setOutputPrefix("BUNDLE_HUMBLE__");
-		humbleStep.setInputDir("PREVIEW");
-		humbleStep.setOutputDir("FINAL");
 		humbleStep.setMaximal(128);
 		humbleStep.setQuality(50);
 		GeneratorImageJPG finalGen = new GeneratorImageJPG();
@@ -194,7 +184,7 @@ class TestImageGenerator {
 	 */
 	@Test
 	void testBehavorMissingOutput() throws DigitalDerivansException {
-		DerivateStepImage incompleteStep01 = new DerivateStepImage();
+		DerivateStepImage incompleteStep01 = new DerivateStepImage(null, null);
 		GeneratorImageJPG invalidGen = new GeneratorImageJPG();
 		invalidGen.setDerivate(TestImageGenerator.testDerivate);
 		invalidGen.setStep(incompleteStep01);
@@ -217,8 +207,7 @@ class TestImageGenerator {
 	void testBehavorMissingInput() throws IOException, DigitalDerivansException {
 		Path path = sharedTempDir.resolve("MISSING_INPUT");
 		Files.createDirectory(path);
-		DerivateStepImage incompleteStep01 = new DerivateStepImage();
-		incompleteStep01.setOutputDir("MISSING_INPUT");
+		DerivateStepImage incompleteStep01 = new DerivateStepImage(null, "MISSING_INPUT");
 		GeneratorImageJPG invalidGen = new GeneratorImageJPG();
 		invalidGen.setDerivate(TestImageGenerator.testDerivate);
 		invalidGen.setStep(incompleteStep01);

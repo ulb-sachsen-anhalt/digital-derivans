@@ -15,7 +15,6 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
-import de.ulb.digital.derivans.model.step.DerivateStepImage;
 
 /**
  * 
@@ -36,6 +35,8 @@ class TestDerivansFulltextODEM {
 	static TestHelper.PDFInspector inspector;
 
 	static int nImages = 17;
+
+	static int fSizeImage80_00000001 = 499696;
 
 	@BeforeAll
 	static void setupBeforeClass() throws Exception {
@@ -69,7 +70,6 @@ class TestDerivansFulltextODEM {
 		// int maximal = 1754; // A4 150 DPI tw, print vanishes over top up to "Sero
 		// ..."
 		// int maximal = 1170; // A4 100 DPI ok with smaller text
-		// ((DerivateStepImage) dc.getDerivateSteps().get(1)).setMaximal(maximal);
 		Derivans derivans = new Derivans(dc);
 
 		// act
@@ -80,7 +80,7 @@ class TestDerivansFulltextODEM {
 	}
 
 	@Test
-	void testDerivatesForPDFWritten() {
+	void testDerivatesForPDFWritten() throws IOException {
 		Path image80Dir = workDir.resolve(IDerivans.IMAGE_Q80);
 		assertTrue(Files.exists(image80Dir));
 		for (int i = 1; i < nImages; i++) {
@@ -90,8 +90,28 @@ class TestDerivansFulltextODEM {
 	}
 
 	@Test
+	void testDerivateImage01ForPDFHasCertainSize() throws IOException {
+		Path image80Dir = workDir.resolve(IDerivans.IMAGE_Q80);
+		assertEquals(fSizeImage80_00000001, Files.size(image80Dir.resolve("00000001.jpg")));
+	}
+
+	@Test
 	void testPDFWritten() {
 		assertTrue(Files.exists(pdfPath));
+	}
+
+	/**
+	 *
+	 * Also check that image 1 has same size as image
+	 * generated before with JPG quality 80
+	 *
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testPDFHasCertainNumberOfPages() throws DigitalDerivansException {
+		String pdfMD = inspector.getImageInfo(1);
+		assertEquals("Image Im1: jpg, 2067 x 2339 px, 499696 bytes", pdfMD);
+		assertTrue(pdfMD.contains(String.valueOf(fSizeImage80_00000001)));
 	}
 
 	@Test
@@ -108,7 +128,7 @@ class TestDerivansFulltextODEM {
 	@Test
 	void testPage07HasCertainLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPath, 7);
-		assertEquals(1942, textPage07.length());
+		assertEquals(1931, textPage07.length());
 
 	}
 

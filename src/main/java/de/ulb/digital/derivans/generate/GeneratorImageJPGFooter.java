@@ -94,7 +94,7 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 	}
 
 	private String renderFooter(DigitalPage page) {
-		Path pathIn = page.getFile().withDirname(this.step.getInputDir());
+		Path pathIn = page.getFile().using(this.step.getInputType(), this.step.getInputDir());
 		if (!Files.exists(pathIn)) {
 			throw new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
 		}

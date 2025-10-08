@@ -18,9 +18,9 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.generate.Generator;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 import de.ulb.digital.derivans.model.step.DerivateStep;
-import de.ulb.digital.derivans.model.step.DerivateType;
 
 /**
  * 
@@ -126,8 +126,8 @@ class TestDerivansFS {
 		// assert
 		List<DerivateStep> steps = derivans.getSteps();
 		assertEquals(5, steps.size());
-		assertEquals(DerivateType.TIF, steps.get(0).getInputType());
-		assertEquals(DerivateType.JPG, steps.get(1).getInputType());
+		assertEquals(DigitalType.TIF, steps.get(0).getInputType());
+		assertEquals(DigitalType.JPG, steps.get(1).getInputType());
 
 		derivans.forward();
 		// assert

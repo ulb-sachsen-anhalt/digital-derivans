@@ -58,12 +58,12 @@ public class DigitalPage {
 	public DigitalPage(String pageId, int orderNr, Path localFilePath) {
 		this.pageId = pageId;
 		this.orderNr = orderNr;
-		DigitalPage.File dFile = new File(FileType.IMAGE, localFilePath);
+		DigitalPage.File dFile = new File(DigitalType.JPG, localFilePath);
 		this.file = dFile;
 	}
 
 	public void setOcrFile(Path ocrPath) throws DigitalDerivansException {
-		this.ocrFile = Optional.of(new File(FileType.OCR, ocrPath));
+		this.ocrFile = Optional.of(new File(DigitalType.OCR, ocrPath));
 		if(Files.exists(ocrPath)) { // due testing reasons
 			this.ocrData = Optional.of(OCRReaderFactory.from(ocrPath).get(ocrPath));
 		}
@@ -147,12 +147,12 @@ public class DigitalPage {
 	 *
 	 */
 	public static class File {
-		private FileType fileType;
+		private DigitalType fileType;
 		private Path physicalPath;
 
-		public File(FileType fileType, Path phyiscalPath) {
+		public File(DigitalType fileType, Path physicalPath) {
 			this.fileType = fileType;
-			this.physicalPath = phyiscalPath;
+			this.physicalPath = physicalPath;
 		}
 
 		public Path getPath() {
@@ -163,17 +163,32 @@ public class DigitalPage {
 			return this.physicalPath.getFileName().toString();
 		}
 
-		public Path withDirname(String newDirname) {
+		public Path using(String newDirname) {
 			Path currDir = this.physicalPath.getParent();
-			Path currFile = this.physicalPath.getFileName();
-			return currDir.getParent().resolve(newDirname).resolve(currFile);
+			Path currFileName = this.physicalPath.getFileName();
+			DigitalType type = this.getFileType();
+			if (currFileName.toString().endsWith("tif") && (type == DigitalType.JPG_FOOTER || type == DigitalType.JPG)) {
+				currFileName = Path.of(currFileName.toString().replace("tif", "jpg"));
+			}
+			return currDir.getParent().resolve(newDirname).resolve(currFileName);
+		}
+
+		public Path using(DigitalType newType, String newDirname) {
+			Path currDir = this.physicalPath.getParent();
+			Path currFileName = this.physicalPath.getFileName();
+			if (currFileName.toString().endsWith("tif") && (newType == DigitalType.JPG_FOOTER || newType == DigitalType.JPG)) {
+				currFileName = Path.of(currFileName.toString().replace("tif", "jpg"));
+			} else if (currFileName.toString().endsWith("jpg") && newType == DigitalType.TIF) {
+				currFileName = Path.of(currFileName.toString().replace("jpg", "tif"));
+			}
+			return currDir.getParent().resolve(newDirname).resolve(currFileName);
 		}
 
 		public String subDir() {
 			return this.physicalPath.getParent().getFileName().toString();
 		}
 
-		public FileType getFileType() {
+		public DigitalType getFileType() {
 			return fileType;
 		}
 
@@ -184,7 +199,4 @@ public class DigitalPage {
 
 	}
 
-	enum FileType {
-		IMAGE, OCR
-	}
 }

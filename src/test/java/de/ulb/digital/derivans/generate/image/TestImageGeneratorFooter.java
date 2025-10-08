@@ -27,6 +27,7 @@ import de.ulb.digital.derivans.generate.GeneratorImageJPGFooter;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
+import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.step.DerivateStepImageFooter;
 
@@ -91,9 +92,7 @@ class TestImageGeneratorFooter {
 		Files.copy(source, footerTarget, StandardCopyOption.REPLACE_EXISTING);
 		assertTrue(Files.exists(footerTarget));
 
-		DerivateStepImageFooter footerStep = new DerivateStepImageFooter();
-		footerStep.setInputDir("IMAGE1");
-		footerStep.setOutputDir("IMAGE_FOOTER1");
+		DerivateStepImageFooter footerStep = new DerivateStepImageFooter("IMAGE1", "IMAGE_FOOTER1");
 		footerStep.setQuality(95);
 		footerStep.setFooterLabel("Testlabel footer regular");
 		footerStep.setPathTemplate(footerTarget);
@@ -133,9 +132,7 @@ class TestImageGeneratorFooter {
 		Files.createDirectories(targetDir);
 		Path tplTarget = targetDir.resolve("footer_template.png");
 		Files.copy(tplSourcePath, tplTarget, StandardCopyOption.REPLACE_EXISTING);
-		DerivateStepImageFooter footerStep = new DerivateStepImageFooter();
-		footerStep.setInputDir("IMAGE2");
-		footerStep.setOutputDir("IMAGE_FOOTER2");
+		DerivateStepImageFooter footerStep = new DerivateStepImageFooter("IMAGE2", "IMAGE_FOOTER2");
 		footerStep.setFooterLabel("Newspaper Footer");
 		footerStep.setPathTemplate(tplTarget);
 
@@ -185,9 +182,9 @@ class TestImageGeneratorFooter {
 		Path target = targetDir.resolve("footer_template.png");
 		Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
 
-		DerivateStepImageFooter footerStep = new DerivateStepImageFooter();
-		footerStep.setInputDir("IMAGE3");
-		footerStep.setOutputDir("IMAGE_FOOTER3");
+		DerivateStepImageFooter footerStep = new DerivateStepImageFooter("IMAGE3", "IMAGE_FOOTER3");
+		footerStep.setInputType(DigitalType.TIF);
+		footerStep.setOutputType(DigitalType.JPG_FOOTER);
 		footerStep.setPathTemplate(target);
 		footerStep.setQuality(95);
 
@@ -235,9 +232,7 @@ class TestImageGeneratorFooter {
 			testStruct.getPages().add(page);
 		}
 
-		DerivateStepImageFooter footerStep = new DerivateStepImageFooter();
-		footerStep.setInputDir(TestHelper.IMAGE);
-		footerStep.setOutputDir("IMAGE_FOOTER4");
+		DerivateStepImageFooter footerStep = new DerivateStepImageFooter(TestHelper.IMAGE, "IMAGE_FOOTER4");
 		footerStep.setPathTemplate(target);
 		footerStep.setQuality(95);
 
@@ -299,9 +294,7 @@ class TestImageGeneratorFooter {
 		}
 
 		// enrich target path
-		DerivateStepImageFooter footerStep = new DerivateStepImageFooter();
-		footerStep.setInputDir(TestHelper.IMAGE);
-		footerStep.setOutputDir("IMAGE_FOOTER5");
+		DerivateStepImageFooter footerStep = new DerivateStepImageFooter(TestHelper.IMAGE, "IMAGE_FOOTER5");
 		footerStep.setPathTemplate(target);
 		footerStep.setQuality(95);
 
@@ -316,7 +309,7 @@ class TestImageGeneratorFooter {
 
 		// assert
 		assertEquals(3, outcome);
-		List<Path> resultPaths = Files.list(sharedTempDir.resolve("IMAGE_FOOTER4")).collect(Collectors.toList());
+		List<Path> resultPaths = Files.list(sharedTempDir.resolve("IMAGE_FOOTER5")).collect(Collectors.toList());
 
 		// difference since there are 3 images, but only two of them have granular urn
 		assertEquals(2, footerGen.getNumberOfGranularIdentifiers());
