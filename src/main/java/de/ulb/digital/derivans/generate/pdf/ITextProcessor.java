@@ -54,7 +54,6 @@ import de.ulb.digital.derivans.config.TypeConfiguration;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
-import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.IPDFProcessor;
 import de.ulb.digital.derivans.model.pdf.PDFPage;
@@ -289,6 +288,9 @@ public class ITextProcessor implements IPDFProcessor {
 		if (currStruct.getChildren().isEmpty()) {
 			List<PDFPage> processed = this.addPages(currStruct.getPages(), currentOutline);
 			processedPdfPages.addAll(processed);
+			if (processed.isEmpty()) {
+				throw new DigitalDerivansException("no pages processed for struct " + currStruct.getLabel());
+			}
 			int firstNumber = processed.get(0).getNumber();
 			PdfPage firstStructPage = this.requestDestinationPage(firstNumber);
 			currentOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(firstStructPage)));

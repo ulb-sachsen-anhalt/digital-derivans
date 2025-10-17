@@ -91,16 +91,11 @@ public class DefaultConfiguration {
 		var output = DefaultConfiguration.DEFAULT_IMG_REDUCED;
 		var imgDir = IDerivans.IMAGE_DIR_DEFAULT;
 		DerivateStepImage create80sJpgs = new DerivateStepImage(imgDir, output);
-		// create80sJpgs.setInputDir(imgDir);
-		// create80sJpgs.setOutputDir(output);
 		create80sJpgs.setOutputType(DigitalType.JPG);
 		create80sJpgs.setQuality(DefaultConfiguration.DEFAULT_QUALITY);
 		create80sJpgs.setPoolsize(DefaultConfiguration.DEFAULT_POOLSIZE);
 		steps.add(create80sJpgs);
-		// createPdf.setInputDir(output);
-		// createPdf.setOutputDir(".");
 		DerivateStepPDF createPdf = new DerivateStepPDF(output, ".");
-		// createPdf.setOutputType(DerivateType.PDF);
 		steps.add(createPdf);
 		return steps;
 	}
