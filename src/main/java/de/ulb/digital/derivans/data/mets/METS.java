@@ -166,7 +166,11 @@ public class METS {
 			}
 		}
 		// links
-		Element structLink = this.document.getDescendants(structLinkFilter).next();
+		Iterator<Element> iter = this.document.getDescendants(structLinkFilter);
+		if (!iter.hasNext()) {
+			throw new DigitalDerivansException("No structLinks found");
+		}
+		Element structLink = iter.next();
 		List<Element> mapLinks = structLink.getChildren("smLink", NS_METS);
 		for (Element smLink : mapLinks) {
 			String fromLogical = smLink.getAttributeValue("from", NS_XLINK);
@@ -197,7 +201,7 @@ public class METS {
 				var logDivs = this.evaluate(xpr);
 				if (logDivs.size() == 1) {
 					this.primeLog = logDivs.get(0);
-					var dmdId = primeLog.getAttributeValue("DMDID");
+					var dmdId = primeLog.getAttributeValue(DMD_ID);
 					return Optional.of(dmdId);
 				}
 			}
@@ -224,7 +228,7 @@ public class METS {
 		if (metsDivs.size() == 1) {
 			var primeDiv = metsDivs.get(0);
 			if (primeDiv.hasAttributes()) {
-				String dmdId = primeDiv.getAttributeValue("DMDID");
+				String dmdId = primeDiv.getAttributeValue(DMD_ID);
 				if (dmdId != null) {
 					this.primeLog = primeDiv;
 					return dmdId;
@@ -236,7 +240,7 @@ public class METS {
 			var containerType = METSContainerType.forLabel(type);
 			if (METSContainerType.isObject(containerType)) {
 				this.primeLog = metsDiv;
-				return metsDiv.getAttributeValue("DMDID");
+				return metsDiv.getAttributeValue(DMD_ID);
 			}
 		}
 		throw new DigitalDerivansException("Can't determine mets:div with DMD identifier in " + this.getPath());
@@ -415,23 +419,32 @@ public class METS {
 	public List<METSContainer> getPages(METSContainer div)
 			throws DigitalDerivansException {
 		String logID = div.getId();
-		List<METSContainer> cntnrs = new ArrayList<>();
+		List<METSContainer> pageContainers = new ArrayList<>();
 		List<String> linkedTo = this.smLinks.getOrDefault(logID, new ArrayList<>());
 		for (String linkedId : linkedTo) {
 			if (this.physContainer.containsKey(linkedId)) {
-				METSContainer page = this.physContainer.get(linkedId);
-				cntnrs.add(page);
+				METSContainer physCnt = this.physContainer.get(linkedId);
+				if (physCnt.getType() != METSContainerType.PAGE) {
+					// this happened as far as known in legacy inhouse newspaper
+					// structures only when top most physSequence is linked
+					// from logical structMap
+					var cntLabel = div.determineLabel();
+					var physTypeLabel = physCnt.getType().getLabel();
+					LOGGER.warn("linked div {} / {} -> page {} '/ {}", logID, cntLabel, linkedId, physTypeLabel);
+				} else {
+					pageContainers.add(physCnt);
+				}
 			}
 		}
-		if (cntnrs.isEmpty()) {
+		if (pageContainers.isEmpty()) {
 			String alert = String.format("No files link div %s/%s in @USE=%s!",
 					logID, div.determineLabel(), this.imgFileGroup);
 			throw new DigitalDerivansException(alert);
 		}
-		return cntnrs;
+		return pageContainers;
 	}
 
-	public METSFilePack getPageFiles(METSContainer container) {
+	public METSFilePack getPageFiles(METSContainer container) throws DigitalDerivansException {
 		List<Element> allFiles = container.get().getChildren("fptr", METS.NS_METS);
 		List<String> fileIds = allFiles.stream().map(aFile -> aFile.getAttributeValue("FILEID"))
 				.collect(Collectors.toList());
@@ -444,6 +457,10 @@ public class METS {
 					break;
 				}
 			}
+		}
+		if (imgFile == null) {
+			var msg = "Can't find image file in @USE=" + this.imgFileGroup + " for container " + container.getId();
+			throw new DigitalDerivansException(msg);
 		}
 		imgFile.setLocalRoot(this.getPath().getParent());
 		METSFilePack pack = new METSFilePack();
@@ -477,9 +494,7 @@ public class METS {
 		String mimeType = "application/pdf";
 		String fileGroup = "DOWNLOAD";
 		LOGGER.info("enrich pdf '{}' as '{}' in '{}'", identifier, mimeType, fileGroup);
-		// String fileId = "PDF_" + identifier;
 		var resultText = this.addDownloadFile("DOWNLOAD", identifier, "application/pdf");
-		// LOGGER.info("integrated pdf fileId '{}' in '{}'", fileId, this.file);
 		LOGGER.info("integrated mets:agent {}", resultText);
 		return resultText;
 	}

@@ -148,8 +148,12 @@ public enum TestResource {
 
 	/**
 	 * 
+	 */
+	VLS_ZD_INHOUSE_2337658(Path.of("src/test/resources/mets/vls/2337658.ulb.xml")),
+	/**
+	 *
 	 * Test XSDs
-	 * 
+	 *
 	 */
 	METS_1_12_XSD(Path.of("src/test/resources/mets/mets_1_12.xsd")),
 	;

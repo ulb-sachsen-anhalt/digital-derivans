@@ -108,9 +108,11 @@ public class DerivateMD implements IDerivate {
 
 	private void populateStruct(DerivateStruct parent, METSContainer container, String fileExt)
 			throws DigitalDerivansException {
+		// handle all directly linked pages. i.e. flat structures
 		if (container.getChildren().isEmpty()) {
 			this.handlePages(parent, container);
 		} else {
+			// handle objects with sub-structs
 			for (var subContainer : container.getChildren()) {
 				this.traverseStruct(parent, subContainer, fileExt);
 			}
