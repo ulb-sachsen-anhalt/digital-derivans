@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:dv="http://dfg-viewer.de/" xmlns:ulb="https://bibliothek.uni-halle.de" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="11" LABEL="Inhouse-Zeitungen">
+  <mets:metsHdr CREATEDATE="2025-10-16T16:18:17">
+    <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>vls/2203</mets:name>
+      <mets:note>legacy vlid: 2337658</mets:note>
+      <mets:note>legacy date: 2025-10-16T14:18:17Z</mets:note>
+    </mets:agent>
+    <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>ULB Migration 2025</mets:name>
+      <mets:note>2025-10-16 16:18:19</mets:note>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="md2337658">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:originInfo eventType="publication">
+            <mods:dateIssued encoding="iso8601">1934-10-27</mods:dateIssued>
+            <mods:place>
+              <mods:placeTerm>Halle (Saale)</mods:placeTerm>
+            </mods:place>
+          </mods:originInfo>
+          <mods:originInfo eventType="digitization">
+            <mods:place>
+              <mods:placeTerm>Halle (Saale)</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+            <mods:dateCaptured encoding="iso8601">2015-11-04</mods:dateCaptured>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm type="code" authority="iso639-2b">ger</mods:languageTerm>
+          </mods:language>
+          <mods:relatedItem type="host">
+            <mods:titleInfo>
+              <mods:title>Illustrierte hallische Nachrichten</mods:title>
+            </mods:titleInfo>
+            <mods:identifier type="zdb">2844820-0</mods:identifier>
+            <mods:relatedItem type="original">
+              <mods:identifier type="zdb">2186191-2</mods:identifier>
+            </mods:relatedItem>
+            <mods:recordInfo>
+              <mods:recordIdentifier source="gvk-ppn">846335824</mods:recordIdentifier>
+            </mods:recordInfo>
+          </mods:relatedItem>
+          <mods:part order="1934102701">
+            <mods:detail type="issue">
+              <mods:number>Nr. 43</mods:number>
+              <mods:title>1.Ausgabe</mods:title>
+            </mods:detail>
+            <mods:detail type="volume">
+              <mods:number>1934</mods:number>
+            </mods:detail>
+          </mods:part>
+          <mods:recordInfo>
+            <mods:recordCreationDate encoding="marc">13-07-22</mods:recordCreationDate>
+            <mods:recordChangeDate encoding="marc">16-10-25</mods:recordChangeDate>
+            <mods:recordIdentifier source="gvk-ppn">8463358241934102701</mods:recordIdentifier>
+          </mods:recordInfo>
+          <mods:accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</mods:accessCondition>
+          <mods:classification authority="ddc">090</mods:classification>
+          <mods:extension>
+            <ulb:externalType recordSyntax="pica">OZ</ulb:externalType>
+            <ulb:imageDefaultDimension>!2500,2500</ulb:imageDefaultDimension>
+          </mods:extension>
+          <mods:identifier type="urn">urn:nbn:de:gbv:3:3-53689-19341027019</mods:identifier>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd2337658">
+    <mets:rightsMD ID="rights2337658">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights>
+            <dv:ownerLogo>Share_it</dv:ownerLogo>
+            <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+            <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+            <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov2337658">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links>
+            <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=846335824</dv:reference>
+            <dv:presentation>Share_it</dv:presentation>
+          </dv:links>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="MAX">
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337659">
+        <mets:FLocat xlink:href="MAX/0001.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337660">
+        <mets:FLocat xlink:href="MAX/0002.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337661">
+        <mets:FLocat xlink:href="MAX/0003.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337662">
+        <mets:FLocat xlink:href="MAX/0004.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337663">
+        <mets:FLocat xlink:href="MAX/0005.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337664">
+        <mets:FLocat xlink:href="MAX/0006.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337665">
+        <mets:FLocat xlink:href="MAX/0007.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337666">
+        <mets:FLocat xlink:href="MAX/0008.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337667">
+        <mets:FLocat xlink:href="MAX/0009.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337669">
+        <mets:FLocat xlink:href="MAX/0010.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337670">
+        <mets:FLocat xlink:href="MAX/0011.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337671">
+        <mets:FLocat xlink:href="MAX/0012.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337672">
+        <mets:FLocat xlink:href="MAX/0013.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337673">
+        <mets:FLocat xlink:href="MAX/0014.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337674">
+        <mets:FLocat xlink:href="MAX/0015.jpg" LOCTYPE="URL"/>
+      </mets:file>
+      <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_2337675">
+        <mets:FLocat xlink:href="MAX/0016.jpg" LOCTYPE="URL"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys2337659" TYPE="page" LABEL="[Seite 1]" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0001" ORDER="1">
+        <mets:fptr FILEID="IMG_MAX_2337659"/>
+      </mets:div>
+      <mets:div ID="phys2337660" TYPE="page" LABEL="Seite 2" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0002" ORDER="2" ORDERLABEL="2">
+        <mets:fptr FILEID="IMG_MAX_2337660"/>
+      </mets:div>
+      <mets:div ID="phys2337661" TYPE="page" LABEL="Seite 3" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0003" ORDER="3" ORDERLABEL="3">
+        <mets:fptr FILEID="IMG_MAX_2337661"/>
+      </mets:div>
+      <mets:div ID="phys2337662" TYPE="page" LABEL="Seite 4" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0004" ORDER="4" ORDERLABEL="4">
+        <mets:fptr FILEID="IMG_MAX_2337662"/>
+      </mets:div>
+      <mets:div ID="phys2337663" TYPE="page" LABEL="Seite 5" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0005" ORDER="5" ORDERLABEL="5">
+        <mets:fptr FILEID="IMG_MAX_2337663"/>
+      </mets:div>
+      <mets:div ID="phys2337664" TYPE="page" LABEL="Seite 6" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0006" ORDER="6" ORDERLABEL="6">
+        <mets:fptr FILEID="IMG_MAX_2337664"/>
+      </mets:div>
+      <mets:div ID="phys2337665" TYPE="page" LABEL="Seite 7" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0007" ORDER="7" ORDERLABEL="7">
+        <mets:fptr FILEID="IMG_MAX_2337665"/>
+      </mets:div>
+      <mets:div ID="phys2337666" TYPE="page" LABEL="Seite 8" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0008" ORDER="8" ORDERLABEL="8">
+        <mets:fptr FILEID="IMG_MAX_2337666"/>
+      </mets:div>
+      <mets:div ID="phys2337667" TYPE="page" LABEL="Seite 9" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0009" ORDER="9" ORDERLABEL="9">
+        <mets:fptr FILEID="IMG_MAX_2337667"/>
+      </mets:div>
+      <mets:div ID="phys2337669" TYPE="page" LABEL="Seite 10" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0010" ORDER="10" ORDERLABEL="10">
+        <mets:fptr FILEID="IMG_MAX_2337669"/>
+      </mets:div>
+      <mets:div ID="phys2337670" TYPE="page" LABEL="Seite 11" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0011" ORDER="11" ORDERLABEL="11">
+        <mets:fptr FILEID="IMG_MAX_2337670"/>
+      </mets:div>
+      <mets:div ID="phys2337671" TYPE="page" LABEL="Seite 12" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0012" ORDER="12" ORDERLABEL="12">
+        <mets:fptr FILEID="IMG_MAX_2337671"/>
+      </mets:div>
+      <mets:div ID="phys2337672" TYPE="page" LABEL="Seite 13" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0013" ORDER="13" ORDERLABEL="13">
+        <mets:fptr FILEID="IMG_MAX_2337672"/>
+      </mets:div>
+      <mets:div ID="phys2337673" TYPE="page" LABEL="Seite 14" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0014" ORDER="14" ORDERLABEL="14">
+        <mets:fptr FILEID="IMG_MAX_2337673"/>
+      </mets:div>
+      <mets:div ID="phys2337674" TYPE="page" LABEL="Seite 15" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0015" ORDER="15" ORDERLABEL="15">
+        <mets:fptr FILEID="IMG_MAX_2337674"/>
+      </mets:div>
+      <mets:div ID="phys2337675" TYPE="page" LABEL="[Seite 16]" CONTENTIDS="urn:nbn:de:gbv:3:3-53689-19341027019/fragment/page=0016" ORDER="16">
+        <mets:fptr FILEID="IMG_MAX_2337675"/>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="log2328100" TYPE="newspaper" LABEL="Illustrierte hallische Nachrichten" ORDER="1">
+      <mets:mptr LOCTYPE="URL" xlink:href="846335824"/>
+      <mets:div ID="log2345226" TYPE="year" LABEL="1934" ORDER="1" ORDERLABEL="1934">
+        <mets:mptr LOCTYPE="URL" xlink:href="8463358241934"/>
+        <mets:div TYPE="month" ID="month10" LABEL="10" ORDERLABEL="1934-10">
+          <mets:div TYPE="day" ID="day1027" LABEL="27" ORDERLABEL="1934-10-27">
+            <mets:div ID="log2337658" DMDID="md2337658" ADMID="amd2337658" TYPE="issue" LABEL="Nr. 43 (27.10.1934) Illustrierte Hallische Nachrichten 1.Ausgabe" ORDER="1">
+              </mets:div>
+          </mets:div>
+        </mets:div>
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="log2337658" xlink:to="physroot"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337659"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337660"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337661"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337662"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337663"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337664"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337665"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337666"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337667"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337669"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337670"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337671"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337672"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337673"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337674"/>
+    <mets:smLink xlink:from="log2337658" xlink:to="phys2337675"/>
+  </mets:structLink>
+</mets:mets>
