@@ -12,9 +12,9 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
  * Specific PDF Derivate Generation Step
- * 
+ *
  * @author u.hartwig
- * 
+ *
  */
 public class DerivateStepPDF extends DerivateStep {
 
@@ -93,7 +93,7 @@ public class DerivateStepPDF extends DerivateStep {
 	}
 
 	public void setConformance(String conformance) {
-		if(conformance != null) {
+		if (conformance != null) {
 			this.optConformance = Optional.of(conformance);
 		}
 	}

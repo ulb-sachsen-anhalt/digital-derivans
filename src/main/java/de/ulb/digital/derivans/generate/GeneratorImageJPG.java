@@ -33,7 +33,9 @@ public class GeneratorImageJPG extends GeneratorImage {
 	private String render(DigitalPage page) {
 		Path pathIn = this.setInpath(page);
 		if (!Files.exists(pathIn)) {
-			throw new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
+			String msg = String.format("input '%s' missing!", pathIn);
+			LOGGER.error(msg);
+			throw new DigitalDerivansRuntimeException(msg);
 		}
 		Path pathOut = this.setOutpath(page);
 		try {

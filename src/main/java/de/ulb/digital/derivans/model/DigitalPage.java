@@ -31,7 +31,7 @@ public class DigitalPage {
 	private String pageLabel;
 
 	/**
-	 * Pointer to single physical image for given page
+	 * Point to physical images for given digital page
 	 * Subject to change due subsequent derivation actions
 	 */
 	private DigitalPage.File file;

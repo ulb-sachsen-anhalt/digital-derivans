@@ -6,9 +6,9 @@ import de.ulb.digital.derivans.model.DigitalType;
 
 /**
  * Specific Image Derivate Generation Step
- * 
+ *
  * @author u.hartwig
- * 
+ *
  */
 public class DerivateStepImage extends DerivateStep {
 
@@ -68,7 +68,5 @@ public class DerivateStepImage extends DerivateStep {
 	public int getImageDpi() {
 		return this.imageDpi;
 	}
-
-
 
 }

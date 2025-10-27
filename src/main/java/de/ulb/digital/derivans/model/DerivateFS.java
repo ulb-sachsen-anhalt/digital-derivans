@@ -84,12 +84,12 @@ public class DerivateFS implements IDerivate {
 		var label = this.pathInput.getFileName().toString();
 		var orderNr = this.theOrder.get();
 		this.struct = new DerivateStruct(orderNr, label);
-		this.populateStruct(this.startFileExtension);
+		this.populateStruct();
 		this.inited = true;
 	}
 
-	private void populateStruct(String fileExt) throws DigitalDerivansException {
-		List<Path> allFiles = this.filePathsFrom(this.localStartDir, fileExt);
+	private void populateStruct() throws DigitalDerivansException {
+		List<Path> allFiles = this.filePathsFrom(this.localStartDir, null);
 		List<Path> fulltextFiles = new ArrayList<>();
 		if (this.fulltextDir != null) {
 			fulltextFiles = this.filePathsFrom(this.fulltextDir, ".xml");
@@ -100,7 +100,7 @@ public class DerivateFS implements IDerivate {
 			String currentId = String.format("FILE_%d04", i + 1);
 			DigitalPage dp = new DigitalPage(currentId, currentOrder, currPath);
 			dp.setPageLabel(String.format("[%d]", currentOrder));
-			String fileName = currPath.getFileName().toString().split(fileExt)[0];
+			String fileName = currPath.getFileName().toString().split(this.getStartFileExtension())[0];
 			Optional<Path> fulltextMatch = fulltextFiles.stream()
 					.filter(file -> { String pathName = file.getFileName().toString();
 									  return pathName.startsWith(fileName) || fileName.startsWith(pathName);
@@ -119,7 +119,7 @@ public class DerivateFS implements IDerivate {
 		try (Stream<Path> stream = Files.list(theDir)) {
 			allFiles = stream
 					.filter(Files::isRegularFile)
-					.filter(f -> f.toString().endsWith(fileExt))
+					.filter(f -> { if (fileExt != null) { return f.toString().endsWith(fileExt); } else { return true; } })
 					.collect(Collectors.toList());
 		} catch (IOException e) {
 			throw new DigitalDerivansException(e);
