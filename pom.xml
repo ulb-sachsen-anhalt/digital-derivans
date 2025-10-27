@@ -44,6 +44,7 @@
 		<jaxen.version>2.0.0</jaxen.version>
 		<log4j2.version>2.17.1</log4j2.version>
 		<args4j.version>2.37</args4j.version>
+		<org.verapdf.version>1.28.1</org.verapdf.version>
 		<configuration2.version>2.11.0</configuration2.version>
 	</properties>
 
@@ -127,14 +128,13 @@
 		<dependency>
 			<groupId>org.verapdf</groupId>
 			<artifactId>validation-model</artifactId>
-			<version>1.28.1</version>
+			<version>${org.verapdf.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.verapdf</groupId>
 			<artifactId>pdfbox-validation-model-jakarta</artifactId>
-			<version>1.28.1</version>
+			<version>${org.verapdf.version}</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
