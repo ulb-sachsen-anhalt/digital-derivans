@@ -93,6 +93,19 @@ public class GeneratorPDF extends Generator {
 			var msg = "No pages for PDF " + this.pathPDF;
 			throw new DigitalDerivansException(msg);
 		}
+		// check write permissions
+		var pathPdf = this.pathPDF;
+		if (Files.exists(pathPdf)) {
+			if (!Files.isWritable(pathPdf)) {
+				throw new DigitalDerivansException("No write permission for file: " + pathPdf.toAbsolutePath());
+			}
+		} else {
+			// Check parent directory permissions
+			var parentDir = pathPdf.getParent();
+			if (parentDir != null && !Files.isWritable(parentDir)) {
+				throw new DigitalDerivansException("No write permission for directory: " + parentDir.toAbsolutePath());
+			}
+		}
 		// forward pdf generation
 		this.pdfProcessor.init((DerivateStepPDF) this.step, this.derivate);
 		this.pdfResult = this.pdfProcessor.write(this.pathPDF.toFile());
