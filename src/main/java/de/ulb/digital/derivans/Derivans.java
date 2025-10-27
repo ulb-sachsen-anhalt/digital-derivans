@@ -89,6 +89,10 @@ public class Derivans {
                 String ocrParam = optOCRParam.get();
                 LOGGER.warn("param fulltext dir {} set but ignored because METS/MODS present!", ocrParam);
             }
+        } else {
+            String msg = "Input path " + theInput + " is neither an accessible directory nor regular file!";
+            LOGGER.error(msg);
+            throw new DigitalDerivansException(msg);
         }
         this.generators = new ArrayList<>();
         for (DerivateStep step : this.steps) {
