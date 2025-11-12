@@ -2,14 +2,23 @@
 
 ![JDK11 Maven3](https://github.com/ulb-sachsen-anhalt/digital-derivans/workflows/Java%20CI%20with%20Maven/badge.svg)
 
-Java command line tool to create PDF files from image derivates with configurable scales, qualities and additional assets files like preview images or thumbnails.  
-Appends image footer or structured OCR formats (ALTO, PAGE) to produce text layers and metadata (METS/MODS).
+## What is the tool used for?
 
-Please note: Derivans does no metadata validation or sanitizing.  
-If provided METS/MODS, it fails for empty logical sections, i.e. chapters not linked to any image or page because it can't create a consistent outline in this case. To ensure XML conformance before/after using Derivans, one needs to use a different tool.
+This java command line tool can be used to generate PDF files from image derivatives with configurable scales, qualities, and additional asset files such as preview images or thumbnails. 
+If full text is available (structured OCR formats like ALTO or PAGE), this can also be added. This makes the information contained in the documents usable, searchable, and efficiently manageable.
+
+## The tool enables:
+
+* Efficient information retrieval: Instead of laboriously searching through hundreds or thousands of pages manually, you can search for specific words, phrases, names, or data with a single click and locate them immediately. This saves considerable time and effort, especially with large data sets.
+* Improved accessibility and management: Searchable PDFs transform static images (pure scans) into dynamic sources of information. They can be seamlessly integrated into digital document management systems (DMS), simplifying the organization, categorization, and retrieval of documents.
+* Text editing and extraction: OCR technology converts the text in the image into machine-readable, editable text. This allows you to copy, highlight, edit, or export text passages to other applications without having to type them out manually.
+* Long-term usability and archiving: Conversion to searchable formats such as PDF/A (a standard for long-term archiving) ensures that documents remain readable and usable in the future, regardless of technological changes.
+* Accessibility: Searchable PDFs improve accessibility for visually impaired people, as screen readers can capture and read aloud the machine-readable text.
+  
 
 * [Features](#features)
-* [Local Installation](#installation)
+* [Requirements](#requirements)
+* [Installation](#installation)
 * [Usage](#usage)
 * [Configuration](#configuration)
 * [Limitations](#limitations)
@@ -17,17 +26,40 @@ If provided METS/MODS, it fails for empty logical sections, i.e. chapters not li
 
 ## Features
 
-Create PDF from scaled image data (optional: footer) and constraints on compression rate and max sizes.  
+The tool creates a PDF from scaled image data (e.g., jpeg, tiff) with settings for compression rate and max sizes.  
+Additional features: 
+* OCR textlayer
+* metadata (METS/MODS)
+* outline of contents
+* footer
+* preview image
+* thumbnail
+    
 For details see [configuration section](#configuration).
 
 If metadata (METS/MODS) available, the following will be taken into account:
 
 * Value `mods:recordIdentifier[@source]` to name PDF artefact
   Can be replaced in PDF-step configuration with option `mods_identifier_xpath` or at execution time via CLI-parameter `-n` / `--name-pdf`
-* Value `mods:titleInfo/mods:title` for internal naming
+* Value `mods:titleInfo/mods:title` is used for internal naming
 * Attribute `mets:div[@CONTENTIDS]` (granular URN) will be rendered for each page if footer shall be appended to each page image
 
-## Docker Image
+Please note: Derivans does not perform metadata validation or sanitizing.
+If METS/MODS are provided, the process fails for empty logical sections — i.e. chapters that are not linked to any image or page — because a consistent outline cannot be created in this case. To ensure XML conformance before/after using Derivans, one needs to use a different tool.
+
+## Requirements
+Digital Derivans is a Java 11+ project build with [Apache Maven](https://github.com/apache/maven).
+  * CLI: A command line interface (CLI), which allows you to enter text commands to configure, navigate, or run programs on your computer system, is needed. All operating systems—including Linux, macOS, and Windows—offer such a CLI for faster system interaction.
+  * OpenJDK 11+: OpenJDK is a free, open-source implementation of the Java platform (Standard Edition).
+  * Maven 3.6+: Maven is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project's build, reporting, and documentation from a central place.
+  * Git 2.12+: Git is a distributed version control software system that is capable of managing versions of source code or data.
+
+## Installation
+The tool can be installed in two ways:
+* via docker image
+* full local installation
+    
+### Docker Image
 
 Pull the [Docker image](https://github.com/ulb-sachsen-anhalt/digital-derivans/pkgs/container/digital-derivansout):
 
@@ -35,7 +67,7 @@ Pull the [Docker image](https://github.com/ulb-sachsen-anhalt/digital-derivans/p
 docker pull ghcr.io/ulb-sachsen-anhalt/digital-derivans:latest
 ```
 
-or build it your own locally:
+or build your own locally:
 
 ```bash
 ./scripts/build_docker_image.sh
@@ -54,36 +86,56 @@ docker run \
   <print-dir|mets-file> -c /data-config/derivans.ini  
 ```
 
-## Local Installation
+### Local Installation
 
-Digital Derivans is a Java 11+ project build with [Apache Maven](https://github.com/apache/maven).
+Open the command line tool.
 
-### Development Requirements
-
-* OpenJDK 11+
-* Maven 3.6+
-* git 2.12+
-
-### Pull and compile
-
-Clone the repository and call Maven to trigger the build process, but be aware, that a recent OpenJDK is required.
+Execute the following command:
 
 ```shell
 git clone git@github.com:ulb-sachsen-anhalt/digital-derivans.git
-cd digital-derivans
-mvn clean package
 ```
+The console output should resemble the following:
+<pre>Klone nach &apos;digital-derivans&apos; …
+remote: Enumerating objects: 6478, done.
+remote: Counting objects: 100% (340/340), done.
+remote: Compressing objects: 100% (163/163), done.
+remote: Total 6478 (delta 139), reused 252 (delta 108), pack-reused 6138 (from 2)
+Empfange Objekte: 100% (6478/6478), 38.43 MiB | 675.00 KiB/s, fertig.
+Löse Unterschiede auf: 100% (2969/2969), fertig.</pre>
 
-This will create a shaded JAR ("FAT-JAR") inside the build directory (`./target/digital-derivans-<version>.jar`)
+The folder ‚digital-derivans‘ is created automatically.
+
+Change to folder using the command ``cd digital-derivans/``
+
+Execute the command: ``mvn clean package`` (mvn stands for Maven. This is required for automating the build process for Java projects.)
+
+  * If Maven is not available, the following error message is displayed: 
+
+    Der Befehl 'mvn' wurde nicht gefunden, kann aber installiert werden mit:
+    ``sudo apt install maven
+    ``
+    Executing the command will install Maven. (You may need to enter your local PC password here.) This is followed by a long list of the installed packages.
+    Then execute the `mvn clean package` command again.
+    
+    This is followed by a long list of downloads, which should end as follows:
+
+<pre>[<font color="#12488B"><b>INFO</b></font>] <b>------------------------------------------------------------------------</b>
+[<font color="#12488B"><b>INFO</b></font>] <font color="#26A269"><b>BUILD SUCCESS</b></font>
+[<font color="#12488B"><b>INFO</b></font>] <b>------------------------------------------------------------------------</b>
+[<font color="#12488B"><b>INFO</b></font>] Total time:  22.808 s
+[<font color="#12488B"><b>INFO</b></font>] Finished at: 2025-11-11T13:17:12+01:00
+[<font color="#12488B"><b>INFO</b></font>] <b>------------------------------------------------------------------------</b></pre>
+
+A shaded JAR (`./target/digital-derivans-<version>.jar`) is created in the ‚digital-derivans‘ folder. This shaded jar, also known as an Uber jar or fat jar, contains all the dependencies required to run the Java application by default.
+
+This completes the installation.
 
 ## Usage
 
-In local mode, a recent OpenJRE is required.
+To use the tool locally, a recent version of OpenJRE (Java Runtime Environment) is required.
 
-The tool expects a project folder containing an image directory (default: `DEFAULT`) and optional OCR-data directory (
-default: `FULLTEXT`').
-
-The *default name* of the generated PDF inside is derived from the object's folder name or can be set with `-n`-arg.
+In addition, a specific folder structure must be adhered to. The tool expects a project folder (here: `my_print`) containing an image directory (here: `DEFAULT`), which contains the image files, and an optional OCR-data directory (here: `FULLTEXT`), which contains OCR-data in XML format, if available. The naming of the image and OCR-data files must be consistent to ensure error-free assignment.
 
 A sample folder structure:
 
@@ -99,13 +151,18 @@ my_print/
 │   ├── 0332.tif
 ```
 
-Running
+The *default name* of the generated PDF inside is derived from the object's folder name or can be set with `-n`-arg.
+
+To run the tool, enter the following command:
 
 ```bash
-java -jar <PATH>./target/digital-derivans-<version>.jar <path-to-my_print>`
+java -jar <PATH>./target/digital-derivans-<version>.jar <path-to-my_print>
 ```
+The file path to the .jar must be specified, as well as the version (e.g., 2.1.3.jar) and the file path to the parent folder (here: my_print), where the subfolders with the image and OCR files are located.
 
-will produce a file named `my_print.pdf` in the `my_print` directory from above with specified layout.  
+A file named `my_print.pdf` is created in the `my_print` directory from the above example with the specified layout.
+The generated PDF contains the full text, which is invisible above the image layer. The page is searchable and text passages can be highlighted.
+
 For more information concerning CLI-Usage, please [consult CLI docs](#cli-parameter).
 
 ## Configuration
