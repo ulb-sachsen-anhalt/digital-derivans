@@ -100,6 +100,13 @@ class TestDerivansFulltextODEM {
 		assertTrue(Files.exists(pdfPath));
 	}
 
+	@Test
+	void testExpectedPDFPageCount() throws Exception {
+		TestHelper.PDFInspector pdfInspector = new TestHelper.PDFInspector(pdfPath);
+		int nPages = pdfInspector.countPages();
+		assertEquals(nImages, nPages, "Expected PDF page count " + nImages + " but got " + nPages);
+	}
+
 	/**
 	 *
 	 * Also check that image 1 has same size as image

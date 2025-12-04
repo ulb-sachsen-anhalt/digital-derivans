@@ -77,13 +77,13 @@ public class DerivateMD implements IDerivate {
 	public void init(Path startPath) throws DigitalDerivansException {
 		if (startPath == null) {
 			startPath = Path.of(IDerivans.IMAGE_DIR_DEFAULT);
-			this.mets.setImgFileGroup(startPath.toString());
+			this.mets.addFileGroup(startPath.toString());
 		}
 		if (startPath.isAbsolute()) {
 			this.imageGroup = startPath.getFileName().toString();
 		} else {
 			this.imageGroup = startPath.toString();
-			this.mets.setImgFileGroup(startPath.toString());
+			this.mets.addFileGroup(startPath.toString());
 		}
 		this.mets.init(); // critical
 		var orderNr = this.mdPageOrder.get();
@@ -127,7 +127,7 @@ public class DerivateMD implements IDerivate {
 				DigitalPage existingPage = this.pageIndex.get(pageId);
 				parent.getPages().add(existingPage);
 			} else {
-				METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
+				METS.METSFilePack pack = this.mets.getPageFiles(digiFile, this.imageGroup);
 				var imgFile = pack.imageFile;
 				Path filePath = this.rootDir.resolve(imgFile.getLocalPath(this.checkRessources));
 				int currOrder = this.mdPageOrder.getAndIncrement();

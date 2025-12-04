@@ -149,6 +149,14 @@ class TestDerivansLegacyULB {
 	}
 
 	@Test
+	void testExpectedPDFPageCount() throws Exception {
+		TestHelper.PDFInspector pdfInspector = new TestHelper.PDFInspector(workDir.resolve("191092622.pdf"));
+		int nPages = pdfInspector.countPages();
+		int nImages = TestHelper.fixture737429ImageLabel.size();
+		assertEquals(nImages, nPages, "Expected PDF page count " + nImages + " but got " + nPages);
+	}
+
+	@Test
 	void testPDFOutlineTree() throws Exception {
 		Path pdfWritten = workDir.resolve("191092622.pdf");
 		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();

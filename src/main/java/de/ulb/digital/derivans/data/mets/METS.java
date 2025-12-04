@@ -7,18 +7,23 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jdom2.Attribute;
 import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
+import org.jdom2.filter.AbstractFilter;
 import org.jdom2.filter.Filter;
 import org.jdom2.filter.Filters;
 
@@ -26,7 +31,6 @@ import de.ulb.digital.derivans.Derivans;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.data.io.JarResource;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
-import de.ulb.digital.derivans.IDerivans;
 
 /**
  * 
@@ -37,25 +41,26 @@ import de.ulb.digital.derivans.IDerivans;
  */
 public class METS {
 
+	
 	private static final Logger LOGGER = LogManager.getLogger(METS.class);
 
 	public static final Namespace NS_METS = Namespace.getNamespace("mets", "http://www.loc.gov/METS/");
 	public static final Namespace NS_MODS = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
 	public static final Namespace NS_XLINK = Namespace.getNamespace("xlink", "http://www.w3.org/1999/xlink");
-
+	
 	// mark missing data
 	public static final String UNSET = "n.a.";
-
-	public static final String STRUCT_PHYSICAL_ROOT = "physroot";
+	
+	static final String STRUCT_PHYSICAL_ROOT = "physroot";
+	static final String METS_STRUCTMAP_TYPE_PHYSICAL = "PHYSICAL";
 	static final String METS_STRUCTMAP_TYPE_LOGICAL = "LOGICAL";
 	static final String DMD_ID = "DMDID";
 	static final String METS_CONTAINER = "div";
 	static final String METS_CONTAINER_ID = "ID";
+	static final String METS_FILE_ID = "FILEID";
 	static final String METS_STRUCTMAP_TYPE = "TYPE";
 
-	private String imgFileGroup = IDerivans.IMAGE_DIR_DEFAULT;
-
-	private String ocrFileGroup = IDerivans.FULLTEXT_DIR;
+	private Set<String> fileGroupLabels = new HashSet<>();
 
 	public static final DateTimeFormatter MD_DT_FORMAT = new DateTimeFormatterBuilder()
 			.appendPattern("YYYY-MM-dd")
@@ -79,7 +84,9 @@ public class METS {
 
 	private HashMap<String, METSFile> metsFiles = new LinkedHashMap<>();
 
-	private HashMap<String, METSContainer> physContainer = new LinkedHashMap<>();
+	private HashMap<String, METSContainer> pageMap = new LinkedHashMap<>();
+
+	private METSContainer logicalRoot;
 
 	private HashMap<String, List<String>> smLinks = new LinkedHashMap<>();
 
@@ -89,17 +96,24 @@ public class METS {
 		this.document = this.xmlHandler.getDocument();
 	}
 
-	public METS(Path metsfile, String imageFileGroup) throws DigitalDerivansException {
+	public METS(Path metsfile, String imgFileGroup) throws DigitalDerivansException {
 		this.file = metsfile;
-		this.imgFileGroup = imageFileGroup;
+		this.addFileGroup(imgFileGroup);
 		this.xmlHandler = new XMLHandler(file);
 		this.document = this.xmlHandler.getDocument();
 	}
-
-	public void setImgFileGroup(String imgFileGroup) {
-		this.imgFileGroup = imgFileGroup;
+	
+	public void addFileGroup(String imgFileGroup) {
+		if (!this.fileGroupLabels.contains(imgFileGroup)) {
+			this.fileGroupLabels.add(imgFileGroup);
+		}
 	}
 
+	public void removeFileGroup(String imgFileGroup) {
+		if (this.fileGroupLabels.contains(imgFileGroup)) {
+			this.fileGroupLabels.remove(imgFileGroup);
+		}
+	}
 	/**
 	 * Resolve identifier for descriptive section.
 	 * <ol>
@@ -108,7 +122,7 @@ public class METS {
 	 * </ol>
 	 */
 	public void init() throws DigitalDerivansException {
-		this.buildInternalTree();
+		this.buildInternalRepresentation();
 		String primeId = this.oneRoot().orElse(this.calculatePrimeMODSId());
 		String xpr = String.format("//mets:dmdSec[@ID='%s']//mods:mods", primeId);
 		List<Element> modsSecs = this.evaluate(xpr);
@@ -120,49 +134,76 @@ public class METS {
 		this.isInited = true;
 	}
 
-	private void buildInternalTree() throws DigitalDerivansException {
+	private void buildInternalRepresentation() throws DigitalDerivansException {
 		Filter<Element> structMapFilter = Filters.element(NS_METS).refine(Filters.element("structMap", NS_METS));
 		Iterator<Element> structMaps = this.document.getDescendants(structMapFilter);
 		Filter<Element> structLinkFilter = Filters.element(NS_METS).refine(Filters.element("structLink", NS_METS));
 		Filter<Element> fileGrpFilter = Filters.element(NS_METS).refine(Filters.element("fileGrp", NS_METS));
 		Iterator<Element> fileGrpIterator = this.document.getDescendants(fileGrpFilter);
-		// files
-		Element useImageGrp = null;
-		Optional<Element> optImageGrp = this.search(fileGrpIterator, "USE", this.imgFileGroup);
-		if (optImageGrp.isPresent()) {
-			useImageGrp = optImageGrp.get();
+
+		// any present files related to certain file group labels
+		var presentFileGroups = new ArrayList<Element>();
+		var presentFileGroupLabels = new HashSet<String>();
+		while (fileGrpIterator.hasNext()) {
+		 	Element fgElement = fileGrpIterator.next();
+			 presentFileGroups.add(fgElement);
+			presentFileGroupLabels.add(fgElement.getAttributeValue("USE"));
 		}
-		if (useImageGrp == null) {
-			throw new DigitalDerivansException("Invalid input mets:fileGrp " + this.imgFileGroup + "!");
-		}
-		List<Element> files = useImageGrp.getChildren("file", NS_METS);
-		for (Element fileElement : files) {
-			String fileId = fileElement.getAttributeValue("ID");
-			METSFile metsFile = new METSFile(fileElement, this.imgFileGroup);
-			this.metsFiles.put(fileId, metsFile);
-		}
-		Element groupUseFulltext = null;
-		Optional<Element> optOcrGrp = this.search(fileGrpIterator, "USE", this.ocrFileGroup);
-		if (optOcrGrp.isPresent()) {
-			groupUseFulltext = optOcrGrp.get();
-			List<Element> ocrFiles = groupUseFulltext.getChildren("file", NS_METS);
-			for (Element ocrFile : ocrFiles) {
-				String fileId = ocrFile.getAttributeValue("ID");
-				METSFile metsFile = new METSFile(ocrFile, this.ocrFileGroup);
-				this.metsFiles.put(fileId, metsFile);
+		LOGGER.debug("having {} mets:fileGrp, considering labels: {}", presentFileGroupLabels, this.fileGroupLabels);
+		
+		for (Element e : presentFileGroups) {
+			String currentGroupLabel = e.getAttributeValue("USE");
+			if (this.fileGroupLabels.contains(currentGroupLabel)) {
+				List<Element> files = e.getChildren("file", NS_METS);
+				for (Element fileElement : files) {
+					String fileId = fileElement.getAttributeValue("ID");
+					METSFile metsFile = new METSFile(fileElement, currentGroupLabel);
+					this.metsFiles.put(fileId, metsFile);
+				}
 			}
 		}
+		// physical containers: means mets:div@TYPE="page"
+		Element logStruct = null;
+		Element phyStruct = null;
+		while(structMaps.hasNext()) {
+			Element fgElement = structMaps.next();
+			String structType = fgElement.getAttributeValue("TYPE");
+			LOGGER.debug("Found structMap of TYPE={}", structType);
+			if (structType.equalsIgnoreCase(METS_STRUCTMAP_TYPE_LOGICAL)) {
+				logStruct = fgElement;
+			}
+			if (structType.equalsIgnoreCase(METS_STRUCTMAP_TYPE_PHYSICAL)) {
+				phyStruct = fgElement;
+			}
+		}
+		// logical struct
+		if (logStruct == null) {
+			throw new DigitalDerivansException("No logical structMap found");
+		}
+		List<Element> logicalDivs = logStruct.getChildren("div", NS_METS);
+		if(logicalDivs.size() != 1) {
+			LOGGER.warn("Multiple top-level logical divs found in mets:structMap");
+		}
+		var rootElement = logicalDivs.get(0);
+		METSContainer root = new METSContainer(rootElement);
+		this.logicalRoot = root;
+		this.buildLogicalMap(this.logicalRoot);
 
-		// pages
-		Optional<Element> optPhysStruct = this.search(structMaps, "TYPE", "PHYSICAL");
-		if (optPhysStruct.isPresent()) {
-			Element physStruct = optPhysStruct.get();
-			Iterator<Element> metsPages = physStruct.getDescendants(Filters.element("div", NS_METS));
+		if (phyStruct != null) {
+			var pageFilter = new EnhancedMETSAttributeFilter(METS_CONTAINER, "TYPE", "page");
+			Iterator<Element> metsPages = phyStruct.getDescendants(pageFilter);
 			while (metsPages.hasNext()) {
 				Element pageElement = metsPages.next();
-				String theId = pageElement.getAttributeValue("ID");
-				METSContainer div = new METSContainer(pageElement);
-				this.physContainer.put(theId, div);
+				String pageId = pageElement.getAttributeValue("ID");
+				METSContainer pageContainer = new METSContainer(pageElement);
+				for (var pageFile : pageElement.getChildren("fptr", NS_METS)) {
+					String fileId = pageFile.getAttributeValue(METS_FILE_ID);
+					if (this.metsFiles.containsKey(fileId)) {
+						METSFile metsFile = this.metsFiles.get(fileId);
+						pageContainer.addFile(metsFile);
+					}
+				}
+				this.pageMap.put(pageId, pageContainer);
 			}
 		}
 		// links
@@ -173,22 +214,86 @@ public class METS {
 		Element structLink = iter.next();
 		List<Element> mapLinks = structLink.getChildren("smLink", NS_METS);
 		for (Element smLink : mapLinks) {
-			String fromLogical = smLink.getAttributeValue("from", NS_XLINK);
-			String toPhysical = smLink.getAttributeValue("to", NS_XLINK);
-			List<String> prevTos = this.smLinks.getOrDefault(fromLogical, new ArrayList<>());
-			prevTos.add(toPhysical);
-			this.smLinks.put(fromLogical, prevTos);
+			String fromSection = smLink.getAttributeValue("from", NS_XLINK);
+			String toPage = smLink.getAttributeValue("to", NS_XLINK);
+			if(toPage.equalsIgnoreCase(STRUCT_PHYSICAL_ROOT)) {
+				LOGGER.warn("Ignoring link to physroot from {}", fromSection);
+				continue;
+			}
+			List<String> linkedPages = this.smLinks.getOrDefault(fromSection, new ArrayList<>());
+			linkedPages.add(toPage);
+			this.smLinks.put(fromSection, linkedPages);
 		}
 	}
 
-	private Optional<Element> search(Iterator<Element> elementIt, String attrLabel, String attrValue) {
-		while (elementIt.hasNext()) {
-			Element fgElement = elementIt.next();
-			if (fgElement.getAttributeValue(attrLabel).equals(attrValue)) {
-				return Optional.of(fgElement);
+	/**
+	 * 
+	 * Recursively build logical map by following smLinks with
+	 * respect to DFG-METS flavour with separate physical and logical
+	 * structMaps.
+	 * 
+	 * @param current
+	 * @throws DigitalDerivansException
+	 */
+	private void buildLogicalMap(METSContainer current) throws DigitalDerivansException {
+		String parentId = current.getId();
+		// if digitization systems would take care of linking pages and prevent
+		// multiple linkings pushing files around like this wouldn't be necessary ...
+		if (this.smLinks.containsKey(parentId)) { 
+			List<String> linkedPages = this.smLinks.get(parentId);
+			int movedFiles = 0;
+			METSContainer currentParent = current.getParent();
+			for (String pageId : linkedPages) {
+				if (this.pageMap.containsKey(pageId)) {
+					METSContainer pageContainer = this.pageMap.get(pageId);
+					List<METSFile> cfiles = pageContainer.getFiles();
+					for(METSFile cfile : cfiles) {
+						current.addFile(cfile);
+						if(currentParent != null) {
+							List<METSFile> parentFiles = currentParent.getFiles();
+							for(int i=0; i< parentFiles.size(); i++) {
+								METSFile pFile = parentFiles.get(i);
+								if(pFile.getFileId().equals(cfile.getFileId())) {
+									currentParent.removeFile(pFile);
+									movedFiles++;
+								}
+							}
+						}
+					}
+				} else {
+					// we must know all page containers at this time
+					throw new DigitalDerivansException("No page container for ID " + pageId);
+				}
+			}
+			if (movedFiles > 0) {
+				LOGGER.warn("Moved {} files from parent {} to child container {}",
+					movedFiles, currentParent, current);
 			}
 		}
-		return Optional.empty();
+		// respect direct linked files, too
+		Element parentElement = current.get();
+		List<Element> filePointers = parentElement.getChildren("fptr", NS_METS);
+		for (Element fptr : filePointers) {
+			String fileId = fptr.getAttributeValue(METS_FILE_ID);
+			if (this.pageMap.containsKey(fileId)) {
+				METSContainer pageContainer = this.pageMap.get(fileId);
+				current.addChild(pageContainer);
+			} else {
+				
+				// ignore alerts from linked PDF files or teaser images
+				LOGGER.warn("No page container links ID {}", fileId);
+			}
+		}
+		List<Element> childDivs = parentElement.getChildren("div", NS_METS);
+		for (Element childDiv : childDivs) {
+			METSContainer childContainer = new METSContainer(childDiv);
+			childContainer.setParent(current);
+			this.buildLogicalMap(childContainer);
+		}
+	}
+
+	public Map<String, METSContainer> getPages() {
+		return this.pageMap;
 	}
 
 	private Optional<String> oneRoot() throws DigitalDerivansException {
@@ -289,7 +394,7 @@ public class METS {
 		this.enrichAgent(agentNoteText);
 		// link as fptr to logical section
 		var pdfFPtr = new Element("fptr", NS_METS);
-		pdfFPtr.setAttribute("FILEID", pdfFileID);
+		pdfFPtr.setAttribute(METS_FILE_ID, pdfFileID);
 		var parent = this.evaluate(String.format("//mets:div[@DMDID='%s']", this.primeMods.getId())).get(0);
 		parent.addContent(0, pdfFPtr);
 		// store changes
@@ -416,78 +521,27 @@ public class METS {
 		return this.xmlHandler.write(this.file);
 	}
 
-	public List<METSContainer> getPages(METSContainer div)
-			throws DigitalDerivansException {
-		String logID = div.getId();
-		List<METSContainer> pageContainers = new ArrayList<>();
-		List<String> linkedTo = this.smLinks.getOrDefault(logID, new ArrayList<>());
-		for (String linkedId : linkedTo) {
-			if (this.physContainer.containsKey(linkedId)) {
-				METSContainer physCnt = this.physContainer.get(linkedId);
-				if (physCnt.getType() != METSContainerType.PAGE) {
-					// this happened as far as known in legacy inhouse newspaper
-					// structures only when top most physSequence is linked
-					// from logical structMap
-					var cntLabel = div.determineLabel();
-					var physTypeLabel = physCnt.getType().getLabel();
-					LOGGER.warn("linked div {} / {} -> page {} '/ {}", logID, cntLabel, linkedId, physTypeLabel);
-				} else {
-					pageContainers.add(physCnt);
-				}
-			}
-		}
-		if (pageContainers.isEmpty()) {
-			String alert = String.format("No files link div %s/%s in @USE=%s!",
-					logID, div.determineLabel(), this.imgFileGroup);
-			throw new DigitalDerivansException(alert);
-		}
-		return pageContainers;
-	}
-
-	public METSFilePack getPageFiles(METSContainer container) throws DigitalDerivansException {
+	public METSFilePack getPageFiles(METSContainer container, List<String> fileGroups) {
 		List<Element> allFiles = container.get().getChildren("fptr", METS.NS_METS);
-		List<String> fileIds = allFiles.stream().map(aFile -> aFile.getAttributeValue("FILEID"))
+		List<String> fileIds = allFiles.stream().map(aFile -> aFile.getAttributeValue(METS_FILE_ID))
 				.collect(Collectors.toList());
-		METSFile imgFile = null;
-		for (String fileId : fileIds) {
-			if (this.metsFiles.containsKey(fileId)) {
-				METSFile tmpFile = this.metsFiles.get(fileId);
-				if (tmpFile.getFileGroup().equals(this.imgFileGroup)) {
-					imgFile = tmpFile;
-					break;
-				}
-			}
-		}
-		if (imgFile == null) {
-			var msg = "Can't find image file in @USE=" + this.imgFileGroup + " for container " + container.getId();
-			throw new DigitalDerivansException(msg);
-		}
-		imgFile.setLocalRoot(this.getPath().getParent());
 		METSFilePack pack = new METSFilePack();
-		pack.imageFile = imgFile;
-		METSFile ocrFile = null;
 		for (String fileId : fileIds) {
-			if (this.metsFiles.containsKey(fileId)) {
-				METSFile tmpFile = this.metsFiles.get(fileId);
-				if (tmpFile.getFileGroup().equals(this.ocrFileGroup)) {
-					ocrFile = this.metsFiles.get(fileId);
-					break;
+			for(var fg : fileGroups) {
+				if (this.metsFiles.containsKey(fileId)) {
+					METSFile tmpFile = this.metsFiles.get(fileId);
+					if(tmpFile.getFileGroup().equals(fg)) {
+						tmpFile.setLocalRoot(this.getPath().getParent());
+						pack.groupFiles.put(fg, tmpFile);
+					}
 				}
 			}
-		}
-		if (ocrFile != null) {
-			ocrFile.setLocalRoot(this.getPath().getParent());
-			pack.ocrFile = Optional.of(ocrFile);
 		}
 		return pack;
 	}
 
 	public boolean isInited() {
 		return this.isInited;
-	}
-
-	public void setIdentifierExpression(String xpressiob) {
-		throw new UnsupportedOperationException("Unimplemented method 'setIdentifierExpression'");
 	}
 
 	public String enrichPDF(String identifier) throws DigitalDerivansException {
@@ -500,7 +554,45 @@ public class METS {
 	}
 
 	public static class METSFilePack {
-		public METSFile imageFile;
-		public Optional<METSFile> ocrFile = Optional.empty();
+		public Map<String, METSFile> groupFiles = new HashMap<>();
+	}
+
+	/**
+	 * Custom JDOM2 filter that filters elements by name and checks for attribute presence
+	 */
+	public static class EnhancedMETSAttributeFilter extends AbstractFilter<Element> {
+		
+		private String elementName;
+		private String attributeName;
+		private String attributeValue;
+	
+		/**
+		 * Create a filter for elements with specific name and attribute in a namespace
+		 * 
+		 * @param elementName The name of the element to filter
+		 * @param attributeName The name of the attribute that must be present
+		 * @param namespace The namespace of the attribute (can be null for no namespace)
+		 */
+		public EnhancedMETSAttributeFilter(String elementName, String attributeName, String value) {
+			this.elementName = elementName;
+			this.attributeName = attributeName;
+			this.attributeValue = value;
+		}
+		
+		@Override
+		public Element filter(Object content) {
+			if (content instanceof Element) {
+				Element element = (Element) content;
+				// First check element name
+				if (element.getName().equals(elementName)) {
+					// Then check for attribute and value
+					Attribute attr = element.getAttribute(attributeName);
+					if (attr != null && attr.getValue().equals(attributeValue)) {
+						return element;
+					}
+				}
+			}
+			return null;
+		}
 	}
 }

@@ -2,6 +2,7 @@ package de.ulb.digital.derivans;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -170,6 +171,31 @@ class TestDerivansFS {
 		// assert
 		Path pdfWritten = pathTarget.resolve("only_images.pdf");
 		assertTrue(Files.exists(pdfWritten));
+	}
+
+	/**
+	 *
+	 * Fail currently due inconsistent File handling
+	 *
+	 * @param tempDir
+	 * @throws Exception
+	 */
+	@Test
+	void testDerivatesFailsUsingTIFF(@TempDir Path tempDir) throws Exception {
+
+		// arrange
+		Path pathTarget = tempDir.resolve("only_images");
+		Path pathImageMax = pathTarget.resolve("DEFAULT");
+		Files.createDirectories(pathImageMax);
+		TestHelper.generateImages(pathImageMax, 300, 420, 4, "%04d.tif");
+
+		// act
+		DerivansParameter dp = new DerivansParameter();
+		dp.setPathInput(pathTarget);
+		DerivansConfiguration dc = new DerivansConfiguration(dp);
+		Derivans derivans = new Derivans(dc);
+		derivans.init(pathTarget);
+		assertThrows(DigitalDerivansException.class, derivans::forward);
 	}
 
 	/**

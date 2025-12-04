@@ -25,7 +25,7 @@ import de.ulb.digital.derivans.model.step.DerivateStep;
 
 /**
  * 
- * Common Kitodo2 exporter setup 
+ * Common Kitodo2 exporter setup
  * with TIF images, METS/MODS metadata
  * and additional DSpace derivates
  * 
@@ -134,6 +134,14 @@ class TestDerivansExportKitodo2 {
 	void testPDFWritten() throws Exception {
 		Path pdfWritten = TestDerivansExportKitodo2.workDir.resolve("058141367.pdf");
 		assertTrue(Files.exists(pdfWritten));
+	}
+
+	@Test
+	void testExpectedPDFPageCount() throws Exception {
+		Path pdfWritten = workDir.resolve("058141367.pdf");
+		TestHelper.PDFInspector pdfInspector = new TestHelper.PDFInspector(pdfWritten);
+		int nPages = pdfInspector.countPages();
+		assertEquals(nExpectedImages, nPages, "Expected PDF page count " + nExpectedImages + " but got " + nPages);
 	}
 
 	@Test

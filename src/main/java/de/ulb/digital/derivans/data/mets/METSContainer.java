@@ -22,6 +22,8 @@ public class METSContainer {
 
 	private String id;
 
+	private Integer order = -1;
+
 	private Map<METSContainerAttributeType, String> attributes = new EnumMap<>(METSContainerAttributeType.class);
 
 	private String label = IDerivans.UNKNOWN;
@@ -32,6 +34,9 @@ public class METSContainer {
 	// associated child container
 	private List<METSContainer> children = new ArrayList<>();
 
+	// aassociated files
+	private List<METSFile> files = new ArrayList<>();
+
 	private METSContainerType type;
 
 	private Element element;
@@ -40,6 +45,7 @@ public class METSContainer {
 		this.id = id;
 		this.element = element;
 		this.type = METSContainerType.forLabel(this.element.getAttributeValue("TYPE"));
+		this.order = Integer.parseInt(Optional.ofNullable(this.element.getAttributeValue("ORDER")).orElse("0"));
 		this.determineAttributes();
 		this.determineLabel();
 		this.determineHierarchy();
@@ -55,6 +61,10 @@ public class METSContainer {
 
 	public METSContainerType getType() {
 		return this.type;
+	}
+
+	public Integer getOrder() {
+		return this.order;
 	}
 
 	public List<METSContainer> getChildren() {
@@ -131,12 +141,28 @@ public class METSContainer {
 		return METSContainerType.MEDIA_CONTAINER.stream().anyMatch(p -> p.equals(this.type));
 	}
 
+	public boolean isNewspaperContainer() {
+		return METSContainerType.NEWSPAPER_CONTAINER.stream().anyMatch(p -> p.equals(this.type));
+	}
+
 	public boolean isNewspaperStruct() {
 		return METSContainerType.NEWSPAPER_CONTAINER_PARENT.stream().anyMatch(p -> p.equals(this.type));
 	}
 
 	public Element get() {
 		return this.element;
+	}
+
+	public void addFile(METSFile file) {
+		this.files.add(file);
+	}
+
+	public void removeFile(METSFile file) {
+		this.files.remove(file);
+	}
+
+	public List<METSFile> getFiles() {
+		return this.files;
 	}
 
 	public void setAttributes(Map<METSContainerAttributeType, String> attributes) {

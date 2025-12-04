@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,8 +37,6 @@ class TestDerivansExportKitodo3Issue {
 
 	static Path workDir;
 
-	static int nExpectedImages = 17;
-
 	static String issueLabel = "253780594-18920720";
 
 	@BeforeAll
@@ -73,6 +72,15 @@ class TestDerivansExportKitodo3Issue {
 	void testPDFWritten() throws Exception {
 		Path pdfWritten = workDir.resolve("25378059418920720.pdf");
 		assertTrue(Files.exists(pdfWritten));
+	}
+
+	@Test
+	void testExpectedPDFPageCount() throws Exception {
+		Path pdfWritten = workDir.resolve("25378059418920720.pdf");
+		TestHelper.PDFInspector pdfInspector = new TestHelper.PDFInspector(pdfWritten);
+		int nExpectedImages = 7;
+		int nPages = pdfInspector.countPages();
+		assertEquals(nExpectedImages, nPages, "Expected PDF page count " + nExpectedImages + " but got " + nPages);
 	}
 
 	@Test

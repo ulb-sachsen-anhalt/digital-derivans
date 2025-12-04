@@ -355,6 +355,18 @@ public class TestHelper {
 				traverseOutline(nextChild, nextOutlineChild);
 			}
 		}
+
+		public int countPages() throws DigitalDerivansException {
+			if (!Files.exists(this.pdfPath)) {
+				throw new DigitalDerivansException("Invalid PDF file path " + pdfPath);
+			}
+			try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfPath))) {
+				return document.getNumberOfPages();
+			} catch (IOException e) {
+				var msg = this.pdfPath + ": " + e.getMessage();
+				throw new DigitalDerivansException(msg);
+			}
+		}
 	}
 
 	/**
