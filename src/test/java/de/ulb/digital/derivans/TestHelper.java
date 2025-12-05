@@ -76,6 +76,8 @@ public class TestHelper {
 	static String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 	static String METS_SCHEMA = "http://www.loc.gov/METS/";
 
+	public static final String ULB_MAX = "MAX";
+
 	public static final Path ULB_MAX_PATH = Path.of("MAX");
 
 	public static final String IMAGE = "IMAGE";

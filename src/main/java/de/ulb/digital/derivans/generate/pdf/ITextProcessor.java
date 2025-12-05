@@ -9,7 +9,9 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -109,6 +111,8 @@ public class ITextProcessor implements IPDFProcessor {
 	private Style rtlStyle = new Style()
 			.setTextAlignment(TextAlignment.RIGHT)
 			.setBaseDirection(BaseDirection.RIGHT_TO_LEFT);
+
+	private Map<String, PDFPage> renderedPages = new HashMap<>();
 
 	// colors in debug mode
 	private Color dbgColorLine = new DeviceCmyk(1.0f, 1.0f, 0.0f, 0.0f);
@@ -274,6 +278,10 @@ public class ITextProcessor implements IPDFProcessor {
 			PdfPage startPage = this.pdfDocument.getPage(1);
 			logRootOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(startPage)));
 		} else {
+			if (!this.structure.getPages().isEmpty()) {
+				List<PDFPage> processed = this.addPages(this.structure.getPages(), logRootOutline);
+				processedPdfPages.addAll(processed);
+			}
 			for (DerivateStruct currentStruct : this.structure.getChildren()) {
 				String childLabel = currentStruct.getLabel();
 				PdfOutline childLine = logRootOutline.addOutline(childLabel);
@@ -289,12 +297,16 @@ public class ITextProcessor implements IPDFProcessor {
 			List<PDFPage> processed = this.addPages(currStruct.getPages(), currentOutline);
 			processedPdfPages.addAll(processed);
 			if (processed.isEmpty()) {
-				throw new DigitalDerivansException("no pages processed for struct " + currStruct.getLabel());
+				LOGGER.warn("no pages processed for struct {}", currStruct.getLabel());
 			}
 			int firstNumber = processed.get(0).getNumber();
 			PdfPage firstStructPage = this.requestDestinationPage(firstNumber);
 			currentOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(firstStructPage)));
 		} else {
+			if (!currStruct.getPages().isEmpty()) {
+				List<PDFPage> processed = this.addPages(currStruct.getPages(), currentOutline);
+				processedPdfPages.addAll(processed);
+			}
 			for (DerivateStruct subStruct : currStruct.getChildren()) {
 				String childLabel = subStruct.getLabel();
 				PdfOutline childLine = currentOutline.addOutline(childLabel);
@@ -339,21 +351,28 @@ public class ITextProcessor implements IPDFProcessor {
 		try {
 			for (int i = 0; i < pages.size(); i++) {
 				DigitalPage pageIn = pages.get(i);
-				int orderN = pageIn.getOrderNr();
-				String imagePath = this.getInputImagePath(pageIn).toString();
-				LOGGER.debug("render page {} image {}", i+1, imagePath);
-				Image image = new Image(ImageDataFactory.create(imagePath));
-				float imageWidth = image.getImageWidth();
-				float imageHeight = image.getImageHeight();
-				if (Math.abs(1.0 - this.dpiScale) > 0.01) {
-					image.scaleAbsolute(imageWidth * this.dpiScale, imageHeight * this.dpiScale);
-					imageWidth = image.getImageScaledWidth();
-					imageHeight = image.getImageScaledHeight();
-					LOGGER.trace("rescale image: {}x{}", imageWidth, imageHeight);
+				String pageId = pageIn.getPageId();
+				PDFPage pdfPage = null;
+				if (this.renderedPages.containsKey(pageId)) {
+					LOGGER.warn("skip already rendered page '{}'", pageId);
+					pdfPage = this.renderedPages.get(pageId);
+				} else {
+					int orderN = pageIn.getOrderNr();
+					String imagePath = this.getInputImagePath(pageIn).toString();
+					LOGGER.debug("render page {} image {}", i+1, imagePath);
+					Image image = new Image(ImageDataFactory.create(imagePath));
+					float imageWidth = image.getImageWidth();
+					float imageHeight = image.getImageHeight();
+					if (Math.abs(1.0 - this.dpiScale) > 0.01) {
+						image.scaleAbsolute(imageWidth * this.dpiScale, imageHeight * this.dpiScale);
+						imageWidth = image.getImageScaledWidth();
+						imageHeight = image.getImageScaledHeight();
+						LOGGER.trace("rescale image: {}x{}", imageWidth, imageHeight);
+					}
+					pdfPage = new PDFPage(new Dimension((int) imageWidth, (int) imageHeight), orderN);
+					pdfPage.passOCRFrom(pageIn);
+					this.append(image, pdfPage);
 				}
-				PDFPage pdfPage = new PDFPage(new Dimension((int) imageWidth, (int) imageHeight), orderN);
-				pdfPage.passOCRFrom(pageIn);
-				this.append(image, pdfPage);
 				resultPages.add(pdfPage);
 				var optPageLabel = pageIn.getPageLabel();
 				if (optPageLabel.isPresent()) {
@@ -362,6 +381,7 @@ public class ITextProcessor implements IPDFProcessor {
 					currentOutline.addOutline(label)
 							.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(thisPage)));
 				}
+				this.renderedPages.put(pageId, pdfPage);
 			}
 		} catch (IOException e) {
 			throw new DigitalDerivansException(e);

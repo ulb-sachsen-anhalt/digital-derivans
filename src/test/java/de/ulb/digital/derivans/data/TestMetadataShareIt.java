@@ -40,25 +40,4 @@ class TestMetadataShareIt {
 		assertEquals(5, level1structs.size());
     }
 
-
-	/**
-	 * 
-	 * Decide how to handle invalid logical links
-	 * => Throw Exception
-	 * 
-	 * @throws DigitalDerivansException
-	 */
-	@Test
-	void testStructureMissingLinkFromLogicalSection() throws DigitalDerivansException {
-		// arrange
-		var mds = new DerivateMD(TestResource.SHARE_IT_VD18_43053.get());
-		mds.checkRessources(false);
-
-        // act
-		var actualExc = assertThrows(DigitalDerivansException.class, () -> mds.init(TestHelper.ULB_MAX_PATH));
-
-		// assert
-		assertEquals("No files link div log1646693/Abschnitt in @USE=MAX!", actualExc.getMessage());
-    }
-
 }

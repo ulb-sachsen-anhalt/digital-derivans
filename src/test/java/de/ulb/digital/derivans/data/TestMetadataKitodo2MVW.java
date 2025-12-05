@@ -52,28 +52,5 @@ class TestMetadataKitodo2MVW {
 		// of old before 2025: "Vorderdeckel"
 		assertEquals("Band", dst.getChildren().get(0).getLabel());
 	}
-	
-	/**
-	 * 
-	 * This Record is assumed to fail at least for DDB-Validation
-	 * Because one of it's logical sections, with ID "LOG_0216",
-	 * is not linked to any physical structure.
-	 *
-	 * Obviously forgotten, but must be corrected anyway.
-	 * 
-	 * @throws DigitalDerivansException
-	 */
-	@Test
-	void testKitodo2InvalidLegacyFStage030745780() throws DigitalDerivansException {
-		// arrange
-		var derivate = new DerivateMD(TestResource.K2_Af_030745780.get());
-		derivate.checkRessources(false);
 
-		// act
-		var actualExc = assertThrows(DigitalDerivansException.class, 
-			() -> derivate.init(Path.of(IDerivans.IMAGE_DIR_MAX)));
-		
-		// assert - as of 2025
-		assertEquals("No files link div LOG_0216/207. [An Charlotte Pistorius.] in @USE=MAX!", actualExc.getMessage());
-	}
 }

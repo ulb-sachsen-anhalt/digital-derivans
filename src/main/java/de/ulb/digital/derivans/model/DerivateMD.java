@@ -108,14 +108,11 @@ public class DerivateMD implements IDerivate {
 
 	private void populateStruct(DerivateStruct parent, METSContainer container, String fileExt)
 			throws DigitalDerivansException {
-		// handle all directly linked pages. i.e. flat structures
-		if (container.getChildren().isEmpty()) {
+		if(this.mets.hasLinkedPages(container.getId())) {
 			this.handlePages(parent, container);
-		} else {
-			// handle objects with sub-structs
-			for (var subContainer : container.getChildren()) {
-				this.traverseStruct(parent, subContainer, fileExt);
-			}
+		}
+		for (var subContainer : container.getChildren()) {
+			this.traverseStruct(parent, subContainer, fileExt);
 		}
 	}
 
@@ -164,7 +161,9 @@ public class DerivateMD implements IDerivate {
 		}
 		// assume containers may link pages on *every* level
 		// even if these pages also linked by it's children
-		this.handlePages(currentStruct, currentCnt);
+		if(this.mets.hasLinkedPages(currentCnt.getId())) {
+			this.handlePages(currentStruct, currentCnt);
+		}
 	}
 
 	@Override

@@ -66,6 +66,8 @@ public class METS {
 			.appendPattern("HH:mm:SS")
 			.toFormatter();
 
+	static final String METS_PHYSROOT = "physroot";
+
 	private static List<Namespace> namespaces = List.of(NS_METS, NS_MODS, NS_XLINK);
 
 	private Path file;
@@ -83,6 +85,8 @@ public class METS {
 	private HashMap<String, METSFile> metsFiles = new LinkedHashMap<>();
 
 	private HashMap<String, METSContainer> assetContainer = new LinkedHashMap<>();
+
+	private HashMap<String, METSContainer> structuralContainer = new LinkedHashMap<>();
 
 	private HashMap<String, List<String>> smLinks = new LinkedHashMap<>();
 
@@ -177,6 +181,15 @@ public class METS {
 		if (logicalDivs.size() != 1) {
 			LOGGER.warn("Multiple top-level logical divs found in mets:structMap");
 		}
+		Iterator<Element> logDivIt = logicalDivs.get(0)
+				.getDescendants(Filters.element(NS_METS).refine(Filters.element("div", NS_METS)));
+		while (logDivIt.hasNext()) {
+			Element logDiv = logDivIt.next();
+			String theId = logDiv.getAttributeValue("ID");
+			METSContainer div = new METSContainer(logDiv);
+			this.structuralContainer.put(theId, div);
+		}
+
 		// pages
 		if (phyStruct != null) {
 			var pageFilter = new METSElementAttributeFilter(METS_CONTAINER, "TYPE", "page");
@@ -198,14 +211,49 @@ public class METS {
 		for (Element smLink : mapLinks) {
 			String fromLogical = smLink.getAttributeValue("from", NS_XLINK);
 			String toPhysical = smLink.getAttributeValue("to", NS_XLINK);
+			if (toPhysical.equalsIgnoreCase(METS_PHYSROOT)) {
+				LOGGER.warn("Ignore link from {} to {}", fromLogical, METS_PHYSROOT);
+				continue;
+			}
 			List<String> prevTos = this.smLinks.getOrDefault(fromLogical, new ArrayList<>());
 			prevTos.add(toPhysical);
 			this.smLinks.put(fromLogical, prevTos);
 		}
 	}
 
+	/**
+	 * 
+	 * Ensure some invariants of METS structure
+	 * 
+	 * => All logical sections _must_ link to at least one physical section (page)
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	public void validate() throws DigitalDerivansException {
+		if (!this.isInited) {
+			this.init();
+		}
+		var errors = new ArrayList<String>();
+		for (var entry : this.structuralContainer.entrySet()) {
+			String fromLogicalId = entry.getKey();
+			if (!this.smLinks.containsKey(fromLogicalId)) {
+				String err = String.format("No files link div %s (LABEL: %s)", 
+					fromLogicalId, entry.getValue().determineLabel());
+				errors.add(err);
+			}
+		}
+		if (errors.isEmpty()) {
+			return;
+		}
+		throw new DigitalDerivansException(String.join(", ", errors));
+	}
+
 	public Map<String, METSContainer> getPages() {
 		return this.assetContainer;
+	}
+
+	public boolean hasLinkedPages(String id) {
+		return this.smLinks.containsKey(id);
 	}
 
 	private Optional<Element> search(Iterator<Element> elementIt, String attrLabel, String attrValue) {

@@ -34,7 +34,7 @@ class TestDerivansFulltextODEM {
 
 	static TestHelper.PDFInspector inspector;
 
-	static int nImages = 17;
+	static int nImages = 16;
 
 	static int fSizeImage80_00000001 = 499696;
 
@@ -83,7 +83,7 @@ class TestDerivansFulltextODEM {
 	void testDerivatesForPDFWritten() throws IOException {
 		Path image80Dir = workDir.resolve(IDerivans.IMAGE_Q80);
 		assertTrue(Files.exists(image80Dir));
-		for (int i = 1; i < nImages; i++) {
+		for (int i = 1; i <= nImages; i++) {
 			var imageLabel = String.format("%08d.jpg", i);
 			assertTrue(image80Dir.resolve(imageLabel).toFile().exists());
 		}
