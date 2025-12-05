@@ -48,10 +48,9 @@ class TestDFGMETS {
 	 */
 	@Test
 	void testInvalidImageFileGroup() throws DigitalDerivansException {
-		METS mets737429 = new METS(TestResource.VLS_HD_Aa_737429.get());
-		mets737429.addFileGroup("FOO");
+		METS mets737429 = new METS(TestResource.VLS_HD_Aa_737429.get(), "FOO");
 		var result = assertThrows(DigitalDerivansException.class, mets737429::init);
-		assertEquals("Missing required mets:fileGrp FOO!", result.getMessage());
+		assertEquals("Invalid input mets:fileGrp FOO!", result.getMessage());
 	}
 
 	/**
@@ -70,7 +69,6 @@ class TestDFGMETS {
 		// assert
 		var root = metsZD2Issue.getLogicalRoot();
 		assertEquals(7, metsZD2Issue.getPages().size());
-
 		assertEquals(METSContainerType.ISSUE, root.getType());
 		assertEquals("Nr. 58.", root.determineLabel());
 	}

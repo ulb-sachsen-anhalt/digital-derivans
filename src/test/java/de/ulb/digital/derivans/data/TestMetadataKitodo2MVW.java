@@ -71,7 +71,7 @@ class TestMetadataKitodo2MVW {
 
 		// act
 		var actualExc = assertThrows(DigitalDerivansException.class, 
-			() -> derivate.init(Path.of("MAX")));
+			() -> derivate.init(Path.of(IDerivans.IMAGE_DIR_MAX)));
 		
 		// assert - as of 2025
 		assertEquals("No files link div LOG_0216/207. [An Charlotte Pistorius.] in @USE=MAX!", actualExc.getMessage());
