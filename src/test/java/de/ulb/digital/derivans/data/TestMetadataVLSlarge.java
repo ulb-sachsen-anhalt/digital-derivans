@@ -65,7 +65,7 @@ class TestMetadataVLSlarge {
 	 */
 	@Test
 	void test201517NumberOfPages() {
-		assertEquals(2306, derivate201517.getAllPages().size());
+		assertEquals(2306, derivate201517.allPagesSorted().size());
 	}
 
 	@Test
@@ -83,9 +83,9 @@ class TestMetadataVLSlarge {
 		List<DerivateStruct> children = derivate201517.getStructure().getChildren();
 		assertEquals(12, children.size());
 		assertEquals("Vorderdeckel", children.get(0).getLabel());
-		assertEquals(5, children.get(0).getPages().size());
+		assertEquals(5, children.get(0).getChildren().size());
 		assertEquals("Kupfertitel", children.get(1).getLabel());
-		assertEquals(1, children.get(1).getPages().size());
+		assertEquals(1, children.get(1).getChildren().size());
 	}
 
 	@Test
@@ -112,7 +112,6 @@ class TestMetadataVLSlarge {
 				l0210.getLabel());
 		// changed due removal of structure link duplicates
 		// from "1246"(!) to just "5"
-		assertEquals(1242, l0210.getPages().size());
-		assertEquals(4, l0210.getChildren().size());
+		assertEquals(5, l0210.getChildren().size());
 	}
 }

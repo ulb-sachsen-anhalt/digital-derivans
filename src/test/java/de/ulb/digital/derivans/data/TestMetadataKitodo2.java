@@ -37,7 +37,7 @@ class TestMetadataKitodo2 {
 	@Test
 	void testDigitalPagesWithoutGranularUrn143074601() throws DigitalDerivansException {
 		DerivateMD d143074601 = new DerivateMD(TestResource.K2_Aa_143074601.get());
-		List<DigitalPage> pages = d143074601.getAllPages();
+		List<DigitalPage> pages = d143074601.allPagesSorted();
 		for (DigitalPage page : pages) {
 			assertTrue(page.optContentIds().isEmpty());
 		}

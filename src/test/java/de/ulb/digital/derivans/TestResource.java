@@ -128,6 +128,7 @@ public enum TestResource {
 	VLS_VD18_Aa_16372279(Path.of("src/test/resources/mets/vls/vd18-Aa-16372279.mets.xml")),
 	SHARE_IT_VD18_148811035(Path.of("src/test/resources/mets/share_it/1981185920_96238.xml")),
 	SHARE_IT_VD18_1981185920_35126(Path.of("src/test/resources/mets/share_it/1981185920_35126.xml")),
+	SHARE_DIGIT_ZD_1516514412012_170057(Path.of("src/test/resources/mets/share_it/1516514412012_170057.xml")),
 
 	SHARE_IT_VD18_43053(Path.of("src/test/resources/mets/share_it/1981185920_43053.xml")),
 	SHARE_IT_RAHBAR_88120_LEGACY(Path.of("src/test/resources/ocr/alto/1981185920_88120/1981185920_88120_00000010_legacy.xml")),

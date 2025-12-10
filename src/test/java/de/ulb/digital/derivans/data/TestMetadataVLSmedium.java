@@ -3,6 +3,7 @@ package de.ulb.digital.derivans.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 
@@ -38,10 +39,10 @@ class TestMetadataVLSmedium {
 	/**
 	 * 
 	 * Example of invalid legacy METS Data -
-	 * It contains links to non-existing physical sructures
-	 * and therefore cannot generate proper Page Mappings.
+	 * It contains links to non-existing physical structures
+	 * and therefore cannot generate proper outline.
 	 * 
-	 * DATA LIKE THIS MUST BE CORRECT FOREHAND!
+	 * DATA LIKE THIS MUST BE CORRECTED FOREHAND!
 	 * 
 	 * @throws Exception
 	 */
@@ -57,7 +58,12 @@ class TestMetadataVLSmedium {
 				() -> derivate.init(TestHelper.ULB_MAX_PATH));
 
 		// was: LogId 'log2404939' : Invalid physical struct 'phys2404942'!
-		assertEquals("No files link div log2404930/Scene VIII. in @USE=MAX!", actualExc.getMessage());
+		var msg = actualExc.getMessage();
+		assertTrue(msg.contains("Linked div phys2404942 from log2404939 missing!"));
+		assertTrue(msg.contains("Linked div phys2404932 from log637740 missing!"));
+		assertTrue(msg.contains("Linked div phys2404936 from log637740 missing!"));
+		assertTrue(msg.contains("Linked div phys2404932 from log2404930 missing!"));
+		assertTrue(msg.contains("Linked div phys2404936 from log2404934 missing!"));
 	}
 
 	@Test
@@ -80,7 +86,7 @@ class TestMetadataVLSmedium {
 		// struct log16460310, "[Dissertatio Inauguralis ..." contains 30 linked pages
 		// of which are 27 are linked from it's children but 3 only from this container
 		// if we decide that a container has either children or pages these 3 pages are lost
-		assertEquals(42, devMD.getAllPages().size());
+		assertEquals(42, devMD.allPagesSorted().size());
 		assertEquals(5, lvlOneStructs.size());
 		var lvlOneStructOne = lvlOneStructs.get(0);
 		assertEquals("Vorderdeckel", lvlOneStructOne.getLabel());
@@ -91,15 +97,15 @@ class TestMetadataVLSmedium {
 		// leaf 2 : "[Seite 4]"
 		// leaf 3 : "[Leerseite]"
 		// leaf 4 : "[Leerseite]"
-		assertEquals(4, lvlOneStructOne.getPages().size());
-		assertEquals("[Seite 3]", lvlOneStructOne.getPages().get(0).getPageLabel().get());
-		assertEquals(1, lvlOneStructOne.getPages().get(0).getOrderNr());
-		assertEquals("[Seite 4]", lvlOneStructOne.getPages().get(1).getPageLabel().get());
-		assertEquals(2, lvlOneStructOne.getPages().get(1).getOrderNr());
-		assertEquals("[Leerseite]", lvlOneStructOne.getPages().get(2).getPageLabel().get());
-		assertEquals(3, lvlOneStructOne.getPages().get(2).getOrderNr());
-		assertEquals("[Leerseite]", lvlOneStructOne.getPages().get(3).getPageLabel().get());
-		assertEquals(4, lvlOneStructOne.getPages().get(3).getOrderNr());
+		assertEquals(4, lvlOneStructOne.getChildren().size());
+		assertEquals("[Seite 3]", lvlOneStructOne.getChildren().get(0).getLabel());
+		assertEquals(1, lvlOneStructOne.getChildren().get(0).getOrder());
+		assertEquals("[Seite 4]", lvlOneStructOne.getChildren().get(1).getLabel());
+		assertEquals(2, lvlOneStructOne.getChildren().get(1).getOrder());
+		assertEquals("[Leerseite]", lvlOneStructOne.getChildren().get(2).getLabel());
+		assertEquals(3, lvlOneStructOne.getChildren().get(2).getOrder());
+		assertEquals("[Leerseite]", lvlOneStructOne.getChildren().get(3).getLabel());
+		assertEquals(4, lvlOneStructOne.getChildren().get(3).getOrder());
 	}
 
 	// vd18p-14163614.mets.xml
@@ -130,7 +136,7 @@ class TestMetadataVLSmedium {
 		assertEquals(1, volOne.size());
 		var lvlOneStructOne = volOne.get(0);
 		assertEquals("1765", lvlOneStructOne.getLabel());
-		assertEquals(38, mds.getAllPages().size());
+		assertEquals(38, mds.allPagesSorted().size());
 
 		// original problem:
 		// section with LABEL=[Calender] and ORDER=4 is linked
@@ -139,7 +145,6 @@ class TestMetadataVLSmedium {
 		// in the structure tree, and finally in the PDF
 		var structCalendar = lvlOneStructOne.getChildren().get(3);
 		assertEquals("[Calender]", structCalendar.getLabel());
-		assertEquals(25, structCalendar.getPages().size());
 		// here was wrong of old with 37 links
 		// 12 *real* children structure,
 		// plus 25 direct links to physical containers

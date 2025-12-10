@@ -144,7 +144,7 @@ public class DerivateFS implements IDerivate {
 	}
 
 	@Override
-	public List<DigitalPage> getAllPages() {
+	public List<DigitalPage> allPagesSorted() {
 		List<DigitalPage> pages = new ArrayList<>(this.struct.getPages());
 		for (var kids : this.struct.getChildren()) {
 			pages.addAll(DerivateFS.getPages(kids));

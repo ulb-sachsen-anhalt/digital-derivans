@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
@@ -39,7 +38,40 @@ class TestDFGMETS {
 		METSContainer root = m.getLogicalRoot();
 		assertEquals(METSContainerType.VOLUME, root.getType());
 		assertEquals("1765", root.determineLabel());
-		assertEquals(38, m.getPages().size());
+		assertEquals(0, root.getFiles().size());
+		assertEquals(6, root.getChildren().size());
+	}
+
+	/**
+	 * 
+	 * MWE of all times - if this fails, we fall.
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	@Test
+	void testMWEContainerStructure() throws DigitalDerivansException {
+		METS mets737429 = new METS(TestResource.VLS_HD_Aa_737429.get(), TestHelper.ULB_MAX);
+		mets737429.init();
+		METSContainer root = mets737429.getLogicalRoot();
+		assertEquals(METSContainerType.MONOGRAPH, root.getType());
+		assertTrue(root.determineLabel().startsWith("Ode "));
+		assertEquals(0, root.getFiles().size());
+		assertEquals(2, root.getChildren().size());
+
+		// inspect first child "Titelblatt"
+		var lvl01Child01 = root.getChildren().get(0);
+		assertEquals(METSContainerType.TITLE_PAGE, lvl01Child01.getType());
+		assertEquals("Titelblatt", lvl01Child01.determineLabel());
+		assertEquals(1, lvl01Child01.getChildren().size());
+		var lvl01Child01Child01 = lvl01Child01.getChildren().get(0);
+		assertEquals(METSContainerType.PAGE, lvl01Child01Child01.getType());
+		assertEquals("[Seite 2]", lvl01Child01Child01.determineLabel());
+
+		// inspect secnd child "Ode"
+		var lvl01Child02 = root.getChildren().get(1);
+		assertEquals(METSContainerType.VERSE, lvl01Child02.getType());
+		assertEquals(3, lvl01Child02.getChildren().size());
+		assertEquals("[Seite 3]", lvl01Child02.getChildren().get(0).determineLabel());
 	}
 
 	/**
@@ -56,7 +88,15 @@ class TestDFGMETS {
 	}
 
 	/**
-	 * Only accept *real* physical pages, i.e. container with @TYPE="page"
+	 * 
+	 * Tackle issue with linked containers, resulting in too many linked pages
+	 * later in PDF outline stage.
+	 * 
+	 * This original METS containes 7 links between issue and page-Containers,
+	 * from which 2 are linked via sub-container "Feuilleton-Beilage. Nr. 20."
+	 * already for total 7 pages.
+	 * 
+	 * Ensure only 5 unique pages are linked from top issue container.
 	 * 
 	 * @throws DigitalDerivansException
 	 */
@@ -69,14 +109,38 @@ class TestDFGMETS {
 		issueMets.init();
 
 		// assert
-		var root = issueMets.getLogicalRoot();
-		assertEquals(7, issueMets.getPages().size());
+		METSContainer root = issueMets.getLogicalRoot();
 		assertEquals(METSContainerType.ISSUE, root.getType());
 		assertEquals("Nr. 58.", root.determineLabel());
+		assertEquals(0, root.getFiles().size());
+		assertEquals(6, root.getChildren().size());
+		var additionalSection = root.getChildren().get(0);
+		assertEquals(METSContainerType.ADDITIONAL, additionalSection.getType());
+		assertEquals("Feuilleton-Beilage. Nr. 20.", additionalSection.determineLabel());
+		assertEquals(2, additionalSection.getChildren().size());
 	}
 
 	/**
-	 * 
+	 * Issue without explicite sub-structures, but linked page containers
+	 * @throws DigitalDerivansException 
+	 */
+	@Test
+	void testIssueWithoutSubstructs() throws DigitalDerivansException {
+		
+		// arrange
+		var issueMets = new METS(TestResource.SHARE_DIGIT_ZD_1516514412012_170057.get());
+
+		// act
+		issueMets.init();
+
+		// assert
+		METSContainer issueContainer = issueMets.getLogicalRoot();
+		assertFalse(issueContainer.getChildren().isEmpty());
+		assertEquals(4, issueContainer.getChildren().size());
+	}
+
+
+	/**
 	 * Large monograph from Inhouse historical printworks
 	 * 
 	 * @throws DigitalDerivansException
@@ -94,6 +158,8 @@ class TestDFGMETS {
 		assertEquals(2306, issueMets.getPages().size());
 		assertEquals(METSContainerType.MONOGRAPH, root.getType());
 		assertTrue(root.determineLabel().startsWith("Johannis Micraelii, Pomerani Historia Ecclesiastica"));
+		assertEquals(0, root.getFiles().size());
+		assertEquals(12, root.getChildren().size());
 	}
 
 	/**
@@ -115,6 +181,8 @@ class TestDFGMETS {
 		assertEquals(16, mets.getPages().size());
 		assertEquals(METSContainerType.MONOGRAPH, root.getType());
 		assertTrue(root.determineLabel().startsWith("Neue Friedens-Vorschläge"));
+		assertEquals(0, root.getFiles().size());
+		assertEquals(4, root.getChildren().size());
 	}
 
 	/**
@@ -123,6 +191,8 @@ class TestDFGMETS {
 	 * sub-structures
 	 * Lead to very strange gaps in final PDF, like from page image 13 to 109 or
 	 * 112 to 224 only having blank white pages without any content.
+	 * 
+	 * Ensure that at top-most level only 11 sub-structures are recognized.
 	 * 
 	 * @throws DigitalDerivansException
 	 */
@@ -139,6 +209,11 @@ class TestDFGMETS {
 		assertEquals(415, mets.getPages().size());
 		assertEquals(METSContainerType.VOLUME, root.getType());
 		assertTrue(root.determineLabel().startsWith("Nouveaux cahiers de lecture"));
+		assertEquals(11, root.getChildren().size());
+		assertEquals(0, root.getFiles().size());
+		var child04 = root.getChildren().get(3);
+		assertEquals("Janvier.", child04.determineLabel());
+		assertEquals(96, child04.getChildren().size());
 	}
 
 	/**
@@ -181,4 +256,5 @@ class TestDFGMETS {
 		// assert - as of 2025
 		assertEquals("No files link div LOG_0216 (LABEL: 207. [An Charlotte Pistorius.])", actualExc.getMessage());
 	}
+
 }

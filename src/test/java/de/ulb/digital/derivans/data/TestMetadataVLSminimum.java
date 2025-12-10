@@ -65,7 +65,7 @@ class TestMetadataVLSminimum {
 	void testDigitalPagesOrderOf737429() {
 
 		// act
-		List<DigitalPage> pages = TestMetadataVLSminimum.der737429.getAllPages();
+		List<DigitalPage> pages = TestMetadataVLSminimum.der737429.allPagesSorted();
 
 		// assert
 		assertEquals(4, pages.size());
@@ -95,9 +95,9 @@ class TestMetadataVLSminimum {
 		List<DerivateStruct> children = dst.getChildren();
 		assertEquals(2, children.size());
 		assertEquals("Titelblatt", children.get(0).getLabel());
-		assertEquals(1, children.get(0).getPages().size());
+		assertEquals(1, children.get(0).getChildren().size());
 		assertEquals("[Ode]", children.get(1).getLabel());
-		assertEquals(3, children.get(1).getPages().size());
+		assertEquals(3, children.get(1).getChildren().size());
 	}
 
 }

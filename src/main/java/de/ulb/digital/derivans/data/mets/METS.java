@@ -54,6 +54,7 @@ public class METS {
 	static final String DMD_ID = "DMDID";
 	static final String METS_CONTAINER = "div";
 	static final String METS_CONTAINER_ID = "ID";
+	static final String METS_FILE_ID = "FILEID";
 	static final String METS_STRUCTMAP_TYPE = "TYPE";
 
 	private String imgFileGroup = IDerivans.IMAGE_DIR_DEFAULT;
@@ -84,11 +85,13 @@ public class METS {
 
 	private HashMap<String, METSFile> metsFiles = new LinkedHashMap<>();
 
-	private HashMap<String, METSContainer> assetContainer = new LinkedHashMap<>();
+	private HashMap<String, METSContainer> physicalContainer = new LinkedHashMap<>();
 
 	private HashMap<String, METSContainer> structuralContainer = new LinkedHashMap<>();
 
 	private HashMap<String, List<String>> smLinks = new LinkedHashMap<>();
+
+	private METSContainer logicalRoot;
 
 	public METS(Path metsfile) throws DigitalDerivansException {
 		this.file = metsfile;
@@ -115,8 +118,10 @@ public class METS {
 	 * </ol>
 	 */
 	public void init() throws DigitalDerivansException {
-		this.buildInternalTree();
 		String primeId = this.oneRoot().orElse(this.calculatePrimeMODSId());
+		if (this.primeLog == null) {
+			throw new DigitalDerivansException("No logical root found at " + this.getPath());
+		}
 		String xpr = String.format("//mets:dmdSec[@ID='%s']//mods:mods", primeId);
 		List<Element> modsSecs = this.evaluate(xpr);
 		if (modsSecs.size() != 1) {
@@ -124,20 +129,112 @@ public class METS {
 		}
 		var primeElement = modsSecs.get(0);
 		this.primeMods = new MODS(primeId, primeElement);
+		this.handleFiles();
+		this.handleStructLinks();
+		this.handleContainers();
+		this.logicalRoot = new METSContainer(this.primeLog);
+		this.completeHierarchy(this.logicalRoot);
+		// this.determineLinkedFiles(this.logicalRoot);
 		this.isInited = true;
 	}
 
-	private void buildInternalTree() throws DigitalDerivansException {
+	/**
+	 * 
+	 * Handle structural containers (logical and physical [aka pages])
+	 * 
+	 * @throws DigitalDerivansException
+	 */
+	private void handleContainers() throws DigitalDerivansException {
 		Filter<Element> structMapFilter = Filters.element(NS_METS).refine(Filters.element("structMap", NS_METS));
 		Iterator<Element> structMaps = this.document.getDescendants(structMapFilter);
-		Filter<Element> structLinkFilter = Filters.element(NS_METS).refine(Filters.element("structLink", NS_METS));
+		Element phyStruct = null;
+		while (structMaps.hasNext()) {
+			Element fgElement = structMaps.next();
+			String structType = fgElement.getAttributeValue("TYPE");
+			LOGGER.debug("Found structMap of TYPE={}", structType);
+			if (structType.equalsIgnoreCase(METS_STRUCTMAP_TYPE_PHYSICAL)) {
+				phyStruct = fgElement;
+			}
+		}
+		// get containers below logical root
+		Iterator<Element> logDivIt = this.primeLog
+				.getDescendants(Filters.element(NS_METS).refine(Filters.element("div", NS_METS)));
+		while (logDivIt.hasNext()) {
+			Element logDiv = logDivIt.next();
+			String theId = logDiv.getAttributeValue("ID");
+			METSContainer div = new METSContainer(logDiv);
+			for (var fptr : logDiv.getChildren("fptr", NS_METS)) {
+				String fileId = fptr.getAttributeValue(METS_FILE_ID);
+				if (this.metsFiles.containsKey(fileId)) {
+					METSFile metsFile = this.metsFiles.get(fileId);
+					div.addFile(metsFile);
+				}
+			}
+			this.structuralContainer.put(theId, div);
+		}
+		// pages
+		if (phyStruct != null) {
+			var pageFilter = new METSElementAttributeFilter(METS_CONTAINER, "TYPE", "page");
+			Iterator<Element> physDivIt = phyStruct.getDescendants(pageFilter);
+			while (physDivIt.hasNext()) {
+				Element physDiv = physDivIt.next();
+				String theId = physDiv.getAttributeValue("ID");
+				METSContainer div = new METSContainer(physDiv);
+				for (var fptr : physDiv.getChildren("fptr", NS_METS)) {
+					String fileId = fptr.getAttributeValue(METS_FILE_ID);
+					if (this.metsFiles.containsKey(fileId)) {
+						METSFile metsFile = this.metsFiles.get(fileId);
+						div.addFile(metsFile);
+					}
+				}
+				this.structuralContainer.put(theId, div);
+			}
+		}
+	}
+
+	private void completeHierarchy(METSContainer current) throws DigitalDerivansException {
+		String containerId = current.getId();
+		// get final page containers
+		if (this.smLinks.containsKey(containerId)) {
+			List<METSContainer> children = current.getChildren();
+			List<String> linkedPages = this.smLinks.get(containerId);
+			METSContainer previousSibling = null;
+			for (String linkTo : linkedPages) {
+				if (this.structuralContainer.containsKey(linkTo) &&
+						!children.contains(this.structuralContainer.get(linkTo))) {
+					METSContainer child = this.structuralContainer.get(linkTo);
+					// order matters!
+					child.setParent(current);
+					current.addChild(child);
+				}
+			}
+			// must be last step since it may move
+			// files around from parent to child
+			this.clearLinks(current);
+		}
+		// we only care for non-page children since they can be moved around
+		List<METSContainer> realWildChilds = current.getChildren().stream()
+				.filter(c -> c.getType() != METSContainerType.PAGE)
+				.collect(Collectors.toList());
+		for (int i = 0; i < realWildChilds.size(); i++) {
+			METSContainer childDiv = realWildChilds.get(i);
+			this.completeHierarchy(childDiv);
+		}
+	}
+
+	private void handleFiles() throws DigitalDerivansException {
 		Filter<Element> fileGrpFilter = Filters.element(NS_METS).refine(Filters.element("fileGrp", NS_METS));
 		Iterator<Element> fileGrpIterator = this.document.getDescendants(fileGrpFilter);
-		// files
 		Element useImageGrp = null;
-		Optional<Element> optImageGrp = this.search(fileGrpIterator, "USE", this.imgFileGroup);
-		if (optImageGrp.isPresent()) {
-			useImageGrp = optImageGrp.get();
+		Element groupUseFulltext = null;
+		while (fileGrpIterator.hasNext()) {
+			Element fgElement = fileGrpIterator.next();
+			if (fgElement.getAttributeValue("USE").equals(this.imgFileGroup)) {
+				useImageGrp = fgElement;
+			}
+			if (fgElement.getAttributeValue("USE").equals(this.ocrFileGroup)) {
+				groupUseFulltext = fgElement;
+			}
 		}
 		if (useImageGrp == null) {
 			throw new DigitalDerivansException("Invalid input mets:fileGrp " + this.imgFileGroup + "!");
@@ -146,62 +243,22 @@ public class METS {
 		for (Element fileElement : files) {
 			String fileId = fileElement.getAttributeValue("ID");
 			METSFile metsFile = new METSFile(fileElement, this.imgFileGroup);
+			metsFile.setLocalRoot(this.getPath().getParent());
 			this.metsFiles.put(fileId, metsFile);
 		}
-		Element groupUseFulltext = null;
-		Optional<Element> optOcrGrp = this.search(fileGrpIterator, "USE", this.ocrFileGroup);
-		if (optOcrGrp.isPresent()) {
-			groupUseFulltext = optOcrGrp.get();
+		if (groupUseFulltext != null) {
 			List<Element> ocrFiles = groupUseFulltext.getChildren("file", NS_METS);
 			for (Element ocrFile : ocrFiles) {
 				String fileId = ocrFile.getAttributeValue("ID");
 				METSFile metsFile = new METSFile(ocrFile, this.ocrFileGroup);
+				metsFile.setLocalRoot(this.getPath().getParent());
 				this.metsFiles.put(fileId, metsFile);
 			}
 		}
+	}
 
-		Element logStruct = null;
-		Element phyStruct = null;
-		while (structMaps.hasNext()) {
-			Element fgElement = structMaps.next();
-			String structType = fgElement.getAttributeValue("TYPE");
-			LOGGER.debug("Found structMap of TYPE={}", structType);
-			if (structType.equalsIgnoreCase(METS_STRUCTMAP_TYPE_LOGICAL)) {
-				logStruct = fgElement;
-			}
-			if (structType.equalsIgnoreCase(METS_STRUCTMAP_TYPE_PHYSICAL)) {
-				phyStruct = fgElement;
-			}
-		}
-		// logical struct
-		if (logStruct == null) {
-			throw new DigitalDerivansException("No logical structMap found");
-		}
-		List<Element> logicalDivs = logStruct.getChildren("div", NS_METS);
-		if (logicalDivs.size() != 1) {
-			LOGGER.warn("Multiple top-level logical divs found in mets:structMap");
-		}
-		Iterator<Element> logDivIt = logicalDivs.get(0)
-				.getDescendants(Filters.element(NS_METS).refine(Filters.element("div", NS_METS)));
-		while (logDivIt.hasNext()) {
-			Element logDiv = logDivIt.next();
-			String theId = logDiv.getAttributeValue("ID");
-			METSContainer div = new METSContainer(logDiv);
-			this.structuralContainer.put(theId, div);
-		}
-
-		// pages
-		if (phyStruct != null) {
-			var pageFilter = new METSElementAttributeFilter(METS_CONTAINER, "TYPE", "page");
-			Iterator<Element> metsPages = phyStruct.getDescendants(pageFilter);
-			while (metsPages.hasNext()) {
-				Element pageElement = metsPages.next();
-				String theId = pageElement.getAttributeValue("ID");
-				METSContainer div = new METSContainer(pageElement);
-				this.assetContainer.put(theId, div);
-			}
-		}
-		// links
+	private void handleStructLinks() throws DigitalDerivansException {
+		Filter<Element> structLinkFilter = Filters.element(NS_METS).refine(Filters.element("structLink", NS_METS));
 		Iterator<Element> iter = this.document.getDescendants(structLinkFilter);
 		if (!iter.hasNext()) {
 			throw new DigitalDerivansException("No structLinks found");
@@ -219,10 +276,46 @@ public class METS {
 			prevTos.add(toPhysical);
 			this.smLinks.put(fromLogical, prevTos);
 		}
+
 	}
 
 	/**
 	 * 
+	 * Remove multiple linkings of page containers from
+	 * parent containers further down the tree
+	 * if and only if parent exists and has pages linked
+	 * 
+	 * @param current
+	 * @throws DigitalDerivansException
+	 */
+	private void clearLinks(METSContainer current) {
+		METSContainer currentParent = current.getParent();
+		if (currentParent == null || currentParent.getChildren().isEmpty()) {
+			return;
+		}
+		// if digitization systems would take care of linking pages and prevent
+		// multiple linkings pushing files around like this wouldn't be necessary ...
+		int movedFiles = 0;
+		List<METSContainer> pageContainer = current.getChildren().stream()
+				.filter(c -> c.getType() == METSContainerType.PAGE)
+				.collect(Collectors.toList());
+		for (METSContainer currentPage : pageContainer) {
+			List<METSContainer> parentChildren = currentParent.getChildren();
+			for (int i = 0; i < parentChildren.size(); i++) {
+				METSContainer parentChild = parentChildren.get(i);
+				if (parentChild.getId().equals(currentPage.getId())) {
+					currentParent.getChildren().remove(parentChild);
+					movedFiles++;
+				}
+			}
+		}
+		if (movedFiles > 0) {
+			LOGGER.warn("Moved {} page containers from parent {} to child container {}",
+					movedFiles, currentParent, current);
+		}
+	}
+
+	/**
 	 * Ensure some invariants of METS structure
 	 * 
 	 * => All logical sections _must_ link to at least one physical section (page)
@@ -234,14 +327,34 @@ public class METS {
 			this.init();
 		}
 		var errors = new ArrayList<String>();
-		for (var entry : this.structuralContainer.entrySet()) {
-			String fromLogicalId = entry.getKey();
+
+		// rather common scenario with empty logical sections
+		List<METSContainer> nonPageContainers = this.structuralContainer.entrySet().stream()
+			.filter(e -> e.getValue().getType() != METSContainerType.PAGE)
+			.map(Map.Entry::getValue)
+			.collect(Collectors.toList());
+		for (var entry : nonPageContainers) {
+			String fromLogicalId = entry.getId();
 			if (!this.smLinks.containsKey(fromLogicalId)) {
-				String err = String.format("No files link div %s (LABEL: %s)", 
-					fromLogicalId, entry.getValue().determineLabel());
+				String err = String.format("No files link div %s (LABEL: %s)",
+						fromLogicalId, entry.determineLabel());
 				errors.add(err);
 			}
 		}
+		// rather tricky check for referenced but missing pages
+		for (var linkEntry : this.smLinks.entrySet()) {
+			String fromLogicalId = linkEntry.getKey();
+			List<String> toPhysicalIds = linkEntry.getValue();
+			for (String toPhysicalId : toPhysicalIds) {
+				if (!this.structuralContainer.containsKey(toPhysicalId)) {
+					String err = String.format("Linked div %s from %s missing!",
+							toPhysicalId, fromLogicalId);
+					errors.add(err);
+				}
+			}
+		}
+
+		// finally
 		if (errors.isEmpty()) {
 			return;
 		}
@@ -249,21 +362,9 @@ public class METS {
 	}
 
 	public Map<String, METSContainer> getPages() {
-		return this.assetContainer;
-	}
-
-	public boolean hasLinkedPages(String id) {
-		return this.smLinks.containsKey(id);
-	}
-
-	private Optional<Element> search(Iterator<Element> elementIt, String attrLabel, String attrValue) {
-		while (elementIt.hasNext()) {
-			Element fgElement = elementIt.next();
-			if (fgElement.getAttributeValue(attrLabel).equals(attrValue)) {
-				return Optional.of(fgElement);
-			}
-		}
-		return Optional.empty();
+		return this.structuralContainer.entrySet().stream()
+				.filter(e -> e.getValue().getType() == METSContainerType.PAGE)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	private Optional<String> oneRoot() throws DigitalDerivansException {
@@ -447,8 +548,8 @@ public class METS {
 		return Optional.empty();
 	}
 
-	public METSContainer getLogicalRoot() throws DigitalDerivansException {
-		return new METSContainer(this.primeLog);
+	public METSContainer getLogicalRoot() {
+		return this.logicalRoot;
 	}
 
 	/**
@@ -497,8 +598,8 @@ public class METS {
 		List<METSContainer> pageContainers = new ArrayList<>();
 		List<String> linkedTo = this.smLinks.getOrDefault(logID, new ArrayList<>());
 		for (String linkedId : linkedTo) {
-			if (this.assetContainer.containsKey(linkedId)) {
-				METSContainer physCnt = this.assetContainer.get(linkedId);
+			if (this.physicalContainer.containsKey(linkedId)) {
+				METSContainer physCnt = this.physicalContainer.get(linkedId);
 				if (physCnt.getType() != METSContainerType.PAGE) {
 					// this happened as far as known in legacy inhouse newspaper
 					// structures only when top most physSequence is linked
@@ -519,43 +620,43 @@ public class METS {
 		return pageContainers;
 	}
 
-	public METSFilePack getPageFiles(METSContainer container) throws DigitalDerivansException {
-		List<Element> allFiles = container.get().getChildren("fptr", METS.NS_METS);
-		List<String> fileIds = allFiles.stream().map(aFile -> aFile.getAttributeValue("FILEID"))
-				.collect(Collectors.toList());
-		METSFile imgFile = null;
-		for (String fileId : fileIds) {
-			if (this.metsFiles.containsKey(fileId)) {
-				METSFile tmpFile = this.metsFiles.get(fileId);
-				if (tmpFile.getFileGroup().equals(this.imgFileGroup)) {
-					imgFile = tmpFile;
-					break;
-				}
-			}
-		}
-		if (imgFile == null) {
-			var msg = "Can't find image file in @USE=" + this.imgFileGroup + " for container " + container.getId();
-			throw new DigitalDerivansException(msg);
-		}
-		imgFile.setLocalRoot(this.getPath().getParent());
-		METSFilePack pack = new METSFilePack();
-		pack.imageFile = imgFile;
-		METSFile ocrFile = null;
-		for (String fileId : fileIds) {
-			if (this.metsFiles.containsKey(fileId)) {
-				METSFile tmpFile = this.metsFiles.get(fileId);
-				if (tmpFile.getFileGroup().equals(this.ocrFileGroup)) {
-					ocrFile = this.metsFiles.get(fileId);
-					break;
-				}
-			}
-		}
-		if (ocrFile != null) {
-			ocrFile.setLocalRoot(this.getPath().getParent());
-			pack.ocrFile = Optional.of(ocrFile);
-		}
-		return pack;
-	}
+	// public METSFilePack getPageFiles(METSContainer container) throws DigitalDerivansException {
+	// 	List<Element> allFiles = container.get().getChildren("fptr", METS.NS_METS);
+	// 	List<String> fileIds = allFiles.stream().map(aFile -> aFile.getAttributeValue("FILEID"))
+	// 			.collect(Collectors.toList());
+	// 	METSFile imgFile = null;
+	// 	for (String fileId : fileIds) {
+	// 		if (this.metsFiles.containsKey(fileId)) {
+	// 			METSFile tmpFile = this.metsFiles.get(fileId);
+	// 			if (tmpFile.getFileGroup().equals(this.imgFileGroup)) {
+	// 				imgFile = tmpFile;
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// 	if (imgFile == null) {
+	// 		var msg = "Can't find image file in @USE=" + this.imgFileGroup + " for container " + container.getId();
+	// 		throw new DigitalDerivansException(msg);
+	// 	}
+	// 	imgFile.setLocalRoot(this.getPath().getParent());
+	// 	METSFilePack pack = new METSFilePack();
+	// 	pack.imageFile = imgFile;
+	// 	METSFile ocrFile = null;
+	// 	for (String fileId : fileIds) {
+	// 		if (this.metsFiles.containsKey(fileId)) {
+	// 			METSFile tmpFile = this.metsFiles.get(fileId);
+	// 			if (tmpFile.getFileGroup().equals(this.ocrFileGroup)) {
+	// 				ocrFile = this.metsFiles.get(fileId);
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// 	if (ocrFile != null) {
+	// 		ocrFile.setLocalRoot(this.getPath().getParent());
+	// 		pack.ocrFile = Optional.of(ocrFile);
+	// 	}
+	// 	return pack;
+	// }
 
 	public boolean isInited() {
 		return this.isInited;
@@ -577,5 +678,6 @@ public class METS {
 	public static class METSFilePack {
 		public METSFile imageFile;
 		public Optional<METSFile> ocrFile = Optional.empty();
+
 	}
 }

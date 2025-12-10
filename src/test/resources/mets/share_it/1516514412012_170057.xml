@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="static/style.xsl"?><OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd"><responseDate>2025-12-08T10:02:16Z</responseDate><request verb="GetRecord" identifier="oai:opendata2.uni-halle.de:1516514412012/170057" metadataPrefix="mets">https://opendata2.uni-halle.de/oai/dd</request><GetRecord><record><header><identifier>oai:opendata2.uni-halle.de:1516514412012/170057</identifier><datestamp>2023-06-27T17:35:11Z</datestamp><setSpec>com_1516514412012_34477</setSpec><setSpec>com_1516514412012_1</setSpec><setSpec>col_1516514412012_140135</setSpec><setSpec>digi_inhouse</setSpec><setSpec>digi_newspaper_IssueOrAddition</setSpec></header><metadata><mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:dv="http://dfg-viewer.de/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:ulb="https://bibliothek.uni-halle.de" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version112/mets.xsd" OBJID="11" LABEL="Inhouse-Zeitungen">
+   <mets:metsHdr CREATEDATE="2023-05-21T12:16:37" LASTMODDATE="2023-05-21T12:29:30Z">
+      <mets:agent ROLE="OTHER" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+         <mets:name>vls/2203</mets:name>
+         <mets:note>legacy vlid: oai:digital.bibliothek.uni-halle.de/ulbhaldodzd:3069725</mets:note>
+         <mets:note>legacy date: 2022-07-29T11:50:28Z</mets:note>
+      </mets:agent>
+      <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+         <mets:name>ULB Migration 2023</mets:name>
+         <mets:note>2023-05-21 12:16:39</mets:note>
+      </mets:agent>
+      <mets:agent TYPE="OTHER" ROLE="OTHER" OTHERTYPE="SOFTWARE">
+         <mets:name>DigitalDerivans V1.7.1</mets:name>
+         <mets:note>PDF FileGroup for PDF_84631506819220525 created at 2023-05-21T12:16:96</mets:note>
+      </mets:agent>
+  </mets:metsHdr>
+   <mets:dmdSec ID="md3069725">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+         <mets:xmlData>
+            <mods:mods version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+               <mods:typeOfResource>text</mods:typeOfResource>
+               <mods:originInfo eventType="publication">
+                  <mods:dateIssued encoding="iso8601">1922-05-25</mods:dateIssued>
+                  <mods:place>
+                     <mods:placeTerm>Halle (Saale)</mods:placeTerm>
+                  </mods:place>
+               </mods:originInfo>
+               <mods:originInfo eventType="digitization">
+                  <mods:place>
+                     <mods:placeTerm>Halle (Saale)</mods:placeTerm>
+                  </mods:place>
+                  <mods:publisher>Universitäts- und Landesbibliothek Sachsen-Anhalt</mods:publisher>
+                  <mods:dateCaptured encoding="iso8601">2020-11-12</mods:dateCaptured>
+               </mods:originInfo>
+               <mods:language>
+                  <mods:languageTerm type="code" authority="iso639-2b">ger</mods:languageTerm>
+               </mods:language>
+               <mods:relatedItem type="host">
+                  <mods:titleInfo>
+                     <mods:title>General-Anzeiger für Kemberg, Bad Schmiedeberg und Umgegend. 1902-1927</mods:title>
+                  </mods:titleInfo>
+                  <mods:identifier type="zdb">2844737-2</mods:identifier>
+                  <mods:relatedItem type="original">
+                     <mods:identifier type="zdb">2521504-8</mods:identifier>
+                  </mods:relatedItem>
+                  <mods:recordInfo>
+                     <mods:recordIdentifier source="gvk-ppn">846315068</mods:recordIdentifier>
+                  </mods:recordInfo>
+               </mods:relatedItem>
+               <mods:part order="19220525">
+                  <mods:detail type="issue">
+                     <mods:number>61</mods:number>
+                     <mods:title>Nr. 61. Kemberg, Donnerstag, den 25. Mai 1922.</mods:title>
+                  </mods:detail>
+                  <mods:detail type="volume">
+                     <mods:number>Jg. 24</mods:number>
+                  </mods:detail>
+               </mods:part>
+               <mods:recordInfo>
+                  <mods:recordCreationDate encoding="marc">13-07-22</mods:recordCreationDate>
+                  <mods:recordChangeDate encoding="marc">21-05-23</mods:recordChangeDate>
+                  <mods:recordIdentifier source="gvk-ppn">84631506819220525</mods:recordIdentifier>
+               </mods:recordInfo>
+               <mods:accessCondition xlink:href="https://creativecommons.org/publicdomain/mark/1.0/" type="use and reproduction">Public Domain Mark 1.0</mods:accessCondition>
+               <mods:classification authority="ddc">090</mods:classification>
+               <mods:extension>
+                  <ulb:externalType recordSyntax="pica">OZ</ulb:externalType>
+                  <ulb:imageDefaultDimension>!2000,2000</ulb:imageDefaultDimension>
+               </mods:extension>
+               <mods:identifier type="urn">urn:nbn:de:gbv:3:3-53721-192205250</mods:identifier>
+               <mods:identifier type="doi">doi:10.25673/opendata2-170033</mods:identifier>
+            </mods:mods>
+         </mets:xmlData>
+      </mets:mdWrap>
+   </mets:dmdSec>
+   <mets:amdSec ID="amd3069725">
+      <mets:rightsMD ID="rights3069725">
+         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+            <mets:xmlData>
+               <dv:rights>
+                  <dv:ownerLogo>https://opendata2.uni-halle.de/image/mets_viewerLogo.gif</dv:ownerLogo>
+                  <dv:owner>Universitäts- und Landesbibliothek Sachsen-Anhalt</dv:owner>
+                  <dv:ownerSiteURL>http://www.bibliothek.uni-halle.de</dv:ownerSiteURL>
+                  <dv:ownerContact>mailto:auskunft@bibliothek.uni-halle.de</dv:ownerContact>
+                  <dv:license>https://creativecommons.org/publicdomain/mark/1.0/</dv:license>
+               </dv:rights>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:rightsMD>
+      <mets:digiprovMD ID="digiprov3069725">
+         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+            <mets:xmlData>
+               <dv:links>
+                  <dv:reference>http://opac.bibliothek.uni-halle.de/DB=1/CLK?IKT=12&amp;TRM=846315068</dv:reference>
+                  <dv:presentation>https://opendata2.uni-halle.de//handle/1516514412012/170057</dv:presentation>
+                  <dv:iiif>https://opendata2.uni-halle.de//json/iiif/1516514412012/170057/b7d2349c-bd16-485d-935f-04e1cb49c547/manifest</dv:iiif>
+               </dv:links>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:digiprovMD>
+   </mets:amdSec>
+   <mets:fileSec>
+      <mets:fileGrp USE="MAX">
+         <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_3069445">
+            <mets:FLocat xlink:href="https://opendata2.uni-halle.de/retrieve/85b23df9-6308-49a6-9962-ffb5ab0c6ebf/0001.jpg" LOCTYPE="URL" />
+         </mets:file>
+         <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_3069446">
+            <mets:FLocat xlink:href="https://opendata2.uni-halle.de/retrieve/ec04c69c-14ca-4463-bf85-97d55d1364fd/0002.jpg" LOCTYPE="URL" />
+         </mets:file>
+         <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_3069447">
+            <mets:FLocat xlink:href="https://opendata2.uni-halle.de/retrieve/4e6ad972-3a28-4fef-b18b-6f9220ceb2d9/0003.jpg" LOCTYPE="URL" />
+         </mets:file>
+         <mets:file MIMETYPE="image/jpeg" ID="IMG_MAX_3069448">
+            <mets:FLocat xlink:href="https://opendata2.uni-halle.de/retrieve/396989b9-a68c-4686-9f99-204882fd29c3/0004.jpg" LOCTYPE="URL" />
+         </mets:file>
+      </mets:fileGrp>
+      <mets:fileGrp USE="DOWNLOAD">
+         <mets:file ID="PDF_84631506819220525" MIMETYPE="application/pdf">
+            <mets:FLocat LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de/retrieve/19da8062-64d9-4a5f-a1b4-b6f8561f3481/84631506819220525.pdf" />
+         </mets:file>
+      </mets:fileGrp>
+      <mets:fileGrp USE="THUMBS">
+         <mets:file ID="IMG_THUMB_3069445" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de//iiif-imgsrv/85b23df9-6308-49a6-9962-ffb5ab0c6ebf/!2!27!29!09!2729099586067564279982479027845732607/full/!128,128/0/default.jpg" />
+         </mets:file>
+         <mets:file ID="IMG_THUMB_3069446" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de//iiif-imgsrv/ec04c69c-14ca-4463-bf85-97d55d1364fd/!2!11!10!54!111054031297785560576356616956265983054/full/!128,128/0/default.jpg" />
+         </mets:file>
+         <mets:file ID="IMG_THUMB_3069447" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de//iiif-imgsrv/4e6ad972-3a28-4fef-b18b-6f9220ceb2d9/!2!10!77!87!107787578728058214511867881592539720844/full/!128,128/0/default.jpg" />
+         </mets:file>
+         <mets:file ID="IMG_THUMB_3069448" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de//iiif-imgsrv/396989b9-a68c-4686-9f99-204882fd29c3/!2!15!44!76!154476224655480215659095314968876816570/full/!128,128/0/default.jpg" />
+         </mets:file>
+      </mets:fileGrp>
+      <mets:fileGrp USE="DEFAULT">
+         <mets:file ID="IMG_DEFAULT_3069445" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de//iiif-imgsrv/85b23df9-6308-49a6-9962-ffb5ab0c6ebf/!2!27!29!09!2729099586067564279982479027845732607/full/!2000,2000/0/default.jpg" />
+         </mets:file>
+         <mets:file ID="IMG_DEFAULT_3069446" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de//iiif-imgsrv/ec04c69c-14ca-4463-bf85-97d55d1364fd/!2!11!10!54!111054031297785560576356616956265983054/full/!2000,2000/0/default.jpg" />
+         </mets:file>
+         <mets:file ID="IMG_DEFAULT_3069447" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de//iiif-imgsrv/4e6ad972-3a28-4fef-b18b-6f9220ceb2d9/!2!10!77!87!107787578728058214511867881592539720844/full/!2000,2000/0/default.jpg" />
+         </mets:file>
+         <mets:file ID="IMG_DEFAULT_3069448" MIMETYPE="image/jpeg">
+            <mets:FLocat LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de//iiif-imgsrv/396989b9-a68c-4686-9f99-204882fd29c3/!2!15!44!76!154476224655480215659095314968876816570/full/!2000,2000/0/default.jpg" />
+         </mets:file>
+      </mets:fileGrp>
+   </mets:fileSec>
+   <mets:structMap TYPE="PHYSICAL">
+      <mets:div TYPE="physSequence" ID="physroot">
+         <mets:div ID="phys3069445" TYPE="page" LABEL="[Seite]" ORDER="1" CONTENTIDS="urn:nbn:de:gbv:3:3-53721-192205250/fragment/page=0001">
+            <mets:fptr FILEID="IMG_MAX_3069445" />
+            <mets:fptr FILEID="IMG_THUMB_3069445" />
+            <mets:fptr FILEID="IMG_DEFAULT_3069445" />
+         </mets:div>
+         <mets:div ID="phys3069446" TYPE="page" LABEL="[Seite]" ORDER="2" CONTENTIDS="urn:nbn:de:gbv:3:3-53721-192205250/fragment/page=0002">
+            <mets:fptr FILEID="IMG_MAX_3069446" />
+            <mets:fptr FILEID="IMG_THUMB_3069446" />
+            <mets:fptr FILEID="IMG_DEFAULT_3069446" />
+         </mets:div>
+         <mets:div ID="phys3069447" TYPE="page" LABEL="[Seite]" ORDER="3" CONTENTIDS="urn:nbn:de:gbv:3:3-53721-192205250/fragment/page=0003">
+            <mets:fptr FILEID="IMG_MAX_3069447" />
+            <mets:fptr FILEID="IMG_THUMB_3069447" />
+            <mets:fptr FILEID="IMG_DEFAULT_3069447" />
+         </mets:div>
+         <mets:div ID="phys3069448" TYPE="page" LABEL="[Seite]" ORDER="4" CONTENTIDS="urn:nbn:de:gbv:3:3-53721-192205250/fragment/page=0004">
+            <mets:fptr FILEID="IMG_MAX_3069448" />
+            <mets:fptr FILEID="IMG_THUMB_3069448" />
+            <mets:fptr FILEID="IMG_DEFAULT_3069448" />
+         </mets:div>
+      </mets:div>
+   </mets:structMap>
+   <mets:structMap TYPE="LOGICAL">
+      <mets:div ID="log2335214" TYPE="newspaper" LABEL="General-Anzeiger für Kemberg, Bad Schmiedeberg und Umgegend. 1902-1927" ORDER="1">
+         <mets:mptr LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de/oai/dd?verb=GetRecord&amp;metadataPrefix=mets&amp;identifier=oai:opendata2.uni-halle.de:1516514412012/165769" />
+         <mets:div ID="log3069070" TYPE="year" LABEL="1922" ORDER="1" ORDERLABEL="1922">
+            <mets:mptr LOCTYPE="URL" xlink:href="https://opendata2.uni-halle.de/oai/dd?verb=GetRecord&amp;metadataPrefix=mets&amp;identifier=oai:opendata2.uni-halle.de:1516514412012/169999" />
+            <mets:div TYPE="month" ID="month05" LABEL="05" ORDERLABEL="1922-05">
+               <mets:div TYPE="day" ID="day0525" LABEL="25" ORDERLABEL="1922-05-25">
+                  <mets:div ID="log3069725" DMDID="md3069725" ADMID="amd3069725" TYPE="issue" LABEL="61 (25.5.1922) Nr. 61. Kemberg, Donnerstag, den 25. Mai 1922." ORDER="1">
+                     <mets:fptr FILEID="PDF_84631506819220525" />
+                  </mets:div>
+               </mets:div>
+            </mets:div>
+         </mets:div>
+      </mets:div>
+  </mets:structMap>
+   <mets:structLink>
+      <mets:smLink xlink:from="log3069725" xlink:to="physroot" />
+      <mets:smLink xlink:from="log3069725" xlink:to="phys3069445" />
+      <mets:smLink xlink:from="log3069725" xlink:to="phys3069446" />
+      <mets:smLink xlink:from="log3069725" xlink:to="phys3069447" />
+      <mets:smLink xlink:from="log3069725" xlink:to="phys3069448" />
+  </mets:structLink>
+</mets:mets>
+</metadata></record></GetRecord></OAI-PMH>

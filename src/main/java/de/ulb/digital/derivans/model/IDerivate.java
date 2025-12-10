@@ -19,7 +19,7 @@ public interface IDerivate {
 
 	DerivateStruct getStructure();
 
-	List<DigitalPage> getAllPages();
+	List<DigitalPage> allPagesSorted();
 
 	Path getRootDir();
 

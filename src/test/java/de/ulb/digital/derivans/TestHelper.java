@@ -40,6 +40,11 @@ import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDMetadata;
+import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDDestination;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageFitDestination;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDDocumentOutline;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.outline.PDOutlineItem;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.TextPosition;
 import org.jdom2.Document;
@@ -52,9 +57,9 @@ import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfOutline;
-import com.itextpdf.kernel.pdf.PdfReader;
+// import com.itextpdf.kernel.pdf.PdfDocument;
+// import com.itextpdf.kernel.pdf.PdfOutline;
+// import com.itextpdf.kernel.pdf.PdfReader;
 
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.xml.XMLHandler;
@@ -324,40 +329,6 @@ public class TestHelper {
 			}
 		}
 
-		public PDFOutlineEntry getOutline() throws IOException {
-			PdfReader reader = new PdfReader(this.pdfPath.toFile());
-			PdfOutline pdfOutline = null;
-			try (PdfDocument pdfDocument = new PdfDocument(reader)) {
-				pdfOutline = pdfDocument.getOutlines(true);
-			}
-			String label = pdfOutline.getTitle();
-			String dest = METS.UNSET;
-			if (pdfOutline.getDestination() != null) {
-				dest = pdfOutline.getDestination().getPdfObject().toString();
-			}
-			PDFOutlineEntry root = new PDFOutlineEntry(label, dest);
-			if (!pdfOutline.getAllChildren().isEmpty()) {
-				for (var child : pdfOutline.getAllChildren()) {
-					traverseOutline(root, child);
-				}
-			}
-			return root;
-		}
-
-		public static void traverseOutline(PDFOutlineEntry currParent, PdfOutline currChild) {
-			String label = currChild.getTitle();
-			String dest = METS.UNSET;
-			if (currChild.getDestination() != null) {
-				dest = currChild.getDestination().getPdfObject().toString();
-			}
-			PDFOutlineEntry nextChild = new PDFOutlineEntry(label, dest);
-			currParent.getOutlineEntries().add(nextChild);
-			List<PdfOutline> nextChildren = currChild.getAllChildren();
-			for (var nextOutlineChild : nextChildren) {
-				traverseOutline(nextChild, nextOutlineChild);
-			}
-		}
-
 		public int countPages() throws DigitalDerivansException {
 			if (!Files.exists(this.pdfPath)) {
 				throw new DigitalDerivansException("Invalid PDF file path " + pdfPath);
@@ -369,9 +340,99 @@ public class TestHelper {
 				throw new DigitalDerivansException(msg);
 			}
 		}
-	}
+
+		/**
+		 * Read PDF outline using Apache PDFBox but ignore ROOT entry if present
+		 * 
+		 * @return PDFOutlineEntry root node with hierarchical outline structure
+		 * @throws DigitalDerivansException
+		 */
+		public PDFOutlineEntry getOutline() throws DigitalDerivansException {
+			if (!Files.exists(this.pdfPath)) {
+				throw new DigitalDerivansException("Invalid PDF file path " + pdfPath);
+			}
+			try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(pdfPath))) {
+				PDDocumentCatalog catalog = document.getDocumentCatalog();
+				PDDocumentOutline outline = catalog.getDocumentOutline();
+				if (outline == null) {
+					// No outline available
+					throw new DigitalDerivansException("No outline available in PDF " + pdfPath);
+				}
+				// Check root entry
+				PDFOutlineEntry root = new PDFOutlineEntry("ROOT", 1);
+				// Assume tree-like struct with one single root entry
+				PDOutlineItem current = outline.getFirstChild();
+				if (current == null) {
+					throw new DigitalDerivansException("No outline structure found in PDF " + pdfPath);
+				}
+				traverseOutlinePDFBox(root, current, document);
+				if(current.getNextSibling() != null) {
+					throw new DigitalDerivansException("Multiple root outline entries found in PDF " + pdfPath);
+				}
+				return root.getOutlineEntries().get(0); // Return only first child as actual root
+			} catch (IOException e) {
+				var msg = this.pdfPath + ": " + e.getMessage();
+				throw new DigitalDerivansException(msg);
+			}
+		}
+
+		/**
+		 * Recursively traverse PDFBox outline structure
+		 * 
+		 * @param parent Current parent entry
+		 * @param item Current PDFBox outline item
+		 * @param document The PDDocument to resolve page numbers
+		 */
+		private static void traverseOutlinePDFBox(PDFOutlineEntry parent, PDOutlineItem item, PDDocument document) {
+			String label = item.getTitle();
+			if (label == null) {
+				label = METS.UNSET;
+			}
+			int dest = -1;
+			try {
+				if (item.getDestination() != null) {
+					dest = resolveDestinationPageNumber(item.getDestination(), document);
+				} else if (item.getAction() instanceof PDActionGoTo) {
+					PDActionGoTo goToAction = (PDActionGoTo) item.getAction();
+					dest = resolveDestinationPageNumber(goToAction.getDestination(), document);
+				}
+			} catch (IOException e) {
+				// If destination cannot be read, keep as UNSET
+			}
+			PDFOutlineEntry entry = new PDFOutlineEntry(label, dest);
+			parent.getOutlineEntries().add(entry);
+			// Process children recursively
+			PDOutlineItem child = item.getFirstChild();
+			while (child != null) {
+				traverseOutlinePDFBox(entry, child, document);
+				child = child.getNextSibling();
+			}
+		}
 
 	/**
+	 * Resolve page number from PDFBox destination.
+	 * PDPageFitDestination.getPageNumber() returns -1 because it doesn't store the page number directly.
+	 * Instead, we need to get the PDPage object and find its index in the document.
+	 * 
+	 * @param destination The PDF destination
+	 * @param document The PDDocument to resolve page indices
+	 * @return String representation of the page number or destination
+	 */
+	private static int resolveDestinationPageNumber(PDDestination destination, PDDocument document) {
+		if (destination instanceof PDPageFitDestination) {
+			PDPageFitDestination pageDest = (PDPageFitDestination) destination;
+			PDPage page = pageDest.getPage();
+			if (page != null) {
+				int pageIndex = document.getPages().indexOf(page);
+				if (pageIndex >= 0) {
+					return pageIndex + 1;
+				}
+			}
+		}
+		return -1;
+	}
+
+}	/**
 	 * 
 	 * Create artificial OCR data
 	 * (Between word/token on-a-line +10 pixel gap)

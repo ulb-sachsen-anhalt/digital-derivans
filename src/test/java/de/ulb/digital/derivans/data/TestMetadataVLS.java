@@ -31,7 +31,7 @@ class TestMetadataVLS {
 				TestHelper.ULB_MAX_PATH.toString());
 		derivateIssue.checkRessources(false);
 		derivateIssue.init(TestHelper.ULB_MAX_PATH);
-		var pages = derivateIssue.getAllPages();
+		var pages = derivateIssue.allPagesSorted();
 		assertEquals(16, pages.size());
 	}
 
@@ -41,7 +41,7 @@ class TestMetadataVLS {
 				TestHelper.ULB_MAX_PATH.toString());
 		derivateIssue.checkRessources(false);
 		derivateIssue.init(TestHelper.ULB_MAX_PATH);
-		var pages = derivateIssue.getAllPages();
+		var pages = derivateIssue.allPagesSorted();
 		assertEquals(16, pages.size());
 	}
 
@@ -51,7 +51,7 @@ class TestMetadataVLS {
 				TestHelper.ULB_MAX_PATH.toString());
 		derivateIssue.checkRessources(false);
 		derivateIssue.init(TestHelper.ULB_MAX_PATH);
-		var pages = derivateIssue.getAllPages();
+		var pages = derivateIssue.allPagesSorted();
 		assertEquals(4, pages.size());
 	}
 }

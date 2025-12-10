@@ -89,11 +89,8 @@ class TestDerivansFS {
 
 		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
 		assertNotNull(outline);
-		assertEquals("Outlines", outline.getLabel());
-		assertEquals(1, outline.getOutlineEntries().size());
-		PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
-		assertEquals("only_images", logRoot.getLabel());
-		assertEquals(4, logRoot.getOutlineEntries().size());
+		assertEquals("only_images", outline.getLabel());
+		assertEquals(0, outline.getOutlineEntries().size());
 	}
 
 	/**
@@ -136,12 +133,8 @@ class TestDerivansFS {
 		assertTrue(Files.exists(pdfWritten));
 
 		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
-		assertNotNull(outline);
-		assertEquals("Outlines", outline.getLabel());
-		assertEquals(1, outline.getOutlineEntries().size());
-		PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
-		assertEquals("only_images", logRoot.getLabel());
-		assertEquals(2, logRoot.getOutlineEntries().size());
+		assertEquals("only_images", outline.getLabel());
+		assertEquals(0, outline.getOutlineEntries().size());
 	}
 
 	/**

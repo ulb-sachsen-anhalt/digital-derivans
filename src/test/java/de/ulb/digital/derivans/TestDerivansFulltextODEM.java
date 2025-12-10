@@ -80,7 +80,7 @@ class TestDerivansFulltextODEM {
 	}
 
 	@Test
-	void testDerivatesForPDFWritten() throws IOException {
+	void testDerivatesForPDFWritten() {
 		Path image80Dir = workDir.resolve(IDerivans.IMAGE_Q80);
 		assertTrue(Files.exists(image80Dir));
 		for (int i = 1; i <= nImages; i++) {

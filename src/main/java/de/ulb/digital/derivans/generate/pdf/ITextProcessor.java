@@ -102,6 +102,8 @@ public class ITextProcessor implements IPDFProcessor {
 
 	private DerivateStepPDF pdfStep;
 
+	private IDerivate derivate;
+
 	private DerivateStruct structure;
 
 	private PdfFont font;
@@ -129,6 +131,7 @@ public class ITextProcessor implements IPDFProcessor {
 		this.renderModus = pdfStep.getRenderModus();
 		this.debugRender = pdfStep.getDebugRender();
 		this.setDpi(pdfStep.getImageDpi());
+		this.derivate = derivate;
 		this.font = this.loadFont("ttf/DejaVuSans.ttf");
 		this.rtlStyle = this.rtlStyle.setFont(this.font);
 	}
@@ -202,7 +205,6 @@ public class ITextProcessor implements IPDFProcessor {
 						"http://www.color.org",
 						iccLabelRGB, is);
 				this.pdfDocument = new PdfADocument(writer, conformanceLevel, outputIntentRGB);
-
 				this.pdfDocument.addOutputIntent(outputIntentRGB);
 				// if requested PDF/A conformance level A
 				LOGGER.info("set document with pdf/a conformance {}", conformanceLevel);
@@ -214,8 +216,10 @@ public class ITextProcessor implements IPDFProcessor {
 			}
 			this.document = new Document(pdfDocument);
 			this.addMetadata();
-			var result = this.addContents();
-			this.reportDoc.addPages(result);
+			List<DigitalPage> allPages = this.derivate.allPagesSorted();
+			List<PDFPage> processedPdfPages = this.addPages(allPages);
+			this.reportDoc.addPages(processedPdfPages);
+			this.addOutline();
 			this.document.close();
 			this.pdfDocument.close();
 			LOGGER.info("done creating pdf {}, checking readability", fileDescriptor);
@@ -265,52 +269,34 @@ public class ITextProcessor implements IPDFProcessor {
 		throw new DigitalDerivansException("Cant set PDF/A conformance level for " + conformance + "!");
 	}
 
-	private List<PDFPage> addContents() throws DigitalDerivansException {
+	@Override
+	public void addOutline(/*int maxPages*/) throws DigitalDerivansException {
 		PdfOutline baseOutline = this.pdfDocument.getOutlines(true);
 		String rootLabel = this.structure.getLabel();
-		List<PDFPage> processedPdfPages = new ArrayList<>();
-		// outline the very first page with logical root
 		PdfOutline logRootOutline = baseOutline.addOutline(rootLabel);
 		logRootOutline.setTitle(rootLabel);
 		if (this.structure.getChildren().isEmpty()) {
-			List<PDFPage> processed = this.addPages(this.structure.getPages(), logRootOutline);
-			processedPdfPages.addAll(processed);
 			PdfPage startPage = this.pdfDocument.getPage(1);
 			logRootOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(startPage)));
 		} else {
-			if (!this.structure.getPages().isEmpty()) {
-				List<PDFPage> processed = this.addPages(this.structure.getPages(), logRootOutline);
-				processedPdfPages.addAll(processed);
-			}
 			for (DerivateStruct currentStruct : this.structure.getChildren()) {
 				String childLabel = currentStruct.getLabel();
 				PdfOutline childLine = logRootOutline.addOutline(childLabel);
-				this.traverse(childLine, currentStruct, processedPdfPages);
+				this.traverse(childLine, currentStruct);
 			}
 		}
-		return processedPdfPages;
 	}
 
-	private void traverse(PdfOutline currentOutline, DerivateStruct currStruct, List<PDFPage> processedPdfPages)
+	private void traverse(PdfOutline currentOutline, DerivateStruct currStruct)
 			throws DigitalDerivansException {
 		if (currStruct.getChildren().isEmpty()) {
-			List<PDFPage> processed = this.addPages(currStruct.getPages(), currentOutline);
-			processedPdfPages.addAll(processed);
-			if (processed.isEmpty()) {
-				LOGGER.warn("no pages processed for struct {}", currStruct.getLabel());
-			}
-			int firstNumber = processed.get(0).getNumber();
-			PdfPage firstStructPage = this.requestDestinationPage(firstNumber);
+			PdfPage firstStructPage = this.requestDestinationPage(currStruct.getPages().get(0).getOrderNr());
 			currentOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(firstStructPage)));
 		} else {
-			if (!currStruct.getPages().isEmpty()) {
-				List<PDFPage> processed = this.addPages(currStruct.getPages(), currentOutline);
-				processedPdfPages.addAll(processed);
-			}
 			for (DerivateStruct subStruct : currStruct.getChildren()) {
 				String childLabel = subStruct.getLabel();
 				PdfOutline childLine = currentOutline.addOutline(childLabel);
-				traverse(childLine, subStruct, processedPdfPages);
+				traverse(childLine, subStruct);
 			}
 		}
 	}
@@ -345,7 +331,7 @@ public class ITextProcessor implements IPDFProcessor {
 	 * @return
 	 * @throws DigitalDerivansException
 	 */
-	public List<PDFPage> addPages(List<DigitalPage> pages, PdfOutline currentOutline) throws DigitalDerivansException {
+	public List<PDFPage> addPages(List<DigitalPage> pages) throws DigitalDerivansException {
 		List<PDFPage> resultPages = new ArrayList<>();
 		LOGGER.debug("render {}  pages at {}", pages.size(), this.renderLevel);
 		try {
@@ -374,13 +360,6 @@ public class ITextProcessor implements IPDFProcessor {
 					this.append(image, pdfPage);
 				}
 				resultPages.add(pdfPage);
-				var optPageLabel = pageIn.getPageLabel();
-				if (optPageLabel.isPresent()) {
-					String label = optPageLabel.get();
-					PdfPage thisPage = this.pdfDocument.getPage(pageIn.getOrderNr());
-					currentOutline.addOutline(label)
-							.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(thisPage)));
-				}
 				this.renderedPages.put(pageId, pdfPage);
 			}
 		} catch (IOException e) {

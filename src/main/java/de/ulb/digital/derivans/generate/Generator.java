@@ -78,7 +78,7 @@ public abstract class Generator {
 	public void setDerivate(IDerivate derivate) {
 		this.derivate = derivate;
 		this.rootDir = this.derivate.getRootDir();
-		this.digitalPages = this.derivate.getAllPages();
+		this.digitalPages = this.derivate.allPagesSorted();
 	}
 
 	public IDerivate getDerivate() {

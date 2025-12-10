@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.jdom2.Element;
 
@@ -71,6 +72,18 @@ public class METSContainer {
 		return this.children;
 	}
 
+	/**
+	 * 
+	 * Get only those children which are not of type PAGE
+	 * 
+	 * @return
+	 */
+	public List<METSContainer> getIntermediateChildren() {
+		return this.children.stream()
+				.filter(c -> c.getType() != METSContainerType.PAGE)
+				.collect(Collectors.toList());
+	}
+
 	public void setChildren(List<METSContainer> childs) {
 		this.children = childs;
 	}
@@ -112,7 +125,8 @@ public class METSContainer {
 
 	/**
 	 * Form nested logical structures for mets:structMap@TYPE="LOGICAL"/mets:div
-	 * @throws DigitalDerivansException 
+	 * 
+	 * @throws DigitalDerivansException
 	 */
 	private void determineHierarchy() throws DigitalDerivansException {
 		List<Element> kids = this.element.getChildren("div", METS.NS_METS);
@@ -126,11 +140,11 @@ public class METSContainer {
 		if (!kids.isEmpty()) {
 			for (var kid : kids) {
 				METSContainer curr = new METSContainer(kid);
+				curr.setParent(parent);
 				parent.addChild(curr);
 				traverse(curr);
 			}
 		}
-
 	}
 
 	public void setLabel(String label) {
@@ -163,6 +177,10 @@ public class METSContainer {
 
 	public List<METSFile> getFiles() {
 		return this.files;
+	}
+
+	public List<METSFile> getFilesByGroup(String group) {
+		return this.files.stream().filter(f -> f.getFileGroup().equalsIgnoreCase(group)).collect(Collectors.toList());
 	}
 
 	public void setAttributes(Map<METSContainerAttributeType, String> attributes) {

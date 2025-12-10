@@ -171,7 +171,9 @@ public enum METSContainerType {
 	public static final List<METSContainerType> MEDIA_CONTAINER = List.of(
 		METSContainerType.MONOGRAPH,
 		METSContainerType.MANUSCRIPT,
-		METSContainerType.VOLUME);
+		METSContainerType.VOLUME,
+		METSContainerType.ISSUE,
+		METSContainerType.ADDITIONAL);
 	public static final List<METSContainerType> MEDIA_CONTAINER_PARENT = List.of(
 		METSContainerType.MULTIVOLUME_WORK,
 		METSContainerType.PERIODICAL);

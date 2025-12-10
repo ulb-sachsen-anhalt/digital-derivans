@@ -35,7 +35,7 @@ import de.ulb.digital.derivans.model.step.DerivateStep;
  * @author hartwig
  *
  */
-class TestDerivansLegacyULB {
+class TestDerivansLegacyMWE {
 
 	@TempDir
 	static Path tempDir;
@@ -49,6 +49,8 @@ class TestDerivansLegacyULB {
 	static List<DerivateStep> steps;
 
 	static List<Generator> generators;
+
+	static PDFOutlineEntry outline;
 
 	@BeforeAll
 	static void setupBeforeClass() throws Exception {
@@ -75,6 +77,8 @@ class TestDerivansLegacyULB {
 		derivans.forward();
 		generators = derivans.getGenerators();
 		steps = derivans.getSteps();
+		Path pdfWritten = workDir.resolve("191092622.pdf");
+		outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
 	}
 
 	@Test
@@ -157,24 +161,45 @@ class TestDerivansLegacyULB {
 	}
 
 	@Test
-	void testPDFOutlineTree() throws Exception {
-		Path pdfWritten = workDir.resolve("191092622.pdf");
-		PDFOutlineEntry outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
-		assertNotNull(outline);
-		assertEquals("Outlines", outline.getLabel());
-		assertEquals(1, outline.getOutlineEntries().size());
-		PDFOutlineEntry logRoot = outline.getOutlineEntries().get(0);
-		assertEquals("Ode In Solemni", logRoot.getLabel().substring(0, 14));
-		assertEquals(2, logRoot.getOutlineEntries().size());
-		var childOne = logRoot.getOutlineEntries().get(0);
-		var childTwo = logRoot.getOutlineEntries().get(1);
+	void testOutlineRoot() {
+		assertTrue(outline.getLabel().startsWith("Ode In Solemni Panegyri Avgvstissimo"));
+		assertEquals(2, outline.getOutlineEntries().size());
+	}
+
+	@Test
+	void testOutline01() {
+		List<PDFOutlineEntry> entries = outline.getOutlineEntries();
+		var childOne = entries.get(0);
+		var childTwo = entries.get(1);
 		assertEquals("Titelblatt", childOne.getLabel());
 		assertEquals("[Ode]", childTwo.getLabel());
+	}
+
+	@Test
+	void outline0101() {
+		List<PDFOutlineEntry> entries = outline.getOutlineEntries();
+		var childOne = entries.get(0);
 		assertEquals(1, childOne.getOutlineEntries().size());
 		assertEquals("[Seite 2]", childOne.getOutlineEntries().get(0).getLabel());
+	}
+
+	@Test
+	void outline0102() {
+		List<PDFOutlineEntry> entries = outline.getOutlineEntries();
+		var childTwo = entries.get(1);
 		assertEquals(3, childTwo.getOutlineEntries().size());
 		assertEquals("[Seite 3]", childTwo.getOutlineEntries().get(0).getLabel());
+		assertEquals("[Seite 4]", childTwo.getOutlineEntries().get(1).getLabel());
 		assertEquals("[Seite 5]", childTwo.getOutlineEntries().get(2).getLabel());
+	}
+
+	@Test
+	void outline010201() {
+		List<PDFOutlineEntry> entries = outline.getOutlineEntries();
+		var childTwo = entries.get(1);
+		var subChild = childTwo.getOutlineEntries().get(0);
+		assertEquals(0, subChild.getOutlineEntries().size());
+		assertEquals("[Seite 3]", subChild.getLabel());
 	}
 
 	@Test

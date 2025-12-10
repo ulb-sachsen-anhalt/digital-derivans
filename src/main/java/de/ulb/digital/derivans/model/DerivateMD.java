@@ -1,18 +1,18 @@
 package de.ulb.digital.derivans.model;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.data.mets.DescriptiveMetadataBuilder;
 import de.ulb.digital.derivans.data.mets.METS;
 import de.ulb.digital.derivans.data.mets.METSContainer;
+import de.ulb.digital.derivans.data.mets.METSContainerType;
 import de.ulb.digital.derivans.data.mets.METSFile;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
@@ -39,9 +39,13 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  */
 public class DerivateMD implements IDerivate {
 
+	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(DerivateMD.class);
+
 	private String startFileExtension = ".jpg";
 
 	private String imageGroup = IDerivans.IMAGE_DIR_DEFAULT;
+
+	private String ocrFileGroup = IDerivans.FULLTEXT_DIR;
 
 	private Path rootDir;
 
@@ -49,13 +53,11 @@ public class DerivateMD implements IDerivate {
 
 	private boolean checkRessources = true;
 
-	private final AtomicInteger mdPageOrder = new AtomicInteger(1);
-
 	private METS mets;
 
 	private DerivateStruct struct;
 
-	private final Map<String, DigitalPage> pageIndex = new LinkedHashMap<>();
+	private final Map<String, DigitalPage> fileIndex = new LinkedHashMap<>();
 
 	private String identifierExpression;
 
@@ -86,7 +88,8 @@ public class DerivateMD implements IDerivate {
 			this.mets.setImgFileGroup(startPath.toString());
 		}
 		this.mets.init(); // critical
-		var orderNr = this.mdPageOrder.get();
+		this.mets.validate();
+		var orderNr = 1;
 		METSContainer containerRoot = this.mets.getLogicalRoot();
 		String logicalLabel = containerRoot.determineLabel();
 		// look for higher structs
@@ -108,7 +111,7 @@ public class DerivateMD implements IDerivate {
 
 	private void populateStruct(DerivateStruct parent, METSContainer container, String fileExt)
 			throws DigitalDerivansException {
-		if(this.mets.hasLinkedPages(container.getId())) {
+		if (!container.getFiles().isEmpty()) {
 			this.handlePages(parent, container);
 		}
 		for (var subContainer : container.getChildren()) {
@@ -117,26 +120,24 @@ public class DerivateMD implements IDerivate {
 	}
 
 	private void handlePages(DerivateStruct parent, METSContainer container) throws DigitalDerivansException {
-		List<METSContainer> pages = this.mets.getPages(container);
-		for (METSContainer digiFile : pages) {
-			String pageId = digiFile.getId();
-			if (this.pageIndex.containsKey(pageId)) {
-				DigitalPage existingPage = this.pageIndex.get(pageId);
+		List<METSFile> imgFiles = container.getFilesByGroup(this.imageGroup);
+		for (METSFile imgFile : imgFiles) {
+			String fileId = imgFile.getFileId();
+			if (this.fileIndex.containsKey(fileId)) {
+				DigitalPage existingPage = this.fileIndex.get(fileId);
 				parent.getPages().add(existingPage);
 			} else {
-				METS.METSFilePack pack = this.mets.getPageFiles(digiFile);
-				var imgFile = pack.imageFile;
 				Path filePath = this.rootDir.resolve(imgFile.getLocalPath(this.checkRessources));
-				int currOrder = this.mdPageOrder.getAndIncrement();
-				DigitalPage page = new DigitalPage(imgFile.getFileId(), currOrder, filePath);
-				page.setPageLabel(digiFile.determineLabel());
-				digiFile.getAttribute("CONTENTIDS").ifPresent(page::setContentIds);
-				if (pack.ocrFile.isPresent()) {
-					METSFile ocrFile = pack.ocrFile.get();
-					page.setOcrFile(ocrFile.getLocalPath(this.checkRessources));
+				int pageOrderFromFile = container.getOrder(); // why it doesn't work?
+				DigitalPage page = new DigitalPage(imgFile.getFileId(), pageOrderFromFile, filePath);
+				page.setPageLabel(container.determineLabel());
+				container.getAttribute("CONTENTIDS").ifPresent(page::setContentIds);
+				List<METSFile> ocrFile = container.getFilesByGroup(this.ocrFileGroup);
+				if (!ocrFile.isEmpty()) {
+					page.setOcrFile(ocrFile.get(0).getLocalPath(this.checkRessources));
 				}
 				parent.getPages().add(page);
-				this.pageIndex.put(pageId, page); // also remember in self dictionary
+				this.fileIndex.put(fileId, page); // also remember in self dictionary
 			}
 		}
 	}
@@ -154,14 +155,12 @@ public class DerivateMD implements IDerivate {
 		}
 		DerivateStruct currentStruct = new DerivateStruct(structOrder, logicalLabel);
 		parentStruct.getChildren().add(currentStruct);
-		if (!currentCnt.getChildren().isEmpty()) {
+		if (!currentCnt.getChildren().isEmpty() && !currentCnt.getType().equals(METSContainerType.PAGE)) {
 			for (var subContainer : currentCnt.getChildren()) {
 				this.traverseStruct(currentStruct, subContainer, fileExt);
 			}
 		}
-		// assume containers may link pages on *every* level
-		// even if these pages also linked by it's children
-		if(this.mets.hasLinkedPages(currentCnt.getId())) {
+		if (!currentCnt.getFiles().isEmpty()) {
 			this.handlePages(currentStruct, currentCnt);
 		}
 	}
@@ -172,8 +171,10 @@ public class DerivateMD implements IDerivate {
 	}
 
 	@Override
-	public List<DigitalPage> getAllPages() {
-		return new ArrayList<>(this.pageIndex.values());
+	public List<DigitalPage> allPagesSorted() {
+		return this.fileIndex.values().stream()
+				.sorted((p1, p2) -> Integer.compare(p1.getOrderNr(), p2.getOrderNr()))
+				.collect(Collectors.toList());
 	}
 
 	public Path getRootDir() {
@@ -234,7 +235,7 @@ public class DerivateMD implements IDerivate {
 	}
 
 	public boolean isGranularIdentifierPresent() {
-		return this.getAllPages().stream()
+		return this.fileIndex.values().stream()
 				.filter(page -> page.optContentIds().isPresent())
 				.map(page -> page.optContentIds().get())
 				.findAny().isPresent();

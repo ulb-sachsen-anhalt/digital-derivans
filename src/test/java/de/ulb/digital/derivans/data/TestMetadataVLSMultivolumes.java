@@ -109,7 +109,7 @@ class TestMetadataVLSMultivolumes {
 	void testDigitalPagesContentIds19788() throws DigitalDerivansException {
 
 		// act
-		List<DigitalPage> pages = derivate19788.getAllPages();
+		List<DigitalPage> pages = derivate19788.allPagesSorted();
 
 		// assert
 		assertEquals(22, pages.size());
@@ -126,7 +126,7 @@ class TestMetadataVLSMultivolumes {
 	}
 
 	@Test
-	void testStructureOf19788() throws DigitalDerivansException {
+	void testStructureOf19788() {
 		DerivateStruct dst = derivate19788.getStructure();
 		assertNotNull(dst);
 
@@ -142,13 +142,13 @@ class TestMetadataVLSMultivolumes {
 		// level 3 = F-Stage struct
 		List<DerivateStruct> grandchilds = children.get(0).getChildren();
 		assertEquals("Titelblatt", grandchilds.get(0).getLabel());
-		assertEquals(1, grandchilds.get(0).getPages().size());
+		assertEquals(1, grandchilds.get(0).getChildren().size());
 		assertEquals("Widmung", grandchilds.get(1).getLabel());
-		assertEquals(1, grandchilds.get(1).getPages().size());
+		assertEquals(1, grandchilds.get(1).getChildren().size());
 		assertEquals("Titelblatt", grandchilds.get(2).getLabel());
-		assertEquals(2, grandchilds.get(2).getPages().size());
+		assertEquals(2, grandchilds.get(2).getChildren().size());
 		assertEquals("Abschnitt", grandchilds.get(3).getLabel());
-		assertEquals(18, grandchilds.get(3).getPages().size());
+		assertEquals(18, grandchilds.get(3).getChildren().size());
 	}
 
 	@Test
@@ -203,7 +203,7 @@ class TestMetadataVLSMultivolumes {
 	 * @throws DigitalDerivansException
 	 */
 	@Test
-	void testStructureOf9427337() throws DigitalDerivansException {
+	void testStructureOf9427337() {
 		DerivateStruct dst = derivate9427337.getStructure();
 		assertNotNull(dst);
 
@@ -226,10 +226,10 @@ class TestMetadataVLSMultivolumes {
 		assertEquals(6, children.get(0).getChildren().size());
 		var grandChildren = children.get(0).getChildren();
 		assertEquals("Exlibris", grandChildren.get(1).getLabel());
-		assertEquals(1, grandChildren.get(1).getPages().size());
+		assertEquals(1, grandChildren.get(1).getChildren().size());
 		assertEquals("Untersuchung der Grundsäze der Staats-Wirthschaft Drittes Buch von Geld und Münze.",
 				grandChildren.get(4).getLabel());
-		assertEquals(152, grandChildren.get(4).getPages().size());
+		assertEquals(1, grandChildren.get(4).getChildren().size());
 	}
 
 	@Test

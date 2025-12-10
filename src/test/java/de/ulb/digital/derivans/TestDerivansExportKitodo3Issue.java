@@ -18,12 +18,15 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 
 /**
  * 
- * Kitodo3 exporter setup for newspaper issue
- * with TIF images and METS/MODS metadata
- * Ensure resulting METS conforms to METS XSD
+ * Kitodo3 exporter setup for newspaper issue with rather unordinary structure
+ * i.e. in METS after page 4 goes page 7 (colorchecker) and then pages 5 and 6
+ * which occour again as part of sub-structure "Feuilleton-Beilage. Nr. 20."
+ * therefore the structmap links contains 9 links (1 top link, 4 pages, 1 colorchecker,
+ * 3 pages) for only 7 actual pages and 1 sub-structure.
  * 
  * used config: src/test/resources/config/derivans_ulb_export.ini
  * 
@@ -38,6 +41,8 @@ class TestDerivansExportKitodo3Issue {
 	static Path workDir;
 
 	static String issueLabel = "253780594-18920720";
+
+	static PDFOutlineEntry pdfOutline;
 
 	@BeforeAll
 	static void setupBeforeClass() throws Exception {
@@ -66,6 +71,9 @@ class TestDerivansExportKitodo3Issue {
 		// act
 		derivans.init(pathTargetMets);
 		derivans.forward();
+		Path pdfWritten = workDir.resolve("25378059418920720.pdf");
+		TestHelper.PDFInspector pdfInspector = new TestHelper.PDFInspector(pdfWritten);
+		pdfOutline = pdfInspector.getOutline();
 	}
 
 	@Test
@@ -75,7 +83,7 @@ class TestDerivansExportKitodo3Issue {
 	}
 
 	@Test
-	void testExpectedPDFPageCount() throws Exception {
+	void testPageCount() throws Exception {
 		Path pdfWritten = workDir.resolve("25378059418920720.pdf");
 		TestHelper.PDFInspector pdfInspector = new TestHelper.PDFInspector(pdfWritten);
 		int nExpectedImages = 7;
@@ -99,4 +107,40 @@ class TestDerivansExportKitodo3Issue {
 		assertTrue(TestHelper.validateXML(resultXML, pathMETSXSD));
 	}
 
+	/**
+	 * 
+	 * Assume following outline structure:
+	 * - Level 1: "Zeitung"
+	 * - Level 2: "Nr. 58."
+	 * - Level 3: "Seite 1" - "Seite 4" + "Beilage" + Colorchecker => 6 entries
+	 * 
+	 * Issue with multi-linked pages resulting in wrong outline structure
+	 * having 8 linked structures (duplicate links "Seite 5" and "Seite 6")
+	 * which should only appear as part of "Feuilleton-Beilage. Nr. 20." entry.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void outlineIssueTopStructs() {
+		assertEquals("Zeitung", pdfOutline.getLabel());
+		assertEquals(1, pdfOutline.getOutlineEntries().size());
+		PDFOutlineEntry issueOutline = pdfOutline.getOutlineEntries().get(0);
+		assertEquals("Nr. 58.", issueOutline.getLabel());
+		var nTopStructs = issueOutline.getOutlineEntries().size();
+		assertEquals(6, nTopStructs, "Expected 6 top level structs under issue but got " + nTopStructs);
+		assertEquals("[Colorchecker]", issueOutline.getOutlineEntries().get(nTopStructs - 1).getLabel());
+	}
+
+	@Test
+	void outlineIssueFeuilletonBeilage()  {
+		PDFOutlineEntry outlineIssue = pdfOutline.getOutlineEntries().get(0);
+		var fStructs = outlineIssue.getOutlineEntries().get(0);
+		assertEquals("Feuilleton-Beilage. Nr. 20.", fStructs.getLabel());
+		assertEquals(2, fStructs.getOutlineEntries().size());
+		var page5 = fStructs.getOutlineEntries().get(0);
+		var page6 = fStructs.getOutlineEntries().get(1);
+		assertEquals("[Seite 5]", page5.getLabel());
+		assertEquals(5, page5.getPageNumber());
+		assertEquals(6, page6.getPageNumber());
+	}
 }

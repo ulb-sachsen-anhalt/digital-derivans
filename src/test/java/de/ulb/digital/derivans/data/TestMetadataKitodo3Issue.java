@@ -36,7 +36,7 @@ class TestMetadataKitodo3Issue {
 		dZD2.setStartFileExtension(".tif");
 		dZD2.checkRessources(false);
 		dZD2.init(Path.of("MAX"));
-		var digiPages = dZD2.getAllPages();
+		var digiPages = dZD2.allPagesSorted();
 
 		// assert
 		assertEquals(4, digiPages.size());

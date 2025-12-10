@@ -295,4 +295,10 @@ public class PDFBoxProcessor implements IPDFProcessor {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'setStructure'");
 	}
+
+	@Override
+	public void addOutline() throws DigitalDerivansException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'addOutline'");
+	}
 }

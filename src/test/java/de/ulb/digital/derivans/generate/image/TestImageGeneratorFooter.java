@@ -80,7 +80,7 @@ class TestImageGeneratorFooter {
 		}
 		IDerivate derivateFS = new DerivateFS(tempDir);
 		derivateFS.init(Path.of("IMAGE1"));
-		assertEquals(2, derivateFS.getAllPages().size());
+		assertEquals(2, derivateFS.allPagesSorted().size());
 		Path trgPath = tempDir.resolve("IMAGE_FOOTER1");
 		Files.createDirectory(trgPath);
 
