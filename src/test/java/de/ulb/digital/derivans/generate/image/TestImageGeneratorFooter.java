@@ -2,6 +2,7 @@ package de.ulb.digital.derivans.generate.image;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.image.BufferedImage;
@@ -314,5 +315,59 @@ class TestImageGeneratorFooter {
 		// difference since there are 3 images, but only two of them have granular urn
 		assertEquals(2, footerGen.getNumberOfGranularIdentifiers());
 		assertEquals(3, resultPaths.size());
+	}
+
+	/**
+	 * 
+	 * Test that errors during parallel footer rendering are properly tracked and propagated
+	 * Verifies that when input files are missing during footer generation,
+	 * the error is captured and the process fails fast
+	 * 
+	 * @throws DigitalDerivansException
+	 * @throws IOException
+	 */
+	@Test
+	void testErrorTrackingWithMissingFooterInput(@TempDir Path tempDir) throws DigitalDerivansException, IOException {
+		// arrange
+		Path inputDir = tempDir.resolve("IMAGE_MISSING");
+		Path outputDir = tempDir.resolve("IMAGE_FOOTER_ERROR");
+		Files.createDirectory(inputDir);
+		Files.createDirectory(outputDir);
+
+		// Create one valid image
+		Path validImage = inputDir.resolve("0001.jpg");
+		BufferedImage bi = new BufferedImage(250, 375, BufferedImage.TYPE_3BYTE_BGR);
+		ImageIO.write(bi, "JPG", validImage.toFile());
+
+		// Setup footer template
+		String templatePath = "src/test/resources/config/footer_template.png";
+		Path source = Paths.get(templatePath).toAbsolutePath();
+		Path footerDir = tempDir.resolve("footer");
+		Files.createDirectories(footerDir);
+		Path target = footerDir.resolve("footer_template.png");
+		Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+
+		// Create derivate with a missing file reference
+		DerivateFS derivateWithMissing = new DerivateFS(tempDir);
+		derivateWithMissing.init(Path.of("IMAGE_MISSING"));
+		
+		// Add a page that references a non-existent file
+		var pages = derivateWithMissing.allPagesSorted();
+		if (!pages.isEmpty()) {
+			Path missingFile = inputDir.resolve("9999.jpg");
+			DigitalPage fakePage = new DigitalPage("FAKE_9999", 9999, missingFile);
+			pages.add(fakePage);
+		}
+
+		DerivateStepImageFooter footerStep = new DerivateStepImageFooter("IMAGE_MISSING", "IMAGE_FOOTER_ERROR");
+		footerStep.setPathTemplate(target);
+		footerStep.setQuality(95);
+
+		GeneratorImageJPGFooter footerGen = new GeneratorImageJPGFooter();
+		footerGen.setDerivate(derivateWithMissing);
+		footerGen.setStep(footerStep);
+
+		// act & assert - should throw exception due to missing file
+		assertThrows(DigitalDerivansException.class, footerGen::create);
 	}
 }
