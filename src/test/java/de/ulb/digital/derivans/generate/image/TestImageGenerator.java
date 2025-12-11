@@ -23,6 +23,7 @@ import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.generate.GeneratorImageJPG;
 import de.ulb.digital.derivans.model.DerivateFS;
+import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
 import de.ulb.digital.derivans.model.step.DerivateStepImage;
 
@@ -217,5 +218,50 @@ class TestImageGenerator {
 
 		// assert 
 		assertEquals("No inputDir: null!", exc.getMessage());
+	}
+
+	/**
+	 * 
+	 * Check that errors during parallel processing are properly tracked and propagated
+	 * Test verifies that when input files are missing during image generation,
+	 * the error is captured and the process fails fast
+	 * 
+	 * @throws IOException
+	 * @throws DigitalDerivansException 
+	 */
+	@Test
+	void testErrorTrackingWithMissingFiles() throws IOException, DigitalDerivansException {
+		// arrange
+		Path inputDir = sharedTempDir.resolve("INPUT_WITH_MISSING");
+		Path outputDir = sharedTempDir.resolve("OUTPUT_ERROR_TEST");
+		Files.createDirectory(inputDir);
+		Files.createDirectory(outputDir);
+
+		// Create one valid image but derivate will expect more files
+		Path validImage = inputDir.resolve("0001.jpg");
+		BufferedImage bi = new BufferedImage(250, 375, BufferedImage.TYPE_3BYTE_BGR);
+		ImageIO.write(bi, "JPG", validImage.toFile());
+
+		IDerivate derivateWithMissing = new DerivateFS(sharedTempDir);
+		derivateWithMissing.init(Path.of("INPUT_WITH_MISSING"));
+		
+		// Manually add a page that references a non-existent file to simulate missing input
+		var pages = derivateWithMissing.allPagesSorted();
+		if (!pages.isEmpty()) {
+			var firstPage = pages.get(0);
+			// Create a new page with non-existent file
+			Path missingFile = inputDir.resolve("9999.jpg");
+			DigitalPage fakePage = new DigitalPage("FAKE_9999", 9999, missingFile);
+			pages.add(fakePage);
+		}
+
+		DerivateStepImage imageStep = new DerivateStepImage("INPUT_WITH_MISSING", "OUTPUT_ERROR_TEST");
+		imageStep.setQuality(80);
+		GeneratorImageJPG imgGen = new GeneratorImageJPG();
+		imgGen.setDerivate(derivateWithMissing);
+		imgGen.setStep(imageStep);
+
+		// act & assert - should throw exception due to missing file
+		assertThrows(DigitalDerivansException.class, imgGen::create);
 	}
 }

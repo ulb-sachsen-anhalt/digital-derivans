@@ -96,7 +96,9 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 	private String renderFooter(DigitalPage page) {
 		Path pathIn = page.getFile().using(this.step.getInputType(), this.step.getInputDir());
 		if (!Files.exists(pathIn)) {
-			throw new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
+			DigitalDerivansRuntimeException ex = new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
+			this.processingError.compareAndSet(null, ex);
+			throw ex;
 		}
 		Path pathOut = this.setOutpath(page);
 		try {
@@ -114,6 +116,8 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 			page.setFooterHeight(newHeight);
 		} catch (IOException | DigitalDerivansException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", pathOut, footer, e.getMessage());
+			this.processingError.compareAndSet(null, e);
+			throw new DigitalDerivansRuntimeException("Failed to render footer for " + pathOut, e);
 		}
 		return pathOut.toString();
 	}
