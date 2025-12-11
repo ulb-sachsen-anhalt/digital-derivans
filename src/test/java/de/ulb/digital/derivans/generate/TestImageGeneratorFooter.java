@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.generate.image;
+package de.ulb.digital.derivans.generate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -23,8 +23,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.generate.Generator;
-import de.ulb.digital.derivans.generate.GeneratorImageJPGFooter;
+import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -43,6 +42,8 @@ class TestImageGeneratorFooter {
 
 	private static int height = 5500;
 
+	static int defaultHeight = 700;
+
 	private static IDerivate testDerivate;
 
 	@TempDir
@@ -59,7 +60,7 @@ class TestImageGeneratorFooter {
 
 		for (int i = 1; i < 4; i++) {
 			Path jpgFile = defaultMaxDir.resolve("000" + i + ".jpg");
-			BufferedImage bi2 = new BufferedImage(250, 375, BufferedImage.TYPE_3BYTE_BGR);
+			BufferedImage bi2 = new BufferedImage(400, defaultHeight, BufferedImage.TYPE_3BYTE_BGR);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
 		}
 		sourcePath = sharedTempDir.resolve(TestHelper.IMAGE);
@@ -85,8 +86,7 @@ class TestImageGeneratorFooter {
 		Path trgPath = tempDir.resolve("IMAGE_FOOTER1");
 		Files.createDirectory(trgPath);
 
-		String templatePath = "src/test/resources/config/footer_template.png";
-		Path source = Paths.get(templatePath).toAbsolutePath();
+		Path source = TestResource.RES_FOOTER.get().toAbsolutePath();
 		Path targetDir = tempDir.resolve("footer");
 		Files.createDirectories(targetDir);
 		Path footerTarget = targetDir.resolve("footer_template.png");
@@ -127,8 +127,7 @@ class TestImageGeneratorFooter {
 		Path sourceImage = Paths.get(resPath).toAbsolutePath();
 		Files.copy(sourceImage, imagePath.resolve(Path.of(resPath).getFileName()),
 				StandardCopyOption.REPLACE_EXISTING);
-		String templatePath = "src/test/resources/config/footer_template.png";
-		Path tplSourcePath = Paths.get(templatePath).toAbsolutePath();
+		Path tplSourcePath = TestResource.RES_FOOTER.get().toAbsolutePath();
 		Path targetDir = tempDir.resolve("footer");
 		Files.createDirectories(targetDir);
 		Path tplTarget = targetDir.resolve("footer_template.png");
@@ -176,8 +175,7 @@ class TestImageGeneratorFooter {
 		Path imgPath = targetPath1.resolve("00000010.tif");
 		Path targetPath2 = tempDir.resolve("IMAGE_FOOTER3");
 		Files.copy(imgSource, imgPath, StandardCopyOption.REPLACE_EXISTING);
-		String templatePath = "src/test/resources/config/footer_template.png";
-		Path source = Paths.get(templatePath).toAbsolutePath();
+		Path source = TestResource.RES_FOOTER.get().toAbsolutePath();
 		Path targetDir = tempDir.resolve("footer");
 		Files.createDirectories(targetDir);
 		Path target = targetDir.resolve("footer_template.png");
@@ -215,8 +213,7 @@ class TestImageGeneratorFooter {
 	@Test
 	void testRendererFooterGranular(@TempDir Path tempDir) throws DigitalDerivansException, IOException {
 		// arrange
-		String templatePath = "src/test/resources/config/footer_template.png";
-		Path source = Paths.get(templatePath).toAbsolutePath();
+		Path source = TestResource.RES_FOOTER.get().toAbsolutePath();
 		Path footerDir = tempDir.resolve("footer");
 		Files.createDirectories(footerDir);
 		Path target = footerDir.resolve("footer_template.png");
@@ -228,13 +225,14 @@ class TestImageGeneratorFooter {
 			String currId = String.format("FILE_%04d", i);
 			Path currPath = tempDir.resolve(TestHelper.IMAGE).resolve(String.format("%04d.jpg", i));
 			DigitalPage page = new DigitalPage(currId, i, currPath);
-			String currentURN = String.format("urn:nbn:3:1-123-%02d", i);
+			String currentURN = String.format("\"urn:nbn:3:3-1192015415-123-%02d", i);
 			page.setContentIds(currentURN);
 			testStruct.getPages().add(page);
 		}
 
 		DerivateStepImageFooter footerStep = new DerivateStepImageFooter(TestHelper.IMAGE, "IMAGE_FOOTER4");
 		footerStep.setPathTemplate(target);
+		footerStep.setFooterLabel("Universitäts- und Landesbibliothek Sachsen-Anhalt");
 		footerStep.setQuality(95);
 
 		DerivateFS derivate = new DerivateFS(tempDir);
@@ -254,9 +252,9 @@ class TestImageGeneratorFooter {
 			assertTrue(p.toFile().exists());
 			byte[] bytes = Files.readAllBytes(p);
 			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
-			assertNotEquals(375, image.getHeight());
-			assertEquals(387, image.getHeight());
-			assertEquals(250, image.getWidth());
+			assertNotEquals(defaultHeight, image.getHeight());
+			assertEquals(720, image.getHeight());
+			assertEquals(400, image.getWidth());
 		}
 
 		assertEquals(3, ((GeneratorImageJPGFooter) derivateerGranular).getNumberOfGranularIdentifiers());
@@ -273,8 +271,7 @@ class TestImageGeneratorFooter {
 	@Test
 	void testRendererFooterGranularPartial(@TempDir Path tempDir) throws DigitalDerivansException, IOException {
 		// arrange
-		String templatePath = "src/test/resources/config/footer_template.png";
-		Path source = Paths.get(templatePath).toAbsolutePath();
+		Path source = TestResource.RES_FOOTER.get().toAbsolutePath();
 		Path targetDir = sharedTempDir.resolve("footer");
 		Files.createDirectories(targetDir);
 		Path target = targetDir.resolve("footer_template.png");
@@ -340,8 +337,7 @@ class TestImageGeneratorFooter {
 		ImageIO.write(bi, "JPG", validImage.toFile());
 
 		// Setup footer template
-		String templatePath = "src/test/resources/config/footer_template.png";
-		Path source = Paths.get(templatePath).toAbsolutePath();
+		Path source = TestResource.RES_FOOTER.get().toAbsolutePath();
 		Path footerDir = tempDir.resolve("footer");
 		Files.createDirectories(footerDir);
 		Path target = footerDir.resolve("footer_template.png");

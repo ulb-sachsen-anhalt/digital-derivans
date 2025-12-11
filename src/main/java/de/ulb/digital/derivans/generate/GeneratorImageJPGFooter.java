@@ -94,30 +94,31 @@ public class GeneratorImageJPGFooter extends GeneratorImageJPG {
 	}
 
 	private String renderFooter(DigitalPage page) {
-		Path pathIn = page.getFile().using(this.step.getInputType(), this.step.getInputDir());
+		Path pathIn = this.setInpath(page);
 		if (!Files.exists(pathIn)) {
 			DigitalDerivansRuntimeException ex = new DigitalDerivansRuntimeException("input '" + pathIn + "' missing!");
-			this.processingError.compareAndSet(null, ex);
-			throw ex;
+			this.generatorErrors.get().add(ex);
+			return pathIn.toString();
 		}
 		Path pathOut = this.setOutpath(page);
 		try {
-			BufferedImage thisBuffer = this.imageProcessor.clone(this.footerBuffer);
+			BufferedImage footerClone = this.imageProcessor.clone(this.footerBuffer);
 			String urn = "";
 			var optUrn = page.optContentIds();
 			if (optUrn.isPresent()) {
 				urn = optUrn.get();
-				DigitalFooter df = new DigitalFooter(this.footer.getText().get(0), urn, thisBuffer);
-				thisBuffer = df.getBufferedImage();
 				nGranulars.getAndIncrement();
 			}
-			BufferedImage textBuffer = this.addTextLayer2Footer(thisBuffer, this.footer);
+			DigitalFooter newFooter = new DigitalFooter(this.footer.getText().get(0), urn, footerClone);
+			BufferedImage newBuffer = newFooter.getBufferedImage();
+			BufferedImage textBuffer = this.addTextLayer2Footer(newBuffer, newFooter);
 			int newHeight = this.imageProcessor.writeJPGwithFooter(pathIn, pathOut, textBuffer);
-			page.setFooterHeight(newHeight);
+			if(newHeight > 0) {
+				page.setFooterHeight(newHeight);
+			}
 		} catch (IOException | DigitalDerivansException e) {
 			LOGGER.error("pathIn: {}, footer: {} => {}", pathOut, footer, e.getMessage());
-			this.processingError.compareAndSet(null, e);
-			throw new DigitalDerivansRuntimeException("Failed to render footer for " + pathOut, e);
+			this.generatorErrors.get().add(e);
 		}
 		return pathOut.toString();
 	}

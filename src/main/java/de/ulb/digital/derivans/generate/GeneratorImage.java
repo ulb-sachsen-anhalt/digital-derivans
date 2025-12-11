@@ -3,6 +3,8 @@ package de.ulb.digital.derivans.generate;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicReference;
@@ -35,7 +37,7 @@ public abstract class GeneratorImage extends Generator {
 
 	protected ImageProcessor imageProcessor = new ImageProcessor();
 
-	protected AtomicReference<Throwable> processingError = new AtomicReference<>();
+	protected AtomicReference<List<Throwable>> generatorErrors = new AtomicReference<>(new ArrayList<>());
 
 	public void setImageProcessor(ImageProcessor processor) {
 		this.imageProcessor = processor;
@@ -86,7 +88,6 @@ public abstract class GeneratorImage extends Generator {
 
 	@Override
 	public int create() throws DigitalDerivansException {
-
 		// basic precondition: output directory shall exist
 		if (this.step.getOutputDir() == null) {
 			throw new DigitalDerivansRuntimeException("No outputDir: null!");
@@ -119,22 +120,19 @@ public abstract class GeneratorImage extends Generator {
 		LOGGER.info(msg);
 
 		// reset error tracking before processing
-		this.processingError.set(null);
+		this.generatorErrors.set(new ArrayList<>());
 
 		// forward to actual image creation implementation
 		// subject to each concrete subclass
 		boolean isSuccess = forward();
 		
 		// check if any error occurred during parallel processing
-		Throwable error = this.processingError.get();
-		if (error != null) {
-			if (error instanceof DigitalDerivansException) {
-				throw (DigitalDerivansException) error;
-			} else if (error instanceof RuntimeException) {
-				throw (RuntimeException) error;
-			} else {
-				throw new DigitalDerivansException(error.getMessage(), error);
-			}
+		List<Throwable> errors = this.generatorErrors.get();
+		if (!errors.isEmpty()) {
+			var allMsg = errors.stream()
+					.map(Throwable::getMessage)
+					.reduce((a, b) -> a + "; " + b);
+			throw new DigitalDerivansException(allMsg.orElse("Unknown error encountered!"));
 		}
 		
 		if (isSuccess) {

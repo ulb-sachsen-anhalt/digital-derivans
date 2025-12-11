@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.generate.image;
+package de.ulb.digital.derivans.generate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,7 +21,6 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.DigitalDerivansRuntimeException;
 import de.ulb.digital.derivans.IDerivans;
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.generate.GeneratorImageJPG;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.IDerivate;
@@ -233,9 +232,7 @@ class TestImageGenerator {
 	void testErrorTrackingWithMissingFiles() throws IOException, DigitalDerivansException {
 		// arrange
 		Path inputDir = sharedTempDir.resolve("INPUT_WITH_MISSING");
-		Path outputDir = sharedTempDir.resolve("OUTPUT_ERROR_TEST");
 		Files.createDirectory(inputDir);
-		Files.createDirectory(outputDir);
 
 		// Create one valid image but derivate will expect more files
 		Path validImage = inputDir.resolve("0001.jpg");
@@ -248,7 +245,6 @@ class TestImageGenerator {
 		// Manually add a page that references a non-existent file to simulate missing input
 		var pages = derivateWithMissing.allPagesSorted();
 		if (!pages.isEmpty()) {
-			var firstPage = pages.get(0);
 			// Create a new page with non-existent file
 			Path missingFile = inputDir.resolve("9999.jpg");
 			DigitalPage fakePage = new DigitalPage("FAKE_9999", 9999, missingFile);
@@ -262,6 +258,10 @@ class TestImageGenerator {
 		imgGen.setStep(imageStep);
 
 		// act & assert - should throw exception due to missing file
-		assertThrows(DigitalDerivansException.class, imgGen::create);
+		var exc = assertThrows(DigitalDerivansException.class, imgGen::create);
+		String msg = exc.getMessage();
+		assertTrue(msg.contains("input '"));
+		assertTrue(msg.contains("/INPUT_WITH_MISSING/9999.jpg"));
+		assertTrue(msg.contains("missing!"));
 	}
 }

@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.generate.image;
+package de.ulb.digital.derivans.data.font;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -8,7 +8,6 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
-import de.ulb.digital.derivans.data.font.FontHandler;
 
 /**
  * 

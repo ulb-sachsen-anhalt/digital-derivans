@@ -36,8 +36,8 @@ public class GeneratorImageJPG extends GeneratorImage {
 			String msg = String.format("input '%s' missing!", pathIn);
 			LOGGER.error(msg);
 			DigitalDerivansRuntimeException ex = new DigitalDerivansRuntimeException(msg);
-			this.processingError.compareAndSet(null, ex);
-			throw ex;
+			this.generatorErrors.get().add(ex);
+			return pathIn.toString();
 		}
 		Path pathOut = this.setOutpath(page);
 		try {
@@ -46,13 +46,11 @@ public class GeneratorImageJPG extends GeneratorImage {
 		} catch (DigitalDerivansException e1) {
 			String msg = String.format("%s:%s", pathIn, e1.getMessage());
 			LOGGER.error("processing error {}", msg);
-			this.processingError.compareAndSet(null, e1);
-			throw new DigitalDerivansRuntimeException(msg, e1);
+			this.generatorErrors.get().add(e1);
 		} catch (IOException e2) {
 			String msg = String.format("%s:%s", pathIn, e2.getMessage());
 			LOGGER.error("I/O error {}", msg);
-			this.processingError.compareAndSet(null, e2);
-			throw new DigitalDerivansRuntimeException(msg, e2);
+			this.generatorErrors.get().add(e2);
 		}
 		return pathOut.toString();
 	}

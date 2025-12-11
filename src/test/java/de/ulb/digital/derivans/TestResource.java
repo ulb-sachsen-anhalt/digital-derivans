@@ -18,6 +18,11 @@ public enum TestResource {
 	CONFIG_RES_DIR(Path.of("src/test/resources/config")),
 
 	/**
+	 * Footer template image
+	 */
+	RES_FOOTER(Path.of("src/test/resources/config/footer_template.png")),
+
+	/**
 	 * Corresponding default / fallback configuration
 	 */
 	CONFIG_DEFAULT(CONFIG_RES_DIR.get().resolve("derivans.ini")),
