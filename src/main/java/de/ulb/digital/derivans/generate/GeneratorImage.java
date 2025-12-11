@@ -123,28 +123,24 @@ public abstract class GeneratorImage extends Generator {
 
 		// forward to actual image creation implementation
 		// subject to each concrete subclass
-		try {
-			boolean isSuccess = forward();
-			
-			// check if any error occurred during parallel processing
-			Throwable error = this.processingError.get();
-			if (error != null) {
-				if (error instanceof DigitalDerivansException) {
-					throw (DigitalDerivansException) error;
-				} else if (error instanceof RuntimeException) {
-					throw (RuntimeException) error;
-				} else {
-					throw new DigitalDerivansException(error.getMessage(), error);
-				}
+		boolean isSuccess = forward();
+		
+		// check if any error occurred during parallel processing
+		Throwable error = this.processingError.get();
+		if (error != null) {
+			if (error instanceof DigitalDerivansException) {
+				throw (DigitalDerivansException) error;
+			} else if (error instanceof RuntimeException) {
+				throw (RuntimeException) error;
+			} else {
+				throw new DigitalDerivansException(error.getMessage(), error);
 			}
-			
-			if (isSuccess) {
-				String msg2 = String.format("created '%02d' %s images at '%s'",
-					digitalPages.size(), this.step.getOutputType(), this.step.getOutputDir());
-				LOGGER.info(msg2);
-			}
-		} catch (RuntimeException e) {
-			throw new DigitalDerivansException(e.getMessage());
+		}
+		
+		if (isSuccess) {
+			String msg2 = String.format("created '%02d' %s images at '%s'",
+				digitalPages.size(), this.step.getOutputType(), this.step.getOutputDir());
+			LOGGER.info(msg2);
 		}
 
 		return this.digitalPages.size();
