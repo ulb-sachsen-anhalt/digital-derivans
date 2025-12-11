@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,6 +34,8 @@ public abstract class GeneratorImage extends Generator {
 	protected int poolSize = DEFAULT_POOLSIZE;
 
 	protected ImageProcessor imageProcessor = new ImageProcessor();
+
+	protected AtomicReference<Throwable> processingError = new AtomicReference<>();
 
 	public void setImageProcessor(ImageProcessor processor) {
 		this.imageProcessor = processor;
@@ -115,10 +118,26 @@ public abstract class GeneratorImage extends Generator {
 				this.imageProcessor.getMaximal(), this.poolSize);
 		LOGGER.info(msg);
 
+		// reset error tracking before processing
+		this.processingError.set(null);
+
 		// forward to actual image creation implementation
 		// subject to each concrete subclass
 		try {
 			boolean isSuccess = forward();
+			
+			// check if any error occurred during parallel processing
+			Throwable error = this.processingError.get();
+			if (error != null) {
+				if (error instanceof DigitalDerivansException) {
+					throw (DigitalDerivansException) error;
+				} else if (error instanceof RuntimeException) {
+					throw (RuntimeException) error;
+				} else {
+					throw new DigitalDerivansException(error.getMessage(), error);
+				}
+			}
+			
 			if (isSuccess) {
 				String msg2 = String.format("created '%02d' %s images at '%s'",
 					digitalPages.size(), this.step.getOutputType(), this.step.getOutputDir());

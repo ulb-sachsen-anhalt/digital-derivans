@@ -25,4 +25,8 @@ public class DigitalDerivansRuntimeException extends RuntimeException {
 	public DigitalDerivansRuntimeException(Exception e) {
 		super(e);
 	}
+
+	public DigitalDerivansRuntimeException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

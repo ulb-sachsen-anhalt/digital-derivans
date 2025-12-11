@@ -25,4 +25,8 @@ public class DigitalDerivansException extends Exception {
 	public DigitalDerivansException(Exception e) {
 		super(e);
 	}
+
+	public DigitalDerivansException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }
