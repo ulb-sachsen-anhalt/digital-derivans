@@ -39,8 +39,6 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  */
 public class DerivateMD implements IDerivate {
 
-	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(DerivateMD.class);
-
 	private String startFileExtension = ".jpg";
 
 	private String imageGroup = IDerivans.IMAGE_DIR_DEFAULT;

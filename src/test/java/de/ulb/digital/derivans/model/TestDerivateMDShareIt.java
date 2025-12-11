@@ -1,19 +1,17 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.model.DerivateMD;
 
 /**
  * @author Uwe Hartwig
  */
-class TestMetadataShareIt {
+class TestDerivateMDShareIt {
    
     /**
 	 * 

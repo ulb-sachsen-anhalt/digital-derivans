@@ -134,7 +134,6 @@ public class METS {
 		this.handleContainers();
 		this.logicalRoot = new METSContainer(this.primeLog);
 		this.completeHierarchy(this.logicalRoot);
-		// this.determineLinkedFiles(this.logicalRoot);
 		this.isInited = true;
 	}
 
@@ -198,7 +197,6 @@ public class METS {
 		if (this.smLinks.containsKey(containerId)) {
 			List<METSContainer> children = current.getChildren();
 			List<String> linkedPages = this.smLinks.get(containerId);
-			METSContainer previousSibling = null;
 			for (String linkTo : linkedPages) {
 				if (this.structuralContainer.containsKey(linkTo) &&
 						!children.contains(this.structuralContainer.get(linkTo))) {
@@ -465,7 +463,7 @@ public class METS {
 		this.enrichAgent(agentNoteText);
 		// link as fptr to logical section
 		var pdfFPtr = new Element("fptr", NS_METS);
-		pdfFPtr.setAttribute("FILEID", pdfFileID);
+		pdfFPtr.setAttribute(METS_FILE_ID, pdfFileID);
 		var parent = this.evaluate(String.format("//mets:div[@DMDID='%s']", this.primeMods.getId())).get(0);
 		parent.addContent(0, pdfFPtr);
 		// store changes
@@ -620,44 +618,6 @@ public class METS {
 		return pageContainers;
 	}
 
-	// public METSFilePack getPageFiles(METSContainer container) throws DigitalDerivansException {
-	// 	List<Element> allFiles = container.get().getChildren("fptr", METS.NS_METS);
-	// 	List<String> fileIds = allFiles.stream().map(aFile -> aFile.getAttributeValue("FILEID"))
-	// 			.collect(Collectors.toList());
-	// 	METSFile imgFile = null;
-	// 	for (String fileId : fileIds) {
-	// 		if (this.metsFiles.containsKey(fileId)) {
-	// 			METSFile tmpFile = this.metsFiles.get(fileId);
-	// 			if (tmpFile.getFileGroup().equals(this.imgFileGroup)) {
-	// 				imgFile = tmpFile;
-	// 				break;
-	// 			}
-	// 		}
-	// 	}
-	// 	if (imgFile == null) {
-	// 		var msg = "Can't find image file in @USE=" + this.imgFileGroup + " for container " + container.getId();
-	// 		throw new DigitalDerivansException(msg);
-	// 	}
-	// 	imgFile.setLocalRoot(this.getPath().getParent());
-	// 	METSFilePack pack = new METSFilePack();
-	// 	pack.imageFile = imgFile;
-	// 	METSFile ocrFile = null;
-	// 	for (String fileId : fileIds) {
-	// 		if (this.metsFiles.containsKey(fileId)) {
-	// 			METSFile tmpFile = this.metsFiles.get(fileId);
-	// 			if (tmpFile.getFileGroup().equals(this.ocrFileGroup)) {
-	// 				ocrFile = this.metsFiles.get(fileId);
-	// 				break;
-	// 			}
-	// 		}
-	// 	}
-	// 	if (ocrFile != null) {
-	// 		ocrFile.setLocalRoot(this.getPath().getParent());
-	// 		pack.ocrFile = Optional.of(ocrFile);
-	// 	}
-	// 	return pack;
-	// }
-
 	public boolean isInited() {
 		return this.isInited;
 	}
@@ -675,9 +635,4 @@ public class METS {
 		return resultText;
 	}
 
-	public static class METSFilePack {
-		public METSFile imageFile;
-		public Optional<METSFile> ocrFile = Optional.empty();
-
-	}
 }

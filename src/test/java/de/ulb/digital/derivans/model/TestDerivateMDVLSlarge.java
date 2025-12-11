@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.model.DerivateMD;
-import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -25,7 +23,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
-class TestMetadataVLSlarge {
+class TestDerivateMDVLSlarge {
 
 	static DerivateMD derivate201517;
 
@@ -33,9 +31,9 @@ class TestMetadataVLSlarge {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		TestMetadataVLSlarge.derivate201517 = new DerivateMD(TestResource.VLS_HD_Aa_201517.get());
-		TestMetadataVLSlarge.derivate201517.checkRessources(false);
-		TestMetadataVLSlarge.derivate201517.init(TestHelper.ULB_MAX_PATH);
+		TestDerivateMDVLSlarge.derivate201517 = new DerivateMD(TestResource.VLS_HD_Aa_201517.get());
+		TestDerivateMDVLSlarge.derivate201517.checkRessources(false);
+		TestDerivateMDVLSlarge.derivate201517.init(TestHelper.ULB_MAX_PATH);
 		dmd201517 = derivate201517.getDescriptiveData();
 	}
 

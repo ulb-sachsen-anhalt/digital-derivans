@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.model.DerivateMD;
 
 /**
  * 
@@ -18,7 +17,7 @@ import de.ulb.digital.derivans.model.DerivateMD;
  * @author hartwig
  *
  */
-class TestMetadataKitodo3Issue {
+class TestDerivateMDKitodo3Issue {
 
 	/**
 	 * 

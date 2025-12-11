@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,9 +13,6 @@ import org.junit.jupiter.api.Test;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.TestHelper;
-import de.ulb.digital.derivans.model.DerivateMD;
-import de.ulb.digital.derivans.model.DerivateStruct;
-import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -25,7 +22,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
-class TestMetadataVLSminimum {
+class TestDerivateMDVLSminimum {
 
 	static DerivateMD der737429;
 
@@ -33,9 +30,9 @@ class TestMetadataVLSminimum {
 
 	@BeforeAll
 	static void setupClazz() throws DigitalDerivansException {
-		TestMetadataVLSminimum.der737429 = new DerivateMD(TestResource.VLS_HD_Aa_737429.get());
-		TestMetadataVLSminimum.der737429.checkRessources(false);
-		TestMetadataVLSminimum.der737429.init(TestHelper.ULB_MAX_PATH);
+		TestDerivateMDVLSminimum.der737429 = new DerivateMD(TestResource.VLS_HD_Aa_737429.get());
+		TestDerivateMDVLSminimum.der737429.checkRessources(false);
+		TestDerivateMDVLSminimum.der737429.init(TestHelper.ULB_MAX_PATH);
 		dmd737429 = der737429.getDescriptiveData();
 	}
 
@@ -65,7 +62,7 @@ class TestMetadataVLSminimum {
 	void testDigitalPagesOrderOf737429() {
 
 		// act
-		List<DigitalPage> pages = TestMetadataVLSminimum.der737429.allPagesSorted();
+		List<DigitalPage> pages = TestDerivateMDVLSminimum.der737429.allPagesSorted();
 
 		// assert
 		assertEquals(4, pages.size());

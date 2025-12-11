@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -13,8 +13,6 @@ import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
 import de.ulb.digital.derivans.IDerivans;
-import de.ulb.digital.derivans.model.DerivateMD;
-import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -24,7 +22,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
-class TestMetadataVLSmedium {
+class TestDerivateMDVLSmedium {
 
 	@Test
 	void testStructureOf5175671() throws DigitalDerivansException {

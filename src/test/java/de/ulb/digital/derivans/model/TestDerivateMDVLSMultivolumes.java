@@ -1,4 +1,4 @@
-package de.ulb.digital.derivans.data;
+package de.ulb.digital.derivans.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,9 +18,6 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
-import de.ulb.digital.derivans.model.DerivateMD;
-import de.ulb.digital.derivans.model.DerivateStruct;
-import de.ulb.digital.derivans.model.DigitalPage;
 import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
 
 /**
@@ -28,7 +25,7 @@ import de.ulb.digital.derivans.model.pdf.DescriptiveMetadata;
  * @author u.hartwig
  *
  */
-class TestMetadataVLSMultivolumes {
+class TestDerivateMDVLSMultivolumes {
 
 	static DerivateMD derivate19788;
 
@@ -59,7 +56,7 @@ class TestMetadataVLSMultivolumes {
 	}
 
 	@Test
-	void testDescriptiveDataVD17Volume() throws DigitalDerivansException {
+	void testDescriptiveDataVD17Volume() {
 		// mods:recodInfo/mods:recordIdentifier[@source]/text()
 		assertEquals("005209242", dmd19788.getIdentifier());
 		// mods:titleInfo/mods:title
@@ -106,7 +103,7 @@ class TestMetadataVLSMultivolumes {
 	}
 
 	@Test
-	void testDigitalPagesContentIds19788() throws DigitalDerivansException {
+	void testDigitalPagesContentIds19788() {
 
 		// act
 		List<DigitalPage> pages = derivate19788.allPagesSorted();
@@ -161,7 +158,7 @@ class TestMetadataVLSMultivolumes {
 	}
 
 	@Test
-	void testStructure11250807() throws DigitalDerivansException {
+	void testStructure11250807() {
 		DerivateStruct dst = derivate11250807.getStructure();
 
 		// level 1 = C-Stage
@@ -183,10 +180,9 @@ class TestMetadataVLSMultivolumes {
 	 * 
 	 * Check descriptive data for common VD18 MVW F-Stage
 	 * 
-	 * @throws DigitalDerivansException
 	 */
 	@Test
-	void testDescriptiveDataOf9427337() throws DigitalDerivansException {
+	void testDescriptiveDataOf9427337() {
 		assertEquals("urn:nbn:de:gbv:3:1-635986", dmd9427337.getUrn());
 		assertEquals("Steuart, James", dmd9427337.getPerson());
 		assertEquals("1771", dmd9427337.getYearPublished());

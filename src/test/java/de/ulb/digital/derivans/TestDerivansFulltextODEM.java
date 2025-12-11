@@ -36,7 +36,7 @@ class TestDerivansFulltextODEM {
 
 	static int nImages = 16;
 
-	static int fSizeImage80_00000001 = 499696;
+	static int fileSizeImage00000001 = 499696;
 
 	@BeforeAll
 	static void setupBeforeClass() throws Exception {
@@ -92,7 +92,7 @@ class TestDerivansFulltextODEM {
 	@Test
 	void testDerivateImage01ForPDFHasCertainSize() throws IOException {
 		Path image80Dir = workDir.resolve(IDerivans.IMAGE_Q80);
-		assertEquals(fSizeImage80_00000001, Files.size(image80Dir.resolve("00000001.jpg")));
+		assertEquals(fileSizeImage00000001, Files.size(image80Dir.resolve("00000001.jpg")));
 	}
 
 	@Test
@@ -118,7 +118,7 @@ class TestDerivansFulltextODEM {
 	void testPDFHasCertainNumberOfPages() throws DigitalDerivansException {
 		String pdfMD = inspector.getImageInfo(1);
 		assertEquals("Image Im1: jpg, 2067 x 2339 px, 499696 bytes", pdfMD);
-		assertTrue(pdfMD.contains(String.valueOf(fSizeImage80_00000001)));
+		assertTrue(pdfMD.contains(String.valueOf(fileSizeImage00000001)));
 	}
 
 	@Test
