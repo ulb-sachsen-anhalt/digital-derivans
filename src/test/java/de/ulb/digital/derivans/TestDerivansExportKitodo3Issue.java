@@ -8,6 +8,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.generate.Generator;
 import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 
 /**
@@ -25,7 +27,8 @@ import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
  * Kitodo3 exporter setup for newspaper issue with rather unordinary structure
  * i.e. in METS after page 4 goes page 7 (colorchecker) and then pages 5 and 6
  * which occour again as part of sub-structure "Feuilleton-Beilage. Nr. 20."
- * therefore the structmap links contains 9 links (1 top link, 4 pages, 1 colorchecker,
+ * therefore the structmap links contains 9 links (1 top link, 4 pages, 1
+ * colorchecker,
  * 3 pages) for only 7 actual pages and 1 sub-structure.
  * 
  * used config: src/test/resources/config/derivans_ulb_export.ini
@@ -41,6 +44,8 @@ class TestDerivansExportKitodo3Issue {
 	static Path workDir;
 
 	static String issueLabel = "253780594-18920720";
+
+	static List<Generator> generators;
 
 	static PDFOutlineEntry pdfOutline;
 
@@ -70,6 +75,7 @@ class TestDerivansExportKitodo3Issue {
 
 		// act
 		derivans.init(pathTargetMets);
+		generators = derivans.getGenerators();
 		derivans.forward();
 		Path pdfWritten = workDir.resolve("25378059418920720.pdf");
 		TestHelper.PDFInspector pdfInspector = new TestHelper.PDFInspector(pdfWritten);
@@ -77,9 +83,19 @@ class TestDerivansExportKitodo3Issue {
 	}
 
 	@Test
-	void testPDFWritten() throws Exception {
+	void testPDFWritten() {
 		Path pdfWritten = workDir.resolve("25378059418920720.pdf");
 		assertTrue(Files.exists(pdfWritten));
+	}
+
+	@Test
+	void checkGeneratorClazzes() {
+		assertEquals(5, generators.size());
+		assertEquals("GeneratorImageJPGFooter", generators.get(0).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(1).getClass().getSimpleName());
+		assertEquals("GeneratorPDF", generators.get(2).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(3).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(4).getClass().getSimpleName());
 	}
 
 	@Test
@@ -132,7 +148,7 @@ class TestDerivansExportKitodo3Issue {
 	}
 
 	@Test
-	void outlineIssueFeuilletonBeilage()  {
+	void outlineIssueFeuilletonBeilage() {
 		PDFOutlineEntry outlineIssue = pdfOutline.getOutlineEntries().get(0);
 		var fStructs = outlineIssue.getOutlineEntries().get(0);
 		assertEquals("Feuilleton-Beilage. Nr. 20.", fStructs.getLabel());

@@ -45,8 +45,13 @@ public class ImageProcessor {
 	private int maximal = DefaultConfiguration.DEFAULT_MAXIMAL;
 
 	/**
+	 * Default minimal image dimension in width or height
+	 */
+	public static final Integer DEFAULT_MINIMAL_DIMENSION = 500;
+
+	/**
 	 * Error marker, if a large number of subsequent down scales make the footer
-	 * disappear after all
+	 * disappear after all or way to small images must be processed
 	 */
 	public static final Integer MIN_SCALED_FOOTER_HEIGHT = 20;
 
@@ -197,7 +202,7 @@ public class ImageProcessor {
 		float origWidth = readBuffer.getWidth();
 		float origHeight = readBuffer.getHeight();
 		BufferedImage processedFooter = null;
-		if (origWidth >= 400) {
+		if (origWidth >= DEFAULT_MINIMAL_DIMENSION) {
 			float ratio = origWidth / footerBuffer.getWidth();
 			processedFooter = this.scale(footerBuffer, ratio);
 			int scaledHeight = processedFooter.getHeight();
@@ -208,7 +213,7 @@ public class ImageProcessor {
 				this.writeJPG(pathIn, pathOut);
 				return 0;
 			}
-		} else if (origHeight >= 700) {
+		} else if (origHeight >= DEFAULT_MINIMAL_DIMENSION) {
 			float ratio = origHeight / footerBuffer.getWidth();
 			processedFooter = this.scale(footerBuffer, ratio);
 			int scaledHeight = processedFooter.getHeight();

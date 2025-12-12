@@ -95,10 +95,12 @@ public abstract class DerivateStep {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(super.toString());
+		builder.append(getClass().getSimpleName() + '@' + Integer.toHexString(hashCode()));
 		builder.append('{');
 		if (inputDir != null)
-			builder.append(inputDir).append(':');
+			builder.append("inputDir:").append(inputDir).append(',');
+		if (outputDir != null)
+			builder.append("outputDir:").append(outputDir);
 		builder.append('}');
 		return builder.toString();
 	}

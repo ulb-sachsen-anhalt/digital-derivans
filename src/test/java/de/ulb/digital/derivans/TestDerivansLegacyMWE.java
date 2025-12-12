@@ -20,6 +20,8 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
 import de.ulb.digital.derivans.generate.Generator;
+import de.ulb.digital.derivans.generate.GeneratorImageJPG;
+import de.ulb.digital.derivans.generate.GeneratorImageJPGFooter;
 import de.ulb.digital.derivans.model.pdf.PDFOutlineEntry;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 
@@ -58,8 +60,7 @@ class TestDerivansLegacyMWE {
 		// arrange metadata and images
 		workDir = TestHelper.fixturePrint737429(tempDir);
 
-		// arrange configuration
-		// migration configuration with extended derivates
+		// arrange migration configuration with extended derivates
 		Path configTargetDir = tempDir.resolve("config");
 		if (Files.exists(configTargetDir)) {
 			Files.walk(configTargetDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
@@ -74,8 +75,8 @@ class TestDerivansLegacyMWE {
 
 		// act
 		derivans.init(input);
-		derivans.forward();
 		generators = derivans.getGenerators();
+		derivans.forward();
 		steps = derivans.getSteps();
 		Path pdfWritten = workDir.resolve("191092622.pdf");
 		outline = new TestHelper.PDFInspector(pdfWritten).getOutline();
@@ -84,6 +85,16 @@ class TestDerivansLegacyMWE {
 	@Test
 	void testNumberOfParsedDerivansSteps() {
 		assertEquals(5, steps.size());
+	}
+	
+	@Test
+	void checkGeneratorClazzes() {
+		assertEquals(5, generators.size());
+		assertEquals(GeneratorImageJPGFooter.class, generators.get(0).getClass());
+		assertEquals(GeneratorImageJPG.class, generators.get(1).getClass());
+		assertEquals("GeneratorPDF", generators.get(2).getClass().getSimpleName());
+		assertEquals(GeneratorImageJPG.class, generators.get(3).getClass());
+		assertEquals(GeneratorImageJPG.class, generators.get(4).getClass());
 	}
 
 	@Test

@@ -20,6 +20,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.generate.Generator;
 import de.ulb.digital.derivans.model.DigitalType;
 import de.ulb.digital.derivans.model.step.DerivateStep;
 
@@ -45,6 +46,8 @@ class TestDerivansExportKitodo2 {
 
 	static List<DerivateStep> steps;
 
+	static List<Generator> generators;
+
 	@BeforeAll
 	static void setupBeforeClass() throws Exception {
 
@@ -68,6 +71,7 @@ class TestDerivansExportKitodo2 {
 		Path input = workDir.resolve("058141367.xml");
 		assertTrue(Files.exists(input));
 		derivans.init(input);
+		generators = derivans.getGenerators();
 		TestDerivansExportKitodo2.steps = derivans.getSteps();
 		derivans.forward();
 	}
@@ -101,7 +105,17 @@ class TestDerivansExportKitodo2 {
 	}
 
 	@Test
-	void testDerivateJPGsWithFooterWritten() throws Exception {
+	void checkGeneratorClazzes() {
+		assertEquals(5, generators.size());
+		assertEquals("GeneratorImageJPGFooter", generators.get(0).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(1).getClass().getSimpleName());
+		assertEquals("GeneratorPDF", generators.get(2).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(3).getClass().getSimpleName());
+		assertEquals("GeneratorImageJPG", generators.get(4).getClass().getSimpleName());
+	}
+
+	@Test
+	void testDerivateJPGsWithFooterWritten() {
 		Path footerDir = TestDerivansExportKitodo2.workDir.resolve("IMAGE_FOOTER");
 		assertTrue(Files.exists(footerDir));
 		for (int i = 1; i < nExpectedImages; i++) {
@@ -111,7 +125,7 @@ class TestDerivansExportKitodo2 {
 	}
 
 	@Test
-	void testPreviewImagesWritten() throws Exception {
+	void testPreviewImagesWritten() {
 		Path previewDir = TestDerivansExportKitodo2.workDir.resolve(IDerivans.IMAGE_PREVIEW);
 		assertTrue(Files.exists(previewDir));
 		for (int i = 1; i < nExpectedImages; i++) {
@@ -121,7 +135,7 @@ class TestDerivansExportKitodo2 {
 	}
 
 	@Test
-	void testThumbnailsWritten() throws Exception {
+	void testThumbnailsWritten() {
 		Path thumbsDir = TestDerivansExportKitodo2.workDir.resolve(IDerivans.IMAGE_THUMBNAIL);
 		assertTrue(Files.exists(thumbsDir));
 		for (int i = 1; i < nExpectedImages; i++) {
@@ -131,7 +145,7 @@ class TestDerivansExportKitodo2 {
 	}
 
 	@Test
-	void testPDFWritten() throws Exception {
+	void testPDFWritten() {
 		Path pdfWritten = TestDerivansExportKitodo2.workDir.resolve("058141367.pdf");
 		assertTrue(Files.exists(pdfWritten));
 	}

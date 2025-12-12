@@ -102,8 +102,7 @@ public class Derivans {
                 }
                 this.derivate.init(Path.of(step.getInputDir()));
             }
-            DigitalType type = step.getOutputType();
-            Generator theGenerator = Derivans.forType(type);
+            Generator theGenerator = Derivans.createGenerator(step);
             theGenerator.setDerivate(derivate); // first set derivate ...
             theGenerator.setStep(step); // .. then set step object
             this.generators.add(theGenerator);
@@ -130,15 +129,21 @@ public class Derivans {
                 this.derivate.getRootDir());
     }
 
-    public static Generator forType(DigitalType dType) throws DigitalDerivansException {
-        if (dType == DigitalType.JPG || dType == DigitalType.IMAGE) {
-            return new GeneratorImageJPG();
-        } else if (dType == DigitalType.JPG_FOOTER) {
-            return new GeneratorImageJPGFooter();
-        } else if (dType == DigitalType.PDF) {
-            return new GeneratorPDF();
+    public static Generator createGenerator(DerivateStep step) throws DigitalDerivansException {
+        switch (step.getClass().getSimpleName()) {
+            case "DerivateStepImageFooter":
+                LOGGER.info("init footer generator for step %s", step);
+                return new GeneratorImageJPGFooter();
+            case "DerivateStepImage":
+                LOGGER.info("init image generator for step %s", step);
+                return new GeneratorImageJPG();
+            case "DerivateStepPDF":
+                LOGGER.info("init PDF generator for step %s", step);
+                return new GeneratorPDF();
+            default:
+                break;
         }
-        throw new DigitalDerivansException("Unknown type " + dType);
+        throw new DigitalDerivansException("Unknown type " + step);
     }
 
     /**

@@ -8,12 +8,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import de.ulb.digital.derivans.config.DerivansConfiguration;
 import de.ulb.digital.derivans.config.DerivansParameter;
+import de.ulb.digital.derivans.generate.Generator;
 import de.ulb.digital.derivans.model.pdf.PDFMetadata;
 
 /**
@@ -33,6 +36,8 @@ class TestDerivansFulltextODEM {
 	static Path pdfPath;
 
 	static TestHelper.PDFInspector inspector;
+
+	static List<Generator> generators;
 
 	static int nImages = 16;
 
@@ -74,9 +79,17 @@ class TestDerivansFulltextODEM {
 
 		// act
 		derivans.init(targetMets);
+		generators = derivans.getGenerators();
 		derivans.forward();
 		pdfPath = workDir.resolve("148811035.pdf");
 		TestDerivansFulltextODEM.inspector = new TestHelper.PDFInspector(pdfPath);
+	}
+
+	@Test
+	void checkGeneratorClazzes() {
+		assertEquals(2, generators.size());
+		assertEquals("GeneratorImageJPG", generators.get(0).getClass().getSimpleName());
+		assertEquals("GeneratorPDF", generators.get(1).getClass().getSimpleName());
 	}
 
 	@Test

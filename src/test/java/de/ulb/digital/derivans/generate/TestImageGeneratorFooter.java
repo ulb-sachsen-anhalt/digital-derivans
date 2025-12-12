@@ -44,6 +44,8 @@ class TestImageGeneratorFooter {
 
 	static int defaultHeight = 700;
 
+	static int defaultWidth = 400;
+
 	private static IDerivate testDerivate;
 
 	@TempDir
@@ -60,7 +62,7 @@ class TestImageGeneratorFooter {
 
 		for (int i = 1; i < 4; i++) {
 			Path jpgFile = defaultMaxDir.resolve("000" + i + ".jpg");
-			BufferedImage bi2 = new BufferedImage(400, defaultHeight, BufferedImage.TYPE_3BYTE_BGR);
+			BufferedImage bi2 = new BufferedImage(defaultWidth, defaultHeight, BufferedImage.TYPE_3BYTE_BGR);
 			ImageIO.write(bi2, "JPG", jpgFile.toFile());
 		}
 		sourcePath = sharedTempDir.resolve(TestHelper.IMAGE);
@@ -252,9 +254,9 @@ class TestImageGeneratorFooter {
 			assertTrue(p.toFile().exists());
 			byte[] bytes = Files.readAllBytes(p);
 			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
-			assertNotEquals(defaultHeight, image.getHeight());
-			assertEquals(720, image.getHeight());
-			assertEquals(400, image.getWidth());
+			assertEquals(defaultHeight, image.getHeight());
+			assertNotEquals(defaultWidth, image.getWidth());
+			assertEquals(defaultWidth + 35, image.getWidth());
 		}
 
 		assertEquals(3, ((GeneratorImageJPGFooter) derivateerGranular).getNumberOfGranularIdentifiers());
