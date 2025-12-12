@@ -275,47 +275,41 @@ public class ITextProcessor implements IPDFProcessor {
 		String rootLabel = this.structure.getLabel();
 		PdfOutline logRootOutline = baseOutline.addOutline(rootLabel);
 		logRootOutline.setTitle(rootLabel);
-		if (this.structure.getChildren().isEmpty()) {
-			PdfPage startPage = this.pdfDocument.getPage(1);
-			logRootOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(startPage)));
-		} else {
-			for (DerivateStruct currentStruct : this.structure.getChildren()) {
-				String childLabel = currentStruct.getLabel();
-				PdfOutline childLine = logRootOutline.addOutline(childLabel);
-				int childOrder = currentStruct.getOrder();
-				if (childOrder < 1) {
-					childOrder = 1;
-				}
-				PdfPage referencedPage = this.pdfDocument.getPage(childOrder);
-				if (referencedPage != null) {
-					childLine.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(referencedPage)));
-				}
-				this.traverse(childLine, currentStruct);
-			}
-		}
+		this.traverse(logRootOutline, structure);
 	}
 
 	private void traverse(PdfOutline currentOutline, DerivateStruct currStruct)
 			throws DigitalDerivansException {
 		if (currStruct.getChildren().isEmpty()) {
-			PdfPage firstStructPage = this.requestDestinationPage(currStruct.getPages().get(0).getOrderNr());
+			int order = currStruct.getOrder();
+			// take care for very first level structs
+			if (order < 1) {
+				order = 1;
+			}
+			PdfPage firstStructPage = this.requestDestinationPage(order);
 			currentOutline.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(firstStructPage)));
 		} else {
 			for (DerivateStruct subStruct : currStruct.getChildren()) {
 				String childLabel = subStruct.getLabel();
 				PdfOutline childLine = currentOutline.addOutline(childLabel);
 				int childOrder = subStruct.getOrder();
-				var tmpStruct = subStruct;
-				while (childOrder < 1 && !tmpStruct.getChildren().isEmpty()) {
-					var subKids = tmpStruct.getChildren();
-					if (!subKids.isEmpty()) {
-						childOrder = subKids.get(0).getOrder();
+				// if order marked "-1" grab order from deepest child
+				if(childOrder < 1) {
+					var tmpStruct = subStruct;
+					while (!tmpStruct.getChildren().isEmpty()) {
+						var subKids = tmpStruct.getChildren();
+						if (!subKids.isEmpty()) {
+							childOrder = subKids.get(0).getOrder();
+						}
+						tmpStruct = subKids.get(0);
 					}
-					tmpStruct = subKids.get(0);
 				}
-				PdfPage referencedPage = this.pdfDocument.getPage(childOrder);
-				if (referencedPage != null) {
+				// library throws exception if requested page not in range 1 .. max pages
+				try {
+					PdfPage referencedPage = this.pdfDocument.getPage(childOrder);
 					childLine.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(referencedPage)));
+				} catch (IndexOutOfBoundsException ioe) {
+					throw new DigitalDerivansException(ioe);
 				}
 				traverse(childLine, subStruct);
 			}
