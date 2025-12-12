@@ -270,7 +270,7 @@ public class ITextProcessor implements IPDFProcessor {
 	}
 
 	@Override
-	public void addOutline(/*int maxPages*/) throws DigitalDerivansException {
+	public void addOutline(/* int maxPages */) throws DigitalDerivansException {
 		PdfOutline baseOutline = this.pdfDocument.getOutlines(true);
 		String rootLabel = this.structure.getLabel();
 		PdfOutline logRootOutline = baseOutline.addOutline(rootLabel);
@@ -282,6 +282,14 @@ public class ITextProcessor implements IPDFProcessor {
 			for (DerivateStruct currentStruct : this.structure.getChildren()) {
 				String childLabel = currentStruct.getLabel();
 				PdfOutline childLine = logRootOutline.addOutline(childLabel);
+				int childOrder = currentStruct.getOrder();
+				if (childOrder < 1) {
+					childOrder = 1;
+				}
+				PdfPage referencedPage = this.pdfDocument.getPage(childOrder);
+				if (referencedPage != null) {
+					childLine.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(referencedPage)));
+				}
 				this.traverse(childLine, currentStruct);
 			}
 		}
@@ -296,6 +304,19 @@ public class ITextProcessor implements IPDFProcessor {
 			for (DerivateStruct subStruct : currStruct.getChildren()) {
 				String childLabel = subStruct.getLabel();
 				PdfOutline childLine = currentOutline.addOutline(childLabel);
+				int childOrder = subStruct.getOrder();
+				var tmpStruct = subStruct;
+				while (childOrder < 1 && !tmpStruct.getChildren().isEmpty()) {
+					var subKids = tmpStruct.getChildren();
+					if (!subKids.isEmpty()) {
+						childOrder = subKids.get(0).getOrder();
+					}
+					tmpStruct = subKids.get(0);
+				}
+				PdfPage referencedPage = this.pdfDocument.getPage(childOrder);
+				if (referencedPage != null) {
+					childLine.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(referencedPage)));
+				}
 				traverse(childLine, subStruct);
 			}
 		}
@@ -345,7 +366,7 @@ public class ITextProcessor implements IPDFProcessor {
 				} else {
 					int orderN = pageIn.getOrderNr();
 					String imagePath = this.getInputImagePath(pageIn).toString();
-					LOGGER.debug("render page {} image {}", i+1, imagePath);
+					LOGGER.debug("render page {} image {}", i + 1, imagePath);
 					Image image = new Image(ImageDataFactory.create(imagePath));
 					float imageWidth = image.getImageWidth();
 					float imageHeight = image.getImageHeight();

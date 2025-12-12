@@ -184,6 +184,8 @@ class TestDerivansLegacyMWE {
 		var childTwo = entries.get(1);
 		assertEquals("Titelblatt", childOne.getLabel());
 		assertEquals("[Ode]", childTwo.getLabel());
+		assertEquals(1, childOne.getPageNumber());
+		assertEquals(2, childTwo.getPageNumber());
 	}
 
 	@Test
