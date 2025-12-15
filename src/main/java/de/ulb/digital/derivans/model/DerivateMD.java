@@ -146,11 +146,7 @@ public class DerivateMD implements IDerivate {
 	private void traverseStruct(DerivateStruct parentStruct, METSContainer currentCnt,
 			String fileExt) throws DigitalDerivansException {
 		String logicalLabel = currentCnt.determineLabel();
-		Integer structOrder = -1;
-		Optional<String> optOrder = currentCnt.getAttribute("ORDER");
-		if (optOrder.isPresent()) {
-			structOrder = Integer.valueOf(optOrder.get());
-		}
+		Integer structOrder = currentCnt.getOrder();
 		DerivateStruct currentStruct = new DerivateStruct(structOrder, logicalLabel);
 		parentStruct.getChildren().add(currentStruct);
 		if (!currentCnt.getChildren().isEmpty() && !currentCnt.getType().equals(METSContainerType.PAGE)) {

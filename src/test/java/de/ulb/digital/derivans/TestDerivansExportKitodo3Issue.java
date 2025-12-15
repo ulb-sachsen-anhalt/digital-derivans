@@ -150,7 +150,7 @@ class TestDerivansExportKitodo3Issue {
 	@Test
 	void outlineIssueFeuilletonBeilage() {
 		PDFOutlineEntry outlineIssue = pdfOutline.getOutlineEntries().get(0);
-		var fStructs = outlineIssue.getOutlineEntries().get(0);
+		var fStructs = outlineIssue.getOutlineEntries().get(4);
 		assertEquals("Feuilleton-Beilage. Nr. 20.", fStructs.getLabel());
 		assertEquals(2, fStructs.getOutlineEntries().size());
 		var page5 = fStructs.getOutlineEntries().get(0);

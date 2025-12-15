@@ -68,6 +68,15 @@ public class METSContainer {
 		return this.order;
 	}
 
+	/**
+	 * Sometimes order is not set properly on parent containers, but only on deepest child
+	 * elements. In this case, we try to fetch order from first PAGE child.
+	 * @param order
+	 */
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+
 	public List<METSContainer> getChildren() {
 		return this.children;
 	}

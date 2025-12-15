@@ -78,6 +78,7 @@ public enum TestResource {
 	VLS_VD17_AF_11250807(Path.of("src/test/resources/mets/vls/vd17-AF-11250807.ulb.xml")),
 
 	VLS_VD18_Af_9427337(Path.of("src/test/resources/mets/vls/vd18-Af-9427337.ulb.xml")),
+	VLS_INHOUSE_322332(Path.of("src/test/resources/mets/vls/322332.mets.xml")),
 
 	/**
 	 * contains duplicated logical structure

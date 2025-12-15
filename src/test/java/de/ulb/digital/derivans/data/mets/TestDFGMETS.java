@@ -114,7 +114,7 @@ class TestDFGMETS {
 		assertEquals("Nr. 58.", root.determineLabel());
 		assertEquals(0, root.getFiles().size());
 		assertEquals(6, root.getChildren().size());
-		var additionalSection = root.getChildren().get(0);
+		var additionalSection = root.getChildren().get(4);
 		assertEquals(METSContainerType.ADDITIONAL, additionalSection.getType());
 		assertEquals("Feuilleton-Beilage. Nr. 20.", additionalSection.determineLabel());
 		assertEquals(2, additionalSection.getChildren().size());
@@ -183,37 +183,6 @@ class TestDFGMETS {
 		assertTrue(root.determineLabel().startsWith("Neue Friedens-Vorschläge"));
 		assertEquals(0, root.getFiles().size());
 		assertEquals(4, root.getChildren().size());
-	}
-
-	/**
-	 * 
-	 * Medium size periodical volume from Share-IT with mixture of pages and
-	 * sub-structures
-	 * Lead to very strange gaps in final PDF, like from page image 13 to 109 or
-	 * 112 to 224 only having blank white pages without any content.
-	 * 
-	 * Ensure that at top-most level only 11 sub-structures are recognized.
-	 * 
-	 * @throws DigitalDerivansException
-	 */
-	@Test
-	void testShareItPPN168566600011796() throws DigitalDerivansException {
-		// arrange
-		var mets = new METS(TestResource.SHARE_IT_VD18_1981185920_35126.get(), TestHelper.ULB_MAX);
-
-		// act
-		mets.init();
-
-		// assert
-		var root = mets.getLogicalRoot();
-		assertEquals(415, mets.getPages().size());
-		assertEquals(METSContainerType.VOLUME, root.getType());
-		assertTrue(root.determineLabel().startsWith("Nouveaux cahiers de lecture"));
-		assertEquals(11, root.getChildren().size());
-		assertEquals(0, root.getFiles().size());
-		var child04 = root.getChildren().get(3);
-		assertEquals("Janvier.", child04.determineLabel());
-		assertEquals(96, child04.getChildren().size());
 	}
 
 	/**

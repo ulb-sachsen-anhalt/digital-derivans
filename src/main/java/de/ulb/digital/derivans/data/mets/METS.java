@@ -134,6 +134,8 @@ public class METS {
 		this.handleContainers();
 		this.logicalRoot = new METSContainer(this.primeLog);
 		this.completeHierarchy(this.logicalRoot);
+		this.reviewOrder(this.logicalRoot);
+		this.resort(this.logicalRoot);
 		this.isInited = true;
 	}
 
@@ -217,6 +219,61 @@ public class METS {
 		for (int i = 0; i < realWildChilds.size(); i++) {
 			METSContainer childDiv = realWildChilds.get(i);
 			this.completeHierarchy(childDiv);
+		}
+	}
+
+	/**
+	 * Sometimes, order is not set as expected on containers
+	 * due to insertion of sub-structures in-between, erroneous data
+	 * or because order is set on node containers already which differs
+	 * from real page order.
+	 * 
+	 * In these cases, we try to fetch order from farthest first child
+	 * of type PAGE.
+	 * 
+	 * @param current
+	 */
+	private void reviewOrder(METSContainer current) {
+		int currentOrder = current.getOrder();
+		if (current.getType() != METSContainerType.PAGE) {
+			var tmpStruct = current;
+			while (!tmpStruct.getChildren().isEmpty()) {
+				var subKids = tmpStruct.getChildren();
+				var pageChildren = subKids.stream()
+						.filter(c -> c.getType() == METSContainerType.PAGE)
+						.collect(Collectors.toList());
+				if (pageChildren.isEmpty()) {
+					tmpStruct = subKids.get(0);
+				} else {
+					pageChildren.sort((a, b) -> Integer.compare(a.getOrder(), b.getOrder()));
+					currentOrder = pageChildren.get(0).getOrder();
+					break;
+				}
+			}
+			current.setOrder(currentOrder);
+		}
+		for(var child : current.getChildren()) {
+			// review only further if order unset OR type is not PAGE
+			// (which also means we're dealing with non-page containers)
+			if(child.getOrder() < 1 || child.getType() != METSContainerType.PAGE) {
+				reviewOrder(child);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * Finally resort all containers according to hopefully sanitized 
+	 * order attribute on each level respectively.
+	 * 
+	 * @param current
+	 */
+	private void resort(METSContainer current) {
+		if (!current.getChildren().isEmpty()) {
+			current.getChildren().sort((a, b) -> Integer.compare(a.getOrder(), b.getOrder()));
+			for (var child : current.getChildren()) {
+				resort(child);
+			}
 		}
 	}
 

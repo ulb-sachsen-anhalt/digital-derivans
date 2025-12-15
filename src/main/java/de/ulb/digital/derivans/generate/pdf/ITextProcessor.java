@@ -282,7 +282,7 @@ public class ITextProcessor implements IPDFProcessor {
 			throws DigitalDerivansException {
 		if (currStruct.getChildren().isEmpty()) {
 			int order = currStruct.getOrder();
-			// take care for very first level structs
+			// corner case: take care if very first level struct is unset
 			if (order < 1) {
 				order = 1;
 			}
@@ -293,23 +293,14 @@ public class ITextProcessor implements IPDFProcessor {
 				String childLabel = subStruct.getLabel();
 				PdfOutline childLine = currentOutline.addOutline(childLabel);
 				int childOrder = subStruct.getOrder();
-				// if order marked "-1" grab order from deepest child
-				if(childOrder < 1) {
-					var tmpStruct = subStruct;
-					while (!tmpStruct.getChildren().isEmpty()) {
-						var subKids = tmpStruct.getChildren();
-						if (!subKids.isEmpty()) {
-							childOrder = subKids.get(0).getOrder();
-						}
-						tmpStruct = subKids.get(0);
-					}
-				}
-				// library throws exception if requested page not in range 1 .. max pages
+				// iText library will throw exception if requested page not in range 1 .. max
 				try {
 					PdfPage referencedPage = this.pdfDocument.getPage(childOrder);
 					childLine.addAction(PdfAction.createGoTo(PdfExplicitDestination.createFit(referencedPage)));
 				} catch (IndexOutOfBoundsException ioe) {
-					throw new DigitalDerivansException(ioe);
+					var msg = String.format("while adding outline entry '%s' for order %d: %s",
+							childLabel, childOrder, ioe.getMessage());
+					throw new DigitalDerivansException(msg, ioe);
 				}
 				traverse(childLine, subStruct);
 			}

@@ -22,6 +22,12 @@ import de.ulb.digital.derivans.DigitalDerivansException;
  */
 public enum METSContainerType {
 
+	// VERY IMPORTANT: keep PAGE the very first entry
+	// since it is used to sort METS containers by ordinal value!
+	// Even more strange, PAGE is not listed at Strukturdatenset
+	// although DFG METS heavily relies on it for its physical line out
+	PAGE("page", "Seite"),
+
 	SECTION("section", "Abschnitt"),
 	FILE("file", "Akte"),
 	ALBUM("album", "Album"),
@@ -113,9 +119,6 @@ public enum METSContainerType {
 	DEDICATION("dedication", "Widmung"),
 	NEWSPAPER("newspaper", "Zeitung"),
 
-	// this is peculiar since not listed at Strukturdatenset
-	// *but* DFG METS heavy relies on it for it's physical line out
-	PAGE("page", "Seite"),
 	PHYSSEQUENCE("physSequence","Seiten"),
 	// OCR-D related container type
 	OTHER("other", "Weitere")
