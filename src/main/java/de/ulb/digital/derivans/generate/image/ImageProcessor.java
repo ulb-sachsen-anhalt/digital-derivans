@@ -1,5 +1,6 @@
 package de.ulb.digital.derivans.generate.image;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -47,13 +48,13 @@ public class ImageProcessor {
 	/**
 	 * Default minimal image dimension in width or height
 	 */
-	public static final Integer DEFAULT_MINIMAL_DIMENSION = 500;
+	public static final Integer DEFAULT_MINIMAL_DIMENSION = 800;
 
 	/**
 	 * Error marker, if a large number of subsequent down scales make the footer
 	 * disappear after all or way to small images must be processed
 	 */
-	public static final Integer MIN_SCALED_FOOTER_HEIGHT = 20;
+	public static final Integer MIN_SCALED_FOOTER_HEIGHT = 25;
 
 	public ImageProcessor() {
 	}
@@ -83,25 +84,17 @@ public class ImageProcessor {
 		return this.qualityRatio;
 	}
 
-	BufferedImage merge(BufferedImage bufferedImage, BufferedImage addedBuffer, boolean appendRightSide) {
+	BufferedImage merge(BufferedImage bufferedImage, BufferedImage addedBuffer/*, boolean appendRightSide*/) {
 		int bType = bufferedImage.getType();
 		if (bType == 0) {
 			bType = bufferedImage.getColorModel().getColorSpace().getType();
 		}
 		int newHeight = bufferedImage.getHeight() + addedBuffer.getHeight();
 		int newWidth = bufferedImage.getWidth();
-		if(appendRightSide) {
-			newHeight = bufferedImage.getHeight();
-			newWidth = bufferedImage.getWidth() + addedBuffer.getWidth();
-		}
 		BufferedImage newImage = new BufferedImage(newWidth, newHeight, bType);
 		Graphics2D g2d = newImage.createGraphics();
 		g2d.drawImage(bufferedImage, 0, 0, null);
-		if(appendRightSide) {
-			g2d.drawImage(addedBuffer, bufferedImage.getWidth(), 0, null);
-		} else {
-			g2d.drawImage(addedBuffer, 0, bufferedImage.getHeight(), null);
-		}
+		g2d.drawImage(addedBuffer, 0, bufferedImage.getHeight(), null);
 		g2d.dispose();
 		return newImage;
 	}
@@ -194,54 +187,27 @@ public class ImageProcessor {
 	public int writeJPGwithFooter(Path pathIn, Path pathOut, BufferedImage footerBuffer)
 			throws IOException, DigitalDerivansException {
 		int newHeight = 0;
-		boolean isRotated = false;
 		BufferedImage readBuffer = ImageIO.read(pathIn.toFile());
 		if (readBuffer == null) {
 			throw new DigitalDerivansException("Invalid image data " + pathIn + "!");
 		}
 		float origWidth = readBuffer.getWidth();
-		float origHeight = readBuffer.getHeight();
-		BufferedImage processedFooter = null;
-		if (origWidth >= DEFAULT_MINIMAL_DIMENSION) {
-			float ratio = origWidth / footerBuffer.getWidth();
-			processedFooter = this.scale(footerBuffer, ratio);
-			int scaledHeight = processedFooter.getHeight();
-			if (scaledHeight < MIN_SCALED_FOOTER_HEIGHT) {
-				var sRatio = String.format("%.2f", ratio);
-				LOGGER.warn("Refuse to render footer to {} height {} < min '{}' (scale: {})",
-						pathIn, scaledHeight, MIN_SCALED_FOOTER_HEIGHT, sRatio);
-				this.writeJPG(pathIn, pathOut);
-				return 0;
-			}
-		} else if (origHeight >= DEFAULT_MINIMAL_DIMENSION) {
-			float ratio = origHeight / footerBuffer.getWidth();
-			processedFooter = this.scale(footerBuffer, ratio);
-			int scaledHeight = processedFooter.getHeight();
-			if (scaledHeight < MIN_SCALED_FOOTER_HEIGHT) {
-				var sRatio = String.format("%.2f", ratio);
-				LOGGER.warn("Refuse to render footer to {} height {} < min '{}' (scale: {})",
-						pathIn, scaledHeight, MIN_SCALED_FOOTER_HEIGHT, sRatio);
-				this.writeJPG(pathIn, pathOut);
-				return 0;
-			}
-			processedFooter = this.rotate(processedFooter, -90);
-			isRotated = true;
-		} else {
-			// no footer added for too small images
-			LOGGER.warn("Refuse to add footer to '{}' because of dimension {}x{}",
-						pathIn, origWidth, origHeight);
-			this.writeJPG(pathIn, pathOut);
-			return 0;
+		boolean isImageTooNarrow = origWidth < DEFAULT_MINIMAL_DIMENSION;
+		if (isImageTooNarrow) {
+			LOGGER.warn("image {} too narrow width: {}, set fallback {}", pathIn, origWidth, DEFAULT_MINIMAL_DIMENSION);
+			origWidth = DEFAULT_MINIMAL_DIMENSION;
+			readBuffer = this.centerOnBackground(readBuffer, DEFAULT_MINIMAL_DIMENSION);
 		}
-
-		// append footer buffer at bottom
-		BufferedImage mergedlBuffers = this.merge(readBuffer, processedFooter, isRotated);
+		float ratio = origWidth / footerBuffer.getWidth();
+		BufferedImage processedFooter = this.scale(footerBuffer, ratio);
+		BufferedImage mergedBuffers = this.merge(readBuffer, processedFooter);
+		newHeight = mergedBuffers.getHeight();
 		ImageMetadata imageMetada = new ImageMetadata();
 		imageMetada.enrichFrom(pathIn);
-		this.writeJPGWithQualityAndMetadata(mergedlBuffers, pathOut, imageMetada);
+		this.writeJPGWithQualityAndMetadata(mergedBuffers, pathOut, imageMetada);
 		readBuffer.flush();
 		processedFooter.flush();
-		mergedlBuffers.flush();
+		mergedBuffers.flush();
 
 		// return changed height/width with added footer
 		return newHeight;
@@ -263,32 +229,31 @@ public class ImageProcessor {
 	}
 
 	/**
-	 * Rotates an image. Note that an angle of -90 is equal to 270.
+	 * Creates an artificial background and places the given image centered into it.
 	 * 
-	 * @param img   The image to be rotated
-	 * @param angle The angle in degrees (must be a multiple of 90°).
-	 * @return The rotated image, or the original image, if the effective angle is 0°.
-	 * @throws DigitalDerivansException 
+	 * @param img          The image to be centered
+	 * @param targetWidth  The width of the background
+	 * @param targetHeight The height of the background, i.e. the height of the image
+	 * @return A new BufferedImage with the original image centered on the
+	 *         background
 	 */
-	public BufferedImage rotate(BufferedImage img, int angle) throws DigitalDerivansException {
-		if (angle < 0) {
-			angle = 360 + (angle % 360);
-		}
-		if ((angle % 360) == 0) {
-			return img;
-		}
-		final boolean r180 = angle == 180;
-		if (angle != 90 && !r180 && angle != 270)
-			throw new DigitalDerivansException("Invalid angle.");
-		final int w = r180 ? img.getWidth() : img.getHeight();
-		final int h = r180 ? img.getHeight() : img.getWidth();
-		final int type = img.getType() == BufferedImage.TYPE_CUSTOM ? BufferedImage.TYPE_INT_ARGB : img.getType();
-		final BufferedImage rotated = new BufferedImage(w, h, type);
-		final Graphics2D graphic = rotated.createGraphics();
-		graphic.rotate(Math.toRadians(angle), w / 2d, h / 2d);
-		final int offset = r180 ? 0 : (w - h) / 2;
-		graphic.drawImage(img, null, offset, -offset);
-		graphic.dispose();
-		return rotated;
+	private BufferedImage centerOnBackground(BufferedImage img, int targetWidth) {
+		int type = img.getType() == BufferedImage.TYPE_CUSTOM ? BufferedImage.TYPE_INT_RGB : img.getType();
+		int imgHeight = img.getHeight();
+		BufferedImage background = new BufferedImage(targetWidth, imgHeight, type);
+		Graphics2D g2d = background.createGraphics();
+
+		// Fill with b(l)ackground
+		g2d.setColor(Color.BLACK);
+		g2d.fillRect(0, 0, targetWidth, imgHeight);
+
+		// Calculate center axis position
+		int x = (targetWidth - img.getWidth()) / 2;
+
+		// Draw the image centered
+		g2d.drawImage(img, x, 0, null);
+		g2d.dispose();
+
+		return background;
 	}
 }

@@ -24,6 +24,7 @@ import org.junit.jupiter.api.io.TempDir;
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.TestHelper;
 import de.ulb.digital.derivans.TestResource;
+import de.ulb.digital.derivans.generate.image.ImageProcessor;
 import de.ulb.digital.derivans.model.DerivateFS;
 import de.ulb.digital.derivans.model.DerivateStruct;
 import de.ulb.digital.derivans.model.DigitalPage;
@@ -208,7 +209,7 @@ class TestImageGeneratorFooter {
 			byte[] bytes = Files.readAllBytes(p);
 			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 			assertNotEquals(height, image.getHeight());
-			assertEquals(796, image.getHeight());
+			assertEquals(808, image.getHeight());
 		}
 	}
 
@@ -254,9 +255,8 @@ class TestImageGeneratorFooter {
 			assertTrue(p.toFile().exists());
 			byte[] bytes = Files.readAllBytes(p);
 			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
-			assertEquals(defaultHeight, image.getHeight());
-			assertNotEquals(defaultWidth, image.getWidth());
-			assertEquals(defaultWidth + 35, image.getWidth());
+			assertEquals(defaultHeight + 40, image.getHeight());
+			assertEquals(ImageProcessor.DEFAULT_MINIMAL_DIMENSION, image.getWidth());
 		}
 
 		assertEquals(3, ((GeneratorImageJPGFooter) derivateerGranular).getNumberOfGranularIdentifiers());
