@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.ulb</groupId>
 	<artifactId>digital-derivans</artifactId>
-	<version>2.2.4</version>
+	<version>3.0.0</version>
 
 	<organization>
 		<name>Universität- und Landesbibliothek Sachsen-Anhalt</name>
@@ -97,7 +97,6 @@
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox-io</artifactId>
 			<version>${pdfbox.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -123,7 +122,6 @@
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
 			<version>${pdfbox.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.verapdf</groupId>
