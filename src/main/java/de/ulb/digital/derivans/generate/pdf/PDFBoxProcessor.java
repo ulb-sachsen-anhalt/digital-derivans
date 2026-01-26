@@ -125,7 +125,7 @@ public class PDFBoxProcessor implements IPDFProcessor {
 	}
 
 	private void setDpi(int dpi) throws DigitalDerivansException {
-		if (dpi <= 300 && dpi >= 600) {
+		if (dpi < 72 || dpi > 600) {
 			String msg = String.format("tried to set invalid dpi: '%s' (must be in range 72 - 600)", dpi);
 			LOGGER.error(msg);
 			throw new DigitalDerivansException(msg);
@@ -149,23 +149,19 @@ public class PDFBoxProcessor implements IPDFProcessor {
 		String combinedTitle = String.format("(%s) %s", year, title);
 		docInfo.setTitle(combinedTitle);
 		docInfo.setAuthor(this.pdfStep.getAuthor());
-		
 		Optional<String> optCreator = this.pdfStep.getCreator();
 		if (optCreator.isPresent()) {
 			docInfo.setCreator(optCreator.get());
 		}
-		
 		Optional<String> optKeywords = this.pdfStep.getKeywords();
 		if (optKeywords.isPresent()) {
 			docInfo.setKeywords(optKeywords.get());
 		}
-		
 		Optional<String> optLicense = this.pdfStep.getLicense();
 		if (optLicense.isPresent()) {
 			docInfo.setCustomMetadataValue(PDF_METADATA_LABEL_ACCESS_CONDITION, optLicense.get());
 			docInfo.setCustomMetadataValue(PDF_METADATA_LABEL_PUBLISHED, this.pdfStep.getPublicationYear());
 		}
-		
 		docInfo.setCustomMetadataValue("year", combinedTitle);
 	}
 
