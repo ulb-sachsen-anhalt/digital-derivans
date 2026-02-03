@@ -146,7 +146,7 @@ public class ITextProcessor implements IPDFProcessor {
 	}
 
 	private void setDpi(int dpi) throws DigitalDerivansException {
-		if (dpi <= 300 && dpi >= 600) {
+		if (dpi < 72 || dpi > 600) {
 			String msg = String.format("tried to set invalid dpi: '%s' (must be in range 72 - 600)", dpi);
 			LOGGER.error(msg);
 			throw new DigitalDerivansException(msg);
