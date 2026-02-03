@@ -174,7 +174,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>de.mlu.ulb.digital.derivans.App</mainClass>
+							<mainClass>de.ulb.digital.derivans.App</mainClass>
 						</manifest>
 						<manifestEntries>
 							<Multi-Release>true</Multi-Release>
