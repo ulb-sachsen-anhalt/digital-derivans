@@ -3,11 +3,15 @@ package de.ulb.digital.derivans.generate.pdf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.awt.geom.Rectangle2D;
 
 import de.ulb.digital.derivans.DigitalDerivansException;
 import de.ulb.digital.derivans.model.DerivateMD;
@@ -103,5 +107,51 @@ class TestITextProcessor {
 		step601.setImageDpi(601);
 		var processor601 = new ITextProcessor();
 		assertThrows(DigitalDerivansException.class, () -> processor601.init(step601, derivate));
+	}
+
+	/**
+	 * Test that calculateHorizontalScaling handles zero-width glyphs gracefully.
+	 * This test verifies the fix for the PdfAConformanceException("Integer number is out of range")
+	 * that occurred when Unicode normalization produced characters with zero width in the font.
+	 * Without the guard, this would return Float.POSITIVE_INFINITY.
+	 */
+	@Test
+	void testCalculateHorizontalScalingWithZeroWidthChar() throws DigitalDerivansException {
+		// Arrange: Create PDFTextElement with zero-width character and dimensions
+		Rectangle2D box = new Rectangle2D.Float(0, 0, 100, 20);
+		PDFTextElement token = new PDFTextElement("\u200b", box);  // zero-width space
+		
+		ITextProcessor processor = new ITextProcessor();
+		processor.loadFont("ttf/DejaVuSans.ttf");
+		
+		// Act
+		float result = processor.calculateHorizontalScaling(token);
+		
+		// Assert: After fix, should return a safe finite value, not Infinity
+		assertFalse(Float.isInfinite(result), "Scaling should not be infinite");
+		assertFalse(Float.isNaN(result), "Scaling should not be NaN");
+		assertTrue(result > 0);
+		assertEquals(1.0f, result);
+	}
+
+	/**
+	 * Test that calculateHorizontalScaling handles empty text gracefully.
+	 * Empty text should not cause division-by-zero.
+	 */
+	@Test
+	void testCalculateHorizontalScalingWithEmptyText() throws DigitalDerivansException {
+		// Arrange: Create PDFTextElement with empty text
+		Rectangle2D box = new Rectangle2D.Float(0, 0, 100, 20);
+		PDFTextElement token = new PDFTextElement("", box);  // empty text
+		
+		ITextProcessor processor = new ITextProcessor();
+		processor.loadFont("ttf/DejaVuSans.ttf");
+		
+		// Act
+		float result = processor.calculateHorizontalScaling(token);
+		
+		// Assert: Should handle gracefully without throwing or returning Infinity
+		assertFalse(Float.isInfinite(result), "Scaling for empty text should not be infinite");
+		assertTrue(result > 0);
 	}
 }

@@ -546,10 +546,27 @@ public class ITextProcessor implements IPDFProcessor {
 	 */
 	float calculateHorizontalScaling(PDFTextElement token) {
 		String text = token.getText();
+		
+		// Guard against empty or null text
+		if (text == null || text.isEmpty()) {
+			var tokenPrint = token.forPrint();
+			LOGGER.warn("Empty or null text for token '{}', skipping scaling", tokenPrint);
+			return 1.0f;
+		}
 		float glyphWidth = this.font.getWidth(text) * .001f * token.getFontSize();
-		float totalGlyphWidth = glyphWidth;
+		
+		
+		// Guard against zero or near-zero glyph width to prevent division-by-zero
+		// which would result in Float.POSITIVE_INFINITY, causing PdfAConformanceException
+		// when document is closed and PDF/A conformance is validated
+		if (glyphWidth < 1e-5f) {
+			var tokenPrint = token.forPrint();
+			LOGGER.warn("Calculated glyph width {} for token '{}', too small, use fallback", glyphWidth, tokenPrint);
+			return 1.0f;
+		}
+		
 		float tokenLenght = token.getBaseline().length();
-		return tokenLenght / totalGlyphWidth;
+		return tokenLenght / glyphWidth;
 	}
 
 	private void drawBoundingBox(Rectangle2D rectangle, Color c, float lineWidth) {

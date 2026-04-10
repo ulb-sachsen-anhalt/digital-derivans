@@ -110,7 +110,7 @@ class TestPDFRahbarOCRWords {
 	@Test
 	void testWordLevelPage01TextLength() throws Exception {
 		var textPage07 = TestHelper.getTextAsSingleLine(pdfPathWord, 1);
-		assertEquals(2295, textPage07.length());
+		assertEquals(2294, textPage07.length());
 	}
 
 }
